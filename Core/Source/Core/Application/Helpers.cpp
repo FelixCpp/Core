@@ -1,0 +1,17 @@
+#include <Core/Application/Helpers.hpp>
+#include <Core/Maths/Random.hpp>
+
+namespace Core
+{
+
+	float random(float min, float max)
+	{
+		return Random::get(min, max);
+	}
+
+	float random(float max)
+	{
+		return random(0.f, max);
+	}
+
+}
