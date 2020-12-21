@@ -3,7 +3,7 @@
 namespace Core
 {
 
-	enum class MouseCursor {
+	enum class SystemCursor {
 		Arrow		= 0x7F00,
 		IBeam		= 0x7F01,
 		Wait		= 0x7F02,

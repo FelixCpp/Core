@@ -147,7 +147,7 @@
     <ClInclude Include="Include\Core\Window\SystemIcon.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="Include\Core\Window\MouseCursor.hpp">
+    <ClInclude Include="Include\Core\Window\SystemCursor.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>

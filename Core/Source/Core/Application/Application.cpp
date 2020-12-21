@@ -162,7 +162,7 @@ namespace Core
 		return true;
 	}
 
-	bool Application::setCursor(MouseCursor cursor)
+	bool Application::setCursor(SystemCursor cursor)
 	{
 		const LPWSTR code = MAKEINTRESOURCE((int)cursor);
 		this->cursorHandle = LoadCursor(nullptr, code);

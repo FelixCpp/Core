@@ -22,7 +22,7 @@
     <ClInclude Include="Include\Core\Application\Application.hpp" />
     <ClInclude Include="Include\Core\Application\DrawMode.hpp" />
     <ClInclude Include="Include\Core\Application\Helpers.hpp" />
-    <ClInclude Include="Include\Core\Window\MouseCursor.hpp" />
+    <ClInclude Include="Include\Core\Window\SystemCursor.hpp" />
     <ClInclude Include="Include\Core\Application\RenderTarget.hpp" />
     <ClInclude Include="Include\Core\Application\GraphicsContext.hpp" />
     <ClInclude Include="Include\Core\Application\Image.hpp" />

@@ -5,7 +5,8 @@
 
 #include <Core/Window/WindowEvents.hpp>
 #include <Core/Window/SystemIcon.hpp>
-#include <Core/Window/MouseCursor.hpp>
+#include <Core/Window/SystemCursor.hpp>
+#include <Core/Window/Mouse.hpp>
 
 #include <Core/Application/RenderTarget.hpp>
 #include <Core/Application/Image.hpp>
@@ -40,7 +41,7 @@ namespace Core
 		bool setIcon(const std::string & filepath); // if the filepath is empty, the window releases the current icon
 		bool setIcon(SystemIcon icon);
 		bool setCursor(const std::string & filepath);
-		bool setCursor(MouseCursor cursor);
+		bool setCursor(SystemCursor cursor);
 		void setMouseCursorVisible(bool visible);
 		void exit();
 
