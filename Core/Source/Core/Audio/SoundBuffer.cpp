@@ -1,97 +1,73 @@
 #include <Core/Audio/SoundBuffer.hpp>
-#include <Core/Audio/SoundFileLoader.hpp>
-
-#include <al.h>
 
 #include <iostream>
-#include <filesystem>
-namespace fs = std::filesystem;
 
-namespace
-{
-	ALenum getAudioFormat(Core::u8_t channels, Core::u8_t bitsPerSample)
-	{
-		if (channels == 1)
-		{
-			if (bitsPerSample == 8) return AL_FORMAT_MONO8;
-			if (bitsPerSample == 16) return AL_FORMAT_MONO16;
-		} else if (channels == 2)
-		{
-			if (bitsPerSample == 8) return AL_FORMAT_STEREO8;
-			if (bitsPerSample == 16) return AL_FORMAT_STEREO16;
-		} else
-		{
-			return AL_INVALID;
-		}
-	}
-}
+#include <al.h>
 
 namespace Core
 {
 
 	SoundBuffer::SoundBuffer() :
-		bufferID(0)
+		bufferID(0),
+		sources()
 	{
 	}
 
-	SoundBuffer::~SoundBuffer()
+	/* creates an OpenAL buffer */
+	bool SoundBuffer::create(const WaveFile & file)
 	{
-		for (SoundSource & source : this->soundSources)
+		const WaveFileHeader & header = file.header;
+		const WaveFileDataChunk & dataChunk = file.dataChunk;
+
+		/* convert to file-content to an OpenAL format */
+		ALenum format = 0;
+		if (header.channels == 1)
 		{
-			alDeleteSources(1, &source.getSourceID());
-		}
-		
-		alDeleteBuffers(1, &this->bufferID);
-	}
-
-	bool SoundBuffer::loadFromFile(const std::string & filepath)
-	{
-		const fs::path extension = fs::path(filepath).extension();
-		
-		if (extension == ".wav")
+			if (header.bitsPerSample == 8) format = AL_FORMAT_MONO8;
+			else if (header.bitsPerSample == 16) format = AL_FORMAT_MONO16;
+		} else if (header.channels == 2)
 		{
-			u8_t channels = 0;
-			u8_t bitsPerSample = 0;
-			i32_t samplesPerSecond = 0;
-			std::vector<char> soundData = {};
-
-			const bool success = SoundFileLoader::loadWav(filepath, channels, bitsPerSample, samplesPerSecond, soundData);
-			if (!success)
-			{
-				std::cerr << "Failed to load the .wav file" << std::endl;
-				return false;
-			}
-
-			const ALenum audioFormat = getAudioFormat(channels, bitsPerSample);
-			if (audioFormat == AL_INVALID)
-			{
-				std::cerr << "Invalid audioformat" << std::endl;
-				return false;
-			}
-
-			alGenBuffers(1, &this->bufferID);
-			alBufferData(this->bufferID, audioFormat, soundData.data(), soundData.size(), samplesPerSecond);
+			if (header.bitsPerSample == 8) format = AL_FORMAT_STEREO8;
+			else if (header.bitsPerSample == 16) format = AL_FORMAT_STEREO16;
 		} else
 		{
-			std::cerr << "The filetype is not supported" << std::endl;
+			std::cerr << "Unsupported audio-format" << std::endl;
 			return false;
 		}
+
+		/* generate a new buffer */
+		alGenBuffers(1, &this->bufferID);
+
+		/* put in the data from the file */
+		alBufferData(this->bufferID, format, dataChunk.samples.data(), dataChunk.samples.size(), header.samplesPerSec);
 
 		return true;
 	}
 
-	SoundSource SoundBuffer::createNewSoundSource()
+	/* destroys an OpenAL buffer */
+	void SoundBuffer::destroy()
 	{
-		const SoundSource newSoundSource = SoundSource::create(*this);
-		this->soundSources.push_back(newSoundSource);
-		return newSoundSource;
+		/* delete every sound-source */
+		for (SoundSource & source : this->sources)
+		{
+			source.destroy();
+		}
+
+		/* delete the whole buffer */
+		alDeleteBuffers(1, &this->bufferID);
 	}
 
-
-
-	u32_t SoundBuffer::getBufferID() const
+	const SoundSource & SoundBuffer::addSoundSource()
 	{
-		return this->bufferID;
+		/* create a new source */
+		SoundSource source;
+		source.create(this->bufferID);
+		
+		/* push it into the vector */
+		this->sources.push_back(source);
+
+		/* we're returning a reference so we need to return the recently added source of the vector */
+		return this->sources.back();
 	}
 
 }

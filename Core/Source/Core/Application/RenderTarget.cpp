@@ -1,11 +1,13 @@
 #include <Core/Application/RenderTarget.hpp>
 #include <Core/Application/GraphicsContext.hpp>
 
+#include <Core/Window/Window.hpp>
+
 namespace Core
 {
 
-	RenderTarget::RenderTarget(GraphicsContext ** gctx) :
-		gctx(*gctx)
+	RenderTarget::RenderTarget(GraphicsContext *& gctx) :
+		gctx(gctx)
 	{
 	}
 

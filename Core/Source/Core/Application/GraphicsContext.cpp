@@ -85,9 +85,6 @@ namespace Core
 		this->imagingFactory.Reset();
 		this->hwndRenderTarget.Reset();
 		this->mainFactory.Reset();
-
-		while (!this->states.empty())
-			this->states.pop();
 	}
 
 	void GraphicsContext::beginDraw()

@@ -24,8 +24,10 @@
     <ClInclude Include="Include\Core\Application\DrawMode.hpp" />
     <ClInclude Include="Include\Core\Application\Helpers.hpp" />
     <ClInclude Include="Include\Core\Audio\SoundBuffer.hpp" />
-    <ClInclude Include="Include\Core\Audio\SoundFileLoader.hpp" />
     <ClInclude Include="Include\Core\Audio\SoundSource.hpp" />
+    <ClInclude Include="Include\Core\Audio\WaveFile.hpp" />
+    <ClInclude Include="Include\Core\Audio\WaveFileReader.hpp" />
+    <ClInclude Include="Include\Core\Maths\Vector3.hpp" />
     <ClInclude Include="Include\Core\Window\SystemCursor.hpp" />
     <ClInclude Include="Include\Core\Application\RenderTarget.hpp" />
     <ClInclude Include="Include\Core\Application\GraphicsContext.hpp" />
@@ -67,6 +69,7 @@
     <ClInclude Include="Include\Core\Window\MsgBoxModality.hpp" />
     <ClInclude Include="Include\Core\Window\MsgBoxOptions.hpp" />
     <ClInclude Include="Include\Core\Window\MsgBoxResult.hpp" />
+    <ClInclude Include="Include\Core\Window\Window.hpp" />
     <ClInclude Include="Include\Core\Window\WindowEvents.hpp" />
   </ItemGroup>
   <ItemGroup>
@@ -84,8 +87,8 @@
     <ClCompile Include="Source\Core\Application\StrokeStyle.cpp" />
     <ClCompile Include="Source\Core\Application\TextRenderer.cpp" />
     <ClCompile Include="Source\Core\Audio\SoundBuffer.cpp" />
-    <ClCompile Include="Source\Core\Audio\SoundFileLoader.cpp" />
     <ClCompile Include="Source\Core\Audio\SoundSource.cpp" />
+    <ClCompile Include="Source\Core\Audio\WaveFileReader.cpp" />
     <ClCompile Include="Source\Core\Maths\Constants.cpp" />
     <ClCompile Include="Source\Core\Maths\Matrix3x3.cpp" />
     <ClCompile Include="Source\Core\Maths\Random.cpp" />
@@ -95,6 +98,7 @@
     <ClCompile Include="Source\Core\Window\Keyboard.cpp" />
     <ClCompile Include="Source\Core\Window\Mouse.cpp" />
     <ClCompile Include="Source\Core\Window\MsgBox.cpp" />
+    <ClCompile Include="Source\Core\Window\Window.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

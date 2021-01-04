@@ -1,13 +1,12 @@
 #pragma once
 
-#include <string>
-#include <memory>
 #include <unordered_map>
+#include <string>
 
 #include <Core/System/Datatypes.hpp>
 
-#include <Core/Audio/SoundSource.hpp>
 #include <Core/Audio/SoundBuffer.hpp>
+#include <Core/Audio/SoundSource.hpp>
 
 struct ALCdevice_struct;
 struct ALCcontext_struct;
@@ -25,15 +24,16 @@ namespace Core
 
 	private:
 
-		bool initialize();
-		void shutdown();
+		bool initAudio();
+		void destroyAudio();
+		void destroyBuffers();
 
 	private:
 
 		ALCdevice_struct * device;
 		ALCcontext_struct * context;
 
-		std::unordered_map<std::string, std::shared_ptr<SoundBuffer>> soundBuffers;
+		std::unordered_map<std::string, SoundBuffer> buffers;
 
 	};
 

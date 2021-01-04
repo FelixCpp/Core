@@ -18,7 +18,7 @@ namespace Core
 	class RenderTarget {
 	public:
 
-		explicit RenderTarget(GraphicsContext ** gctx);
+		explicit RenderTarget(GraphicsContext *& gctx);
 		virtual ~RenderTarget() = default;
 
 		Image loadImage(const std::string & filepath);
