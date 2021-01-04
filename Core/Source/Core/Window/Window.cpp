@@ -6,8 +6,13 @@
 #include <iostream>
 #include <thread>
 
+#include <Core/Window/DisplayMode.hpp>
+
 namespace Core
 {
+
+	const i32_t Window::displayWidth = DisplayMode::getDesktopMode().width;
+	const i32_t Window::displayHeight = DisplayMode::getDesktopMode().height;
 
 	Window::Window() :
 		width(0),
@@ -224,9 +229,10 @@ namespace Core
 
 	void Window::recenter()
 	{
-		const i32_t displayWidth  = GetSystemMetrics(SM_CXSCREEN);
-		const i32_t displayHeight = GetSystemMetrics(SM_CYSCREEN);
-		this->setPosition(displayWidth / 2 - this->width / 2, displayHeight / 2 - this->height / 2);
+		this->setPosition(
+			GetSystemMetrics(SM_CXSCREEN) / 2 - this->width / 2,
+			GetSystemMetrics(SM_CYSCREEN) / 2 - this->height / 2
+		);
 	}
 
 	bool Window::setIcon(const std::string & filepath)

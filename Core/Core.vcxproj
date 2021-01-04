@@ -29,6 +29,7 @@
     <ClInclude Include="Include\Core\Audio\WaveFile.hpp" />
     <ClInclude Include="Include\Core\Audio\WaveFileReader.hpp" />
     <ClInclude Include="Include\Core\Maths\Vector3.hpp" />
+    <ClInclude Include="Include\Core\Window\DisplayMode.hpp" />
     <ClInclude Include="Include\Core\Window\SystemCursor.hpp" />
     <ClInclude Include="Include\Core\Rendering\RenderTarget.hpp" />
     <ClInclude Include="Include\Core\Rendering\GraphicsContext.hpp" />
@@ -97,6 +98,7 @@
     <ClCompile Include="Source\Core\System\Stopwatch.cpp" />
     <ClCompile Include="Source\Core\System\Timer.cpp" />
     <ClCompile Include="Source\Core\System\Duration.cpp" />
+    <ClCompile Include="Source\Core\Window\DisplayMode.cpp" />
     <ClCompile Include="Source\Core\Window\Keyboard.cpp" />
     <ClCompile Include="Source\Core\Window\Mouse.cpp" />
     <ClCompile Include="Source\Core\Window\MsgBox.cpp" />

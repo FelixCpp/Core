@@ -23,7 +23,15 @@ namespace Core
 		/* internal window-class identifier */
 		inline static constexpr const char * LPSZ_CLASS_NAME = "Core_Window_Class";
 
-	protected:
+	public:
+
+		/* the monitors width */
+		static const i32_t displayWidth;
+		
+		/* the monitors height */
+		static const i32_t displayHeight;
+
+	public:
 
 		/* the default constructor */
 		Window();
