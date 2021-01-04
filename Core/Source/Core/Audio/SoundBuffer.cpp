@@ -17,8 +17,7 @@ namespace Core
 	bool SoundBuffer::create(const WaveFile & file)
 	{
 		const WaveFileHeader & header = file.header;
-		const WaveFileDataChunk & dataChunk = file.dataChunk;
-
+		
 		/* convert to file-content to an OpenAL format */
 		ALenum format = 0;
 		if (header.channels == 1)
@@ -39,7 +38,7 @@ namespace Core
 		alGenBuffers(1, &this->bufferID);
 
 		/* put in the data from the file */
-		alBufferData(this->bufferID, format, dataChunk.samples.data(), dataChunk.samples.size(), header.samplesPerSec);
+		alBufferData(this->bufferID, format, file.data.data(), file.data.size(), header.samplesPerSec);
 
 		return true;
 	}
