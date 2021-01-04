@@ -1,5 +1,5 @@
-#include <Core/Application/RenderTarget.hpp>
-#include <Core/Application/GraphicsContext.hpp>
+#include <Core/Rendering/RenderTarget.hpp>
+#include <Core/Rendering/GraphicsContext.hpp>
 
 #include <Core/Window/Window.hpp>
 

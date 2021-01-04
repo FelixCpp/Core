@@ -1,11 +1,11 @@
 #pragma once
 
-#include <Core/Application/Helpers.hpp>
-#include <Core/Application/DrawMode.hpp>
-#include <Core/Application/Image.hpp>
-#include <Core/Application/ShapeAttributes.hpp>
-#include <Core/Application/TextAttributes.hpp>
-#include <Core/Application/StrokeStyleAttributes.hpp>
+#include <Core/Rendering/Helpers.hpp>
+#include <Core/Rendering/DrawMode.hpp>
+#include <Core/Rendering/Image.hpp>
+#include <Core/Rendering/ShapeAttributes.hpp>
+#include <Core/Rendering/TextAttributes.hpp>
+#include <Core/Rendering/StrokeStyleAttributes.hpp>
 #include <Core/Maths/Vector2.hpp>
 
 #include <vector>

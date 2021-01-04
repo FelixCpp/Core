@@ -3,7 +3,7 @@
 #include <Core/System/Datatypes.hpp>
 #include <Core/Maths/Vector2.hpp>
 
-#include <Core/Application/RenderState.hpp>
+#include <Core/Rendering/RenderState.hpp>
 
 #include <d2d1.h>
 #pragma comment(lib, "d2d1")

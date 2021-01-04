@@ -2,11 +2,12 @@
 
 #include <Core/System/Datatypes.hpp>
 
-#include <Core/Application/RenderTarget.hpp>
-#include <Core/Application/Image.hpp>
+#include <Core/Rendering/RenderTarget.hpp>
+#include <Core/Rendering/Image.hpp>
 
 #include <Core/Window/Window.hpp>
 
+#include <type_traits>
 #include <string>
 
 namespace Core
@@ -30,10 +31,10 @@ namespace Core
 		void exit();
 
 		/* call this function to start the sketch */
-		template<class T, typename ... TArgs>
+		template<class TDerived, typename ... TArgs, typename = std::enable_if_t<std::is_base_of_v<Application, TDerived>>>
 		static void launch(const TArgs & ... arguments)
 		{
-			T instance(std::forward<decltype(arguments)>(arguments)...);
+			TDerived instance(std::forward<decltype(arguments)>(arguments)...);
 			instance.startSketch();
 		}
 

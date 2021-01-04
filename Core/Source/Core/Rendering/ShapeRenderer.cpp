@@ -1,5 +1,5 @@
-#include <Core/Application/ShapeRenderer.hpp>
-#include <Core/Application/GraphicsContext.hpp>
+#include <Core/Rendering/ShapeRenderer.hpp>
+#include <Core/Rendering/GraphicsContext.hpp>
 
 namespace Core
 {

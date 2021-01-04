@@ -1,6 +1,6 @@
-#include <Core/Application/RadialGradientBrush.hpp>
-#include <Core/Application/GraphicsContext.hpp>
-#include <Core/Application/Helpers.hpp>
+#include <Core/Rendering/RadialGradientBrush.hpp>
+#include <Core/Rendering/GraphicsContext.hpp>
+#include <Core/Rendering/Helpers.hpp>
 
 #include <iostream>
 

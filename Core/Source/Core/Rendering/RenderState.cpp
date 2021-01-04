@@ -1,4 +1,4 @@
-#include <Core/Application/RenderState.hpp>
+#include <Core/Rendering/RenderState.hpp>
 
 namespace Core
 {

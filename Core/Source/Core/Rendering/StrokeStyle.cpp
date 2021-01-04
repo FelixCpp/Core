@@ -1,5 +1,5 @@
-#include <Core/Application/StrokeStyle.hpp>
-#include <Core/Application/GraphicsContext.hpp>
+#include <Core/Rendering/StrokeStyle.hpp>
+#include <Core/Rendering/GraphicsContext.hpp>
 
 #include <iostream>
 

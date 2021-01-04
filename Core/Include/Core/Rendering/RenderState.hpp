@@ -1,12 +1,12 @@
 #pragma once
 
-#include <Core/Application/DrawMode.hpp>
-#include <Core/Application/StrokeStyle.hpp>
-#include <Core/Application/TextRenderer.hpp>
-#include <Core/Application/ShapeRenderer.hpp>
-#include <Core/Application/SolidColorBrush.hpp>
-#include <Core/Application/LinearGradientBrush.hpp>
-#include <Core/Application/RadialGradientBrush.hpp>
+#include <Core/Rendering/DrawMode.hpp>
+#include <Core/Rendering/StrokeStyle.hpp>
+#include <Core/Rendering/TextRenderer.hpp>
+#include <Core/Rendering/ShapeRenderer.hpp>
+#include <Core/Rendering/SolidColorBrush.hpp>
+#include <Core/Rendering/LinearGradientBrush.hpp>
+#include <Core/Rendering/RadialGradientBrush.hpp>
 
 #include <d2d1.h>
 #include <stack>

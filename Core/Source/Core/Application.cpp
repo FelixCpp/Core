@@ -1,5 +1,5 @@
-#include <Core/Application/Application.hpp>
-#include <Core/Application/GraphicsContext.hpp>
+#include <Core/Application.hpp>
+#include <Core/Rendering/GraphicsContext.hpp>
 
 #include <iostream>
 

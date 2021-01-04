@@ -1,4 +1,4 @@
-#include <Core/Application/Helpers.hpp>
+#include <Core/Rendering/Helpers.hpp>
 #include <Core/Maths/Random.hpp>
 
 namespace Core

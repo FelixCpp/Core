@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Core/Application/StrokeStyleAttributes.hpp>
+#include <Core/Rendering/StrokeStyleAttributes.hpp>
 
 #include <d2d1.h>
 #include <wrl/client.h>

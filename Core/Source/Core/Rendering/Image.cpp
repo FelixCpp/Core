@@ -1,10 +1,10 @@
-#include <Core/Application/Image.hpp>
+#include <Core/Rendering/Image.hpp>
 
 // GraphicsContext (includes d2d1.h / wrl.h)
-#include <Core/Application/GraphicsContext.hpp>
+#include <Core/Rendering/GraphicsContext.hpp>
 
 // contains helper functions to get the red / green and blue component from a color
-#include <Core/Application/Helpers.hpp>
+#include <Core/Rendering/Helpers.hpp>
 
 // constrain
 #include <Core/Maths/Math.hpp>

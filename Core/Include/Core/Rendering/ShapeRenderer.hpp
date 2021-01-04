@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Core/Application/ShapeAttributes.hpp>
+#include <Core/Rendering/ShapeAttributes.hpp>
 
 #include <d2d1.h>
 #include <wrl/client.h>

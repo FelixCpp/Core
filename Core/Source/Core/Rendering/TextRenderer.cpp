@@ -1,5 +1,5 @@
-#include <Core/Application/TextRenderer.hpp>
-#include <Core/Application/GraphicsContext.hpp>
+#include <Core/Rendering/TextRenderer.hpp>
+#include <Core/Rendering/GraphicsContext.hpp>
 
 #include <iostream>
 

@@ -1,6 +1,6 @@
-#include <Core/Application/SolidColorBrush.hpp>
-#include <Core/Application/GraphicsContext.hpp>
-#include <Core/Application/Helpers.hpp>
+#include <Core/Rendering/SolidColorBrush.hpp>
+#include <Core/Rendering/GraphicsContext.hpp>
+#include <Core/Rendering/Helpers.hpp>
 
 #include <iostream>
 

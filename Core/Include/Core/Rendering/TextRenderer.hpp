@@ -1,7 +1,7 @@
 #pragma once
 
 #include <Core/Maths/Vector2.hpp>
-#include <Core/Application/TextAttributes.hpp>
+#include <Core/Rendering/TextAttributes.hpp>
 
 #include <memory>
 #include <string>
