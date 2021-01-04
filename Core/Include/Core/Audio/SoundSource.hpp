@@ -21,6 +21,7 @@ namespace Core
 
 	public:
 
+		/* the default constructor */
 		SoundSource();
 
 		/* creates a SoundSource based on a bufferID */
@@ -89,5 +90,8 @@ namespace Core
 		u32_t sourceID;
 
 	};
+
+	/* a handy typedef for the user */
+	typedef SoundSource Sound;
 
 }
