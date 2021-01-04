@@ -130,11 +130,15 @@ namespace Core
 			return false;
 		}
 
-		Collection concat(const Collection & other) const
+		Collection & concat(const Collection & other)
 		{
-			Collection result = *this;
-			result.insert(result.end(), other.begin(), other.end());
-			return result;
+			this->insert(this->end(), other.begin(), other.end());
+			return *this;
+		}
+
+		Collection concatenated(const Collection & other) const
+		{
+			return Collection(*this).concat(other);
 		}
 
 	};

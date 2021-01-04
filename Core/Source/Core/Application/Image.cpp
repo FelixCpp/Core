@@ -205,10 +205,10 @@ namespace Core
 	bool Image::loadFromImage(const Image & source, i32_t x, i32_t y, i32_t width, i32_t height)
 	{
 		// calculate the edges
-		i32_t left   = IMath::maxOf(x, 0);
-		i32_t top    = IMath::maxOf(y, 0);
-		i32_t right  = IMath::constrain(left + width, 0, source.width);
-		i32_t bottom = IMath::constrain(top + height, 0, source.height);
+		i32_t left   = (i32_t)std::fmax(x, 0);
+		i32_t top    = (i32_t)std::fmax(y, 0);
+		i32_t right  = (i32_t)Math::constrain(left + width, 0, source.width);
+		i32_t bottom = (i32_t)Math::constrain(top + height, 0, source.height);
 
 		// copy attributes
 		this->width = (right - left);

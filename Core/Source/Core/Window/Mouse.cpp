@@ -7,7 +7,7 @@ namespace Core
 
 	bool Mouse::isButtonPressed(Button button)
 	{
-		return GetAsyncKeyState((int)button);
+		return GetAsyncKeyState((int)button) & 0x8000;
 	}
 
 	void Mouse::setPosition(i32_t x, i32_t y)

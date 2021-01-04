@@ -11,6 +11,7 @@ namespace Core
 
 	Application::Application(i32_t width, i32_t height, const std::string & title) :
 		RenderTarget(&this->gctx),
+		AudioTarget(),
 		width(0), height(0),
 		windowX(0), windowY(0),
 		mouseX(0), mouseY(0),
@@ -19,6 +20,7 @@ namespace Core
 		cursorHandle(LoadCursor(nullptr, IDC_ARROW)),
 		iconHandle(LoadIcon(nullptr, IDI_APPLICATION)),
 		isOpen(false),
+		isFullscreen(false),
 		drawingPaused(false),
 		mouseInsideWindow(false),
 		mouseCursorVisible(true),
@@ -34,12 +36,6 @@ namespace Core
 
 	Application::~Application()
 	{
-		if (this->gctx)
-		{
-			delete this->gctx;
-			this->gctx = nullptr;
-		}
-
 		if (this->iconHandle) DestroyIcon(this->iconHandle);
 		if (this->cursorHandle) DestroyCursor(this->cursorHandle);
 		if (this->windowHandle) DestroyWindow(this->windowHandle);
@@ -59,6 +55,73 @@ namespace Core
 	void Application::frameRate(i32_t fpsLimit)
 	{
 		this->fpsLimit = Duration::fromSeconds(1.f / (float)fpsLimit);
+	}
+
+	bool Application::enterFullscreen(u32_t resolutionX, u32_t resolutionY)
+	{
+		const HDC windowHDC = GetDC(this->windowHandle);
+		const i32_t fullscreenWidth = GetDeviceCaps(windowHDC, DESKTOPHORZRES);
+		const i32_t fullscreenHeight = GetDeviceCaps(windowHDC, DESKTOPVERTRES);
+		const i32_t colourBits = GetDeviceCaps(windowHDC, BITSPIXEL);
+		const i32_t refreshRate = GetDeviceCaps(windowHDC, VREFRESH);
+
+		DEVMODEA fullscreenSettings = {};
+		ZeroMemory(&fullscreenSettings, sizeof DEVMODEA);
+		EnumDisplaySettingsA(nullptr, 0, &fullscreenSettings);
+		fullscreenSettings.dmPelsWidth = resolutionX;
+		fullscreenSettings.dmPelsHeight = resolutionY;
+		fullscreenSettings.dmBitsPerPel = colourBits;
+		fullscreenSettings.dmDisplayFrequency = refreshRate;
+		fullscreenSettings.dmFields = DM_PELSWIDTH | DM_PELSHEIGHT | DM_BITSPERPEL | DM_DISPLAYFREQUENCY;
+		const bool success = ChangeDisplaySettingsA(&fullscreenSettings, CDS_FULLSCREEN) == DISP_CHANGE_SUCCESSFUL;
+
+		if (success)
+		{
+			SetWindowLongPtrA(this->windowHandle, GWL_EXSTYLE, WS_EX_APPWINDOW | WS_EX_TOPMOST);
+			SetWindowLongPtrA(this->windowHandle, GWL_STYLE, WS_POPUP | WS_VISIBLE);
+			SetWindowPos(this->windowHandle, nullptr, 0, 0, fullscreenWidth, fullscreenHeight, SWP_SHOWWINDOW);
+			ShowWindow(this->windowHandle, SW_MAXIMIZE);
+			this->isFullscreen = true;
+
+			return true;
+		} else
+		{
+			std::cerr << "Failed to enter the fullscreen-mode" << std::endl;
+			return false;
+		}
+	}
+
+	bool Application::exitFullscreen(u32_t newWidth, u32_t newHeight)
+	{
+		throw 404;
+
+		const i32_t x = GetSystemMetrics(SM_CXSCREEN) / 2 - newWidth / 2;
+		const i32_t y = GetSystemMetrics(SM_CYSCREEN) / 2 - newHeight / 2;
+		
+		const bool success = ChangeDisplaySettingsA(nullptr, CDS_RESET) == DISP_CHANGE_SUCCESSFUL;
+
+		if (success)
+		{
+			SetWindowLongPtrA(this->windowHandle, GWL_EXSTYLE, WS_EX_LEFT);
+			SetWindowLongPtrA(this->windowHandle, GWL_STYLE, WS_OVERLAPPEDWINDOW);
+			//SetWindowLongPtrA(this->windowHandle, GWL_STYLE, WS_SYSMENU | WS_VISIBLE);
+			SetWindowPos(this->windowHandle, nullptr, x, y, newWidth, newHeight, SWP_FRAMECHANGED | SWP_SHOWWINDOW);
+			ShowWindow(this->windowHandle, SW_RESTORE);
+
+			//ShowWindow(this->windowHandle, SW_SHOW);
+			//UpdateWindow(this->windowHandle);
+			//SetForegroundWindow(this->windowHandle);
+
+			//this->setSize(newWidth, newHeight);
+			//this->setPosition(x, y);
+			this->isFullscreen = false;
+
+			return true;
+		} else
+		{
+			std::cerr << "Failed to exit the fullscreen-mode" << std::endl;
+			return false;
+		}
 	}
 
 	void Application::setSize(u32_t width, u32_t height)
@@ -227,10 +290,10 @@ namespace Core
 		wc.hbrBackground = reinterpret_cast<HBRUSH>(GetStockObject(BLACK_BRUSH));
 		wc.hCursor = this->cursorHandle;
 		wc.hIcon = this->iconHandle;
-		wc.hInstance = GetModuleHandleA(NULL);
+		wc.hInstance = GetModuleHandleA(nullptr);
 		wc.lpfnWndProc = &Application::handleEvents;
 		wc.lpszClassName = this->lpszClassName;
-		wc.lpszMenuName = NULL;
+		wc.lpszMenuName = nullptr;
 		wc.style = CS_OWNDC | CS_HREDRAW | CS_VREDRAW;
 		
 		if (!RegisterClassA(&wc))
@@ -242,9 +305,9 @@ namespace Core
 		const DWORD dwStyle = WS_SYSMENU;
 		const i32_t x = GetSystemMetrics(SM_CXSCREEN) / 2 - width / 2;
 		const i32_t y = GetSystemMetrics(SM_CYSCREEN) / 2 - height / 2;
-		this->windowHandle = CreateWindowA(this->lpszClassName, "", WS_SYSMENU, x, y, width, height, NULL, NULL, GetModuleHandleA(NULL), this);
+		this->windowHandle = CreateWindowA(this->lpszClassName, "", WS_SYSMENU, x, y, width, height, nullptr, nullptr, GetModuleHandleA(nullptr), this);
 
-		if (this->windowHandle == NULL)
+		if (this->windowHandle == nullptr)
 		{
 			std::cerr << "CreateWindowA call failed" << std::endl;
 			return;
@@ -262,6 +325,8 @@ namespace Core
 
 	void Application::startSketch()
 	{
+		this->gctx = new GraphicsContext(this->windowHandle);
+		
 		this->frameRate(60);
 		this->push();
 		
@@ -270,6 +335,8 @@ namespace Core
 
 		while (this->isOpen)
 		{
+			this->resetMatrix();
+
 			if (!this->drawingPaused)
 				this->drawImpl();
 
@@ -280,6 +347,11 @@ namespace Core
 
 			this->dispatchEvents();
 		}
+
+		this->onWindowClosed();
+
+		delete this->gctx;
+		this->gctx = nullptr;
 	}
 
 	void Application::dispatchEvents()
@@ -335,14 +407,6 @@ namespace Core
 				{
 					std::cerr << "failed to decode creation-parameters into a valid window" << std::endl;
 				}
-				else
-				{
-					// create graphics-context
-					if (!app->gctx)
-					{
-						app->gctx = new GraphicsContext(handle);
-					}
-				}
 			} break;
 
 			case WM_SETCURSOR:
@@ -356,16 +420,8 @@ namespace Core
 
 			case WM_CLOSE:
 			{
-				// release graphics-context
-				if (app->gctx)
-				{
-					delete app->gctx;
-					app->gctx = nullptr;
-				}
-
 				// close the window
-				app->isOpen = false;
-				app->onWindowClosed();
+				app->exit();
 			} break;
 
 			case WM_DESTROY:
@@ -373,10 +429,16 @@ namespace Core
 				// cleanup
 				app->trackMouseEvent(false);
 				app->setMouseCursorVisible(true);
+				
+				if (app->isFullscreen)
+				{
+					ChangeDisplaySettingsA(nullptr, 0);
+					app->isFullscreen = false;
+				}
+
 				UnregisterClassA(app->lpszClassName, GetModuleHandleA(NULL));
 				CloseWindow(handle);
 				DestroyWindow(handle);
-				PostQuitMessage(EXIT_SUCCESS);
 			} break;
 
 			case WM_SIZE:
@@ -389,7 +451,10 @@ namespace Core
 					const bool resized = app->width != width || app->height != height;
 					if (resized)
 					{
-						app->gctx->resizeViewport(width, height);
+						if (app->gctx)
+						{
+							app->gctx->resizeViewport(width, height);
+						}
 
 						app->width  = (i32_t)width;
 						app->height = (i32_t)height;

@@ -19,9 +19,8 @@ namespace Core
 	typedef unsigned __int64 u64_t;
 
 	typedef u32_t color_t;
-
+	
 	typedef HWND__ * Windowhandle;
 	typedef HICON__ * Resourcehandle;
-	
 	
 }

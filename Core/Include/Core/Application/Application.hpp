@@ -11,6 +11,8 @@
 #include <Core/Application/RenderTarget.hpp>
 #include <Core/Application/Image.hpp>
 
+#include <Core/Application/AudioTarget.hpp>
+
 #include <string>
 
 namespace Core
@@ -18,7 +20,7 @@ namespace Core
 
 	class GraphicsContext;
 
-	class Application : public RenderTarget {
+	class Application : public RenderTarget, public AudioTarget {
 	public:
 
 		virtual ~Application();
@@ -34,6 +36,9 @@ namespace Core
 		void frameRate(i32_t fpsLimit);
 
 		// window related functions
+		bool enterFullscreen(u32_t resolutionX, u32_t resolutionY);
+		bool exitFullscreen(u32_t newWidth, u32_t newHeight);
+
 		void setSize(u32_t width, u32_t height);
 		void setPosition(i32_t x, i32_t y);
 		void setTitle(const std::string & title);
@@ -85,6 +90,7 @@ namespace Core
 		void limitFrameRate();
 
 		void createWindow(i32_t width, i32_t height, const std::string & title);
+		
 		void startSketch();
 		void dispatchEvents();
 		void trackMouseEvent(bool active);
@@ -116,9 +122,11 @@ namespace Core
 		Resourcehandle cursorHandle;
 		Resourcehandle iconHandle;
 
+
 	private:
 
 		bool isOpen;
+		bool isFullscreen;
 		bool drawingPaused;
 		bool mouseInsideWindow;
 		bool mouseCursorVisible;

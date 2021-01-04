@@ -1,142 +1,50 @@
 #pragma once
 
-#include <type_traits>
-#include <sstream>
 #include <array>
-#include <cmath>
+#include <string>
 
+#include <Core/Maths/Vector2.hpp>
 #include <Core/System/Datatypes.hpp>
 
 namespace Core
 {
 
-	template<typename T, typename = std::enable_if_t<std::is_arithmetic_v<T>>>
 	class Matrix3x3 {
+	private:
+
+		typedef std::array<std::array<float, 3>, 3> MatrixType;
+
 	public:
 
 		static const Matrix3x3 Identity;
 
-		inline Matrix3x3() :
-			matrix({ 1, 0, 0,
-					 0, 1, 0,
-					 0, 0, 1 })
-		{ }
+		Matrix3x3();
+		explicit Matrix3x3(float m00, float m10, float m20,
+						   float m01, float m11, float m21,
+						   float m02, float m12, float m22);
 
-		inline Matrix3x3(T m11, T m12, T m13,
-						 T m21, T m22, T m23,
-						 T m31, T m32, T m33) :
-			matrix({ m11, m12, m13,
-				     m21, m22, m23,
-				     m31, m32, m33 })
-		{ }
+		Matrix3x3 & translate(const FVector2 & position);
+		Matrix3x3 & rotate(float radians);
+		Matrix3x3 & scale(const FVector2 & factor);
+		Matrix3x3 & shear(const FVector2 & size);
+		Matrix3x3 & multiply(const Matrix3x3 & other);
+		Matrix3x3 & invert();
 
-		inline Matrix3x3 & translate(T x, T y, T z)
-		{
-			return this->combine(Matrix3x3(
-				1, 0, x,
-				0, 1, y,
-				0, 0, z
-			));
-		}
+		FVector2 transformPoint(const FVector2 & point) const;
 
-		inline Matrix3x3 & rotateZ(float radians)
-		{
-			const auto cos = std::cos(radians);
-			const auto sin = std::sin(radians);
+		std::string toString() const;
 
-			return this->combine(Matrix3x3(
-				cos, -sin, 0,
-				sin,  cos, 0,
-				0,    0,   1
-			));
-		}
+		const MatrixType & getMatrix() const;
 
-		inline Matrix3x3 & rotateX(float radians)
-		{
-			const auto cos = std::cos(radians);
-			const auto sin = std::sin(radians);
-
-			return this->combine(Matrix3x3(
-				1, 0,    0,
-				0, cos, -sin,
-				0, sin,  cos
-			));
-		}
-
-
-		inline Matrix3x3 & rotateY(float radians)
-		{
-			const auto cos = std::cos(radians);
-			const auto sin = std::sin(radians);
-
-			return this->combine(Matrix3x3(
-				 cos, 0, sin,
-				 0,   1, 0,
-				-sin, 0, cos
-			));
-		}
-
-		inline Matrix3x3 & scale(T factorX, T factorY, T factorZ)
-		{
-			return this->combine(Matrix3x3(
-				factorX, 0, 0,
-				0, factorY, 0,
-				0, 0, factorZ
-			));
-		}
-
-		inline Matrix3x3 & combine(const Matrix3x3 & other)
-		{
-			const T * a = this->matrix.data();
-			const T * b = other.matrix.data();
-
-			return *this = Matrix3x3(
-				a[0] * b[0] + a[1] * b[3] + a[2] * b[6],
-				a[0] * b[1] + a[1] * b[4] + a[2] * b[7],
-				a[0] * b[2] + a[1] * b[5] + a[2] * b[8],
-
-				a[3] * b[0] + a[4] * b[3] + a[5] * b[6],
-				a[3] * b[1] + a[4] * b[4] + a[5] * b[7],
-				a[3] * b[2] + a[4] * b[5] + a[5] * b[8],
-
-				a[6] * b[0] + a[7] * b[3] + a[8] * b[6],
-				a[6] * b[1] + a[7] * b[4] + a[8] * b[7],
-				a[6] * b[2] + a[7] * b[5] + a[8] * b[8]
-			);
-		}
-
-		inline std::string toString() const
-		{
-			std::ostringstream builder;
-			
-			for (int y = 0; y < 3; y++)
-			{
-				for (int x = 0; x < 3; x++)
-				{
-					builder << this->matrix[y * 3 + x];
-
-					if (!(x == 2 && y == 2))
-						builder << ", ";
-				}
-
-				builder << '\n';
-			}
-
-			return builder.str();
-		}
+		bool operator==(const Matrix3x3 & other) const;
+		bool operator!=(const Matrix3x3 & other) const;
+		Matrix3x3 operator*(const Matrix3x3 & other) const;
+		Matrix3x3 & operator*=(const Matrix3x3 & other);
 
 	private:
 
-		std::array<T, 3 * 3> matrix;
+		MatrixType matrix;
 
 	};
-
-	template<typename T, typename _ = std::enable_if_t<std::is_arithmetic_v<T>>>
-	const Matrix3x3<T, _> Matrix3x3<T, _>::Identity;
-
-	typedef Matrix3x3<float> FMatrix3x3;
-	typedef Matrix3x3<double> DMatrix3x3;
-	typedef Matrix3x3<i32> IMatrix3x3;
-	typedef Matrix3x3<u32> UMatrix3x3;
 
 }
