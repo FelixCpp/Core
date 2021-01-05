@@ -26,16 +26,16 @@ namespace Core
 		static const Color LightGray6, DarkGray6;
 
 		/* creates a white color. R, G, B and A will be assigned to 255 */
-		constexpr Color();
+		Color();
 
 		/* copies the parameters into the member variables */
-		constexpr Color(u8_t red, u8_t green, u8_t blue, u8_t alpha = 255);
+		Color(u8_t red, u8_t green, u8_t blue, u8_t alpha = 255);
 
 		/* takes in an 32-bit integer in an R-G-B format and the alpha component */
-		constexpr Color(i32_t rgb, u8_t alpha = 255);
+		Color(i32_t rgb, u8_t alpha = 255);
 
 		/* takes in an 32-bit unsigned integer */
-		constexpr Color(u32_t rgba);
+		Color(u32_t rgba);
 
 		/* checks for equality */
 		bool operator==(const Color & other) const;
@@ -44,16 +44,19 @@ namespace Core
 		bool operator!=(const Color & other) const;
 
 		/* calcualtes a 32-bit unsigned integer value in R-G-B-A format */
-		constexpr u32_t rgba() const;
+		u32_t rgba() const;
 
 		/* calcualtes a 32-bit unsigned integer value in A-R-G-B format */
-		constexpr u32_t argb() const;
+		u32_t argb() const;
 
 		/* calculates a 32-bit integer value in R-G-B format */
-		constexpr i32_t rgb() const;
+		i32_t rgb() const;
 
 		/* calculates a 8-bit unsigned integer holding the brightness value of the red, green and blue component */
-		constexpr u8_t brightness() const;
+		u8_t brightness() const;
+
+		/* returns a random color */
+		static Color getRandomColor(bool randomAlpha = false);
 
 		/* red component */
 		u8_t r;

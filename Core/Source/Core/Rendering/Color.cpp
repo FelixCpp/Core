@@ -1,5 +1,7 @@
 #include <Core/Rendering/Color.hpp>
 
+#include <Core/Maths/Random.hpp>
+
 namespace Core
 {
 
@@ -20,17 +22,17 @@ namespace Core
 	const Color Color::LightGray5(299, 299, 234), Color::DarkGray5(44, 44, 46);
 	const Color Color::LightGray6(242, 242, 247), Color::DarkGray6(28, 28, 30);
 
-	constexpr Color::Color() :
+	Color::Color() :
 		r(255), g(255), b(255), a(255)
 	{
 	}
 
-	constexpr Color::Color(u8_t red, u8_t green, u8_t blue, u8_t alpha) :
+	Color::Color(u8_t red, u8_t green, u8_t blue, u8_t alpha) :
 		r(red), g(green), b(blue), a(alpha)
 	{
 	}
 
-	constexpr Color::Color(i32_t rgb, u8_t alpha) :
+	Color::Color(i32_t rgb, u8_t alpha) :
 		r((rgb & 0xFF0000) >> 16),
 		g((rgb & 0x00FF00) >>  8),
 		b((rgb & 0x0000FF) >>  0),
@@ -38,7 +40,7 @@ namespace Core
 	{
 	}
 
-	constexpr Color::Color(u32_t rgba) :
+	Color::Color(u32_t rgba) :
 		r((rgba & 0xFF000000) >> 24),
 		g((rgba & 0x00FF0000) >> 16),
 		b((rgba & 0x0000FF00) >> 8),
@@ -56,24 +58,34 @@ namespace Core
 		return !(*this == other);
 	}
 
-	constexpr u32_t Color::rgba() const
+	u32_t Color::rgba() const
 	{
 		return (this->r << 24) | (this->g << 16) | (this->b << 8) | (this->a << 0);
 	}
 
-	constexpr u32_t Color::argb() const
+	u32_t Color::argb() const
 	{
 		return (this->a << 24) | (this->r << 16) | (this->g << 8) | (this->b << 0);
 	}
 
-	constexpr i32_t Color::rgb() const
+	i32_t Color::rgb() const
 	{
 		return (this->r << 16) | (this->g << 8) | (this->b << 0);
 	}
 
-	constexpr u8_t Color::brightness() const
+	u8_t Color::brightness() const
 	{
 		return (u8_t)(0.2126f * this->r) + (u8_t)(0.7152f * this->g) + (u8_t)(0.0722f * this->b);
+	}
+
+	Color Color::getRandomColor(bool randomAlpha)
+	{
+		return Color(
+			Core::Random::get(255),
+			Core::Random::get(255),
+			Core::Random::get(255),
+			randomAlpha ? Core::Random::get(255) : 255
+		);
 	}
 
 }
