@@ -6,8 +6,6 @@
 #include <iostream>
 #include <thread>
 
-#include <Core/Window/DisplayMode.hpp>
-
 namespace Core
 {
 
@@ -29,8 +27,11 @@ namespace Core
 		cursorHandle(LoadCursor(nullptr, IDC_ARROW)),
 		iconHandle(LoadIcon(nullptr, IDI_APPLICATION)),
 		mouseCursorVisible(true),
+		mouseCursorGrabbed(false),
 		mouseInsideWindow(false),
 		open(false),
+		fullscreen(false),
+		resizing(false),
 		fpsLimit(Duration::fromSeconds(0.f)),
 		delayWatch(Stopwatch::startNew()),
 		fpsWatch(Stopwatch::startNew()),
@@ -41,6 +42,89 @@ namespace Core
 
 	Window::~Window()
 	{
+	}
+
+	bool Window::enterFullscreen(const DisplayMode & displayMode)
+	{
+		/* create a DEVMODEA object to fill in */
+		DEVMODEA fullscreenSettings = {};
+		ZeroMemory(&fullscreenSettings, sizeof DEVMODEA);
+		fullscreenSettings.dmSize = sizeof DEVMODEA;
+		fullscreenSettings.dmDriverExtra = 0;
+
+		/* enumerate the first displaysettings */
+		BOOL success = EnumDisplaySettingsA(nullptr, 0, &fullscreenSettings);
+		if (success == FALSE)
+		{
+			std::cerr << "Failed to enumerate the DisplaySettings at 0" << std::endl;
+			return false;
+		}
+		
+		/* copy the fields */
+		fullscreenSettings.dmPelsWidth = displayMode.width;
+		fullscreenSettings.dmPelsHeight = displayMode.height;
+		fullscreenSettings.dmBitsPerPel = displayMode.bitsPerPel;
+		fullscreenSettings.dmDisplayFrequency = displayMode.displayFrequency;
+		fullscreenSettings.dmFields = DM_PELSWIDTH | DM_PELSHEIGHT | DM_BITSPERPEL | DM_DISPLAYFREQUENCY;
+
+		success = ChangeDisplaySettingsA(&fullscreenSettings, CDS_FULLSCREEN) == DISP_CHANGE_SUCCESSFUL;
+		if (success == FALSE)
+		{
+			std::cerr << "Failed to change the DisplaySettings into fullscreen mode" << std::endl;
+			return false;
+		}
+
+		/* change the window styles */
+		SetWindowLongPtrA(this->windowHandle, GWL_EXSTYLE, WS_EX_APPWINDOW | WS_EX_TOPMOST);
+		SetWindowLongPtrA(this->windowHandle, GWL_STYLE, WS_POPUP | WS_VISIBLE);
+
+		/* update the window position and size */
+		SetWindowPos(this->windowHandle, HWND_TOPMOST, 0, 0, displayMode.width, displayMode.height, SWP_SHOWWINDOW);
+
+		/* show the window maximized */
+		ShowWindow(this->windowHandle, SW_MAXIMIZE);
+
+		/* grab the cursor */
+		this->setMouseCursorGrabbed(true);
+		this->fullscreen = true;
+		return true;
+	}
+
+	bool Window::exitFullscreen(u32_t width, u32_t height)
+	{
+		const BOOL success = ChangeDisplaySettingsA(nullptr, CDS_RESET) == DISP_CHANGE_SUCCESSFUL;
+		if (success == FALSE)
+		{
+			std::cerr << "Failed to reset the display settings" << std::endl;
+			return FALSE;
+		}
+		
+		/* change the window styles */
+		SetWindowLongPtrA(this->windowHandle, GWL_EXSTYLE, WS_EX_LEFT);
+		SetWindowLongPtrA(this->windowHandle, GWL_STYLE, WS_OVERLAPPEDWINDOW | WS_VISIBLE);
+		
+		/* calculate center x, center y, width and height */
+		RECT wndRect = { 0l, 0l, (LONG)width, (LONG)height };
+		AdjustWindowRect(&wndRect, GetWindowLongA(this->windowHandle, GWL_STYLE), FALSE);
+		const int cx = wndRect.right - wndRect.left;
+		const int cy = wndRect.bottom - wndRect.top;
+		const int x = GetSystemMetrics(SM_CXSCREEN) / 2 - cx / 2;
+		const int y = GetSystemMetrics(SM_CYSCREEN) / 2 - cy / 2;
+
+		/* change position and size of the window */
+		SetWindowPos(this->windowHandle, HWND_NOTOPMOST, x, y, cx, cy, SWP_SHOWWINDOW);
+		
+		/* show the window as a restored one */
+		ShowWindow(this->windowHandle, SW_RESTORE);
+
+		/* release the cursor from being grabbed */
+		this->setMouseCursorGrabbed(false);
+
+		SendMessageA(this->windowHandle, WM_SETICON, ICON_SMALL, (LPARAM)this->iconHandle);
+		SendMessageA(this->windowHandle, WM_SETICON, ICON_BIG, (LPARAM)this->iconHandle);
+
+		this->fullscreen = false;
+		return true;
 	}
 
 	void Window::setFramerateLimit(i32_t limit)
@@ -115,6 +199,11 @@ namespace Core
 		SendMessageA(this->windowHandle, WM_CLOSE, 0, 0);
 	}
 
+	bool Window::isFullscreen() const
+	{
+		return this->fullscreen;
+	}
+
 	void Window::setTitle(const std::string & title)
 	{
 		if (this->title != title)
@@ -150,6 +239,9 @@ namespace Core
 	void Window::setPosition(i32_t x, i32_t y)
 	{
 		SetWindowPos(this->windowHandle, nullptr, x, y, 0, 0, SWP_NOZORDER | SWP_NOSIZE);
+		
+		if (this->mouseCursorGrabbed)
+			grabCursor(true);
 	}
 
 	IVector2 Window::getPosition() const
@@ -383,7 +475,7 @@ namespace Core
 
 			case WM_SIZE:
 			{
-				if (wParam != SIZE_MINIMIZED)
+				if (wParam != SIZE_MINIMIZED && !window->resizing)
 				{
 					const u16_t width = GET_X_LPARAM(lParam);
 					const u16_t height = GET_Y_LPARAM(lParam);
@@ -394,8 +486,39 @@ namespace Core
 						window->width = (i32_t)width;
 						window->height = (i32_t)height;
 						window->onWindowResized();
+
+						/* grab the cursor after resizing */
+						window->grabCursor(window->mouseCursorGrabbed);
 					}
 				}
+			} break;
+
+			// Start resizing
+			case WM_ENTERSIZEMOVE:
+			{
+				window->resizing = true;
+				window->grabCursor(false);
+			} break;
+
+			// Stop resizing
+			case WM_EXITSIZEMOVE:
+			{
+				window->resizing = false;
+
+				// Ignore cases where the window has only been moved
+				const UVector2 size = window->getSize();
+				if (window->width != size.width || window->height != size.height)
+				{
+					// Update the last handled size
+					window->width = size.width;
+					window->height = size.height;
+
+					// Push a resize event
+					window->onWindowResized();
+				}
+
+				// Restore/update cursor grabbing
+				window->grabCursor(window->mouseCursorGrabbed);
 			} break;
 
 			case WM_MOVE:
@@ -499,6 +622,15 @@ namespace Core
 				window->onKeyReleased(args);
 			} break;
 
+			case WM_GETMINMAXINFO:
+			{
+				// We override the returned information to remove the default limit
+				// (the OS doesn't allow windows bigger than the desktop by default)
+				MINMAXINFO * info = reinterpret_cast<MINMAXINFO *>(lParam);
+				info->ptMaxTrackSize.x = 50000;
+				info->ptMaxTrackSize.y = 50000;
+			} break;
+
 			case WM_CHAR:
 			{
 				const Keyboard::Key key = (Keyboard::Key)wParam;
@@ -513,8 +645,8 @@ namespace Core
 			case WM_RBUTTONUP: window->onMouseReleased(Mouse::Button::Right); break;
 			case WM_MBUTTONUP: window->onMouseReleased(Mouse::Button::Middle); break;
 			case WM_XBUTTONUP: window->onMouseReleased(GET_XBUTTON_WPARAM(wParam) == XBUTTON1 ? Mouse::Button::XButton1 : Mouse::Button::XButton2); break;
-			case WM_SETFOCUS: window->onFocusGained(); break;
-			case WM_KILLFOCUS: window->onFocusLost(); break;
+			case WM_SETFOCUS: window->grabCursor(window->mouseCursorGrabbed); window->onFocusGained(); break;
+			case WM_KILLFOCUS: window->grabCursor(false); window->onFocusLost(); break;
 
 			default: return DefWindowProcA(handle, msg, wParam, lParam);
 		}
@@ -550,6 +682,17 @@ namespace Core
 		TrackMouseEvent(&tme);
 	}
 
+	void Window::setMouseCursorGrabbed(bool grabbed)
+	{
+		this->mouseCursorGrabbed = grabbed;
+		this->grabCursor(this->mouseCursorGrabbed);
+	}
+
+	bool Window::isMouseCursorGrabbed() const
+	{
+		return this->mouseCursorGrabbed;
+	}
+
 	void Window::destroy()
 	{
 		this->trackMouseEvent(false);
@@ -558,7 +701,21 @@ namespace Core
 		if(this->windowHandle) DestroyWindow(this->windowHandle);
 		if(this->cursorHandle) DestroyCursor(this->cursorHandle);
 		if(this->iconHandle) DestroyIcon(this->iconHandle);
-		UnregisterClassA(LPSZ_CLASS_NAME, GetModuleHandleA(NULL));
+		UnregisterClassA(LPSZ_CLASS_NAME, GetModuleHandleA(nullptr));
+	}
+
+	void Window::grabCursor(bool grabbed)
+	{
+		if (grabbed)
+		{
+			RECT rect = {};
+			GetClientRect(this->windowHandle, &rect);
+			MapWindowPoints(this->windowHandle, nullptr, reinterpret_cast<LPPOINT>(&rect), 2);
+			ClipCursor(&rect);
+		} else
+		{
+			ClipCursor(nullptr);
+		}
 	}
 
 	void Window::calculateFps()

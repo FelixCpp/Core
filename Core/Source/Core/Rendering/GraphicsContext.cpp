@@ -22,7 +22,7 @@ namespace Core
 			return;
 		}
 
-		hr = CoInitialize(NULL);
+		hr = CoInitialize(nullptr);
 		if (FAILED(hr))
 		{
 			std::cerr << "CoInitialize" << std::endl;
@@ -31,7 +31,7 @@ namespace Core
 
 		hr = CoCreateInstance(
 			CLSID_WICImagingFactory,
-			NULL,
+			nullptr,
 			CLSCTX_INPROC_SERVER,
 			IID_PPV_ARGS(&this->imagingFactory)
 		);

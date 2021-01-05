@@ -14,6 +14,8 @@
 #include <Core/Window/SystemCursor.hpp>
 #include <Core/Window/SystemIcon.hpp>
 
+#include <Core/Window/DisplayMode.hpp>
+
 namespace Core
 {
 
@@ -39,6 +41,12 @@ namespace Core
 		/* a virtual destructor because this class should be a baseclass. */
 		virtual ~Window();
 
+		/* enters the fullscreen-mode with the specified properties of the displayMode parameter */
+		bool enterFullscreen(const DisplayMode & displayMode);
+
+		/* exits the fullscreen-mode */
+		bool exitFullscreen(u32_t width, u32_t height);
+
 		/* changes the framerate limit */
 		void setFramerateLimit(i32_t limit);
 
@@ -53,6 +61,9 @@ namespace Core
 
 		/* closes the window */
 		void close();
+
+		/* returns the state of the fullscreen attribute. For more description read the documentation of that field */
+		bool isFullscreen() const;
 
 		/* changes the title of the window */
 		void setTitle(const std::string & title);
@@ -101,6 +112,12 @@ namespace Core
 
 		/* returns true if the mouse cursor is visible */
 		bool isMouseCursorVisible() const;
+
+		/* changes the state of the mouse cursor being grabbed */
+		void setMouseCursorGrabbed(bool grabbed);
+
+		/* returns the state of the mouse cursor being grabbed */
+		bool isMouseCursorGrabbed() const;
 
 		/* centers the window on the monitor */
 		void recenter();
@@ -178,6 +195,9 @@ namespace Core
 		/* destroys the handles */
 		void destroy();
 
+		/* grabs the mouse cursor based on the parameter */
+		void grabCursor(bool grabbed);
+
 	private:
 
 		/* handles the events from windows */
@@ -244,11 +264,20 @@ namespace Core
 		/* indicates the state of the cursors visibility */
 		bool mouseCursorVisible;
 
+		/* indicates wether the mouse cursor is grabbed inside the windows boundary or not */
+		bool mouseCursorGrabbed;
+
 		/* indicates the state of the mouse wether its inside of the window boundary or not */
 		bool mouseInsideWindow;
 		
 		/* indicates wether the window was closed after creation or not */
 		bool open;
+
+		/* indicates wether the window is in fullscreen-mode or not */
+		bool fullscreen;
+
+		/* indicates wether the user is currently resizing the window or not */
+		bool resizing;
 
 	private: /* framerate limit */
 

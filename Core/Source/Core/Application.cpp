@@ -6,21 +6,6 @@
 namespace Core
 {
 
-	Application::Application(i32_t width, i32_t height, const std::string & title) :
-		Window(),
-		RenderTarget(this->gctx),
-		drawingPaused(false)
-	{
-		this->create(width, height, title);
-		this->setResizable(false);
-		this->setMaximizable(false);
-		this->setMinimizable(false);
-	}
-
-	Application::~Application()
-	{
-	}
-
 	void Application::pauseDrawing()
 	{
 		this->drawingPaused = true;
@@ -36,6 +21,26 @@ namespace Core
 		this->close();
 	}
 	
+	Application::Application(i32_t width, i32_t height, const std::string & title) :
+		Window(),
+		RenderTarget(this->gctx),
+		drawingPaused(false)
+	{
+		this->create(width, height, title);
+		this->setResizable(false);
+		this->setMaximizable(false);
+		this->setMinimizable(false);
+	}
+
+
+	void Application::resizeViewport()
+	{
+		if (this->gctx)
+		{
+			this->gctx->resizeViewport(this->width, this->height);
+		}
+	}
+
 	void Application::setupImpl()
 	{
 		this->gctx->beginDraw();

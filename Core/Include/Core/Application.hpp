@@ -18,7 +18,7 @@ namespace Core
 	class Application : public Window, public RenderTarget {
 	public:
 
-		virtual ~Application();
+		virtual ~Application() = default;
 
 		virtual void setup() {}
 		virtual void draw() {}
@@ -42,6 +42,9 @@ namespace Core
 
 		/* create an Application with the given dimensions as window size */
 		explicit Application(i32_t width = 200, i32_t height = 200, const std::string & title = "Core - Application");
+
+		/* resizes the viewport of the internal GraphicsContext */
+		void resizeViewport();
 
 	private:
 
