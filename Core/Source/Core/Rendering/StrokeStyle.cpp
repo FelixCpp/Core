@@ -1,7 +1,7 @@
 #include <Core/Rendering/StrokeStyle.hpp>
 #include <Core/Rendering/GraphicsContext.hpp>
 
-#include <iostream>
+#include <Core/System/Logger.hpp>
 
 namespace Core
 {
@@ -157,7 +157,7 @@ namespace Core
 			);
 			if (FAILED(hr))
 			{
-				std::cerr << "CreateStrokeStyle" << std::endl;
+				CORE_ERROR("CreateStrokeStyle");
 				return nullptr;
 			}
 

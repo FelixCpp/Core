@@ -1,9 +1,10 @@
 #include <Core/Window/Window.hpp>
 
-#include <windows.h>
+#include <Core/System/Logger.hpp>
+
+#include <Windows.h>
 #include <windowsx.h>
 
-#include <iostream>
 #include <thread>
 
 namespace Core
@@ -56,7 +57,7 @@ namespace Core
 		BOOL success = EnumDisplaySettingsA(nullptr, 0, &fullscreenSettings);
 		if (success == FALSE)
 		{
-			std::cerr << "Failed to enumerate the DisplaySettings at 0" << std::endl;
+			CORE_ERROR("Failed to enumerate the DisplaySettings at 0");
 			return false;
 		}
 		
@@ -70,7 +71,7 @@ namespace Core
 		success = ChangeDisplaySettingsA(&fullscreenSettings, CDS_FULLSCREEN) == DISP_CHANGE_SUCCESSFUL;
 		if (success == FALSE)
 		{
-			std::cerr << "Failed to change the DisplaySettings into fullscreen mode" << std::endl;
+			CORE_ERROR("Failed to change the DisplaySettings into fullscreen mode");
 			return false;
 		}
 
@@ -95,7 +96,7 @@ namespace Core
 		const BOOL success = ChangeDisplaySettingsA(nullptr, CDS_RESET) == DISP_CHANGE_SUCCESSFUL;
 		if (success == FALSE)
 		{
-			std::cerr << "Failed to reset the display settings" << std::endl;
+			CORE_ERROR("Failed to reset the display settings");
 			return FALSE;
 		}
 		
@@ -160,7 +161,7 @@ namespace Core
 
 		if (!RegisterClassA(&wc))
 		{
-			std::cerr << "Failed to register the window class" << std::endl;
+			CORE_ERROR("Failed to register the window class");
 			return false;
 		}
 
@@ -175,7 +176,7 @@ namespace Core
 		this->windowHandle = CreateWindowA(wc.lpszClassName, title.c_str(), dwStyle, x, y, nWidth, nHeight, nullptr, nullptr, wc.hInstance, this);
 		if (this->windowHandle == nullptr)
 		{
-			std::cerr << "Failed to create a window" << std::endl;
+			CORE_ERROR("Failed to create a window");
 			return false;
 		}
 
@@ -341,7 +342,7 @@ namespace Core
 			this->iconHandle = (Resourcehandle)LoadImageA(GetModuleHandleA(nullptr), filepath.c_str(), IMAGE_ICON, 0, 0, LR_LOADFROMFILE | LR_SHARED | LR_DEFAULTSIZE | LR_DEFAULTCOLOR);
 			if (this->iconHandle == nullptr)
 			{
-				std::cerr << "Failed to load \"" << filepath << "\"" << std::endl;
+				CORE_ERROR("Failed to load \"%s\"", filepath);
 				return false;
 			}
 
@@ -362,7 +363,7 @@ namespace Core
 
 		if (this->iconHandle == nullptr)
 		{
-			std::cerr << "Failed to load (" << (int)icon << ") from the system" << std::endl;
+			CORE_ERROR("Failed to load (%d) from the system", (int)code);
 			return false;
 		}
 
@@ -381,7 +382,7 @@ namespace Core
 
 		if (this->cursorHandle == nullptr)
 		{
-			std::cerr << "Failed to load \"" << filepath << "\"" << std::endl;
+			CORE_ERROR("Failed to load \"%s\"", filepath);
 			return false;
 		}
 
@@ -400,7 +401,7 @@ namespace Core
 
 		if (this->cursorHandle == nullptr)
 		{
-			std::cerr << "Failed to load (" << (int)code << ")" << std::endl;
+			CORE_ERROR("Failed to load (%d)", (int)code);
 			return false;
 		}
 
@@ -453,7 +454,7 @@ namespace Core
 
 				if (window == nullptr)
 				{
-					std::cerr << "failed to decode creation-parameters into a valid window" << std::endl;
+					CORE_ERROR("failed to decode creation-parameters into a valid window");
 				}
 			} break;
 

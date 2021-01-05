@@ -2,6 +2,8 @@
 #include <Core/Rendering/GraphicsContext.hpp>
 #include <Core/Rendering/Helpers.hpp>
 
+#include <Core/System/Logger.hpp>
+
 #include <iostream>
 
 namespace Core
@@ -132,7 +134,7 @@ namespace Core
 		);
 		if (FAILED(hr))
 		{
-			std::cerr << "CreateGradientStopCollection" << std::endl;
+			CORE_ERROR("CreateGradientStopCollection");
 			return;
 		}
 
@@ -147,7 +149,7 @@ namespace Core
 		);
 		if (FAILED(hr))
 		{
-			std::cerr << "CreateRadialGradientBrush" << std::endl;
+			CORE_ERROR("CreateRadialGradientBrush");
 			return;
 		}
 	}

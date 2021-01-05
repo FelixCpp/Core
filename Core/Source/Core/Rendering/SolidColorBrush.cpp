@@ -2,6 +2,8 @@
 #include <Core/Rendering/GraphicsContext.hpp>
 #include <Core/Rendering/Helpers.hpp>
 
+#include <Core/System/Logger.hpp>
+
 #include <iostream>
 
 namespace Core
@@ -55,7 +57,7 @@ namespace Core
 		), &this->brush);
 		if (FAILED(hr))
 		{
-			std::cerr << "CreateSolidColorBrush" << std::endl;
+			CORE_ERROR("CreateSolidColorBrush");
 			return;
 		}
 	}

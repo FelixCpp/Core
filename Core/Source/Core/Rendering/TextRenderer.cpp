@@ -1,7 +1,7 @@
 #include <Core/Rendering/TextRenderer.hpp>
 #include <Core/Rendering/GraphicsContext.hpp>
 
-#include <iostream>
+#include <Core/System/Logger.hpp>
 
 namespace Core
 {
@@ -242,7 +242,7 @@ namespace Core
 		);
 		if (FAILED(hr))
 		{
-			std::cerr << "CreateTextFormat" << std::endl;
+			CORE_ERROR("CreateTextFormat");
 			return;
 		}
 
@@ -257,7 +257,7 @@ namespace Core
 		);
 		if (FAILED(hr))
 		{
-			std::cerr << "CreateTextLayout" << std::endl;
+			CORE_ERROR("CreateTextLayout");
 			return;
 		}
 		

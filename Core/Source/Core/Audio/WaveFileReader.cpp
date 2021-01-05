@@ -1,5 +1,7 @@
 #include <Core/Audio/WaveFileReader.hpp>
 
+#include <Core/System/Logger.hpp>
+
 #include <fstream>
 #include <iostream>
 
@@ -11,7 +13,7 @@ namespace Core
 		std::ifstream reader(filepath, std::istream::binary);
 		if (!reader.is_open())
 		{
-			std::cerr << "Failed to open \"" << filepath << "\"" << std::endl;
+			CORE_ERROR("Failed to open \"%s\"", filepath);
 			return false;
 		}
 
@@ -19,7 +21,7 @@ namespace Core
         WaveFileHeader & header = file.header;
         if (!reader.read(reinterpret_cast<char *>(&header), sizeof WaveFileHeader))
         {
-            std::cerr << "Failed to read the WaveFileHeader" << std::endl;
+            CORE_ERROR("Failed to read the WaveFileHeader");
             return false;
         }
 
@@ -29,7 +31,7 @@ namespace Core
         /* read the data in */
         if (!reader.read(&file.data[0], file.data.size()))
         {
-            std::cerr << "Failed to read in the data" << std::endl;
+            CORE_ERROR("Failed to read in the data");
             return false;
         }
 

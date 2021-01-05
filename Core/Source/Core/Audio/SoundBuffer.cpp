@@ -1,5 +1,7 @@
 #include <Core/Audio/SoundBuffer.hpp>
 
+#include <Core/System/Logger.hpp>
+
 #include <iostream>
 
 #include <al.h>
@@ -30,7 +32,7 @@ namespace Core
 			else if (header.bitsPerSample == 16) format = AL_FORMAT_STEREO16;
 		} else
 		{
-			std::cerr << "Unsupported audio-format" << std::endl;
+			CORE_ERROR("Unsupported audio-format");
 			return false;
 		}
 

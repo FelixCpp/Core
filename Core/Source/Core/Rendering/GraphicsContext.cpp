@@ -1,6 +1,8 @@
 #include <Core/Rendering/GraphicsContext.hpp>
 #include <Core/Rendering/RenderState.hpp>
 
+#include <Core/System/Logger.hpp>
+
 #include <iostream>
 
 namespace Core
@@ -18,14 +20,14 @@ namespace Core
 		HRESULT hr = D2D1CreateFactory(D2D1_FACTORY_TYPE_SINGLE_THREADED, this->mainFactory.ReleaseAndGetAddressOf());
 		if (FAILED(hr))
 		{
-			std::cerr << "D2D1CreateFactory" << std::endl;
+			CORE_ERROR("D2D1CreateFactory");
 			return;
 		}
 
 		hr = CoInitialize(nullptr);
 		if (FAILED(hr))
 		{
-			std::cerr << "CoInitialize" << std::endl;
+			CORE_ERROR("CoInitialize");
 			return;
 		}
 
@@ -37,21 +39,21 @@ namespace Core
 		);
 		if (FAILED(hr))
 		{
-			std::cerr << "CoCreateInstance" << std::endl;
+			CORE_ERROR("CoCreateInstance");
 			return;
 		}
 
 		hr = DWriteCreateFactory(DWRITE_FACTORY_TYPE_SHARED, __uuidof(IDWriteFactory), &this->writeFactory);
 		if (FAILED(hr))
 		{
-			std::cerr << "DWriteCreateFactory" << std::endl;
+			CORE_ERROR("DWriteCreateFactory");
 			return;
 		}
 
 		RECT rect = {};
 		if (!GetClientRect(handle, &rect))
 		{
-			std::cerr << "GetClientRect" << std::endl;
+			CORE_ERROR("GetClientRect");
 			return;
 		}
 
@@ -65,14 +67,14 @@ namespace Core
 		);
 		if (FAILED(hr))
 		{
-			std::cerr << "CreateHwndRenderTarget" << std::endl;
+			CORE_ERROR("CreateHwndRenderTarget");
 			return;
 		}
 
-		Gdiplus::Status status = Gdiplus::GdiplusStartup(&this->gdiToken, &this->gdiInput, nullptr);
+		const Gdiplus::Status status = Gdiplus::GdiplusStartup(&this->gdiToken, &this->gdiInput, nullptr);
 		if (status != Gdiplus::Status::Ok)
 		{
-			std::cerr << "GdiplusStartup" << std::endl;
+			CORE_ERROR("GdiplusStartup");
 			return;
 		}
 	}

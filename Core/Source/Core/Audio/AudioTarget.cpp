@@ -3,6 +3,8 @@
 #include <Core/Audio/WaveFile.hpp>
 #include <Core/Audio/WaveFileReader.hpp>
 
+#include <Core/System/Logger.hpp>
+
 #include <alc.h>
 #include <al.h>
 
@@ -64,7 +66,7 @@ namespace Core
 		this->device = alcOpenDevice(nullptr);
 		if (this->device == nullptr)
 		{
-			std::cerr << "Failed to open the audio-device" << std::endl;
+			CORE_ERROR("Failed to open the audio-device");
 			return false;
 		}
 
@@ -72,7 +74,7 @@ namespace Core
 		this->context = alcCreateContext(this->device, nullptr);
 		if (this->context == nullptr)
 		{
-			std::cerr << "Failed to create an AudioContext" << std::endl;
+			CORE_ERROR("Failed to create an AudioContext");
 			return false;
 		}
 
@@ -80,7 +82,7 @@ namespace Core
 		ALCboolean success = alcMakeContextCurrent(this->context);
 		if (success == ALC_FALSE)
 		{
-			std::cerr << "Failed to activate the new audio-context" << std::endl;
+			CORE_ERROR("Failed to activate the new audio-context");
 			return false;
 		}
 
@@ -95,7 +97,7 @@ namespace Core
 		ALCboolean success = alcMakeContextCurrent(nullptr);
 		if (success == ALC_FALSE)
 		{
-			std::cerr << "Failed to release the audio-context" << std::endl;
+			CORE_ERROR("Failed to release the audio-context");
 		}
 		
 		/* destroy the audio-context */

@@ -9,6 +9,9 @@
 // constrain
 #include <Core/Maths/Math.hpp>
 
+// for logging errors
+#include <Core/System/Logger.hpp>
+
 // loading images with stb
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
@@ -108,7 +111,7 @@ namespace Core
 		if (pixelData == NULL)
 		{
 			// an error occurred
-			std::cerr << "Failed to load \"" << filepath << "\"" << std::endl;
+			CORE_ERROR("Failed to load \"%s\"", filepath);
 			return false;
 		}
 
@@ -159,7 +162,7 @@ namespace Core
 		if (success == FALSE)
 		{
 			// an error occurred
-			std::cerr << "Failed to save data to \"" << filepath << "\"" << std::endl;
+			CORE_ERROR("Failed to save data to \"%s\"", filepath);
 			return false;
 		}
 
@@ -222,7 +225,7 @@ namespace Core
 		// we don't need to create a bitmap if the size is zero.
 		if (size == 0)
 		{
-			std::cerr << "There is no data to copy from" << std::endl;
+			CORE_ERROR("There is no data to copy from");
 			return false;
 		}
 
@@ -267,7 +270,7 @@ namespace Core
 	{
 		if (!this->gctx)
 		{
-			std::cerr << "The image has no GraphicsContext" << std::endl;
+			CORE_ERROR("The image has no GraphicsContext");
 			return false;
 		}
 
@@ -296,7 +299,7 @@ namespace Core
 		if (FAILED(hr))
 		{
 			// an error occurred
-			std::cerr << "Failed to create a bitmap" << std::endl;
+			CORE_ERROR("Failed to create a bitmap");
 			return false;
 		}
 	
