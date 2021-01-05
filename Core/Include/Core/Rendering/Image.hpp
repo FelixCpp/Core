@@ -3,6 +3,8 @@
 #include <Core/System/Datatypes.hpp>
 #include <Core/System/Collection.hpp>
 
+#include <Core/Rendering/Color.hpp>
+
 #include <string>
 
 struct ID2D1Bitmap;
@@ -30,7 +32,7 @@ namespace Core
 
 	class GraphicsContext;
 
-	class Image {
+	/*class Image {
 	public:
 
 		enum FileType {
@@ -43,7 +45,7 @@ namespace Core
 
 		Image();
 		
-		bool create(i32_t width, i32_t height, const color_t & shade, i32_t channels, i32_t opacity, ImageInterpolationMode mode, GraphicsContext * gctx);
+		bool create(i32_t width, i32_t height, const Color & shade, i32_t channels, i32_t opacity, ImageInterpolationMode mode, GraphicsContext * gctx);
 
 		bool updatePixels();
 
@@ -53,8 +55,8 @@ namespace Core
 		bool saveToFile(const std::string & filepath);
 
 		u32_t getIndex(i32_t x, i32_t y) const;
-		color_t getColor(i32_t x, i32_t y) const;
-		void setColor(i32_t x, i32_t y, color_t color);
+		Color getColor(i32_t x, i32_t y) const;
+		void setColor(i32_t x, i32_t y, Color color);
 
 		ID2D1Bitmap * getBitmap() const;
 
@@ -62,7 +64,7 @@ namespace Core
 
 	private:
 
-		bool createBitmap(const color_t * data);
+		bool createBitmap(const Color * data);
 
 	public:
 
@@ -82,6 +84,6 @@ namespace Core
 	
 		GraphicsContext * gctx;
 
-	};
+	};*/
 
 }

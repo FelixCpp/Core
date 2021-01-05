@@ -1,7 +1,7 @@
 #pragma once
 
-#include <Core/System/DataTypes.hpp>
 #include <Core/Maths/Vector2.hpp>
+#include <Core/Rendering/Color.hpp>
 
 #include <d2d1.h>
 #include <wrl/client.h>
@@ -25,8 +25,8 @@ namespace Core
 		void setEnd(float x, float y);
 		const FVector2 & getEnd() const;
 
-		void setColors(const std::vector<color_t> & colors);
-		const std::vector<color_t> & getColors() const;
+		void setColors(const std::vector<Color> & colors);
+		const std::vector<Color> & getColors() const;
 
 		ID2D1Brush * getBrush() const;
 
@@ -44,7 +44,7 @@ namespace Core
 		FVector2 start;
 		FVector2 end;
 
-		std::vector<color_t> colors;
+		std::vector<Color> colors;
 
 		GraphicsContext * gctx;
 

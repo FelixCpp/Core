@@ -63,7 +63,7 @@ namespace Core
 		return this->offset;
 	}
 
-	void RadialGradientBrush::setColors(const std::vector<color_t> & colors)
+	void RadialGradientBrush::setColors(const std::vector<Color> & colors)
 	{
 		if (this->colors != colors)
 		{
@@ -72,7 +72,7 @@ namespace Core
 		}
 	}
 
-	const std::vector<color_t> & RadialGradientBrush::getColors()
+	const std::vector<Color> & RadialGradientBrush::getColors()
 	{
 		return this->colors;
 	}
@@ -112,15 +112,15 @@ namespace Core
 
 		for (size_t i = 0; i < this->colors.size(); i++)
 		{
-			const color_t & color = this->colors[i];
+			const Color & color = this->colors[i];
 
 			gradientStops[i] = D2D1::GradientStop(
 				(float)i / ((float)size - 1.f),
 				D2D1::ColorF(
-					(float)red(color)   / 255.f,
-					(float)green(color) / 255.f,
-					(float)blue(color)  / 255.f,
-					(float)alpha(color) / 255.f
+					(float)color.r / 255.f,
+					(float)color.g / 255.f,
+					(float)color.b / 255.f,
+					(float)color.a / 255.f
 				)
 			);
 		}

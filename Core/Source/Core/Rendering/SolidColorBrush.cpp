@@ -14,7 +14,7 @@ namespace Core
 	{
 	}
 
-	void SolidColorBrush::setColor(const color_t & color)
+	void SolidColorBrush::setColor(const Color & color)
 	{
 		if (this->color != color)
 		{
@@ -23,10 +23,10 @@ namespace Core
 			if (this->brush)
 			{
 				this->brush->SetColor(D2D1::ColorF(
-					(float)red(color)   / 255.f,
-					(float)green(color) / 255.f,
-					(float)blue(color)  / 255.f,
-					(float)alpha(color) / 255.f
+					(float)color.r / 255.f,
+					(float)color.g / 255.f,
+					(float)color.b / 255.f,
+					(float)color.a / 255.f
 				));
 			} else
 			{
@@ -35,7 +35,7 @@ namespace Core
 		}
 	}
 
-	color_t SolidColorBrush::getColor() const
+	const Color & SolidColorBrush::getColor() const
 	{
 		return this->color;
 	}
@@ -45,13 +45,13 @@ namespace Core
 		return this->brush.Get();
 	}
 
-	void SolidColorBrush::create(const color_t & color)
+	void SolidColorBrush::create(const Color & color)
 	{
 		HRESULT hr = this->gctx->hwndRenderTarget->CreateSolidColorBrush(D2D1::ColorF(
-			(float)red(color)   / 255.f,
-			(float)green(color) / 255.f,
-			(float)blue(color)  / 255.f,
-			(float)alpha(color) / 255.f
+			(float)color.r / 255.f,
+			(float)color.g / 255.f,
+			(float)color.b / 255.f,
+			(float)color.a / 255.f
 		), &this->brush);
 		if (FAILED(hr))
 		{

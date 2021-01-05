@@ -5,7 +5,8 @@
 #include <type_traits>
 
 #include <Core/Maths/Random.hpp>
-#include <Core/Maths/Constants.hpp>
+#include <Core/Maths/Math.hpp>
+
 #include <Core/System/Datatypes.hpp>
 
 namespace Core
@@ -93,7 +94,7 @@ namespace Core
 
 		static Vector2 random2D()
 		{
-			return Vector2::fromAngle(Random::get(TWO_PI));
+			return Vector2::fromAngle(Random::get(FMath::TwoPi));
 		}
 
 		inline Vector2 operator+(const Vector2 & other) const { return Vector2(this->x + other.x, this->y + other.y); }

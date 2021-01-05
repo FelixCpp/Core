@@ -7,6 +7,7 @@
 #include <Core/Rendering/TextAttributes.hpp>
 #include <Core/Rendering/StrokeStyleAttributes.hpp>
 #include <Core/Maths/Vector2.hpp>
+#include <Core/Rendering/Color.hpp>
 
 #include <vector>
 
@@ -21,8 +22,8 @@ namespace Core
 		explicit RenderTarget(GraphicsContext *& gctx);
 		virtual ~RenderTarget() = default;
 
-		Image loadImage(const std::string & filepath);
-		Image createImage(u32_t width, u32_t height, color_t color = Color::White, i32_t channels = 4, i32_t opacity = 255, ImageInterpolationMode mode = ImageInterpolationMode::NearestNeighbor);
+		//Image loadImage(const std::string & filepath);
+		//Image createImage(u32_t width, u32_t height, Color color = Color::White, i32_t channels = 4, i32_t opacity = 255, ImageInterpolationMode mode = ImageInterpolationMode::NearestNeighbor);
 
 		void push();
 		void pop();
@@ -34,20 +35,20 @@ namespace Core
 		void rotate(float degrees);
 		void scale(float factorX, float factorY);
 
-		void background(const color_t & color_t);
+		void background(const Color & color_t);
 		void strokeWeight(float strokeWeight);
 
 		void noFill();
 		void noStroke();
 
-		void fill(const color_t & color_t);
-		void stroke(const color_t & color_t);
+		void fill(const Color & color);
+		void stroke(const Color & color);
 
-		void linearFill(const std::vector<color_t> & ColorTypes, float startX, float startY, float endX, float endY);
-		void linearStroke(const std::vector<color_t> & ColorTypes, float startX, float startY, float endX, float endY);
+		void linearFill(const std::vector<Color> & colors, float startX, float startY, float endX, float endY);
+		void linearStroke(const std::vector<Color> & colors, float startX, float startY, float endX, float endY);
 
-		void radialFill(const std::vector<color_t> & ColorTypes, float centerX, float centerY, float radiusX, float radiusY, float offsetX, float offsetY);
-		void radialStroke(const std::vector<color_t> & ColorTypes, float centerX, float centerY, float radiusX, float radiusY, float offsetX, float offsetY);
+		void radialFill(const std::vector<Color> & colors, float centerX, float centerY, float radiusX, float radiusY, float offsetX, float offsetY);
+		void radialStroke(const std::vector<Color> & colors, float centerX, float centerY, float radiusX, float radiusY, float offsetX, float offsetY);
 
 		void rectMode(DrawMode mode);
 		void rect(float x1, float y1, float x2, float y2, float cornerRadiusX = 0.f, float cornerRadiusY = 0.f);
@@ -60,8 +61,8 @@ namespace Core
 
 		void line(float x1, float y1, float x2, float y2);
 		void imageMode(DrawMode mode);
-		void image(const Image & img, float x, float y);
-		void image(const Image & img, float x1, float y1, float x2, float y2);
+		//void image(const Image & img, float x, float y);
+		//void image(const Image & img, float x1, float y1, float x2, float y2);
 
 		void beginShape();
 		void endShape(ShapeEndType type);

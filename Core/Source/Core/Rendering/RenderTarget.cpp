@@ -11,19 +11,19 @@ namespace Core
 	{
 	}
 
-	Image RenderTarget::loadImage(const std::string & filepath)
-	{
-		Image image;
-		image.loadFromFile(filepath, this->gctx);
-		return image;
-	}
-
-	Image RenderTarget::createImage(u32_t width, u32_t height, color_t color, i32_t channels, i32_t opacity, ImageInterpolationMode mode)
-	{
-		Image image;
-		image.create(width, height, color, channels, opacity, mode, this->gctx);
-		return image;
-	}
+	//Image RenderTarget::loadImage(const std::string & filepath)
+	//{
+	//	Image image;
+	//	image.loadFromFile(filepath, this->gctx);
+	//	return image;
+	//}
+	//
+	//Image RenderTarget::createImage(u32_t width, u32_t height, color_t color, i32_t channels, i32_t opacity, ImageInterpolationMode mode)
+	//{
+	//	Image image;
+	//	image.create(width, height, color, channels, opacity, mode, this->gctx);
+	//	return image;
+	//}
 
 	void RenderTarget::push()
 	{
@@ -96,13 +96,13 @@ namespace Core
 		this->gctx->hwndRenderTarget->SetTransform(matrix);
 	}
 
-	void RenderTarget::background(const color_t & color)
+	void RenderTarget::background(const Color & color)
 	{
 		this->gctx->hwndRenderTarget->Clear(D2D1::ColorF(
-			(float)red(color) / 255.f,
-			(float)green(color) / 255.f,
-			(float)blue(color) / 255,
-			(float)alpha(color) / 255
+			(float)color.r / 255.f,
+			(float)color.g / 255.f,
+			(float)color.b / 255.f,
+			1.f
 		));
 	}
 
@@ -121,21 +121,21 @@ namespace Core
 		this->gctx->getActiveRenderState().active.stroke = nullptr;
 	}
 
-	void RenderTarget::fill(const color_t & color)
+	void RenderTarget::fill(const Color & color)
 	{
 		RenderState & state = this->gctx->getActiveRenderState();
 		state.solid.fill.setColor(color);
 		state.active.fill = state.solid.fill.getBrush();
 	}
 
-	void RenderTarget::stroke(const color_t & color)
+	void RenderTarget::stroke(const Color & color)
 	{
 		RenderState & state = this->gctx->getActiveRenderState();
 		state.solid.stroke.setColor(color);
 		state.active.stroke = state.solid.stroke.getBrush();
 	}
 
-	void RenderTarget::linearFill(const std::vector<color_t> & colors, float startX, float startY, float endX, float endY)
+	void RenderTarget::linearFill(const std::vector<Color> & colors, float startX, float startY, float endX, float endY)
 	{
 		RenderState & state = this->gctx->getActiveRenderState();
 		state.linear.fill.setStart(startX, startY);
@@ -144,7 +144,7 @@ namespace Core
 		state.active.fill = state.linear.fill.getBrush();
 	}
 
-	void RenderTarget::linearStroke(const std::vector<color_t> & colors, float startX, float startY, float endX, float endY)
+	void RenderTarget::linearStroke(const std::vector<Color> & colors, float startX, float startY, float endX, float endY)
 	{
 		RenderState & state = this->gctx->getActiveRenderState();
 		state.linear.stroke.setStart(startX, startY);
@@ -153,7 +153,7 @@ namespace Core
 		state.active.stroke = state.linear.stroke.getBrush();
 	}
 
-	void RenderTarget::radialFill(const std::vector<color_t> & colors, float centerX, float centerY, float radiusX, float radiusY, float offsetX, float offsetY)
+	void RenderTarget::radialFill(const std::vector<Color> & colors, float centerX, float centerY, float radiusX, float radiusY, float offsetX, float offsetY)
 	{
 		RenderState & state = this->gctx->getActiveRenderState();
 		state.radial.fill.setCenter(centerX, centerY);
@@ -163,7 +163,7 @@ namespace Core
 		state.active.fill = state.radial.fill.getBrush();
 	}
 
-	void RenderTarget::radialStroke(const std::vector<color_t> & colors, float centerX, float centerY, float radiusX, float radiusY, float offsetX, float offsetY)
+	void RenderTarget::radialStroke(const std::vector<Color> & colors, float centerX, float centerY, float radiusX, float radiusY, float offsetX, float offsetY)
 	{
 		RenderState & state = this->gctx->getActiveRenderState();
 		state.radial.stroke.setCenter(centerX, centerY);
@@ -282,36 +282,36 @@ namespace Core
 		this->gctx->getActiveRenderState().imageMode = mode;
 	}
 
-	void RenderTarget::image(const Core::Image & img, float x, float y)
-	{
-		image(img, x, y, (float)img.width, (float)img.height);
-	}
-
-	void RenderTarget::image(const Core::Image & img, float x1, float y1, float x2, float y2)
-	{
-		if (ID2D1Bitmap * bitmap = img.getBitmap())
-		{
-			RenderState & state = this->gctx->getActiveRenderState();
-
-			D2D1_RECT_F rect;
-			switch (state.imageMode)
-			{
-				case DrawMode::Corner:  rect = D2D1::RectF(x1, y1, x1 + x2, y1 + y2); break;
-				case DrawMode::Corners: rect = D2D1::RectF(x1, y1, x2, y2); break;
-				case DrawMode::Center:  rect = D2D1::RectF(x1 - x2 / 2.f, y1 - y2 / 2.f, x1 + x2 / 2.f, y1 + y2 / 2.f); break;
-				default: break;
-			}
-
-			ID2D1HwndRenderTarget * rt = this->gctx->hwndRenderTarget.Get();
-			rt->DrawBitmap(
-				bitmap,
-				rect,
-				img.opacity / 255.f,
-				static_cast<D2D1_BITMAP_INTERPOLATION_MODE>(img.mode),
-				D2D1::RectF(0.f, 0.f, (float)img.width, (float)img.height)
-			);
-		}
-	}
+	//void RenderTarget::image(const Core::Image & img, float x, float y)
+	//{
+	//	image(img, x, y, (float)img.width, (float)img.height);
+	//}
+	//
+	//void RenderTarget::image(const Core::Image & img, float x1, float y1, float x2, float y2)
+	//{
+	//	if (ID2D1Bitmap * bitmap = img.getBitmap())
+	//	{
+	//		RenderState & state = this->gctx->getActiveRenderState();
+	//
+	//		D2D1_RECT_F rect;
+	//		switch (state.imageMode)
+	//		{
+	//			case DrawMode::Corner:  rect = D2D1::RectF(x1, y1, x1 + x2, y1 + y2); break;
+	//			case DrawMode::Corners: rect = D2D1::RectF(x1, y1, x2, y2); break;
+	//			case DrawMode::Center:  rect = D2D1::RectF(x1 - x2 / 2.f, y1 - y2 / 2.f, x1 + x2 / 2.f, y1 + y2 / 2.f); break;
+	//			default: break;
+	//		}
+	//
+	//		ID2D1HwndRenderTarget * rt = this->gctx->hwndRenderTarget.Get();
+	//		rt->DrawBitmap(
+	//			bitmap,
+	//			rect,
+	//			img.opacity / 255.f,
+	//			static_cast<D2D1_BITMAP_INTERPOLATION_MODE>(img.mode),
+	//			D2D1::RectF(0.f, 0.f, (float)img.width, (float)img.height)
+	//		);
+	//	}
+	//}
 
 	void RenderTarget::beginShape()
 	{

@@ -3,7 +3,7 @@
 #include <d2d1.h>
 #include <wrl/client.h>
 
-#include <Core/System/DataTypes.hpp>
+#include <Core/Rendering/Color.hpp>
 
 namespace Core
 {
@@ -15,19 +15,19 @@ namespace Core
 
 		explicit SolidColorBrush(GraphicsContext * gctx);
 
-		void setColor(const color_t & color);
-		color_t getColor() const;
+		void setColor(const Color & color);
+		const Color & getColor() const;
 		
 		ID2D1Brush * getBrush() const;
 
 	private:
 
-		void create(const color_t & color);
+		void create(const Color & color);
 
 	private:
 
 		Microsoft::WRL::ComPtr<ID2D1SolidColorBrush> brush;
-		color_t color;
+		Color color;
 
 		GraphicsContext * gctx;
 

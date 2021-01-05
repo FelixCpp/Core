@@ -22,6 +22,7 @@
     <ClInclude Include="Include\Core\Application.hpp" />
     <ClInclude Include="Include\Core\Audio\AudioTarget.hpp" />
     <ClInclude Include="Include\Core\Audio\AudioListener.hpp" />
+    <ClInclude Include="Include\Core\Rendering\Color.hpp" />
     <ClInclude Include="Include\Core\Rendering\DrawMode.hpp" />
     <ClInclude Include="Include\Core\Rendering\Helpers.hpp" />
     <ClInclude Include="Include\Core\Audio\SoundBuffer.hpp" />
@@ -46,7 +47,6 @@
     <ClInclude Include="Include\Core\Window\SystemIcon.hpp" />
     <ClInclude Include="Include\Core\Rendering\TextAttributes.hpp" />
     <ClInclude Include="Include\Core\Rendering\TextRenderer.hpp" />
-    <ClInclude Include="Include\Core\Maths\Constants.hpp" />
     <ClInclude Include="Include\Core\Maths\Math.hpp" />
     <ClInclude Include="Include\Core\Maths\Matrix3x3.hpp" />
     <ClInclude Include="Include\Core\Maths\Random.hpp" />
@@ -79,6 +79,7 @@
     <ClCompile Include="Source\Core\Application.cpp" />
     <ClCompile Include="Source\Core\Audio\AudioTarget.cpp" />
     <ClCompile Include="Source\Core\Audio\AudioListener.cpp" />
+    <ClCompile Include="Source\Core\Rendering\Color.cpp" />
     <ClCompile Include="Source\Core\Rendering\Helpers.cpp" />
     <ClCompile Include="Source\Core\Rendering\RenderTarget.cpp" />
     <ClCompile Include="Source\Core\Rendering\GraphicsContext.cpp" />
@@ -93,7 +94,6 @@
     <ClCompile Include="Source\Core\Audio\SoundBuffer.cpp" />
     <ClCompile Include="Source\Core\Audio\SoundSource.cpp" />
     <ClCompile Include="Source\Core\Audio\WaveFileReader.cpp" />
-    <ClCompile Include="Source\Core\Maths\Constants.cpp" />
     <ClCompile Include="Source\Core\Maths\Matrix3x3.cpp" />
     <ClCompile Include="Source\Core\Maths\Random.cpp" />
     <ClCompile Include="Source\Core\System\Logger.cpp" />
