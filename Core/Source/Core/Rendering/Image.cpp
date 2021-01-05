@@ -108,7 +108,7 @@ namespace Core
 		if (pixelData == NULL)
 		{
 			// an error occurred
-			CORE_ERROR("Failed to load \"%s\"", filepath);
+			CORE_ERROR("Failed to load \"%s\"", filepath.c_str());
 			return false;
 		}
 
@@ -159,7 +159,7 @@ namespace Core
 		if (success == FALSE)
 		{
 			// an error occurred
-			CORE_ERROR("Failed to save data to \"%s\"", filepath);
+			CORE_ERROR("Failed to save data to \"%s\"", filepath.c_str());
 			return false;
 		}
 

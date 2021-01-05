@@ -12,7 +12,7 @@ namespace Core
 		std::ifstream reader(filepath, std::istream::binary);
 		if (!reader.is_open())
 		{
-			CORE_ERROR("Failed to open \"%s\"", filepath);
+			CORE_ERROR("Failed to open \"%s\"", filepath.c_str());
 			return false;
 		}
 

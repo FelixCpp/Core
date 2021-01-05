@@ -342,7 +342,7 @@ namespace Core
 			this->iconHandle = (Resourcehandle)LoadImageA(GetModuleHandleA(nullptr), filepath.c_str(), IMAGE_ICON, 0, 0, LR_LOADFROMFILE | LR_SHARED | LR_DEFAULTSIZE | LR_DEFAULTCOLOR);
 			if (this->iconHandle == nullptr)
 			{
-				CORE_ERROR("Failed to load \"%s\"", filepath);
+				CORE_ERROR("Failed to load \"%s\"", filepath.c_str());
 				return false;
 			}
 
@@ -382,7 +382,7 @@ namespace Core
 
 		if (this->cursorHandle == nullptr)
 		{
-			CORE_ERROR("Failed to load \"%s\"", filepath);
+			CORE_ERROR("Failed to load \"%s\"", filepath.c_str());
 			return false;
 		}
 
