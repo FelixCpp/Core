@@ -3,7 +3,6 @@
 #include <Core/System/Logger.hpp>
 
 #include <fstream>
-#include <iostream>
 
 namespace Core
 {

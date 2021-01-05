@@ -8,7 +8,6 @@
 #include <alc.h>
 #include <al.h>
 
-#include <iostream>
 #include <optional>
 
 #pragma comment(lib, "OpenAL32.lib")

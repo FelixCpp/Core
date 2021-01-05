@@ -1,8 +1,6 @@
 #include <Core/Application.hpp>
 #include <Core/Rendering/GraphicsContext.hpp>
 
-#include <iostream>
-
 namespace Core
 {
 

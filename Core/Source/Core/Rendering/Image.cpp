@@ -22,9 +22,6 @@
 #include <stb_image_write.h>
 #undef STB_IMAGE_WRITE_IMPLEMENTATION
 
-// std::cerr output
-#include <iostream>
-
 namespace Core
 {
 

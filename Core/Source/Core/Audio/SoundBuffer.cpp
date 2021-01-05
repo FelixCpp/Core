@@ -2,8 +2,6 @@
 
 #include <Core/System/Logger.hpp>
 
-#include <iostream>
-
 #include <al.h>
 
 namespace Core

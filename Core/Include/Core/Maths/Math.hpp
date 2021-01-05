@@ -5,7 +5,6 @@
 
 #include <type_traits>
 #include <cmath>
-#include <iostream>
 
 namespace Core
 {
