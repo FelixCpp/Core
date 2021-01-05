@@ -80,7 +80,7 @@ namespace Core
 		SetWindowLongPtrA(this->windowHandle, GWL_STYLE, WS_POPUP | WS_VISIBLE);
 
 		/* update the window position and size */
-		SetWindowPos(this->windowHandle, HWND_TOPMOST, 0, 0, displayMode.width, displayMode.height, SWP_SHOWWINDOW);
+		SetWindowPos(this->windowHandle, nullptr, 0, 0, displayMode.width, displayMode.height, SWP_SHOWWINDOW);
 
 		/* show the window maximized */
 		ShowWindow(this->windowHandle, SW_MAXIMIZE);
@@ -113,7 +113,7 @@ namespace Core
 		const int y = GetSystemMetrics(SM_CYSCREEN) / 2 - cy / 2;
 
 		/* change position and size of the window */
-		SetWindowPos(this->windowHandle, HWND_NOTOPMOST, x, y, cx, cy, SWP_SHOWWINDOW);
+		SetWindowPos(this->windowHandle, nullptr, x, y, cx, cy, SWP_SHOWWINDOW);
 		
 		/* show the window as a restored one */
 		ShowWindow(this->windowHandle, SW_RESTORE);
@@ -698,6 +698,12 @@ namespace Core
 	{
 		this->trackMouseEvent(false);
 		this->setMouseCursorVisible(true);
+
+		if (this->fullscreen)
+		{
+			ChangeDisplaySettingsA(nullptr, 0);
+			this->fullscreen = false;
+		}
 		
 		if(this->windowHandle) DestroyWindow(this->windowHandle);
 		if(this->cursorHandle) DestroyCursor(this->cursorHandle);

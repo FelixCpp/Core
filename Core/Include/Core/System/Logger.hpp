@@ -1,17 +1,20 @@
 #pragma once
 
-#include <cstdio>
+namespace Core
+{
+	void ChangeConsoleColorBasedOnLogLevel(const char * logLevel);
+	void ChangeConsoleColorToDefault();
+}
 
-void ChangeConsoleColorBasedOnLogLevel(const char * logLevel);
-void ChangeConsoleColorToDefault();
+extern int _cdecl printf(char const * const _Format, ...);
 
 #define CORE_SHOW_DEBUG
 
 #if defined(CORE_SHOW_DEBUG)
 #define CORE_LOG(level, format, ...)\
-	ChangeConsoleColorBasedOnLogLevel(#level),\
-	std::printf("["#level"]: "##format"\n", __VA_ARGS__),\
-	ChangeConsoleColorToDefault()
+	Core::ChangeConsoleColorBasedOnLogLevel(#level),\
+	printf("["#level"]: "##format"\n", __VA_ARGS__),\
+	Core::ChangeConsoleColorToDefault()
 #else
 #define CORE_LOG(level)
 #endif
