@@ -146,6 +146,8 @@ namespace Core
 
 	bool Window::create(u32_t width, u32_t height, const std::string & title)
 	{
+		this->destroy();
+
 		WNDCLASSA wc = {};
 		ZeroMemory(&wc, sizeof WNDCLASSA);
 		wc.cbClsExtra = 0;

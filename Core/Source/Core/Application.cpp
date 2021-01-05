@@ -22,14 +22,13 @@ namespace Core
 	Application::Application(i32_t width, i32_t height, const std::string & title) :
 		Window(),
 		RenderTarget(this->gctx),
-		drawingPaused(false)
+		drawingPaused(true)
 	{
 		this->create(width, height, title);
 		this->setResizable(false);
 		this->setMaximizable(false);
 		this->setMinimizable(false);
 	}
-
 
 	void Application::resizeViewport()
 	{
