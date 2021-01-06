@@ -186,6 +186,12 @@
     <ClInclude Include="Include\Core\Rendering\RenderStateManager.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="Include\Core\Rendering\ImageInterpolationMode.hpp">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Core\Rendering\ImageTarget.hpp">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Core\Maths\Random.cpp">
@@ -279,6 +285,9 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="Source\Core\Rendering\RenderStateManager.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Core\Rendering\ImageTarget.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>

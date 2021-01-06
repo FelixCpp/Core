@@ -8,6 +8,7 @@ namespace Core
 {
 
 	RenderTarget::RenderTarget(GraphicsContext *& gctx) :
+		ImageTarget(gctx, this->rsm),
 		gctx(gctx),
 		rsm(new RenderStateManager(gctx))
 	{

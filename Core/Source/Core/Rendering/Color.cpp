@@ -23,27 +23,27 @@ namespace Core
 	const Color Color::LightGray6(242, 242, 247), Color::DarkGray6(28, 28, 30);
 
 	Color::Color() :
-		r(255), g(255), b(255), a(255)
+		b(255), g(255), r(255), a(255)
 	{
 	}
 
 	Color::Color(u8_t red, u8_t green, u8_t blue, u8_t alpha) :
-		r(red), g(green), b(blue), a(alpha)
+		b(blue), g(green), r(red), a(alpha)
 	{
 	}
 
 	Color::Color(i32_t rgb, u8_t alpha) :
-		r((rgb & 0xFF0000) >> 16),
-		g((rgb & 0x00FF00) >>  8),
 		b((rgb & 0x0000FF) >>  0),
+		g((rgb & 0x00FF00) >>  8),
+		r((rgb & 0xFF0000) >> 16),
 		a(alpha)
 	{
 	}
 
 	Color::Color(u32_t rgba) :
-		r((rgba & 0xFF000000) >> 24),
-		g((rgba & 0x00FF0000) >> 16),
 		b((rgba & 0x0000FF00) >> 8),
+		g((rgba & 0x00FF0000) >> 16),
+		r((rgba & 0xFF000000) >> 24),
 		a((rgba & 0x000000FF) >> 0)
 	{
 	}

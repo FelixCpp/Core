@@ -2,7 +2,7 @@
 
 #include <Core/Rendering/Helpers.hpp>
 #include <Core/Rendering/DrawMode.hpp>
-#include <Core/Rendering/Image.hpp>
+#include <Core/Rendering/ImageTarget.hpp>
 #include <Core/Rendering/ShapeAttributes.hpp>
 #include <Core/Rendering/TextAttributes.hpp>
 #include <Core/Rendering/StrokeStyleAttributes.hpp>
@@ -17,7 +17,7 @@ namespace Core
 	class RenderStateManager;
 	class GraphicsContext;
 
-	class RenderTarget {
+	class RenderTarget : public ImageTarget {
 	public:
 
 		explicit RenderTarget(GraphicsContext *& gctx);

@@ -1,306 +1,194 @@
 #include <Core/Rendering/Image.hpp>
-
-// GraphicsContext (includes d2d1.h / wrl.h)
 #include <Core/Rendering/GraphicsContext.hpp>
 
-// contains helper functions to get the red / green and blue component from a color
-#include <Core/Rendering/Helpers.hpp>
-
-// constrain
-#include <Core/Maths/Math.hpp>
-
-// for logging errors
 #include <Core/System/Logger.hpp>
 
-// loading images with stb
-#define STB_IMAGE_IMPLEMENTATION
-#include <stb_image.h>
-#undef STB_IMAGE_IMPLEMENTATION
-
-// saving images with stb
-#define STB_IMAGE_WRITE_IMPLEMENTATION
-#include <stb_image_write.h>
-#undef STB_IMAGE_WRITE_IMPLEMENTATION
+#include <wrl/client.h>
 
 namespace Core
 {
 
-	//struct Image::Implementation {
+	struct Image::Implementation {
+		
+		Microsoft::WRL::ComPtr<ID2D1Bitmap> bitmap = nullptr;
 
-	//	Microsoft::WRL::ComPtr<ID2D1Bitmap> bitmap;
+	};
 
-	//	Implementation() :
-	//		bitmap(nullptr)
-	//	{ }
+	Image::Image() :
+		width(0),
+		height(0),
+		mode(ImageInterpolationMode::NearestNeighbor),
+		opacity(1.f),
+		impl(std::make_shared<Implementation>())
+	{ }
 
-	//};
+	bool Image::create(u32_t width, u32_t height, const Color & color, GraphicsContext * gctx)
+	{
+		ID2D1HwndRenderTarget * rt = gctx->hwndRenderTarget.Get();
+		if (!rt) return false;
 
-	//Image::Image() :
-	//	width(0), height(0), opacity(255), channels(0), mode(ImageInterpolationMode::NearestNeighbor), pixels(),
-	//	impl(std::make_shared<Implementation>()), gctx(nullptr)
-	//{
-	//}
+		const D2D1_PIXEL_FORMAT pixelFormat = rt->GetPixelFormat();
+		FLOAT dpiX = 0.f, dpiY = 0.f;
+		rt->GetDpi(&dpiX, &dpiY);
 
-	//bool Image::create(i32_t width, i32_t height, const Color & shade, i32_t channels, i32_t opacity, ImageInterpolationMode mode, GraphicsContext * gctx)
-	//{
-	//	// copy attributes
-	//	this->width = width;
-	//	this->height = height;
-	//	this->channels = channels;
-	//	this->opacity = opacity;
-	//	this->mode = mode;
-	//	this->gctx = gctx;
+		u32_t * srcData = new u32_t[width * height];
+		std::fill_n(srcData, width * height, color.argb());
+		
+		const HRESULT hr = rt->CreateBitmap(
+			D2D1::SizeU(width, height),
+			srcData,
+			width * sizeof u32_t + 0,
+			D2D1::BitmapProperties(pixelFormat, dpiX, dpiY),
+			&this->impl->bitmap
+		);
 
-	//	// get the components from the shade parameter
-	//	const i32_t r = red(shade);
-	//	const i32_t g = green(shade);
-	//	const i32_t b = blue(shade);
-	//	const i32_t a = channels > 3 ? alpha(shade) : 255;
+		delete[] srcData;
+		srcData = nullptr;
 
-	//	// create space for the pixels and initialize them to black
-	//	this->pixels.resize(width * height * channels, 0x00);
+		if (FAILED(hr))
+		{
+			CORE_ERROR("Failed to create a Bitmap");
+			return false;
+		}
+		
+		this->width = (i32_t)width;
+		this->height = (i32_t)height;
 
-	//	// copy the shade into the pixels
-	//	for (u32_t i = 0; i < width * height * channels; i += channels)
-	//	{
-	//		this->pixels[i + 0] = r;
-	//		this->pixels[i + 1] = g;
-	//		this->pixels[i + 2] = b;
-	//		this->pixels[i + 3] = a;
-	//	}
+		return true;
+	}
 
-	//	// create bitmap
-	//	return this->updatePixels();
-	//}
+	bool Image::loadFromMemory(u32_t width, u32_t height, const Color * colors, GraphicsContext * gctx)
+	{
+		ID2D1HwndRenderTarget * rt = gctx->hwndRenderTarget.Get();
+		if (!rt) return false;
 
-	//bool Image::updatePixels()
-	//{
-	//	// map the data to argb-format
-	//	color_t * data = new color_t[this->width * this->height]{ 0xFF000000 };
-	//	for (color_t i = 0, n = 0; i < this->width * this->height * this->channels; i += this->channels, n++)
-	//	{
-	//		const u8_t & r = this->pixels[i + 0];
-	//		const u8_t & g = this->pixels[i + 1];
-	//		const u8_t & b = this->pixels[i + 2];
-	//		const u8_t   a = this->channels > 3 ? this->pixels[i + 3] : 255;
-	//		data[n] = color(r, g, b, a);
-	//	}
+		if (this->impl->bitmap)
+		{
+			/* copy the data into the existing image */
+			const D2D1_RECT_U dstRect = D2D1::RectU(0, 0, width, height);
+			const HRESULT hr = this->impl->bitmap->CopyFromMemory(
+				&dstRect, colors, width * sizeof Color + 0
+			);
 
-	//	// store the result to order to return it later
-	//	const bool success = this->createBitmap(data);
-	//	
-	//	// delete the data
-	//	if (data)
-	//	{
-	//		delete[] data;
-	//		data = nullptr;
-	//	}
+			if (FAILED(hr))
+			{
+				CORE_ERROR("Failed to copy the pixels into the image");
+				return false;
+			}
+		} else
+		{
+			/* create an image */
+			const D2D1_PIXEL_FORMAT pixelFormat = rt->GetPixelFormat();
+			FLOAT dpiX = 0.f, dpiY = 0.f;
+			rt->GetDpi(&dpiX, &dpiY);
 
-	//	return success;
-	//}
+			const HRESULT hr = rt->CreateBitmap(
+				D2D1::SizeU(width, height),
+				colors,
+				width * sizeof Color + 0,
+				D2D1::BitmapProperties(pixelFormat, dpiX, dpiY),
+				&this->impl->bitmap
+			);
 
-	//bool Image::loadFromFile(const std::string & filepath, GraphicsContext * gctx)
-	//{
-	//	// load the pixel data from the file
-	//	stbi_uc * pixelData = stbi_load(filepath.c_str(), &this->width, &this->height, &this->channels, 0);
-	//	
-	//	// error handling
-	//	if (pixelData == NULL)
-	//	{
-	//		// an error occurred
-	//		CORE_ERROR("Failed to load \"%s\"", filepath.c_str());
-	//		return false;
-	//	}
+			if (FAILED(hr))
+			{
+				CORE_ERROR("Failed to create a bitmap with the specified colors");
+				return false;
+			}
+		}
 
-	//	// loading was successful
-	//	this->pixels.resize(this->width * this->height * this->channels);
-	//	this->pixels.assign(pixelData, pixelData + this->pixels.size());
+		this->width = (i32_t)width;
+		this->height = (i32_t)height;
 
-	//	// delete the memory
-	//	stbi_image_free(pixelData);
+		return true;
+	}
 
-	//	// important: set the graphicscontext before recreating the bitmap
-	//	this->gctx = gctx;
-	//	
-	//	return this->updatePixels();
-	//}
+	bool Image::loadFromFile(const std::string & filepath, GraphicsContext * gctx)
+	{
+		IWICImagingFactory * factory = gctx->imagingFactory.Get();
+		if (!factory) return false;
 
-	//bool Image::saveToFile(const std::string & filepath)
-	//{
-	//	const FileType fileType = Image::getFileType(filepath);
+		Microsoft::WRL::ComPtr<IWICBitmapDecoder> pDecoder = nullptr;
+		Microsoft::WRL::ComPtr<IWICBitmapFrameDecode> pSource = nullptr;
+		Microsoft::WRL::ComPtr<IWICStream> pStream = nullptr;
+		Microsoft::WRL::ComPtr<IWICFormatConverter> pConverter = nullptr;
+		Microsoft::WRL::ComPtr<IWICBitmapScaler> pScaler = nullptr;
 
-	//	// copy attributes
-	//	const i32_t & x = this->width;
-	//	const i32_t & y = this->height;
-	//	const i32_t & comp = this->channels;
-	//	const u8_t * data = this->pixels.data();
-	//	const char * filename = filepath.c_str();
+		const std::wstring uri(filepath.begin(), filepath.end());
+		HRESULT hr = factory->CreateDecoderFromFilename(
+			uri.c_str(),
+			nullptr,
+			GENERIC_READ,
+			WICDecodeMetadataCacheOnLoad,
+			&pDecoder
+		);
 
-	//	i32_t success = FALSE;
-	//	switch (fileType)
-	//	{
-	//			// save PNG
-	//		case PNG: success = stbi_write_png(filename, x, y, comp, data, x * comp);  break;
-	//		
-	//			// save BMP
-	//		case BMP: success = stbi_write_bmp(filename, x, y, comp, data); break;
-	//		
-	//			// save TGA
-	//		case TGA: success = stbi_write_tga(filename, x, y, comp, data); break;
-	//		
-	//			// save JPG
-	//		case JPG: success = stbi_write_jpg(filename, x, y, comp, data, 100); break;
-	//		
-	//			// invalid Filetype
-	//		default: success = FALSE; break;
-	//	}
+		if (FAILED(hr))
+		{
+			CORE_ERROR("Failed to create an ImageDecoder from filename \"%s\"", filepath.c_str());
+			return false;
+		}
 
-	//	// error handling
-	//	if (success == FALSE)
-	//	{
-	//		// an error occurred
-	//		CORE_ERROR("Failed to save data to \"%s\"", filepath.c_str());
-	//		return false;
-	//	}
+		/* Create the initial frame. */
+		hr = pDecoder->GetFrame(0, &pSource);
+		if (FAILED(hr))
+		{
+			CORE_ERROR("Failed to get the initial frame of the ImageDecoder");
+			return false;
+		}
 
-	//	return true;
-	//}
+		/*
+			Convert the image format to 32bppPBGRA
+			(DXGI_FORMAT_B8G8R8A8_UNORM + D2D1_ALPHA_MODE_PREMULTIPLIED).
+		*/
+		hr = factory->CreateFormatConverter(&pConverter);
+		if (FAILED(hr))
+		{
+			CORE_ERROR("Failed to create a FormatConverter");
+			return false;
+		}
 
-	//u32_t Image::getIndex(i32_t x, i32_t y) const
-	//{
-	//	return (y * this->width + x) * this->channels;
-	//}
+		hr = pConverter->Initialize(
+			pSource.Get(),
+			GUID_WICPixelFormat32bppPBGRA,
+			WICBitmapDitherTypeNone,
+			nullptr,
+			0.0,
+			WICBitmapPaletteTypeMedianCut
+		);
+		if (FAILED(hr))
+		{
+			CORE_ERROR("Failed to initialize the FormatConverter");
+			return false;
+		}
 
-	//color_t Image::getColor(i32_t x, i32_t y) const
-	//{
-	//	const u32_t index = this->getIndex(x, y);
+		ID2D1HwndRenderTarget * rt = gctx->hwndRenderTarget.Get();
+		if (!rt) return false;
 
-	//	// create a color from the selected pixel
-	//	return color(
-	//		this->pixels[index + 0],
-	//		this->pixels[index + 1],
-	//		this->pixels[index + 2],
-	//		this->channels > 3 ? this->pixels[index + 3] : 255
-	//	);
-	//}
+		/* Create a Direct2D bitmap from the WIC bitmap. */
+		hr = rt->CreateBitmapFromWicBitmap(
+			pConverter.Get(),
+			nullptr,
+			&this->impl->bitmap
+		);
+		if (FAILED(hr))
+		{
+			CORE_ERROR("Failed to create a Bitmap from WicBitmap");
+			return false;
+		}
 
-	//void Image::setColor(i32_t x, i32_t y, color_t color)
-	//{
-	//	const u32_t index = this->getIndex(x, y);
+		/* copy the size */
+		const D2D1_SIZE_F size = this->impl->bitmap->GetSize();
+		this->width = (i32_t)size.width;
+		this->height = (i32_t)size.height;
 
-	//	// bounds-check
-	//	if (index >= 0 && index < this->width * this->height * this->channels)
-	//	{
-	//		// change the r, g, b and alpha value of the existing color
-	//		// at the position
-	//		this->pixels[index + 0] = red(color);
-	//		this->pixels[index + 1] = green(color);
-	//		this->pixels[index + 2] = blue(color);
+		return true;
+	}
 
-	//		if (this->channels > 3)
-	//			this->pixels[index + 3] = alpha(color);
-	//	}
-	//}
+	ID2D1Bitmap * Image::getBitmap() const
+	{
+		return this->impl->bitmap.Get();
+	}
 
-	//bool Image::loadFromImage(const Image & source, i32_t x, i32_t y, i32_t width, i32_t height)
-	//{
-	//	// calculate the edges
-	//	i32_t left   = (i32_t)std::fmax(x, 0);
-	//	i32_t top    = (i32_t)std::fmax(y, 0);
-	//	i32_t right  = (i32_t)Math::constrain(left + width, 0, source.width);
-	//	i32_t bottom = (i32_t)Math::constrain(top + height, 0, source.height);
-
-	//	// copy attributes
-	//	this->width = (right - left);
-	//	this->height = (bottom - top);
-	//	this->channels = source.channels;
-	//	this->gctx = source.gctx;
-	//	
-	//	// calculate the size
-	//	const u32_t size = width * height * this->channels;
-	//	
-	//	// we don't need to create a bitmap if the size is zero.
-	//	if (size == 0)
-	//	{
-	//		CORE_ERROR("There is no data to copy from");
-	//		return false;
-	//	}
-
-	//	// resize the vector of pixels
-	//	this->pixels.resize(size, 0x00);
-
-	//	// go through the area and copy the pixel
-	//	// at that location into the new image
-	//	for (i32_t y = top, ys = 0; y < bottom; y++, ys++)
-	//	{
-	//		for (i32_t x = left, xs = 0; x < right; x++, xs++)
-	//		{
-	//			const color_t & color = source.getColor(x, y);
-	//			this->setColor(xs, ys, color);
-	//		}
-	//	}
-
-	//	// create the bitmap with the new pixels and return the result
-	//	return this->updatePixels();
-	//}
-
-	//ID2D1Bitmap * Image::getBitmap() const
-	//{
-	//	return this->impl->bitmap.Get();
-	//}
-
-	//Image::FileType Image::getFileType(const std::string & filepath)
-	//{
-	//	const std::size_t dotPos = filepath.find_last_of('.'); // get the position of the last '.' character
-	//	std::string extension = filepath.substr(dotPos); // get the extension including the dot (example: .png / .jpg)
-	//	std::transform(extension.begin(), extension.end(), &extension[0], std::tolower); // make the string lowercased
-	//
-	//	if (extension == ".png") return PNG;
-	//	if (extension == ".bmp") return BMP;
-	//	if (extension == ".tga") return TGA;
-	//	if (extension == ".jpg") return JPG;
-	//	
-	//	return Unknown;
-	//}
-
-	//bool Image::createBitmap(const color_t * data)
-	//{
-	//	if (!this->gctx)
-	//	{
-	//		CORE_ERROR("The image has no GraphicsContext");
-	//		return false;
-	//	}
-
-	//	// get the rendertarget
-	//	ID2D1HwndRenderTarget * renderTarget = this->gctx->hwndRenderTarget.Get();
-	//
-	//	// -- Fields to create the bitmap properties --
-	//	const D2D1_PIXEL_FORMAT pixelFormat = renderTarget->GetPixelFormat();
-	//	
-	//	FLOAT dpiX = 0.f, dpiY = 0.f;
-	//	renderTarget->GetDpi(&dpiX, &dpiY);
-	//	// --
-	//
-	//	const void * srcData = data; // get the pixels data
-	//	const UINT32 pitch = this->width * sizeof color_t + 0; // calculate pitch (width * bytesize (color_t) + byteoffset in structure)
-	//
-	//	const HRESULT hr = renderTarget->CreateBitmap(
-	//		D2D1::SizeU(this->width, this->height),
-	//		srcData,
-	//		pitch,
-	//		D2D1::BitmapProperties(pixelFormat, dpiX, dpiY),
-	//		&this->impl->bitmap
-	//	);
-	//
-	//	// error handling
-	//	if (FAILED(hr))
-	//	{
-	//		// an error occurred
-	//		CORE_ERROR("Failed to create a bitmap");
-	//		return false;
-	//	}
-	//
-	//	return true;
-	//}
 
 }

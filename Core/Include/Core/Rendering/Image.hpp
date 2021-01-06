@@ -1,89 +1,58 @@
 #pragma once
 
 #include <Core/System/Datatypes.hpp>
-#include <Core/System/Collection.hpp>
 
 #include <Core/Rendering/Color.hpp>
+#include <Core/Rendering/ImageInterpolationMode.hpp>
 
 #include <string>
+#include <memory>
 
 struct ID2D1Bitmap;
 
 namespace Core
 {
 
-	/// <summary>
-	/// Specifies the algorithm that is used when images are scaled or rotated. Note
-	/// Starting in Windows 8, more interpolations modes are available. See
-	/// D2D1_INTERPOLATION_MODE for more info.
-	/// </summary>
-	enum class ImageInterpolationMode {
-		/// <summary>
-		/// Nearest Neighbor filtering. Also known as nearest pixel or nearest point
-		/// sampling.
-		/// </summary>
-		NearestNeighbor,
-
-		/// <summary>
-		/// Linear filtering.
-		/// </summary>
-		Linear,
-	};
-
 	class GraphicsContext;
 
-	/*class Image {
+	class Image {
 	public:
 
-		enum FileType {
-			Unknown,
-			PNG,
-			BMP,
-			TGA,
-			JPG
-		};
-
+		/* default constructor */
 		Image();
-		
-		bool create(i32_t width, i32_t height, const Color & shade, i32_t channels, i32_t opacity, ImageInterpolationMode mode, GraphicsContext * gctx);
 
-		bool updatePixels();
+		/* creates an image with the given dimensions */
+		bool create(u32_t width, u32_t height, const Color & color, GraphicsContext * gctx);
 
+		/* loads the image from the pixel data provided by the 'colors' parameter */
+		bool loadFromMemory(u32_t width, u32_t height, const Color * colors, GraphicsContext * gctx);
+
+		/* loads the image from a file */
 		bool loadFromFile(const std::string & filepath, GraphicsContext * gctx);
-		bool loadFromImage(const Image & source, i32_t x, i32_t y, i32_t width, i32_t height);
 
-		bool saveToFile(const std::string & filepath);
-
-		u32_t getIndex(i32_t x, i32_t y) const;
-		Color getColor(i32_t x, i32_t y) const;
-		void setColor(i32_t x, i32_t y, Color color);
-
+		/* returns the raw Direct2D Bitmap */
 		ID2D1Bitmap * getBitmap() const;
 
-		static FileType getFileType(const std::string & filepath);
-
-	private:
-
-		bool createBitmap(const Color * data);
-
 	public:
 
+		/* the width of the Image */
 		i32_t width;
-		i32_t height;
-		i32_t opacity;
-		i32_t channels;
 
+		/* the height of the Image */
+		i32_t height;
+
+		/* the interpolation mode */
 		ImageInterpolationMode mode;
 
-		Vector<u8_t> pixels;
+		/* the opacity of the image. This value should have a value between 0.0 and 1.0 */
+		float opacity;
 
 	private:
 
+		/* PImpl pattern */
 		struct Implementation;
 		std::shared_ptr<Implementation> impl;
-	
-		GraphicsContext * gctx;
 
-	};*/
+	};
 
 }

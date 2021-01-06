@@ -58,14 +58,20 @@ namespace Core
 		/* returns a random color */
 		static Color getRandomColor(bool randomAlpha = false);
 
-		/* red component */
-		u8_t r;
+		/*
+			don't change the order of this attributes !
+			this order is important to insert them efficiently
+			into an image
+		*/
+
+		/* blue component */
+		u8_t b;
 
 		/* green component */
 		u8_t g;
 
-		/* blue component */
-		u8_t b;
+		/* red component */
+		u8_t r;
 
 		/* alpha component */
 		u8_t a;
