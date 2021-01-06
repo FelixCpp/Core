@@ -34,9 +34,10 @@ namespace Core
 
 		hr = CoCreateInstance(
 			CLSID_WICImagingFactory,
-			nullptr,
+			NULL,
 			CLSCTX_INPROC_SERVER,
-			IID_PPV_ARGS(&this->imagingFactory)
+			IID_IWICImagingFactory,
+			(LPVOID *)&this->imagingFactory
 		);
 		if (FAILED(hr))
 		{
@@ -86,8 +87,9 @@ namespace Core
 	{
 		Gdiplus::GdiplusShutdown(this->gdiToken);
 
-		CoUninitialize();
+		//CoUninitialize(); /* not allowed to do this call before uninitializing every image which was loaded with that imagingFactory */
 		this->imagingFactory.Reset();
+		this->writeFactory.Reset();
 		this->hwndRenderTarget.Reset();
 		this->mainFactory.Reset();
 	}
