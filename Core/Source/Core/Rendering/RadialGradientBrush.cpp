@@ -7,7 +7,7 @@
 namespace Core
 {
 
-	RadialGradientBrush::RadialGradientBrush(GraphicsContext * gctx) :
+	RadialGradientBrush::RadialGradientBrush(GraphicsContext *& gctx) :
 		brush(nullptr),
 		collection(nullptr),
 		center(0.f, 0.f),
@@ -105,6 +105,8 @@ namespace Core
 
 	void RadialGradientBrush::updateColors()
 	{
+		if (!this->gctx) return;
+
 		ID2D1HwndRenderTarget * rt = this->gctx->hwndRenderTarget.Get();
 
 		const size_t size = this->colors.size();

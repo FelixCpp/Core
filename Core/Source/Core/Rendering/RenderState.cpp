@@ -19,8 +19,10 @@ namespace Core
 		rectMode(DrawMode::Corner),
 		ellipseMode(DrawMode::Center),
 		imageMode(DrawMode::Corner),
-		metrics(),
 		strokeWeight(1.f),
+		defaultMatrix(D2D1::Matrix3x2F::Identity()),
+		activeMatrix(&this->defaultMatrix),
+		metrics(),
 		gctx(gctx)
 	{ }
 
@@ -33,7 +35,7 @@ namespace Core
 
 	D2D1::Matrix3x2F & RenderState::getActiveMatrix()
 	{
-		return this->metrics.empty() ? this->defaultMatrix : this->metrics.top();
+		return *this->activeMatrix;
 	}
 
 	void RenderState::pushMatrix()
@@ -60,6 +62,8 @@ namespace Core
 
 	void RenderState::activateMatrix()
 	{
+		this->activeMatrix = this->metrics.empty() ? &this->defaultMatrix : &this->metrics.top();
+
 		if (ID2D1HwndRenderTarget * rt = this->gctx->hwndRenderTarget.Get())
 		{
 			// activate the matrix as the new transformation

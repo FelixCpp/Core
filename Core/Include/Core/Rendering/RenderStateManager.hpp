@@ -33,6 +33,9 @@ namespace Core
 		/* the lowest state. This RenderState will be active if the stack is empty */
 		RenderState defaultState;
 
+		/* the currently used RenderState */
+		RenderState * activeState;
+
 		/* a stack of RenderStates */
 		std::stack<RenderState> states;
 

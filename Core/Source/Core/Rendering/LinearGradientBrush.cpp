@@ -7,7 +7,7 @@
 namespace Core
 {
 
-	LinearGradientBrush::LinearGradientBrush(GraphicsContext * gctx) :
+	LinearGradientBrush::LinearGradientBrush(GraphicsContext *& gctx) :
 		brush(nullptr),
 		collection(nullptr),
 		start(0.f, 0.f),
@@ -82,6 +82,8 @@ namespace Core
 
 	void LinearGradientBrush::updateBrush()
 	{
+		if (!this->gctx) return;
+
 		ID2D1HwndRenderTarget * rt = this->gctx->hwndRenderTarget.Get();
 		
 		const size_t size = this->colors.size();

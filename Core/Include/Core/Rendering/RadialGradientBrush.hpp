@@ -17,7 +17,7 @@ namespace Core
 	class RadialGradientBrush {
 	public:
 
-		explicit RadialGradientBrush(GraphicsContext * gctx);
+		explicit RadialGradientBrush(GraphicsContext *& gctx);
 
 		void setCenter(float x, float y);
 		const FVector2 & getCenter() const;
@@ -51,7 +51,7 @@ namespace Core
 
 		std::vector<Color> colors;
 
-		GraphicsContext * gctx;
+		GraphicsContext *& gctx;
 
 	};
 

@@ -17,7 +17,7 @@ namespace Core
 	class LinearGradientBrush {
 	public:
 
-		explicit LinearGradientBrush(GraphicsContext * gctx);
+		explicit LinearGradientBrush(GraphicsContext *& gctx);
 
 		void setStart(float x, float y);
 		const FVector2 & getStart() const;
@@ -46,7 +46,7 @@ namespace Core
 
 		std::vector<Color> colors;
 
-		GraphicsContext * gctx;
+		GraphicsContext *& gctx;
 
 	};
 

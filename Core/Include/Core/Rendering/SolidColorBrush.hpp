@@ -13,7 +13,7 @@ namespace Core
 	class SolidColorBrush {
 	public:
 
-		explicit SolidColorBrush(GraphicsContext * gctx);
+		explicit SolidColorBrush(GraphicsContext *& gctx);
 
 		void setColor(const Color & color);
 		const Color & getColor() const;
@@ -29,7 +29,7 @@ namespace Core
 		Microsoft::WRL::ComPtr<ID2D1SolidColorBrush> brush;
 		Color color;
 
-		GraphicsContext * gctx;
+		GraphicsContext *& gctx;
 
 	};
 

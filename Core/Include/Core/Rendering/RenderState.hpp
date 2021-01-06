@@ -90,6 +90,9 @@ namespace Core
 		/* the default matrix. For more: see documentation getActiveMatrix() */
 		D2D1::Matrix3x2F defaultMatrix;
 
+		/* the currently used matrix */
+		D2D1::Matrix3x2F * activeMatrix;
+
 		/* a stack of metrics */
 		std::stack<D2D1::Matrix3x2F> metrics;
 

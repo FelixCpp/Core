@@ -7,7 +7,7 @@
 namespace Core
 {
 
-	SolidColorBrush::SolidColorBrush(GraphicsContext * gctx) :
+	SolidColorBrush::SolidColorBrush(GraphicsContext *& gctx) :
 		brush(nullptr),
 		color(Color::Clear),
 		gctx(gctx)
@@ -47,16 +47,19 @@ namespace Core
 
 	void SolidColorBrush::create(const Color & color)
 	{
-		HRESULT hr = this->gctx->hwndRenderTarget->CreateSolidColorBrush(D2D1::ColorF(
-			(float)color.r / 255.f,
-			(float)color.g / 255.f,
-			(float)color.b / 255.f,
-			(float)color.a / 255.f
-		), &this->brush);
-		if (FAILED(hr))
+		if (this->gctx)
 		{
-			CORE_ERROR("CreateSolidColorBrush");
-			return;
+			HRESULT hr = this->gctx->hwndRenderTarget->CreateSolidColorBrush(D2D1::ColorF(
+				(float)color.r / 255.f,
+				(float)color.g / 255.f,
+				(float)color.b / 255.f,
+				(float)color.a / 255.f
+			), &this->brush);
+			if (FAILED(hr))
+			{
+				CORE_ERROR("CreateSolidColorBrush");
+				return;
+			}
 		}
 	}
 

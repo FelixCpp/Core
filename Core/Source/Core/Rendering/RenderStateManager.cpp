@@ -5,6 +5,7 @@ namespace Core
 
 	RenderStateManager::RenderStateManager(GraphicsContext *& gctx) :
 		defaultState(gctx),
+		activeState(&this->defaultState),
 		states(),
 		gctx(gctx)
 	{
@@ -13,7 +14,7 @@ namespace Core
 	void RenderStateManager::pushState()
 	{
 		this->states.push(RenderState(this->gctx));
-		RenderState & activeState = this->getActiveState();
+		this->activeState = this->states.empty() ? &this->defaultState : &this->states.top();
 		this->getActiveState().activateMatrix();
 	}
 
@@ -26,12 +27,13 @@ namespace Core
 			this->states.pop();
 		}
 
+		this->activeState = this->states.empty() ? &this->defaultState : &this->states.top();
 		this->getActiveState().activateMatrix();
 	}
 
 	RenderState & RenderStateManager::getActiveState()
 	{
-		return this->states.empty() ? this->defaultState : this->states.top();
+		return *this->activeState;
 	}
 
 }
