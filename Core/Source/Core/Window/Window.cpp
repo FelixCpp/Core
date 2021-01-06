@@ -1,4 +1,5 @@
 #include <Core/Window/Window.hpp>
+#include <Core/Rendering/GraphicsContext.hpp>
 
 #include <Core/System/Logger.hpp>
 
@@ -13,7 +14,7 @@ namespace Core
 	const i32_t Window::displayWidth = DisplayMode::getDesktopMode().width;
 	const i32_t Window::displayHeight = DisplayMode::getDesktopMode().height;
 
-	Window::Window() :
+	Window::Window(GraphicsContext *& gctx) :
 		width(0),
 		height(0),
 		pmouseX(0),
@@ -29,19 +30,13 @@ namespace Core
 		iconHandle(LoadIcon(nullptr, IDI_APPLICATION)),
 		mouseCursorVisible(true),
 		mouseCursorGrabbed(false),
-		mouseInsideWindow(false),
-		open(false),
 		fullscreen(false),
-		resizing(false),
 		fpsLimit(Duration::fromSeconds(0.f)),
 		delayWatch(Stopwatch::startNew()),
 		fpsWatch(Stopwatch::startNew()),
 		calcWatch(Stopwatch::startNew()),
-		internalFrameCount(0)
-	{
-	}
-
-	Window::~Window()
+		internalFrameCount(0),
+		gctx(gctx)
 	{
 	}
 
@@ -144,57 +139,9 @@ namespace Core
 		this->fpsLimit = Duration::Zero;
 	}
 
-	bool Window::create(u32_t width, u32_t height, const std::string & title)
-	{
-		this->destroy();
-
-		WNDCLASSA wc = {};
-		ZeroMemory(&wc, sizeof WNDCLASSA);
-		wc.cbClsExtra = 0;
-		wc.cbWndExtra = 0;
-		wc.hbrBackground = reinterpret_cast<HBRUSH>(GetStockObject(BLACK_BRUSH));
-		wc.hCursor = this->cursorHandle;
-		wc.hIcon = this->iconHandle;
-		wc.hInstance = GetModuleHandleA(nullptr);
-		wc.lpfnWndProc = &Window::processEvents;
-		wc.lpszClassName = LPSZ_CLASS_NAME;
-		wc.lpszMenuName = nullptr;
-		wc.style = CS_OWNDC | CS_HREDRAW | CS_VREDRAW;
-
-		if (!RegisterClassA(&wc))
-		{
-			CORE_ERROR("Failed to register the window class");
-			return false;
-		}
-
-		const DWORD dwStyle = WS_OVERLAPPEDWINDOW;
-		RECT wndRect = { 0l, 0l, (LONG)width, (LONG)height };
-		AdjustWindowRect(&wndRect, dwStyle, FALSE);
-		const int nWidth  = wndRect.right - wndRect.left;
-		const int nHeight = wndRect.bottom - wndRect.top;
-		const int x = GetSystemMetrics(SM_CXSCREEN) / 2 - nWidth  / 2;
-		const int y = GetSystemMetrics(SM_CYSCREEN) / 2 - nHeight / 2;
-
-		this->windowHandle = CreateWindowA(wc.lpszClassName, title.c_str(), dwStyle, x, y, nWidth, nHeight, nullptr, nullptr, wc.hInstance, this);
-		if (this->windowHandle == nullptr)
-		{
-			CORE_ERROR("Failed to create a window");
-			return false;
-		}
-
-		ShowWindow(this->windowHandle, SW_SHOW);
-		UpdateWindow(this->windowHandle);
-		SetForegroundWindow(this->windowHandle);
-
-		this->title = title;
-		this->open = true;
-
-		return true;
-	}
-
 	bool Window::isOpen() const
 	{
-		return this->open;
+		return this->windowHandle != nullptr;
 	}
 
 	void Window::close()
@@ -443,276 +390,6 @@ namespace Core
 		this->limitFps();
 	}
 	
-	i64_t __stdcall Window::processEvents(Windowhandle handle, u32_t msg, u64_t wParam, i64_t lParam)
-	{
-		static Window * window = nullptr;
-
-		switch (msg)
-		{
-			case WM_CREATE:
-			{
-				const LPVOID creationParams = reinterpret_cast<CREATESTRUCTA *>(lParam)->lpCreateParams;
-				window = reinterpret_cast<Window *>(creationParams);
-
-				if (window == nullptr)
-				{
-					CORE_ERROR("failed to decode creation-parameters into a valid window");
-				}
-			} break;
-
-			case WM_SETCURSOR:
-			{
-				if (LOWORD(lParam) == HTCLIENT)
-				{
-					SetCursor(window->mouseCursorVisible ? window->cursorHandle : nullptr);
-					return TRUE;
-				}
-			} break;
-
-			case WM_CLOSE:
-			{
-				// close the window
-				window->open = false;
-				window->onWindowClosed();
-			} break;
-
-			case WM_SIZE:
-			{
-				if (wParam != SIZE_MINIMIZED && !window->resizing)
-				{
-					const u16_t width = GET_X_LPARAM(lParam);
-					const u16_t height = GET_Y_LPARAM(lParam);
-
-					const bool resized = window->width != width || window->height != height;
-					if (resized)
-					{
-						window->width = (i32_t)width;
-						window->height = (i32_t)height;
-						window->onWindowResized();
-
-						/* grab the cursor after resizing */
-						window->grabCursor(window->mouseCursorGrabbed);
-					}
-				}
-			} break;
-
-			// Start resizing
-			case WM_ENTERSIZEMOVE:
-			{
-				window->resizing = true;
-				window->grabCursor(false);
-			} break;
-
-			// Stop resizing
-			case WM_EXITSIZEMOVE:
-			{
-				window->resizing = false;
-
-				// Ignore cases where the window has only been moved
-				const UVector2 size = window->getSize();
-				if (window->width != size.width || window->height != size.height)
-				{
-					// Update the last handled size
-					window->width = size.width;
-					window->height = size.height;
-
-					// Push a resize event
-					window->onWindowResized();
-				}
-
-				// Restore/update cursor grabbing
-				window->grabCursor(window->mouseCursorGrabbed);
-			} break;
-
-			case WM_MOVE:
-			{
-				const u16_t x = GET_X_LPARAM(lParam);
-				const u16_t y = GET_Y_LPARAM(lParam);
-
-				const bool windowMoved = window->windowX != x || window->windowY != y;
-				if (windowMoved)
-				{
-					window->windowX = (i32_t)x;
-					window->windowY = (i32_t)y;
-					window->onWindowMoved();
-				}
-			} break;
-
-			case WM_MOUSEWHEEL:
-			{
-				const u16_t delta = GET_WHEEL_DELTA_WPARAM(wParam);
-				window->onMouseWheelScrolled(delta);
-			} break;
-
-			case WM_MOUSEMOVE:
-			{
-				const u16_t x = GET_X_LPARAM(lParam);
-				const u16_t y = GET_Y_LPARAM(lParam);
-
-				const bool mouseMoved = window->mouseX != x || window->mouseY != y;
-				if (mouseMoved)
-				{
-					RECT wndRect = {};
-					GetClientRect(handle, &wndRect);
-
-					// If the cursor is outside the client area
-					if ((x < wndRect.left) || (x > wndRect.right) || (y < wndRect.top) || (y > wndRect.bottom))
-					{
-						if (window->mouseInsideWindow)
-						{
-							window->mouseInsideWindow = false;
-
-							// we don't care about the mouse leaving the window
-							window->trackMouseEvent(false);
-
-							// fire onMouseLeft event
-							window->onMouseLeft();
-						}
-					} else // If the cursor is inside the client area
-					{
-						if (!window->mouseInsideWindow)
-						{
-							window->mouseInsideWindow = true;
-
-							// we care about the mouse leaving the window
-							window->trackMouseEvent(true);
-
-							// fire onMouseEntered event
-							window->onMouseEntered();
-						}
-					}
-
-					window->pmouseX = window->mouseX;
-					window->pmouseY = window->mouseY;
-
-					window->mouseX = (i32_t)x;
-					window->mouseY = (i32_t)y;
-					window->onMouseMoved();
-				}
-			} break;
-
-			case WM_MOUSELEAVE:
-			{
-				// Avoid the firing a second time in case the cursor is dragged outside
-				if (window->mouseInsideWindow)
-				{
-					window->mouseInsideWindow = false;
-					window->onMouseLeft();
-				}
-			} break;
-
-			case WM_SYSKEYDOWN:
-			case WM_KEYDOWN:
-			{
-				KeyboardEventArgs args;
-				args.alt = (HIWORD(GetKeyState(VK_LMENU)) || HIWORD(GetKeyState(VK_RMENU))) != 0;
-				args.control = (HIWORD(GetKeyState(VK_LCONTROL)) || HIWORD(GetKeyState(VK_RCONTROL))) != 0;
-				args.shift = (HIWORD(GetKeyState(VK_LSHIFT)) || HIWORD(GetKeyState(VK_RSHIFT))) != 0;
-				args.system = (HIWORD(GetKeyState(VK_LWIN)) || HIWORD(GetKeyState(VK_RWIN))) != 0;
-				args.code = decodeKeyCode(wParam, lParam);
-				window->onKeyPressed(args);
-			} break;
-
-			case WM_SYSKEYUP:
-			case WM_KEYUP:
-			{
-				KeyboardEventArgs args;
-				args.alt = (HIWORD(GetKeyState(VK_LMENU)) || HIWORD(GetKeyState(VK_RMENU))) != 0;
-				args.control = (HIWORD(GetKeyState(VK_LCONTROL)) || HIWORD(GetKeyState(VK_RCONTROL))) != 0;
-				args.shift = (HIWORD(GetKeyState(VK_LSHIFT)) || HIWORD(GetKeyState(VK_RSHIFT))) != 0;
-				args.system = (HIWORD(GetKeyState(VK_LWIN)) || HIWORD(GetKeyState(VK_RWIN))) != 0;
-				args.code = decodeKeyCode(wParam, lParam);
-				window->onKeyReleased(args);
-			} break;
-
-			case WM_GETMINMAXINFO:
-			{
-				// We override the returned information to remove the default limit
-				// (the OS doesn't allow windows bigger than the desktop by default)
-				MINMAXINFO * info = reinterpret_cast<MINMAXINFO *>(lParam);
-				info->ptMaxTrackSize.x = 50000;
-				info->ptMaxTrackSize.y = 50000;
-			} break;
-
-			case WM_CHAR:
-			{
-				const Keyboard::Key key = (Keyboard::Key)wParam;
-				window->onTextEntered(key);
-			} break;
-
-			case WM_LBUTTONDOWN: window->onMousePressed(Mouse::Button::Left); break;
-			case WM_RBUTTONDOWN: window->onMousePressed(Mouse::Button::Right); break;
-			case WM_MBUTTONDOWN: window->onMousePressed(Mouse::Button::Middle); break;
-			case WM_XBUTTONDOWN: window->onMousePressed(GET_XBUTTON_WPARAM(wParam) == XBUTTON1 ? Mouse::Button::XButton1 : Mouse::Button::XButton2); break;
-			case WM_LBUTTONUP: window->onMouseReleased(Mouse::Button::Left); break;
-			case WM_RBUTTONUP: window->onMouseReleased(Mouse::Button::Right); break;
-			case WM_MBUTTONUP: window->onMouseReleased(Mouse::Button::Middle); break;
-			case WM_XBUTTONUP: window->onMouseReleased(GET_XBUTTON_WPARAM(wParam) == XBUTTON1 ? Mouse::Button::XButton1 : Mouse::Button::XButton2); break;
-			case WM_SETFOCUS: window->grabCursor(window->mouseCursorGrabbed); window->onFocusGained(); break;
-			case WM_KILLFOCUS: window->grabCursor(false); window->onFocusLost(); break;
-
-			default: return DefWindowProcA(handle, msg, wParam, lParam);
-		}
-
-		return 0;
-	}
-
-	Keyboard::Key Window::decodeKeyCode(u64_t wParam, i64_t lParam)
-	{
-		WPARAM vk = (WPARAM)0;
-		const UINT scancode = (lParam & 0x00FF0000) >> 16;
-		const BOOL extended = (lParam & 0x01000000) != 0;
-
-		switch (wParam)
-		{
-			case VK_SHIFT:		vk = MapVirtualKeyA(scancode, MAPVK_VSC_TO_VK_EX); break;
-			case VK_CONTROL:	vk = extended ? VK_RCONTROL : VK_LCONTROL; break;
-			case VK_MENU:		vk = extended ? VK_RMENU : VK_LMENU; break;
-			default:			vk = wParam; break;
-		}
-
-		return static_cast<Keyboard::Key>(vk);
-	}
-
-	void Window::trackMouseEvent(bool active)
-	{
-		TRACKMOUSEEVENT tme = {};
-		ZeroMemory(&tme, sizeof TRACKMOUSEEVENT);
-		tme.cbSize = sizeof TRACKMOUSEEVENT;
-		tme.dwFlags = active ? TME_LEAVE : TME_CANCEL;
-		tme.hwndTrack = this->windowHandle;
-		tme.dwHoverTime = HOVER_DEFAULT;
-		TrackMouseEvent(&tme);
-	}
-
-	void Window::setMouseCursorGrabbed(bool grabbed)
-	{
-		this->mouseCursorGrabbed = grabbed;
-		this->grabCursor(this->mouseCursorGrabbed);
-	}
-
-	bool Window::isMouseCursorGrabbed() const
-	{
-		return this->mouseCursorGrabbed;
-	}
-
-	void Window::destroy()
-	{
-		this->trackMouseEvent(false);
-		this->setMouseCursorVisible(true);
-
-		if (this->fullscreen)
-		{
-			ChangeDisplaySettingsA(nullptr, 0);
-			this->fullscreen = false;
-		}
-		
-		if(this->windowHandle) DestroyWindow(this->windowHandle);
-		if(this->cursorHandle) DestroyCursor(this->cursorHandle);
-		if(this->iconHandle) DestroyIcon(this->iconHandle);
-		UnregisterClassA(LPSZ_CLASS_NAME, GetModuleHandleA(nullptr));
-	}
-
 	void Window::grabCursor(bool grabbed)
 	{
 		if (grabbed)
@@ -725,6 +402,17 @@ namespace Core
 		{
 			ClipCursor(nullptr);
 		}
+	}
+
+	void Window::setMouseCursorGrabbed(bool grabbed)
+	{
+		this->mouseCursorGrabbed = grabbed;
+		this->grabCursor(this->mouseCursorGrabbed);
+	}
+
+	bool Window::isMouseCursorGrabbed() const
+	{
+		return this->mouseCursorGrabbed;
 	}
 
 	void Window::calculateFps()

@@ -6,27 +6,30 @@
 namespace Core
 {
 
-	GraphicsContext::GraphicsContext(Windowhandle handle) :
+	GraphicsContext::GraphicsContext() :
 		mainFactory(nullptr),
 		imagingFactory(nullptr),
 		writeFactory(nullptr),
 		hwndRenderTarget(nullptr),
-		states(),
 		gdiToken(0ull),
 		drawing(false)
+	{
+	}
+
+	bool GraphicsContext::initialize(Windowhandle handle)
 	{
 		HRESULT hr = D2D1CreateFactory(D2D1_FACTORY_TYPE_SINGLE_THREADED, this->mainFactory.ReleaseAndGetAddressOf());
 		if (FAILED(hr))
 		{
 			CORE_ERROR("D2D1CreateFactory");
-			return;
+			return false;
 		}
 
 		hr = CoInitialize(nullptr);
 		if (FAILED(hr))
 		{
-			CORE_ERROR("CoInitialize");
-			return;
+			CORE_ERROR("CoInitialize failed");
+			return false;
 		}
 
 		hr = CoCreateInstance(
@@ -37,22 +40,22 @@ namespace Core
 		);
 		if (FAILED(hr))
 		{
-			CORE_ERROR("CoCreateInstance");
-			return;
+			CORE_ERROR("failed to create an imaging factory");
+			return false;
 		}
 
 		hr = DWriteCreateFactory(DWRITE_FACTORY_TYPE_SHARED, __uuidof(IDWriteFactory), &this->writeFactory);
 		if (FAILED(hr))
 		{
-			CORE_ERROR("DWriteCreateFactory");
-			return;
+			CORE_ERROR("failed to create a writing factory");
+			return false;
 		}
 
 		RECT rect = {};
 		if (!GetClientRect(handle, &rect))
 		{
-			CORE_ERROR("GetClientRect");
-			return;
+			CORE_ERROR("failed to get the window size");
+			return false;
 		}
 
 		const UINT width = rect.right - rect.left;
@@ -65,19 +68,21 @@ namespace Core
 		);
 		if (FAILED(hr))
 		{
-			CORE_ERROR("CreateHwndRenderTarget");
-			return;
+			CORE_ERROR("failed to create a RenderTarget");
+			return false;
 		}
 
 		const Gdiplus::Status status = Gdiplus::GdiplusStartup(&this->gdiToken, &this->gdiInput, nullptr);
 		if (status != Gdiplus::Status::Ok)
 		{
-			CORE_ERROR("GdiplusStartup");
-			return;
+			CORE_ERROR("failed to initialize Gdiplus");
+			return false;
 		}
+
+		return true;
 	}
 
-	GraphicsContext::~GraphicsContext()
+	void GraphicsContext::destroy()
 	{
 		Gdiplus::GdiplusShutdown(this->gdiToken);
 
@@ -120,11 +125,6 @@ namespace Core
 			if(ID2D1HwndRenderTarget * rt = this->hwndRenderTarget.Get())
 				rt->Resize(D2D1::SizeU(width, height));
 		}
-	}
-	
-	RenderState & GraphicsContext::getActiveRenderState()
-	{
-		return this->states.top();
 	}
 	
 }

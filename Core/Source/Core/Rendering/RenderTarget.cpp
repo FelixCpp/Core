@@ -1,5 +1,6 @@
 #include <Core/Rendering/RenderTarget.hpp>
 #include <Core/Rendering/GraphicsContext.hpp>
+#include <Core/Rendering/RenderStateManager.hpp>
 
 #include <Core/Window/Window.hpp>
 
@@ -7,93 +8,59 @@ namespace Core
 {
 
 	RenderTarget::RenderTarget(GraphicsContext *& gctx) :
-		gctx(gctx)
+		gctx(gctx),
+		rsm(new RenderStateManager(gctx))
 	{
 	}
 
-	//Image RenderTarget::loadImage(const std::string & filepath)
-	//{
-	//	Image image;
-	//	image.loadFromFile(filepath, this->gctx);
-	//	return image;
-	//}
-	//
-	//Image RenderTarget::createImage(u32_t width, u32_t height, color_t color, i32_t channels, i32_t opacity, ImageInterpolationMode mode)
-	//{
-	//	Image image;
-	//	image.create(width, height, color, channels, opacity, mode, this->gctx);
-	//	return image;
-	//}
+	RenderTarget::~RenderTarget()
+	{
+		delete this->rsm;
+		this->rsm = nullptr;
+	}
 
 	void RenderTarget::push()
 	{
-		this->gctx->states.push(RenderState(this->gctx));
-		this->fill(Color::White);
-		this->stroke(Color::White);
-		this->pushMatrix();
+		this->rsm->pushState();
 	}
 
 	void RenderTarget::pop()
 	{
-		std::stack<RenderState> & states = this->gctx->states;
-		if (states.size() > 1)
-		{
-			states.pop();
-			this->gctx->hwndRenderTarget->SetTransform(states.top().metrics.top());
-		}
+		this->rsm->popState();
 	}
 
 	void RenderTarget::resetMatrix()
 	{
-		std::stack<D2D1::Matrix3x2F> & metrics = this->gctx->getActiveRenderState().metrics;
-		metrics.top() = D2D1::Matrix3x2F::Identity();
-		this->gctx->hwndRenderTarget->SetTransform(metrics.top());
+		D2D1::Matrix3x2F & matrix = this->rsm->getActiveState().getActiveMatrix();
+		this->rsm->getActiveState().setActiveMatrix(D2D1::Matrix3x2F::Identity());
 	}
 
 	void RenderTarget::pushMatrix()
 	{
-		std::stack<D2D1::Matrix3x2F> & metrics = this->gctx->getActiveRenderState().metrics;
-
-		if (metrics.empty())
-		{
-			metrics.push(D2D1::Matrix3x2F::Identity());
-		} else
-		{
-			metrics.push(metrics.top());
-		}
-
-		this->gctx->hwndRenderTarget->SetTransform(metrics.top());
+		this->rsm->getActiveState().pushMatrix();
 	}
 
 	void RenderTarget::popMatrix()
 	{
-		std::stack<D2D1::Matrix3x2F> & metrics = this->gctx->getActiveRenderState().metrics;
-		if (metrics.size() > 1)
-		{
-			metrics.pop();
-			this->gctx->hwndRenderTarget->SetTransform(metrics.top());
-		}
+		this->rsm->getActiveState().popMatrix();
 	}
 
 	void RenderTarget::translate(float x, float y)
 	{
-		D2D1::Matrix3x2F & matrix = this->gctx->getActiveRenderState().metrics.top();
-		matrix = matrix * D2D1::Matrix3x2F::Translation(x, y);
-		this->gctx->hwndRenderTarget->SetTransform(matrix);
+		const D2D1::Matrix3x2F & matrix = this->rsm->getActiveState().getActiveMatrix();
+		this->rsm->getActiveState().setActiveMatrix(matrix * D2D1::Matrix3x2F::Translation(x, y));	
 	}
 
 	void RenderTarget::rotate(float degrees)
 	{
-		D2D1::Matrix3x2F & matrix = this->gctx->getActiveRenderState().metrics.top();
-		matrix = matrix * D2D1::Matrix3x2F::Rotation(degrees, D2D1::Point2F(matrix.dx, matrix.dy));
-		this->gctx->hwndRenderTarget->SetTransform(matrix);
+		const D2D1::Matrix3x2F & matrix = this->rsm->getActiveState().getActiveMatrix();
+		this->rsm->getActiveState().setActiveMatrix(matrix * D2D1::Matrix3x2F::Rotation(degrees, D2D1::Point2F(matrix.dx, matrix.dy)));
 	}
 
 	void RenderTarget::scale(float factorX, float factorY)
 	{
-		D2D1::Matrix3x2F & matrix = this->gctx->getActiveRenderState().metrics.top();
-		matrix = matrix * D2D1::Matrix3x2F::Scale(factorX, factorY, D2D1::Point2F(matrix.dx, matrix.dy));
-		this->gctx->hwndRenderTarget->SetTransform(matrix);
+		const D2D1::Matrix3x2F & matrix = this->rsm->getActiveState().getActiveMatrix();
+		this->rsm->getActiveState().setActiveMatrix(matrix * D2D1::Matrix3x2F::Scale(factorX, factorY, D2D1::Point2F(matrix.dx, matrix.dy)));
 	}
 
 	void RenderTarget::background(const Color & color)
@@ -108,80 +75,80 @@ namespace Core
 
 	void RenderTarget::strokeWeight(float strokeWeight)
 	{
-		this->gctx->getActiveRenderState().strokeWeight = strokeWeight;
+		this->rsm->getActiveState().strokeWeight = strokeWeight;
 	}
 
 	void RenderTarget::noFill()
 	{
-		this->gctx->getActiveRenderState().active.fill = nullptr;
+		this->rsm->getActiveState().activeFill = nullptr;
 	}
 
 	void RenderTarget::noStroke()
 	{
-		this->gctx->getActiveRenderState().active.stroke = nullptr;
+		this->rsm->getActiveState().activeStroke = nullptr;
 	}
 
 	void RenderTarget::fill(const Color & color)
 	{
-		RenderState & state = this->gctx->getActiveRenderState();
-		state.solid.fill.setColor(color);
-		state.active.fill = state.solid.fill.getBrush();
+		RenderState & state = this->rsm->getActiveState();
+		state.solidFill.setColor(color);
+		state.activeFill = state.solidFill.getBrush();
 	}
 
 	void RenderTarget::stroke(const Color & color)
 	{
-		RenderState & state = this->gctx->getActiveRenderState();
-		state.solid.stroke.setColor(color);
-		state.active.stroke = state.solid.stroke.getBrush();
+		RenderState & state = this->rsm->getActiveState();
+		state.solidStroke.setColor(color);
+		state.activeStroke = state.solidStroke.getBrush();
 	}
 
 	void RenderTarget::linearFill(const std::vector<Color> & colors, float startX, float startY, float endX, float endY)
 	{
-		RenderState & state = this->gctx->getActiveRenderState();
-		state.linear.fill.setStart(startX, startY);
-		state.linear.fill.setEnd(endX, endY);
-		state.linear.fill.setColors(colors);
-		state.active.fill = state.linear.fill.getBrush();
+		RenderState & state = this->rsm->getActiveState();
+		state.linearFill.setStart(startX, startY);
+		state.linearFill.setEnd(endX, endY);
+		state.linearFill.setColors(colors);
+		state.activeFill = state.linearFill.getBrush();
 	}
 
 	void RenderTarget::linearStroke(const std::vector<Color> & colors, float startX, float startY, float endX, float endY)
 	{
-		RenderState & state = this->gctx->getActiveRenderState();
-		state.linear.stroke.setStart(startX, startY);
-		state.linear.stroke.setEnd(endX, endY);
-		state.linear.stroke.setColors(colors);
-		state.active.stroke = state.linear.stroke.getBrush();
+		RenderState & state = this->rsm->getActiveState();
+		state.linearStroke.setStart(startX, startY);
+		state.linearStroke.setEnd(endX, endY);
+		state.linearStroke.setColors(colors);
+		state.activeStroke = state.linearStroke.getBrush();
 	}
 
 	void RenderTarget::radialFill(const std::vector<Color> & colors, float centerX, float centerY, float radiusX, float radiusY, float offsetX, float offsetY)
 	{
-		RenderState & state = this->gctx->getActiveRenderState();
-		state.radial.fill.setCenter(centerX, centerY);
-		state.radial.fill.setRadius(radiusX, radiusY);
-		state.radial.fill.setOffset(offsetX, offsetY);
-		state.radial.fill.setColors(colors);
-		state.active.fill = state.radial.fill.getBrush();
+		RenderState & state = this->rsm->getActiveState();
+		state.radialFill.setCenter(centerX, centerY);
+		state.radialFill.setRadius(radiusX, radiusY);
+		state.radialFill.setOffset(offsetX, offsetY);
+		state.radialFill.setColors(colors);
+		state.activeFill = state.radialFill.getBrush();
 	}
 
 	void RenderTarget::radialStroke(const std::vector<Color> & colors, float centerX, float centerY, float radiusX, float radiusY, float offsetX, float offsetY)
 	{
-		RenderState & state = this->gctx->getActiveRenderState();
-		state.radial.stroke.setCenter(centerX, centerY);
-		state.radial.stroke.setRadius(radiusX, radiusY);
-		state.radial.stroke.setOffset(offsetX, offsetY);
-		state.radial.stroke.setColors(colors);
-		state.active.stroke = state.radial.stroke.getBrush();
+		RenderState & state = this->rsm->getActiveState();
+		state.radialStroke.setCenter(centerX, centerY);
+		state.radialStroke.setRadius(radiusX, radiusY);
+		state.radialStroke.setOffset(offsetX, offsetY);
+		state.radialStroke.setColors(colors);
+		state.activeStroke = state.radialStroke.getBrush();
 	}
 
 	void RenderTarget::rectMode(DrawMode mode)
 	{
-		this->gctx->getActiveRenderState().rectMode = mode;
+		this->rsm->getActiveState().rectMode = mode;
 	}
 
 	void RenderTarget::rect(float x1, float y1, float x2, float y2, float cornerRadiusX, float cornerRadiusY)
 	{
 		ID2D1HwndRenderTarget * rt = this->gctx->hwndRenderTarget.Get();
-		RenderState & state = this->gctx->getActiveRenderState();
+		RenderState & state = this->rsm->getActiveState();
 
 		D2D1_RECT_F rect = D2D1::RectF();
 
@@ -195,12 +162,12 @@ namespace Core
 
 		const D2D1_ROUNDED_RECT roundedRect = D2D1::RoundedRect(rect, cornerRadiusX, cornerRadiusY);
 
-		if (ID2D1Brush * fill = state.active.fill)
+		if (ID2D1Brush * fill = state.activeFill)
 		{
 			rt->FillRoundedRectangle(roundedRect, fill);
 		}
 
-		if (ID2D1Brush * stroke = state.active.stroke)
+		if (ID2D1Brush * stroke = state.activeStroke)
 		{
 			rt->DrawRoundedRectangle(roundedRect, stroke, state.strokeWeight, state.strokeStyle.getStrokeStyle());
 		}
@@ -213,13 +180,13 @@ namespace Core
 
 	void RenderTarget::ellipseMode(DrawMode mode)
 	{
-		this->gctx->getActiveRenderState().ellipseMode = mode;
+		this->rsm->getActiveState().ellipseMode = mode;
 	}
 
 	void RenderTarget::ellipse(float x, float y, float rx, float ry)
 	{
 		ID2D1HwndRenderTarget * rt = this->gctx->hwndRenderTarget.Get();
-		RenderState & state = this->gctx->getActiveRenderState();
+		RenderState & state = this->rsm->getActiveState();
 
 		D2D1_ELLIPSE ellipse;
 
@@ -238,12 +205,12 @@ namespace Core
 			default: break;
 		}
 
-		if (ID2D1Brush * fill = state.active.fill)
+		if (ID2D1Brush * fill = state.activeFill)
 		{
 			rt->FillEllipse(ellipse, fill);
 		}
 
-		if (ID2D1Brush * stroke = state.active.stroke)
+		if (ID2D1Brush * stroke = state.activeStroke)
 		{
 			rt->DrawEllipse(ellipse, stroke, state.strokeWeight, state.strokeStyle.getStrokeStyle());
 		}
@@ -257,10 +224,10 @@ namespace Core
 	void RenderTarget::point(float x, float y)
 	{
 		ID2D1HwndRenderTarget * rt = this->gctx->hwndRenderTarget.Get();
-		RenderState & state = this->gctx->getActiveRenderState();
+		RenderState & state = this->rsm->getActiveState();
 		const D2D1_ELLIPSE ellipse = D2D1::Ellipse(D2D1::Point2F(x, y), state.strokeWeight, state.strokeWeight);
 
-		if (ID2D1Brush * stroke = state.active.stroke)
+		if (ID2D1Brush * stroke = state.activeStroke)
 		{
 			rt->FillEllipse(ellipse, stroke);
 		}
@@ -269,9 +236,9 @@ namespace Core
 	void RenderTarget::line(float x1, float y1, float x2, float y2)
 	{
 		ID2D1HwndRenderTarget * rt = this->gctx->hwndRenderTarget.Get();
-		RenderState & state = this->gctx->getActiveRenderState();
+		RenderState & state = this->rsm->getActiveState();
 
-		if (ID2D1Brush * stroke = state.active.stroke)
+		if (ID2D1Brush * stroke = state.activeStroke)
 		{
 			rt->DrawLine(D2D1::Point2F(x1, y1), D2D1::Point2F(x2, y2), stroke, state.strokeWeight, state.strokeStyle.getStrokeStyle());
 		}
@@ -279,58 +246,27 @@ namespace Core
 
 	void RenderTarget::imageMode(DrawMode mode)
 	{
-		this->gctx->getActiveRenderState().imageMode = mode;
+		this->rsm->getActiveState().imageMode = mode;
 	}
-
-	//void RenderTarget::image(const Core::Image & img, float x, float y)
-	//{
-	//	image(img, x, y, (float)img.width, (float)img.height);
-	//}
-	//
-	//void RenderTarget::image(const Core::Image & img, float x1, float y1, float x2, float y2)
-	//{
-	//	if (ID2D1Bitmap * bitmap = img.getBitmap())
-	//	{
-	//		RenderState & state = this->gctx->getActiveRenderState();
-	//
-	//		D2D1_RECT_F rect;
-	//		switch (state.imageMode)
-	//		{
-	//			case DrawMode::Corner:  rect = D2D1::RectF(x1, y1, x1 + x2, y1 + y2); break;
-	//			case DrawMode::Corners: rect = D2D1::RectF(x1, y1, x2, y2); break;
-	//			case DrawMode::Center:  rect = D2D1::RectF(x1 - x2 / 2.f, y1 - y2 / 2.f, x1 + x2 / 2.f, y1 + y2 / 2.f); break;
-	//			default: break;
-	//		}
-	//
-	//		ID2D1HwndRenderTarget * rt = this->gctx->hwndRenderTarget.Get();
-	//		rt->DrawBitmap(
-	//			bitmap,
-	//			rect,
-	//			img.opacity / 255.f,
-	//			static_cast<D2D1_BITMAP_INTERPOLATION_MODE>(img.mode),
-	//			D2D1::RectF(0.f, 0.f, (float)img.width, (float)img.height)
-	//		);
-	//	}
-	//}
 
 	void RenderTarget::beginShape()
 	{
-		this->gctx->getActiveRenderState().shapeRenderer.beginShape();
+		this->rsm->getActiveState().shapeRenderer.beginShape();
 	}
 
 	void RenderTarget::endShape(ShapeEndType type)
 	{
 		ID2D1HwndRenderTarget * rt = this->gctx->hwndRenderTarget.Get();
-		RenderState & state = this->gctx->getActiveRenderState();
+		RenderState & state = this->rsm->getActiveState();
 		ShapeRenderer & shapeRenderer = state.shapeRenderer;
 		shapeRenderer.endShape(type);
 
-		if (ID2D1Brush * fill = state.active.fill)
+		if (ID2D1Brush * fill = state.activeFill)
 		{
 			rt->FillGeometry(shapeRenderer.getGeometry(), fill);
 		}
 
-		if (ID2D1Brush * stroke = state.active.stroke)
+		if (ID2D1Brush * stroke = state.activeStroke)
 		{
 			rt->DrawGeometry(shapeRenderer.getGeometry(), stroke, state.strokeWeight, state.strokeStyle.getStrokeStyle());
 		}
@@ -338,72 +274,72 @@ namespace Core
 
 	void RenderTarget::shapeFillMode(FillMode fillMode)
 	{
-		this->gctx->getActiveRenderState().shapeRenderer.setFillMode(fillMode);
+		this->rsm->getActiveState().shapeRenderer.setFillMode(fillMode);
 	}
 
 	void RenderTarget::shapePathSegment(PathSegment pathSegment)
 	{
-		this->gctx->getActiveRenderState().shapeRenderer.setPathSegment(pathSegment);
+		this->rsm->getActiveState().shapeRenderer.setPathSegment(pathSegment);
 	}
 
 	void RenderTarget::vertex(float x, float y)
 	{
-		this->gctx->getActiveRenderState().shapeRenderer.vertex(x, y);
+		this->rsm->getActiveState().shapeRenderer.vertex(x, y);
 	}
 
 	void RenderTarget::quadraticBezier(float x1, float y1, float x2, float y2)
 	{
-		this->gctx->getActiveRenderState().shapeRenderer.quadraticBezier(x1, y1, x2, y2);
+		this->rsm->getActiveState().shapeRenderer.quadraticBezier(x1, y1, x2, y2);
 	}
 
 	void RenderTarget::bezier(float x1, float y1, float x2, float y2, float x3, float y3)
 	{
-		this->gctx->getActiveRenderState().shapeRenderer.bezier(x1, y1, x2, y2, x3, y3);
+		this->rsm->getActiveState().shapeRenderer.bezier(x1, y1, x2, y2, x3, y3);
 	}
 
 	void RenderTarget::arc(float x, float y, float width, float height, float rotationInDegrees, SweepDirection sweepDirection, ArcSize size)
 	{
-		this->gctx->getActiveRenderState().shapeRenderer.arc(x, y, width, height, rotationInDegrees, sweepDirection, size);
+		this->rsm->getActiveState().shapeRenderer.arc(x, y, width, height, rotationInDegrees, sweepDirection, size);
 	}
 
 	void RenderTarget::strokeStartCap(CapStyle style)
 	{
-		this->gctx->getActiveRenderState().strokeStyle.setStartCap(style);
+		this->rsm->getActiveState().strokeStyle.setStartCap(style);
 	}
 
 	void RenderTarget::strokeEndCap(CapStyle style)
 	{
-		this->gctx->getActiveRenderState().strokeStyle.setEndCap(style);
+		this->rsm->getActiveState().strokeStyle.setEndCap(style);
 	}
 
 	void RenderTarget::strokeDashCap(CapStyle style)
 	{
-		this->gctx->getActiveRenderState().strokeStyle.setDashCap(style);
+		this->rsm->getActiveState().strokeStyle.setDashCap(style);
 	}
 
 	void RenderTarget::strokeLineJoin(LineJoin lineJoin)
 	{
-		this->gctx->getActiveRenderState().strokeStyle.setLineJoin(lineJoin);
+		this->rsm->getActiveState().strokeStyle.setLineJoin(lineJoin);
 	}
 
 	void RenderTarget::strokeDashStyle(DashStyle style)
 	{
-		this->gctx->getActiveRenderState().strokeStyle.setDashStyle(style);
+		this->rsm->getActiveState().strokeStyle.setDashStyle(style);
 	}
 
 	void RenderTarget::strokeDashes(const std::vector<float> & dashes)
 	{
-		this->gctx->getActiveRenderState().strokeStyle.setDashes(dashes);
+		this->rsm->getActiveState().strokeStyle.setDashes(dashes);
 	}
 
 	void RenderTarget::strokeDashOffset(float offset)
 	{
-		this->gctx->getActiveRenderState().strokeStyle.setDashOffset(offset);
+		this->rsm->getActiveState().strokeStyle.setDashOffset(offset);
 	}
 
 	void RenderTarget::strokeMiterLimit(float limit)
 	{
-		this->gctx->getActiveRenderState().strokeStyle.setMiterLimit(limit);
+		this->rsm->getActiveState().strokeStyle.setMiterLimit(limit);
 	}
 
 	void RenderTarget::text(const std::string & string, float x, float y)
@@ -420,7 +356,7 @@ namespace Core
 
 	void RenderTarget::text(const std::string & string, float x, float y, float width, float height)
 	{
-		RenderState & state = this->gctx->getActiveRenderState();
+		RenderState & state = this->rsm->getActiveState();
 		ID2D1HwndRenderTarget * rt = this->gctx->hwndRenderTarget.Get();
 
 		TextRenderer & textRenderer = state.textRenderer;
@@ -431,7 +367,7 @@ namespace Core
 		IDWriteTextLayout * layout = textRenderer.getTextLayout();
 		if (!layout) return;
 
-		if (ID2D1Brush * brush = state.active.fill)
+		if (ID2D1Brush * brush = state.activeFill)
 		{
 			rt->DrawTextLayout(
 				D2D1::Point2F(x, y),
@@ -443,62 +379,62 @@ namespace Core
 
 	void RenderTarget::textSize(float textSize)
 	{
-		this->gctx->getActiveRenderState().textRenderer.setTextSize(textSize);
+		this->rsm->getActiveState().textRenderer.setTextSize(textSize);
 	}
 
 	void RenderTarget::textUnderline(bool active)
 	{
-		this->gctx->getActiveRenderState().textRenderer.setUnderline(active);
+		this->rsm->getActiveState().textRenderer.setUnderline(active);
 	}
 
 	void RenderTarget::textStrikeThrough(bool active)
 	{
-		this->gctx->getActiveRenderState().textRenderer.setStrikeThrough(active);
+		this->rsm->getActiveState().textRenderer.setStrikeThrough(active);
 	}
 
 	void RenderTarget::textFont(const std::string & font)
 	{
-		this->gctx->getActiveRenderState().textRenderer.setFont(font);
+		this->rsm->getActiveState().textRenderer.setFont(font);
 	}
 
 	void RenderTarget::textFontWeight(FontWeight fontWeight)
 	{
-		this->gctx->getActiveRenderState().textRenderer.setFontWeight(fontWeight);
+		this->rsm->getActiveState().textRenderer.setFontWeight(fontWeight);
 	}
 
 	void RenderTarget::textFontStyle(FontStyle fontStyle)
 	{
-		this->gctx->getActiveRenderState().textRenderer.setFontStyle(fontStyle);
+		this->rsm->getActiveState().textRenderer.setFontStyle(fontStyle);
 	}
 
 	void RenderTarget::textFontStretch(FontStretch fontStretch)
 	{
-		this->gctx->getActiveRenderState().textRenderer.setFontStretch(fontStretch);
+		this->rsm->getActiveState().textRenderer.setFontStretch(fontStretch);
 	}
 
 	void RenderTarget::textWordWrapping(WordWrapping wordWrapping)
 	{
-		this->gctx->getActiveRenderState().textRenderer.setWordWrapping(wordWrapping);
+		this->rsm->getActiveState().textRenderer.setWordWrapping(wordWrapping);
 	}
 
 	void RenderTarget::textAlignment(Core::TextAlignment textAlignment)
 	{
-		this->gctx->getActiveRenderState().textRenderer.setTextAlignment(textAlignment);
+		this->rsm->getActiveState().textRenderer.setTextAlignment(textAlignment);
 	}
 
 	void RenderTarget::textParagraphAlignment(ParagraphAlignment paragraphAlignment)
 	{
-		this->gctx->getActiveRenderState().textRenderer.setParagraphAlignment(paragraphAlignment);
+		this->rsm->getActiveState().textRenderer.setParagraphAlignment(paragraphAlignment);
 	}
 
 	FVector2 RenderTarget::getTextSize()
 	{
-		return this->gctx->getActiveRenderState().textRenderer.getSize();
+		return this->rsm->getActiveState().textRenderer.getSize();
 	}
 
 	FVector2 RenderTarget::getTextSize(const std::string & content)
 	{
-		this->gctx->getActiveRenderState().textRenderer.setText(content);
+		this->rsm->getActiveState().textRenderer.setText(content);
 		return getTextSize();
 	}
 

@@ -14,16 +14,14 @@
 namespace Core
 {
 
+	class RenderStateManager;
 	class GraphicsContext;
 
 	class RenderTarget {
 	public:
 
 		explicit RenderTarget(GraphicsContext *& gctx);
-		virtual ~RenderTarget() = default;
-
-		//Image loadImage(const std::string & filepath);
-		//Image createImage(u32_t width, u32_t height, Color color = Color::White, i32_t channels = 4, i32_t opacity = 255, ImageInterpolationMode mode = ImageInterpolationMode::NearestNeighbor);
+		virtual ~RenderTarget();
 
 		void push();
 		void pop();
@@ -35,7 +33,7 @@ namespace Core
 		void rotate(float degrees);
 		void scale(float factorX, float factorY);
 
-		void background(const Color & color_t);
+		void background(const Color & color);
 		void strokeWeight(float strokeWeight);
 
 		void noFill();
@@ -61,9 +59,7 @@ namespace Core
 
 		void line(float x1, float y1, float x2, float y2);
 		void imageMode(DrawMode mode);
-		//void image(const Image & img, float x, float y);
-		//void image(const Image & img, float x1, float y1, float x2, float y2);
-
+		
 		void beginShape();
 		void endShape(ShapeEndType type);
 		void shapeFillMode(FillMode fillMode);
@@ -105,7 +101,11 @@ namespace Core
 
 	private:
 
+		/* instance of a GraphicsContext. Used for drawing routines */
 		GraphicsContext *& gctx;
+
+		/* instance of a RenderStateManager. */
+		RenderStateManager * rsm;
 
 	};
 

@@ -3,8 +3,6 @@
 #include <Core/System/Datatypes.hpp>
 #include <Core/Maths/Vector2.hpp>
 
-#include <Core/Rendering/RenderState.hpp>
-
 #include <d2d1.h>
 #pragma comment(lib, "d2d1")
 
@@ -21,7 +19,6 @@
 #include <wrl/client.h>
 
 #include <memory>
-#include <stack>
 
 namespace Core
 {
@@ -29,16 +26,17 @@ namespace Core
 	class GraphicsContext {
 	public:
 
-		explicit GraphicsContext(Windowhandle handle);
-		~GraphicsContext();
+		GraphicsContext();
+		~GraphicsContext() = default;
+
+		bool initialize(Windowhandle handle);
+		void destroy();
 
 		void beginDraw();
 		void endDraw();
 
 		void resizeViewport(u32_t width, u32_t height);
 
-		RenderState & getActiveRenderState();
-		
 	public:
 
 		Microsoft::WRL::ComPtr<ID2D1Factory> mainFactory;
@@ -46,8 +44,6 @@ namespace Core
 		Microsoft::WRL::ComPtr<IDWriteFactory> writeFactory;
 		Microsoft::WRL::ComPtr<ID2D1HwndRenderTarget> hwndRenderTarget;
 		
-		std::stack<RenderState> states;
-
 		Gdiplus::GdiplusStartupInput gdiInput;
 		ULONG_PTR gdiToken;
 

@@ -3,6 +3,12 @@
 
 namespace Core
 {
+	
+	Application::~Application()
+	{
+		delete this->gctx;
+		this->gctx = nullptr;
+	}
 
 	void Application::pauseDrawing()
 	{
@@ -20,22 +26,14 @@ namespace Core
 	}
 	
 	Application::Application(i32_t width, i32_t height, const std::string & title) :
-		Window(),
-		RenderTarget(this->gctx),
-		drawingPaused(true)
+		RenderWindow(this->gctx),
+		drawingPaused(true),
+		gctx(new GraphicsContext())
 	{
 		this->create(width, height, title);
 		this->setResizable(false);
 		this->setMaximizable(false);
 		this->setMinimizable(false);
-	}
-
-	void Application::resizeViewport()
-	{
-		if (this->gctx)
-		{
-			this->gctx->resizeViewport(this->width, this->height);
-		}
 	}
 
 	void Application::setupImpl()
@@ -54,12 +52,6 @@ namespace Core
 
 	void Application::startSketch()
 	{
-		/* create the GraphicsContxt */
-		this->gctx = new GraphicsContext(this->windowHandle);
-		
-		/* push the first RenderState onto the stack */
-		this->push();
-
 		/* set the framerate limit */
 		this->setFramerateLimit(60);
 		
@@ -81,13 +73,6 @@ namespace Core
 			/* raise processEvents() function */
 			this->dispatchEvents();
 		}
-
-		/* destroy the graphics context */
-		delete this->gctx;
-		this->gctx = nullptr;
-		
-		/* destroy the window */
-		this->destroy();
 	}
 
 }

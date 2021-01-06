@@ -30,6 +30,8 @@
     <ClInclude Include="Include\Core\Audio\WaveFile.hpp" />
     <ClInclude Include="Include\Core\Audio\WaveFileReader.hpp" />
     <ClInclude Include="Include\Core\Maths\Vector3.hpp" />
+    <ClInclude Include="Include\Core\Rendering\RenderStateManager.hpp" />
+    <ClInclude Include="Include\Core\Rendering\RenderWindow.hpp" />
     <ClInclude Include="Include\Core\System\Logger.hpp" />
     <ClInclude Include="Include\Core\Window\DisplayMode.hpp" />
     <ClInclude Include="Include\Core\Window\SystemCursor.hpp" />
@@ -81,12 +83,14 @@
     <ClCompile Include="Source\Core\Audio\AudioListener.cpp" />
     <ClCompile Include="Source\Core\Rendering\Color.cpp" />
     <ClCompile Include="Source\Core\Rendering\Helpers.cpp" />
+    <ClCompile Include="Source\Core\Rendering\RenderStateManager.cpp" />
     <ClCompile Include="Source\Core\Rendering\RenderTarget.cpp" />
     <ClCompile Include="Source\Core\Rendering\GraphicsContext.cpp" />
     <ClCompile Include="Source\Core\Rendering\Image.cpp" />
     <ClCompile Include="Source\Core\Rendering\LinearGradientBrush.cpp" />
     <ClCompile Include="Source\Core\Rendering\RadialGradientBrush.cpp" />
     <ClCompile Include="Source\Core\Rendering\RenderState.cpp" />
+    <ClCompile Include="Source\Core\Rendering\RenderWindow.cpp" />
     <ClCompile Include="Source\Core\Rendering\ShapeRenderer.cpp" />
     <ClCompile Include="Source\Core\Rendering\SolidColorBrush.cpp" />
     <ClCompile Include="Source\Core\Rendering\StrokeStyle.cpp" />

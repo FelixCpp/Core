@@ -19,12 +19,9 @@
 namespace Core
 {
 
+	class GraphicsContext;
+
 	class Window {
-	private:
-
-		/* internal window-class identifier */
-		inline static constexpr const char * LPSZ_CLASS_NAME = "Core_Window_Class";
-
 	public:
 
 		/* the monitors width */
@@ -36,10 +33,10 @@ namespace Core
 	public:
 
 		/* the default constructor */
-		Window();
+		explicit Window(GraphicsContext *& gctx);
 
 		/* a virtual destructor because this class should be a baseclass. */
-		virtual ~Window();
+		virtual ~Window() = default;
 
 		/* enters the fullscreen-mode with the specified properties of the displayMode parameter */
 		bool enterFullscreen(const DisplayMode & displayMode);
@@ -54,7 +51,7 @@ namespace Core
 		void noFramerateLimit();
 
 		/* creates a window with the given properties */
-		bool create(u32_t width, u32_t height, const std::string & title);
+		virtual bool create(u32_t width, u32_t height, const std::string & title) = 0;
 
 		/* returns true if the window is currently open */
 		bool isOpen() const;
@@ -192,22 +189,10 @@ namespace Core
 		/* calls the calculateFps and limitFps function */
 		void handleFps();
 
-		/* destroys the handles */
-		void destroy();
+	private:
 
 		/* grabs the mouse cursor based on the parameter */
 		void grabCursor(bool grabbed);
-
-	private:
-
-		/* handles the events from windows */
-		static i64_t __stdcall processEvents(Windowhandle handle, u32_t msg, u64_t wParam, i64_t lParam);
-
-		/* decodes the key based on the flags. (Gets information which button is pressed) */
-		static Keyboard::Key decodeKeyCode(u64_t key, i64_t flags);
-
-		/* tracks the mouse events */
-		void trackMouseEvent(bool track);
 
 		/* calculates the fps */
 		void calculateFps();
@@ -267,17 +252,8 @@ namespace Core
 		/* indicates wether the mouse cursor is grabbed inside the windows boundary or not */
 		bool mouseCursorGrabbed;
 
-		/* indicates the state of the mouse wether its inside of the window boundary or not */
-		bool mouseInsideWindow;
-		
-		/* indicates wether the window was closed after creation or not */
-		bool open;
-
 		/* indicates wether the window is in fullscreen-mode or not */
 		bool fullscreen;
-
-		/* indicates wether the user is currently resizing the window or not */
-		bool resizing;
 
 	private: /* framerate limit */
 
@@ -295,6 +271,10 @@ namespace Core
 
 		/* frameCount which gets increased everytime when handleFps() is called */
 		u32_t internalFrameCount;
+
+	private:
+
+		GraphicsContext *& gctx;
 
 	};
 
