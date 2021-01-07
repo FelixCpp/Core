@@ -99,12 +99,6 @@
     <ClInclude Include="Include\Core\Window\SystemCursor.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="Include\Core\Audio\SoundBuffer.hpp">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\Core\Audio\SoundSource.hpp">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="Include\Core\Audio\WaveFile.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
@@ -165,12 +159,6 @@
     <ClInclude Include="Include\Core\Rendering\TextRenderer.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="Include\Core\Audio\AudioTarget.hpp">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\Core\Audio\AudioListener.hpp">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="Include\Core\Window\DisplayMode.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
@@ -190,6 +178,12 @@
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="Include\Core\Rendering\ImageTarget.hpp">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Core\Audio\SoundDevice.hpp">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Core\Audio\SoundBufferCollection.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>
@@ -218,13 +212,7 @@
     <ClCompile Include="Source\Core\Maths\Matrix3x3.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Core\Audio\SoundBuffer.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Core\Audio\WaveFileReader.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Core\Audio\SoundSource.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="Source\Core\Window\Window.cpp">
@@ -266,12 +254,6 @@
     <ClCompile Include="Source\Core\Rendering\TextRenderer.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Core\Audio\AudioTarget.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Core\Audio\AudioListener.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Core\Window\DisplayMode.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
@@ -288,6 +270,12 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="Source\Core\Rendering\ImageTarget.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Core\Audio\SoundDevice.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Core\Audio\SoundBufferCollection.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>
