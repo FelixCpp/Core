@@ -19,7 +19,7 @@ namespace Core
 	public:
 
 		/* the default constructor */
-		RenderWindow(GraphicsContext *& gctx, RenderStateManager *& rsm);
+		explicit RenderWindow(GraphicsContext *& gctx, RenderStateManager *& rsm);
 
 		/* a virtual destructor */
 		virtual ~RenderWindow();
