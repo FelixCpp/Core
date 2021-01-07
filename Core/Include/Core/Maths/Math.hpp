@@ -43,11 +43,13 @@ namespace Core
 		inline static constexpr T Log17				= (T)2.8332133440562160802495346178731;
 		inline static constexpr T InvLog10			= (T)0.434294481903251827651128918916605;
 
+		/* linear interpolation */
 		inline static T lerp(T v0, T v1, T t)
 		{
 			return ((1 - t) * v0) + (t * v1);
 		}
 
+		/* linear interpolation with execution */
 		inline static T lerp(T v0, T v1, T t, T execute)
 		{
 			const T value = MathImpl::lerp(v0, v1, t);
@@ -61,6 +63,7 @@ namespace Core
 			return value;
 		}
 
+		/* calculates the distance in 2D space between two points */
 		inline static T distance(T x1, T y1, T x2, T y2)
 		{
 			const T xDiff = x2 - x1;
@@ -69,17 +72,20 @@ namespace Core
 			return std::sqrt(lengthSq);
 		}
 
+		/* basically clamps a value between min and max */
 		inline static T constrain(T value, T min, T max)
 		{
 			return value <= min ? min : value >= max ? max : value;
 		}
 
+		/* maps the value from istart, istop to ostart and ostop */
 		template<typename = std::enable_if_t<std::is_floating_point_v<T>>>
 		inline static T map(T value, T istart, T istop, T ostart, T ostop)
 		{
 			return ostart + (ostop - ostart) * ((value - istart) / (istop - istart));
 		}
 
+		/* maps the value from istart, istop to ostart and ostop constrained by ostart and ostop */
 		template<typename = std::enable_if_t<std::is_floating_point_v<T>>>
 		inline static T cmap(T value, T istart, T istop, T ostart, T ostop)
 		{
@@ -90,11 +96,13 @@ namespace Core
 			return constrain(output, min, max);
 		}
 
+		/* returns the radians converted in degrees */
 		inline static T degrees(T radians)
 		{
 			return radians * (T)180 / MathImpl::Pi;
 		}
 
+		/* returns the degrees converted in radians */
 		inline static T radians(T degrees)
 		{
 			return degrees * MathImpl::Pi / (T)180;

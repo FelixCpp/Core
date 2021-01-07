@@ -10,6 +10,21 @@ namespace Core
 		return GetAsyncKeyState((int)button) & 0x8000;
 	}
 
+	std::vector<Mouse::Button> Mouse::areButtonsPressed(const std::vector<Button> & buttons)
+	{
+		std::vector<Button> pressedButtons;
+		
+		for (const Button & button : buttons)
+		{
+			if (Mouse::isButtonPressed(button))
+			{
+				pressedButtons.push_back(button);
+			}
+		}
+
+		return pressedButtons;
+	}
+
 	void Mouse::setPosition(i32_t x, i32_t y)
 	{
 		SetCursorPos(x, y);

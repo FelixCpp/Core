@@ -8,7 +8,11 @@ namespace Core
 
 extern int _cdecl printf(char const * const _Format, ...);
 
-#define CORE_SHOW_DEBUG
+#ifdef CORE_DONT_SHOW_DEBUG
+#define CORE_SHOW_DEBUG 0
+#else
+#define CORE_SHOW_DEBUG 1
+#endif // !CORE_DONT_SHOW_DEBUG
 
 #if defined(CORE_SHOW_DEBUG)
 #define CORE_LOG(level, format, ...)\

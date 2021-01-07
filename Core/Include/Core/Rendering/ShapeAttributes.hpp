@@ -4,8 +4,8 @@ namespace Core
 {
 
 	enum class ShapeEndType {
-		Open,
-		Closed
+		Open, // leave the shape as it is
+		Closed // connect the end of the shape with the starting point
 	};
 
 	enum class FillMode {

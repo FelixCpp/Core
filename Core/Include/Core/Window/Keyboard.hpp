@@ -2,6 +2,8 @@
 
 #include <Core/System/StaticObject.hpp>
 
+#include <vector>
+
 namespace Core
 {
 
@@ -178,7 +180,11 @@ namespace Core
             OemClear	                = 0xFE	//< Clear key
 	    };
 
+        /* checks the state of the key. It returns true if the key is currently being held down */
 		static bool isKeyPressed(Key key);
+
+        /* checks every key state. If the key is pressed, he will be stored and returned */
+        static std::vector<Key> areKeysPressed(const std::vector<Key> & keys);
 
 	};
 

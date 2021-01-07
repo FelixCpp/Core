@@ -2,8 +2,6 @@
 
 #include <Windows.h>
 
-static HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-
 namespace Core
 {
 
@@ -17,13 +15,13 @@ namespace Core
 		else if (logLevel == "ERROR") wAttributes = 12; // Bright Red
 
 		/* change the color */
-		SetConsoleTextAttribute(hConsole, wAttributes);
+		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), wAttributes);
 	}
 
 	void ChangeConsoleColorToDefault()
 	{
 		/* change it back to black background with white foreground */
-		SetConsoleTextAttribute(hConsole, 7);
+		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
 	}
 
 }
