@@ -7,35 +7,32 @@ namespace Core
 
 	SoundSource::SoundSource() :
 		sourceID(0),
-		attachedBufferID(0),
 		pitch(1.f),
 		volume(1.f),
 		position(0.f, 0.f, 0.f),
 		velocity(0.f, 0.f, 0.f),
 		loop(false)
 	{
-		alGenSources(1, &this->sourceID);
-		alSourcef(this->sourceID, AL_PITCH, this->pitch);
-		alSourcef(this->sourceID, AL_GAIN, this->volume);
-		alSource3f(this->sourceID, AL_POSITION, this->position.x, this->position.y, this->position.z);
-		alSource3f(this->sourceID, AL_VELOCITY, this->velocity.x, this->velocity.y, this->velocity.z);
-		alSourcei(this->sourceID, AL_LOOPING, this->loop);
-		alSourcei(this->sourceID, AL_BUFFER, this->attachedBufferID);
 	}
 
-	SoundSource::~SoundSource()
+	SoundSource SoundSource::create(u32_t bufferID)
 	{
-		alDeleteSources(1, &this->sourceID);
+		SoundSource result;
+		u32_t & sourceID = result.sourceID;
+		
+		alGenSources(1, &sourceID);
+		alSourcef(sourceID, AL_PITCH, result.pitch);
+		alSourcef(sourceID, AL_GAIN, result.volume);
+		alSource3f(sourceID, AL_POSITION, result.position.x, result.position.y, result.position.z);
+		alSource3f(sourceID, AL_VELOCITY, result.velocity.x, result.velocity.y, result.velocity.z);
+		alSourcei(sourceID, AL_LOOPING, result.loop);
+		alSourcei(sourceID, AL_BUFFER, bufferID);
+
+		return result;
 	}
 
-	void SoundSource::play(u32_t bufferID)
+	void SoundSource::play()
 	{
-		if (this->attachedBufferID != bufferID)
-		{
-			this->attachedBufferID = bufferID;
-			alSourcei(this->sourceID, AL_BUFFER, this->attachedBufferID);
-		}
-
 		alSourcePlay(this->sourceID);
 	}
 
@@ -133,6 +130,11 @@ namespace Core
 			case AL_STOPPED: return State::Stopped;
 			default: return State::Invalid;
 		}
+	}
+
+	u32_t SoundSource::getSourceID() const
+	{
+		return this->sourceID;
 	}
 
 }

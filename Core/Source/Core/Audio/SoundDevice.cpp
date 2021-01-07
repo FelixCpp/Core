@@ -7,75 +7,60 @@
 namespace Core
 {
 
-	SoundDevice & SoundDevice::get()
-	{
-		static SoundDevice device;
-		return device;
-	}
+	ALCdevice * SoundDevice::device = nullptr;
+	ALCcontext * SoundDevice::context = nullptr;
+	std::string SoundDevice::deviceName = "";
 
-	const std::string & SoundDevice::name() const
+	const std::string & SoundDevice::name()
 	{
-		return this->deviceName;
-	}
-
-	SoundDevice::SoundDevice() :
-		device(nullptr),
-		context(nullptr),
-		deviceName()
-	{
-		this->initialize();
-	}
-
-	SoundDevice::~SoundDevice()
-	{
-		this->shutdown();
+		return deviceName;
 	}
 
 	bool SoundDevice::initialize()
 	{
 		/* open the default AudioDevice */
-		this->device = alcOpenDevice(nullptr);
-		if (!this->device)
+		device = alcOpenDevice(nullptr);
+		if (!device)
 		{
 			CORE_ERROR("Failed to open the default AudioDevice");
-			this->shutdown();
+			shutdown();
 			return false;
 		}
 
 		/* create a context */
-		this->context = alcCreateContext(this->device, nullptr);
-		if (!this->context)
+		context = alcCreateContext(device, nullptr);
+		if (!context)
 		{
 			CORE_ERROR("Failed to create an AudioDevice");
-			this->shutdown();
+			shutdown();
 			return false;
 		}
 
 		/* set the context */
-		if (!alcMakeContextCurrent(this->context))
+		if (!alcMakeContextCurrent(context))
 		{
 			CORE_ERROR("Failed to make context current");
-			this->shutdown();
+			shutdown();
 			return false;
 		}
 
-		if (alcIsExtensionPresent(this->device, "ALC_ENUMERATE_ALL_EXT"))
+		if (alcIsExtensionPresent(device, "ALC_ENUMERATE_ALL_EXT"))
 		{
-			this->deviceName = alcGetString(this->device, ALC_ALL_DEVICES_SPECIFIER);
+			deviceName = alcGetString(device, ALC_ALL_DEVICES_SPECIFIER);
 		}
 
-		if (this->deviceName.empty())
+		if (deviceName.empty())
 		{
-			this->deviceName = alcGetString(this->device, ALC_DEVICE_SPECIFIER);
+			deviceName = alcGetString(device, ALC_DEVICE_SPECIFIER);
 		}
 	}
 
 	void SoundDevice::shutdown()
 	{
 		alcMakeContextCurrent(nullptr);
-		if(this->context) alcDestroyContext(this->context);
-		if(this->device) alcCloseDevice(this->device);
-		this->deviceName.clear();
+		if(context) alcDestroyContext(context);
+		if(device) alcCloseDevice(device);
+		deviceName.clear();
 	}
 
 }
