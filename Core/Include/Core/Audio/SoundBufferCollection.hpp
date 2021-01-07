@@ -31,7 +31,7 @@ namespace Core
 	private:
 
 		/* returns the OpenAL audioFormat */
-		static i32_t getAudioFormat(u16_t channels, u16_t bitsPerSamples);
+		static i32_t getAudioFormat(u16_t channels);
 
 	private:
 

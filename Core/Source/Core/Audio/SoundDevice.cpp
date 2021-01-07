@@ -4,6 +4,8 @@
 #include <al.h>
 #include <alc.h>
 
+#pragma comment(lib, "OpenAL32.lib")
+
 namespace Core
 {
 

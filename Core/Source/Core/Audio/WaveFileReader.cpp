@@ -15,7 +15,7 @@ namespace Core
 			CORE_ERROR("Failed to open \"%s\"", filepath.c_str());
 			return false;
 		}
-
+        
         /* read in the header informations */
         WaveFileHeader & header = file.header;
         if (!reader.read(reinterpret_cast<char *>(&header), sizeof WaveFileHeader))
@@ -23,12 +23,12 @@ namespace Core
             CORE_ERROR("Failed to read the WaveFileHeader");
             return false;
         }
-
+        
         /* create room for the each sample */
         file.data.resize(header.subchunk2Size);
         
         /* read the data in */
-        if (!reader.read(&file.data[0], file.data.size()))
+        if (!reader.read(reinterpret_cast<char *>(&file.data[0]), header.subchunk2Size))
         {
             CORE_ERROR("Failed to read in the data");
             return false;

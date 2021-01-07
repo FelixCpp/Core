@@ -24,14 +24,19 @@ namespace Core
 		/* read the data from the filepath into the file object */
 		if (!WaveFileReader::read(filepath, file))
 		{
-			CORE_ERROR("Failed to read data from \"%s\"", filepath.c_str());
+			/* we don't need to print anything out. Its all done in WaveFileReader::read(...) */
 			return 0;
 		}
 
 		/* get the OpenAL audio format */
 		const WaveFileHeader & header = file.header;
-		const ALenum audioFormat = getAudioFormat(header.channels, header.bitsPerSample);
-		
+		const ALenum audioFormat = getAudioFormat(header.channels);
+		if (audioFormat == -1)
+		{
+			CORE_ERROR("Invalid Audio Format (%d)", audioFormat);
+			return 0;
+		}
+
 		/* create a buffer */
 		u32_t buffer = 0;
 		alGenBuffers(1, &buffer);
@@ -85,19 +90,17 @@ namespace Core
 		this->buffers.clear();
 	}
 
-	i32_t SoundBufferCollection::getAudioFormat(u16_t channels, u16_t bitsPerSamples)
+	i32_t SoundBufferCollection::getAudioFormat(u16_t channels)
 	{
-		if (channels == 1)
+		switch (channels)
 		{
-			if (bitsPerSamples == 8) return AL_FORMAT_MONO8;
-			if (bitsPerSamples == 16) return AL_FORMAT_MONO16;
-		} else if (channels == 2)
-		{
-			if (bitsPerSamples == 8) return AL_FORMAT_STEREO8;
-			if (bitsPerSamples == 16) return AL_FORMAT_STEREO16;
-		} else
-		{
-			return -1;
+			case 1:  return AL_FORMAT_MONO16;                    break;
+			case 2:  return AL_FORMAT_STEREO16;                  break;
+			case 4:  return alGetEnumValue("AL_FORMAT_QUAD16");  break;
+			case 6:  return alGetEnumValue("AL_FORMAT_51CHN16"); break;
+			case 7:  return alGetEnumValue("AL_FORMAT_61CHN16"); break;
+			case 8:  return alGetEnumValue("AL_FORMAT_71CHN16"); break;
+			default: return -1;                                  break;
 		}
 	}
 

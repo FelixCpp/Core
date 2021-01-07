@@ -2,6 +2,7 @@
 
 #include <string>
 #include <Core/Audio/SoundSource.hpp>
+#include <Core/Audio/SoundBufferCache.hpp>
 
 namespace Core
 {
@@ -20,6 +21,7 @@ namespace Core
 
 	private:
 
+		SoundBufferCache cache;
 		std::vector<u32_t> soundSources;
 
 	};

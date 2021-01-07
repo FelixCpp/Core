@@ -29,8 +29,8 @@ namespace Core
 	};
 
     struct WaveFile {
-        WaveFileHeader header;   // the wav-header
-        std::vector<char> data;  // the actual data (samples)
+        WaveFileHeader header;  // the wav-header
+        std::vector<char> data; // the actual data (samples)
     };
 
 }

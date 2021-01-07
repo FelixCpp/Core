@@ -14,17 +14,34 @@ namespace Core
 	}
 
 	SoundSource AudioTarget::loadSound(const std::string & filepath)
-	{		
-		const u32_t bufferID = SoundBufferCollection::get().addSoundEffect(filepath);
-		
-		if (bufferID != 0) // means: loaded successfully
+	{	
+		u32_t bufferID = 0;
+
+		/* does the sound exists in the cache? */
+		if (this->cache.contains(filepath))
 		{
-			SoundSource source = SoundSource::create(bufferID);
-			this->soundSources.push_back(source.getSourceID());
-			return source;
+			/* assign the value to the cached buffer */
+			bufferID = this->cache.get(filepath);
+		} else
+		{
+			/* load/create, register and assign the value to a new buffer */
+			bufferID = SoundBufferCollection::get().addSoundEffect(filepath);
+
+			if (bufferID == 0) // the loading wasn't successfull
+				return SoundSource();
+
+			/* store the value in cache */
+			this->cache.set(filepath, bufferID);
 		}
 
-		return SoundSource();
+		/* create a new SoundSource from that */
+		SoundSource source = SoundSource::create(bufferID);
+
+		/* register the source so we can delete it later */
+		this->soundSources.push_back(source.getSourceID());
+		
+		/* simply return the source */
+		return source;
 	}
 
 	AudioTarget::AudioTarget() :
