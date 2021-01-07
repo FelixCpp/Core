@@ -185,6 +185,51 @@ namespace Core
 		return true;
 	}
 
+	bool Image::loadFromScreen(i32_t x, i32_t y, i32_t width, i32_t height, GraphicsContext * gctx)
+	{
+		ID2D1HwndRenderTarget * rt = gctx->hwndRenderTarget.Get();
+		if (!rt) return false;
+
+		const D2D1_SIZE_F viewport = rt->GetSize();
+
+		if (width > viewport.width) width = viewport.width;
+		if (height > viewport.height) height = viewport.height;
+		if (x < 0) x = 0; if (x + width > viewport.width) x = viewport.width - width;
+		if (y < 0) y = 0; if (y + height > viewport.height) y = viewport.height - height;
+
+		if (!this->impl->bitmap)
+		{
+			const D2D1_PIXEL_FORMAT pixelFormat = rt->GetPixelFormat();
+			FLOAT dpiX = 0.f, dpiY = 0.f;
+			rt->GetDpi(&dpiX, &dpiY);
+
+			const HRESULT hr = rt->CreateBitmap(
+				D2D1::SizeU(width, height),
+				D2D1::BitmapProperties(pixelFormat, dpiX, dpiY),
+				&this->impl->bitmap
+			);
+			if (FAILED(hr))
+			{
+				CORE_ERROR("Failed to create a Bitmap");
+				return false;
+			}
+		}
+
+		const D2D1_POINT_2U dstPoint = D2D1::Point2U(x, y);
+		const D2D1_RECT_U srcRect = D2D1::RectU(0, 0, width, height);
+		const HRESULT hr = this->impl->bitmap->CopyFromRenderTarget(&dstPoint, rt, &srcRect);
+		if (FAILED(hr))
+		{
+			CORE_ERROR("Failed to load an image from the RenderTarget");
+			return false;
+		}
+
+		this->width  = width;
+		this->height = height;
+
+		return true;
+	}
+
 	ID2D1Bitmap * Image::getBitmap() const
 	{
 		return this->impl->bitmap.Get();

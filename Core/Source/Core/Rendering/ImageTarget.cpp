@@ -33,6 +33,13 @@ namespace Core
 		return image;
 	}
 
+	Image ImageTarget::loadImageFromScreen(i32_t x, i32_t y, i32_t width, i32_t height)
+	{
+		Image image;
+		image.loadFromScreen(x, y, width, height, this->gctx);
+		return image;
+	}
+
 	void ImageTarget::image(const Image & image, float x, float y)
 	{
 		this->image(image, x, y, (float)image.width, (float)image.height);

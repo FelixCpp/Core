@@ -30,6 +30,9 @@ namespace Core
 		/* loads the image from a file */
 		bool loadFromFile(const std::string & filepath, GraphicsContext * gctx);
 
+		/* loads an image from the screen */
+		bool loadFromScreen(i32_t x, i32_t y, i32_t width, i32_t height, GraphicsContext * gctx);
+
 		/* returns the raw Direct2D Bitmap */
 		ID2D1Bitmap * getBitmap() const;
 

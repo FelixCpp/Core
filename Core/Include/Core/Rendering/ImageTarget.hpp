@@ -23,6 +23,9 @@ namespace Core
 		/* loads an image from a filepath */
 		Image loadImageFromFile(const std::string & filepath);
 
+		/* loads an image from the rendertarget (screen) */
+		Image loadImageFromScreen(i32_t x, i32_t y, i32_t width, i32_t height);
+
 		/* Draws an image at x, y with the images width and height as size */
 		void image(const Image & image, float x, float y);
 
