@@ -186,6 +186,9 @@
     <ClInclude Include="Include\Core\Audio\SoundBufferCollection.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="Include\Core\Audio\SoundSource.hpp">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Core\Maths\Random.cpp">
@@ -276,6 +279,9 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="Source\Core\Audio\SoundBufferCollection.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Core\Audio\SoundSource.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>

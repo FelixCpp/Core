@@ -64,7 +64,7 @@ namespace Core
 			this->deviceName = alcGetString(this->device, ALC_ALL_DEVICES_SPECIFIER);
 		}
 
-		if (!name)
+		if (this->deviceName.empty())
 		{
 			this->deviceName = alcGetString(this->device, ALC_DEVICE_SPECIFIER);
 		}

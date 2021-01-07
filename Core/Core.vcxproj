@@ -22,6 +22,7 @@
     <ClInclude Include="Include\Core\Application.hpp" />
     <ClInclude Include="Include\Core\Audio\SoundBufferCollection.hpp" />
     <ClInclude Include="Include\Core\Audio\SoundDevice.hpp" />
+    <ClInclude Include="Include\Core\Audio\SoundSource.hpp" />
     <ClInclude Include="Include\Core\Rendering\Color.hpp" />
     <ClInclude Include="Include\Core\Rendering\DrawMode.hpp" />
     <ClInclude Include="Include\Core\Rendering\Helpers.hpp" />
@@ -81,6 +82,7 @@
     <ClCompile Include="Source\Core\Application.cpp" />
     <ClCompile Include="Source\Core\Audio\SoundBufferCollection.cpp" />
     <ClCompile Include="Source\Core\Audio\SoundDevice.cpp" />
+    <ClCompile Include="Source\Core\Audio\SoundSource.cpp" />
     <ClCompile Include="Source\Core\Rendering\Color.cpp" />
     <ClCompile Include="Source\Core\Rendering\Helpers.cpp" />
     <ClCompile Include="Source\Core\Rendering\ImageTarget.cpp" />
