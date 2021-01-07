@@ -179,10 +179,10 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>C:\Users\fix20\Documents\Visual Studio Projects\C++\Static Libraries\Core\Core\Include;C:\Users\fix20\Documents\Visual Studio Projects\C++\External Libraries\stb_imaging\include;C:\Users\fix20\Documents\Visual Studio Projects\C++\External Libraries\OpenAL\include;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Users\fix20\Documents\Visual Studio Projects\C++\External Libraries\OpenAL\include;$(SolutionDir)Core\Include;$(IncludePath)</IncludePath>
     <OutDir>$(SolutionDir)bin\$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)bin\intermediates\$(Platform)\$(Configuration)\</IntDir>
-    <LibraryPath>C:\Users\fix20\Documents\Visual Studio Projects\C++\External Libraries\OpenAL\libs\Win64;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(SolutionDir)Libraries\OpenAL\libs\Win64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>

@@ -60,6 +60,16 @@ namespace Core
 		this->activateMatrix();
 	}
 
+	void RenderState::reset()
+	{
+		/* pop every element from the stack */
+		while (!this->metrics.empty())
+			this->metrics.pop();
+
+		this->defaultMatrix = D2D1::Matrix3x2F::Identity(); // reset to its identity value
+		this->activateMatrix();
+	}
+
 	void RenderState::activateMatrix()
 	{
 		this->activeMatrix = this->metrics.empty() ? &this->defaultMatrix : &this->metrics.top();

@@ -7,17 +7,11 @@
 namespace Core
 {
 
-	RenderTarget::RenderTarget(GraphicsContext *& gctx) :
+	RenderTarget::RenderTarget(GraphicsContext *& gctx, RenderStateManager *& rsm) :
 		ImageTarget(gctx, this->rsm),
 		gctx(gctx),
-		rsm(new RenderStateManager(gctx))
+		rsm(rsm)
 	{
-	}
-
-	RenderTarget::~RenderTarget()
-	{
-		delete this->rsm;
-		this->rsm = nullptr;
 	}
 
 	void RenderTarget::push()

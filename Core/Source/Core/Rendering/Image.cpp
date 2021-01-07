@@ -1,4 +1,4 @@
-#include <Core/Rendering/Image.hpp>
+ #include <Core/Rendering/Image.hpp>
 #include <Core/Rendering/GraphicsContext.hpp>
 
 #include <Core/System/Logger.hpp>
@@ -136,7 +136,7 @@ namespace Core
 			CORE_ERROR("Failed to get the initial frame of the ImageDecoder");
 			return false;
 		}
-
+		
 		/*
 			Convert the image format to 32bppPBGRA
 			(DXGI_FORMAT_B8G8R8A8_UNORM + D2D1_ALPHA_MODE_PREMULTIPLIED).

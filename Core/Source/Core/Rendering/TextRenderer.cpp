@@ -6,7 +6,7 @@
 namespace Core
 {
 
-	TextRenderer::TextRenderer(GraphicsContext * gctx) :
+	TextRenderer::TextRenderer(GraphicsContext *& gctx) :
 		layout(nullptr),
 		range({0u, 0u}),
 		fontWeight(FontWeight::Normal),

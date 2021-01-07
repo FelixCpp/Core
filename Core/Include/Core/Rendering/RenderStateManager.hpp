@@ -20,6 +20,9 @@ namespace Core
 		/* pops a RenderState from the stack and activates the next */
 		void popState();
 
+		/* pops all states from the stack and activates the RenderState */
+		void reset();
+
 		/*
 			if the stack of RenderStates is empty,
 			the defaultState will be returned.

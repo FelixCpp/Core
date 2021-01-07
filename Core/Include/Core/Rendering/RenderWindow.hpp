@@ -8,6 +8,7 @@ namespace Core
 {
 	
 	class GraphicsContext;
+	class RenderStateManager;
 
 	class RenderWindow : public Window, public RenderTarget {
 	private:
@@ -18,7 +19,7 @@ namespace Core
 	public:
 
 		/* the default constructor */
-		RenderWindow(GraphicsContext *& gctx);
+		RenderWindow(GraphicsContext *& gctx, RenderStateManager *& rsm);
 
 		/* a virtual destructor */
 		virtual ~RenderWindow();

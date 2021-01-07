@@ -6,8 +6,6 @@
 namespace Core
 {
 
-	constexpr float radians(float degrees);
-	constexpr float degrees(float radians);
 	float random(float min, float max);
 	float random(float max);
 

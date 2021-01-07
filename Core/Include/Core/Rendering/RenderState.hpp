@@ -80,6 +80,12 @@ namespace Core
 		void popMatrix();
 
 		/*
+			simply pops every matrix from the stack
+			and activates the defaultMatrix
+		*/
+		void reset();
+
+		/*
 			activates the RenderState.
 			It means to tell the RenderTarget which matrix to use
 		*/

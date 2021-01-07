@@ -6,7 +6,7 @@
 namespace Core
 {
 
-	StrokeStyle::StrokeStyle(GraphicsContext * gctx) :
+	StrokeStyle::StrokeStyle(GraphicsContext *& gctx) :
 		startCap(CapStyle::Round),
 		endCap(CapStyle::Round),
 		dashCap(CapStyle::Round),

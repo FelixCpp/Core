@@ -15,7 +15,7 @@ namespace Core
 	class StrokeStyle {
 	public:
 
-		explicit StrokeStyle(GraphicsContext * gctx);
+		explicit StrokeStyle(GraphicsContext *& gctx);
 
         void setStartCap(CapStyle style);
         CapStyle getStartCap() const;
@@ -57,7 +57,7 @@ namespace Core
 		mutable Microsoft::WRL::ComPtr<ID2D1StrokeStyle> style;
 		mutable bool updated;
 
-		GraphicsContext * gctx;
+		GraphicsContext *& gctx;
 
 	};
 

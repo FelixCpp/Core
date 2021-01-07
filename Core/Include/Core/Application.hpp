@@ -11,6 +11,7 @@ namespace Core
 {
 
 	class GraphicsContext;
+	class RenderStateManager;
 
 	class Application : public RenderWindow {
 	public:
@@ -49,11 +50,22 @@ namespace Core
 
 	private:
 
+		/* since we have raw pointers we don't want anyone to copy this class */
+		Application(const Application &) = delete;
+		Application(Application &&) = delete;
+		Application & operator=(const Application &) = delete;
+		Application & operator=(Application &&) = delete;
+
+	private:
+
 		/* indicates wether the drawImpl() function gets called or not */
 		bool drawingPaused;
 
 		/* instance of a GraphicsContext */
 		GraphicsContext * gctx;
+
+		/* instance of a RenderStateManager */
+		RenderStateManager * rsm;
 
 	};
 

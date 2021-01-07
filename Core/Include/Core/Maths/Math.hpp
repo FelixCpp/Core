@@ -90,6 +90,16 @@ namespace Core
 			return constrain(output, min, max);
 		}
 
+		inline static T degrees(T radians)
+		{
+			return radians * (T)180 / MathImpl::Pi;
+		}
+
+		inline static T radians(T degrees)
+		{
+			return degrees * MathImpl::Pi / (T)180;
+		}
+
 	};
 
 	typedef MathImpl<float> FMath;

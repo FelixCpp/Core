@@ -4,7 +4,7 @@
 namespace Core
 {
 
-	ShapeRenderer::ShapeRenderer(GraphicsContext * gctx) :
+	ShapeRenderer::ShapeRenderer(GraphicsContext *& gctx) :
 		path(nullptr),
 		sink(nullptr),
 		fillMode(FillMode::Alternate),

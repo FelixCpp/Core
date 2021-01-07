@@ -14,14 +14,13 @@
 namespace Core
 {
 
-	class RenderStateManager;
 	class GraphicsContext;
 
 	class RenderTarget : public ImageTarget {
 	public:
 
-		explicit RenderTarget(GraphicsContext *& gctx);
-		virtual ~RenderTarget();
+		explicit RenderTarget(GraphicsContext *& gctx, RenderStateManager *& rsm);
+		virtual ~RenderTarget() = default;
 
 		void push();
 		void pop();
@@ -105,7 +104,7 @@ namespace Core
 		GraphicsContext *& gctx;
 
 		/* instance of a RenderStateManager. */
-		RenderStateManager * rsm;
+		RenderStateManager *& rsm;
 
 	};
 

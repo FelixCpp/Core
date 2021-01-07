@@ -1,5 +1,6 @@
 #include <Core/Application.hpp>
 #include <Core/Rendering/GraphicsContext.hpp>
+#include <Core/Rendering/RenderStateManager.hpp>
 
 namespace Core
 {
@@ -8,6 +9,9 @@ namespace Core
 	{
 		delete this->gctx;
 		this->gctx = nullptr;
+
+		delete this->rsm;
+		this->rsm = nullptr;
 	}
 
 	void Application::pauseDrawing()
@@ -26,9 +30,10 @@ namespace Core
 	}
 	
 	Application::Application(i32_t width, i32_t height, const std::string & title) :
-		RenderWindow(this->gctx),
+		RenderWindow(this->gctx, this->rsm),
 		drawingPaused(true),
-		gctx(new GraphicsContext())
+		gctx(new GraphicsContext()),
+		rsm(new RenderStateManager(this->gctx))
 	{
 		this->create(width, height, title);
 		this->setResizable(false);
@@ -63,6 +68,9 @@ namespace Core
 
 		while (this->isOpen())
 		{
+			/* reset the matrix */
+			this->rsm->reset();
+
 			/* call draw surrounded by begin/end-Draw() */
 			if (!this->drawingPaused)
 				this->drawImpl();

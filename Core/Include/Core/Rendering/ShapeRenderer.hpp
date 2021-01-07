@@ -13,7 +13,7 @@ namespace Core
 	class ShapeRenderer {
 	public:
 
-		explicit ShapeRenderer(GraphicsContext * gctx);
+		explicit ShapeRenderer(GraphicsContext *& gctx);
 
 		void setFillMode(FillMode fillMode);
 		FillMode getFillMode() const;
@@ -41,7 +41,7 @@ namespace Core
 
 		bool shapeBegan;
 
-		GraphicsContext * gctx;
+		GraphicsContext *& gctx;
 
 	};
 

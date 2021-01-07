@@ -8,9 +8,9 @@
 namespace Core
 {
 
-	RenderWindow::RenderWindow(GraphicsContext *& gctx) :
+	RenderWindow::RenderWindow(GraphicsContext *& gctx, RenderStateManager *& rsm) :
 		Window(gctx),
-		RenderTarget(gctx),
+		RenderTarget(gctx, rsm),
 		mouseInsideWindow(false),
 		resizing(false),
 		gctx(gctx)

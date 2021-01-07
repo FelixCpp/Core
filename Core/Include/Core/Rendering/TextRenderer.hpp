@@ -17,7 +17,7 @@ namespace Core
 	class TextRenderer {
 	public:
 
-		explicit TextRenderer(GraphicsContext * gctx);
+		explicit TextRenderer(GraphicsContext *& gctx);
 
 		void setText(const std::string & text);
 		const std::string & getText() const;
@@ -99,7 +99,7 @@ namespace Core
 		bool underline;
 		bool strikeThrough;
 
-		GraphicsContext * gctx;
+		GraphicsContext *& gctx;
 		
 	};
 

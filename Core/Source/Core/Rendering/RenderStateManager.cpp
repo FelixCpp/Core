@@ -14,7 +14,7 @@ namespace Core
 	void RenderStateManager::pushState()
 	{
 		this->states.push(RenderState(this->gctx));
-		this->activeState = this->states.empty() ? &this->defaultState : &this->states.top();
+		this->activeState = &this->states.top(); // we know there is a RenderState available, so use it
 		this->getActiveState().activateMatrix();
 	}
 
@@ -28,6 +28,17 @@ namespace Core
 		}
 
 		this->activeState = this->states.empty() ? &this->defaultState : &this->states.top();
+		this->getActiveState().activateMatrix();
+	}
+
+	void RenderStateManager::reset()
+	{
+		/* simply clear the stack */
+		while (!this->states.empty())
+			this->states.pop();
+
+		this->defaultState.reset(); // reset the matrix before activating it
+		this->activeState = &this->defaultState; // since the stack is definitly empty, we use the defaultState
 		this->getActiveState().activateMatrix();
 	}
 
