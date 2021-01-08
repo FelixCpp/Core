@@ -16,6 +16,16 @@ namespace Core
 		return collection;
 	}
 
+	void SoundBufferCollection::createBuffers(i32_t count, u32_t * buffers)
+	{
+		/* generate them */
+		alGenBuffers(count, buffers);
+		
+		/* insert each buffer to delete them later */
+		for (i32_t i = 0; i < count; i++)
+			this->buffers.push_back(buffers[i]);
+	}
+
 	u32_t SoundBufferCollection::addSoundEffect(const std::string & filepath)
 	{
 		OpenALBufferProperties properties = {};

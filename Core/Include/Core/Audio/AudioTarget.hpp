@@ -1,7 +1,9 @@
 #pragma once
 
 #include <string>
-#include <Core/Audio/SoundSource.hpp>
+
+#include <Core/Audio/Music.hpp>
+#include <Core/Audio/Sound.hpp>
 #include <Core/Audio/SoundBufferCache.hpp>
 
 namespace Core
@@ -12,8 +14,15 @@ namespace Core
 
 		virtual ~AudioTarget();
 
-		/* loads a sound, creates a buffer (if needed) and source and returns it */
-		SoundSource loadSound(const std::string & filepath);
+		/* loads a sound effect, creates a buffer (if needed) and source and returns it */
+		Sound loadSound(const std::string & filepath);
+
+		/*
+			loads music. The difference between sound and music is the preloading (buffering / streaming) 
+			Music doesn't get loaded in one step. It loads chunks so the music can play immediately even
+			if the file is really large.
+		*/
+		Music loadMusic(const std::string & filepath);
 
 	protected:
 
@@ -23,8 +32,7 @@ namespace Core
 	private:
 
 		SoundBufferCache cache;
-		std::vector<u32_t> soundSources;
-
+			
 	};
 
 }

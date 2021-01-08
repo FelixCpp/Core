@@ -1,12 +1,12 @@
 #pragma once
 
-#include <Core/System/Datatypes.hpp>
 #include <Core/Maths/Vector3.hpp>
+#include <Core/System/Datatypes.hpp>
 
 namespace Core
 {
 
-	class SoundSource {
+	class Playable {
 	public:
 
 		/* the different states of a SoundSource */
@@ -19,13 +19,16 @@ namespace Core
 		};
 
 		/* default constructor */
-		SoundSource();
+		Playable();
+
+		/* default destructor. NOTE: It doesn't destroy the OpenAL resource */
+		virtual ~Playable() = default;
 
 		/* creates an OpenAL source attached to a buffer */
-		static SoundSource create(u32_t bufferID);
+		void create(u32_t bufferID);
 
 		/* plays the source and attaches a buffer to it */
-		void play();
+		virtual void play();
 
 		/* paueses the source. If you call play() again it will continue */
 		void pause();
@@ -35,7 +38,7 @@ namespace Core
 
 		/* changes the position in a 3D space */
 		void setPosition(float x, float y, float z);
-		
+
 		/* changes the position in a 3D space */
 		void setPosition(const FVector3 & position);
 
@@ -44,10 +47,10 @@ namespace Core
 
 		/* changes the velocity */
 		void setVelocity(float x, float y, float z);
-		
+
 		/* changes the velocity */
 		void setVelocity(const FVector3 & velocity);
-		
+
 		/* returns the velocity */
 		const FVector3 & getVelocity() const;
 
@@ -65,19 +68,19 @@ namespace Core
 
 		/* changes the pitch. The paramter should have a value greater than 0.0 */
 		void setPitch(float pitch);
-		
+
 		/* returns the pitch */
 		float getPitch() const;
 
 		/* gets the state and returns it. */
 		State getState() const;
-		
+
 		/* a getter for the sourceID */
 		u32_t getSourceID() const;
 
-	private:
+	protected:
 
-		/* source identifier */
+		/* internal OpenAL soure id */
 		u32_t sourceID;
 
 		/* pitch */

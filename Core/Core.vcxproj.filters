@@ -180,9 +180,6 @@
     <ClInclude Include="Include\Core\Audio\SoundBufferCollection.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="Include\Core\Audio\SoundSource.hpp">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="Include\Core\Audio\AudioTarget.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
@@ -193,6 +190,18 @@
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="Include\Core\Audio\SoundFileReader.hpp">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Core\Audio\Music.hpp">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Core\Audio\Playable.hpp">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Core\Audio\Sound.hpp">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Core\Audio\OpenALIDProvider.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>
@@ -293,7 +302,13 @@
     <ClCompile Include="Source\Core\Audio\SoundFileReader.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Core\Audio\SoundSource.cpp">
+    <ClCompile Include="Source\Core\Audio\Music.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Core\Audio\Playable.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Core\Audio\OpenALIDProvider.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>

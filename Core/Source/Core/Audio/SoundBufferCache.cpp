@@ -21,7 +21,7 @@ namespace Core
 
 	u32_t & SoundBufferCache::get(const std::string & filepath)
 	{
-		return this->buffers[filepath];
+		return this->buffers.at(filepath);
 	}
 
 }

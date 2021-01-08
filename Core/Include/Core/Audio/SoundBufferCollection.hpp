@@ -14,6 +14,9 @@ namespace Core
 		/* singleton instance */
 		static SoundBufferCollection & get();
 
+		/* creates the requested number of buffers, inserts them into the list and returns the, */
+		void createBuffers(i32_t count, u32_t * buffers);
+
 		/* loads the sound effect and adds it to the buffers list, if it was loaded successfully */
 		u32_t addSoundEffect(const std::string & filepath);
 
