@@ -17,7 +17,8 @@ namespace Core
 
 	protected:
 
-		AudioTarget();
+		/* opens the default AudioDevice and initializes the context. If the deviceName is empty, it will open the default SoundDevice. */
+		explicit AudioTarget(const std::string & deviceName);
 
 	private:
 

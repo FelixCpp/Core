@@ -1,11 +1,9 @@
 #pragma once
 
 #include <string>
+#include <vector>
 
 #include <Core/System/StaticObject.hpp>
-
-struct ALCdevice_struct;
-struct ALCcontext_struct;
 
 namespace Core
 {
@@ -13,25 +11,17 @@ namespace Core
 	class SoundDevice : public StaticObject {
 	public:
 
-		/* opens the default AudioDevice and initializes the context */
-		static bool initialize();
+		/* returns all available sound devices (headset, speaker etc.) */
+		static std::vector<std::string> getAvailableDevices();
+
+		/* opens the default AudioDevice and initializes the context. If the deviceName is empty, it will open the default SoundDevice. */
+		static bool initialize(const std::string & deviceName);
 
 		/* shutdowns the AudioDevice */
 		static void shutdown();
 
 		/* returns the name of the opened device */
-		static const std::string & name();
-
-	private:
-
-		/* An internal OpenAL device */
-		static ALCdevice_struct * device;
-
-		/* An internal OpenAL context */
-		static ALCcontext_struct * context;
-
-		/* Name of the device which was opened */
-		static std::string deviceName;
+		static std::string name();
 
 	};
 

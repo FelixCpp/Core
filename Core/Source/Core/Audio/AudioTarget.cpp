@@ -44,10 +44,10 @@ namespace Core
 		return source;
 	}
 
-	AudioTarget::AudioTarget() :
+	AudioTarget::AudioTarget(const std::string & deviceName) :
 		soundSources()
 	{
-		SoundDevice::initialize(); // initialize the default SoundDevice
+		SoundDevice::initialize(deviceName); // initialize the default SoundDevice
 	}
 
 }

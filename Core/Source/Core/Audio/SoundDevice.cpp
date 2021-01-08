@@ -9,19 +9,26 @@
 namespace Core
 {
 
-	ALCdevice * SoundDevice::device = nullptr;
-	ALCcontext * SoundDevice::context = nullptr;
-	std::string SoundDevice::deviceName = "";
-
-	const std::string & SoundDevice::name()
+	std::string SoundDevice::name()
 	{
-		return deviceName;
+		ALCcontext * context = alcGetCurrentContext();
+		ALCdevice * device = alcGetContextsDevice(context);
+
+		if (alcIsExtensionPresent(device, "ALC_ENUMERATE_ALL_EXT"))
+		{
+			return alcGetString(device, ALC_ALL_DEVICES_SPECIFIER);
+		}
+
+		return alcGetString(device, ALC_DEVICE_SPECIFIER);
 	}
 
-	bool SoundDevice::initialize()
+	bool SoundDevice::initialize(const std::string & deviceName)
 	{
+		/* just to make clear that the deviceName can be empty */
+		const char * deviceNameCStr = deviceName.empty() ? nullptr : deviceName.c_str();
+
 		/* open the default AudioDevice */
-		device = alcOpenDevice(nullptr);
+		ALCdevice * device = alcOpenDevice(deviceNameCStr);
 		if (!device)
 		{
 			CORE_ERROR("Failed to open the default AudioDevice");
@@ -30,7 +37,7 @@ namespace Core
 		}
 
 		/* create a context */
-		context = alcCreateContext(device, nullptr);
+		ALCcontext * context = alcCreateContext(device, nullptr);
 		if (!context)
 		{
 			CORE_ERROR("Failed to create an AudioDevice");
@@ -45,24 +52,39 @@ namespace Core
 			shutdown();
 			return false;
 		}
+	}
 
-		if (alcIsExtensionPresent(device, "ALC_ENUMERATE_ALL_EXT"))
+	std::vector<std::string> SoundDevice::getAvailableDevices()
+	{
+		ALCcontext * context = alcGetCurrentContext();
+		ALCdevice * device = alcGetContextsDevice(context);
+		
+		const ALCchar * devices = alcGetString(device, ALC_DEVICE_SPECIFIER);
+		if (!devices)
 		{
-			deviceName = alcGetString(device, ALC_ALL_DEVICES_SPECIFIER);
+			return {};
 		}
 
-		if (deviceName.empty())
+		std::vector<std::string> result;
+		const char * ptr = devices;
+
+		do
 		{
-			deviceName = alcGetString(device, ALC_DEVICE_SPECIFIER);
-		}
+			result.push_back(devices);
+			ptr += result.back().size() + 1;
+		} while (*(ptr + 1) != '\0');
+
+		return result;
 	}
 
 	void SoundDevice::shutdown()
 	{
+		ALCcontext * context = alcGetCurrentContext();
+		ALCdevice * device = alcGetContextsDevice(context);
+
 		alcMakeContextCurrent(nullptr);
 		if(context) alcDestroyContext(context);
 		if(device) alcCloseDevice(device);
-		deviceName.clear();
 	}
 
 }

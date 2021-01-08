@@ -1,9 +1,10 @@
 #include <Core/Audio/SoundBufferCollection.hpp>
-#include <Core/Audio/WaveFile.hpp>
-#include <Core/Audio/WaveFileReader.hpp>
+#include <Core/Audio/SoundFileReader.hpp>
+#include <Core/Audio/OpenALBufferProperties.hpp>
 
 #include <Core/System/Logger.hpp>
 
+#include <sndfile.h>
 #include <al.h>
 
 namespace Core
@@ -17,20 +18,20 @@ namespace Core
 
 	u32_t SoundBufferCollection::addSoundEffect(const std::string & filepath)
 	{
-		/* create a WaveFile instance */
-		WaveFile file = {};
-		std::memset(&file, 0, sizeof WaveFile);
+		OpenALBufferProperties properties = {};
+		std::memset(&properties, 0, sizeof OpenALBufferProperties);
 
-		/* read the data from the filepath into the file object */
-		if (!WaveFileReader::read(filepath, file))
+		if (!SoundFileReader::read(filepath, properties))
 		{
 			/* we don't need to print anything out. Its all done in WaveFileReader::read(...) */
 			return 0;
 		}
 
+		SF_INFO & info = properties.header;
+		std::vector<short> & data = properties.data;
+
 		/* get the OpenAL audio format */
-		const WaveFileHeader & header = file.header;
-		const ALenum audioFormat = getAudioFormat(header.channels);
+		const ALenum audioFormat = getAudioFormat(info.channels);
 		if (audioFormat == -1)
 		{
 			CORE_ERROR("Invalid Audio Format (%d)", audioFormat);
@@ -42,7 +43,7 @@ namespace Core
 		alGenBuffers(1, &buffer);
 
 		/* fill the buffer with data */
-		alBufferData(buffer, audioFormat, file.data.data(), file.data.size(), header.samplesPerSec);
+		alBufferData(buffer, audioFormat, data.data(), data.size(), info.samplerate);
 
 		/* store it in a list so we can delete them later */
 		this->buffers.push_back(buffer);

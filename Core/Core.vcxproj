@@ -21,15 +21,15 @@
   <ItemGroup>
     <ClInclude Include="Include\Core\Application.hpp" />
     <ClInclude Include="Include\Core\Audio\AudioTarget.hpp" />
+    <ClInclude Include="Include\Core\Audio\OpenALBufferProperties.hpp" />
     <ClInclude Include="Include\Core\Audio\SoundBufferCache.hpp" />
     <ClInclude Include="Include\Core\Audio\SoundBufferCollection.hpp" />
     <ClInclude Include="Include\Core\Audio\SoundDevice.hpp" />
+    <ClInclude Include="Include\Core\Audio\SoundFileReader.hpp" />
     <ClInclude Include="Include\Core\Audio\SoundSource.hpp" />
     <ClInclude Include="Include\Core\Rendering\Color.hpp" />
     <ClInclude Include="Include\Core\Rendering\DrawMode.hpp" />
     <ClInclude Include="Include\Core\Rendering\Helpers.hpp" />
-    <ClInclude Include="Include\Core\Audio\WaveFile.hpp" />
-    <ClInclude Include="Include\Core\Audio\WaveFileReader.hpp" />
     <ClInclude Include="Include\Core\Maths\Vector3.hpp" />
     <ClInclude Include="Include\Core\Rendering\ImageInterpolationMode.hpp" />
     <ClInclude Include="Include\Core\Rendering\ImageTarget.hpp" />
@@ -86,6 +86,7 @@
     <ClCompile Include="Source\Core\Audio\SoundBufferCache.cpp" />
     <ClCompile Include="Source\Core\Audio\SoundBufferCollection.cpp" />
     <ClCompile Include="Source\Core\Audio\SoundDevice.cpp" />
+    <ClCompile Include="Source\Core\Audio\SoundFileReader.cpp" />
     <ClCompile Include="Source\Core\Audio\SoundSource.cpp" />
     <ClCompile Include="Source\Core\Rendering\Color.cpp" />
     <ClCompile Include="Source\Core\Rendering\Helpers.cpp" />
@@ -102,7 +103,6 @@
     <ClCompile Include="Source\Core\Rendering\SolidColorBrush.cpp" />
     <ClCompile Include="Source\Core\Rendering\StrokeStyle.cpp" />
     <ClCompile Include="Source\Core\Rendering\TextRenderer.cpp" />
-    <ClCompile Include="Source\Core\Audio\WaveFileReader.cpp" />
     <ClCompile Include="Source\Core\Maths\Matrix3x3.cpp" />
     <ClCompile Include="Source\Core\Maths\Random.cpp" />
     <ClCompile Include="Source\Core\System\Logger.cpp" />
@@ -181,10 +181,10 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SolutionDir)Libraries\OpenAL\include;$(SolutionDir)Core\Include;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)Libraries\OpenAL\include;$(SolutionDir)Core\Include;$(SolutionDir)Libraries\libsndfile\include;$(IncludePath)</IncludePath>
     <OutDir>$(SolutionDir)bin\$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)bin\intermediates\$(Platform)\$(Configuration)\</IntDir>
-    <LibraryPath>$(SolutionDir)Libraries\OpenAL\libs\Win64;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(SolutionDir)Libraries\OpenAL\libs\Win64;$(SolutionDir)Libraries\libsndfile\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>

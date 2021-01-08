@@ -68,7 +68,7 @@ namespace Core
 
 		while (this->isOpen())
 		{
-			/* reset the matrix */
+			/* pops every renderstate and activates the default*/
 			this->rsm->reset();
 
 			/* call draw surrounded by begin/end-Draw() */
