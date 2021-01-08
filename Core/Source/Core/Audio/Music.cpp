@@ -1,49 +1,40 @@
 #include <Core/Audio/Music.hpp>
+#include <Core/Audio/WaveFile.hpp>
+#include <Core/Audio/WaveFileReader.hpp>
 #include <Core/Audio/OpenALIDProvider.hpp>
 
 #include <Core/System/Logger.hpp>
 
 #include <vector>
-#include <sndfile.h>
 #include <al.h>
 
 namespace Core
 {
-
-	struct Music::Impl {
-
-		SNDFILE * file = nullptr;
-		SF_INFO info = {};
-		std::vector<short> data = {};
-
-	};
-
+	
 	Music::Music() :
-		impl(std::make_shared<Impl>()),
-		buffers(),
-		audioFormat(AL_NONE)
+		audioFormat(AL_NONE),
+		cursor(0)
 	{
+
 	}
 
 	bool Music::loadFromFile(const std::string & filepath)
 	{
-		OpenALSourceIDProvider::generate(1, &this->sourceID);
-		OpenALBufferIDProvider::generate(NUM_BUFFERS, this->buffers);
-
-		auto & file = this->impl->file;
-		auto & info = this->impl->info;
-		auto & data = this->impl->data;
-
-		file = sf_open(filepath.c_str(), SFM_READ, &info);
-		if (!file)
+		WaveFile file;
+		if (!WaveFileReader::read(filepath, file))
 		{
-			CORE_ERROR("Failed to open music file \"%s\"", filepath.c_str());
 			return false;
 		}
 
-		/* get the sound format, and figure out the OpenAL format */
-		this->audioFormat = AL_NONE;
-		switch (info.channels)
+		int channels = file.header.channels;
+		int bitsPerSample = file.header.bitsPerSample;
+		sampleRate = file.header.samplesPerSec;
+		soundData = file.data;
+
+		ALuint buffers[NUM_BUFFERS];
+		alGenBuffers(NUM_BUFFERS, &buffers[0]);
+
+		switch (channels)
 		{
 			case 1:  this->audioFormat = AL_FORMAT_MONO16;                    break;
 			case 2:  this->audioFormat = AL_FORMAT_STEREO16;                  break;
@@ -56,122 +47,78 @@ namespace Core
 
 		if (this->audioFormat == AL_NONE)
 		{
-			CORE_ERROR("Unsupported channel count from file \"%s\"", filepath.c_str());
-			sf_close(file);
+			CORE_ERROR("Invalid audio format");
 			return false;
 		}
 
-		const std::size_t frameSize = (size_t)(BUFFER_SAMPLES * info.channels) * sizeof(short);
-		data.resize(frameSize);
+		for (std::size_t i = 0; i < NUM_BUFFERS; ++i)
+		{
+			alBufferData(buffers[i], this->audioFormat, &soundData[i * BUFFER_SIZE], BUFFER_SIZE, sampleRate);
+		}
+
+		//this->create(0);
+
+		//OpenALSourceIDProvider::generate(1, &this->sourceID);
+		
+		ALuint & source = this->sourceID;
+		alGenSources(1, &source);
+		alSourcef(source, AL_PITCH, 1);
+		alSourcef(source, AL_GAIN, 1.0f);
+		alSource3f(source, AL_POSITION, 0, 0, 0);
+		alSource3f(source, AL_VELOCITY, 0, 0, 0);
+		alSourcei(source, AL_LOOPING, AL_FALSE);
+
+		alSourceQueueBuffers(source, NUM_BUFFERS, &buffers[0]);
+		
+		this->cursor = BUFFER_SIZE * NUM_BUFFERS;
 
 		return true;
 	}
 
 	void Music::play()
 	{
-		/* cler any al errors */
-		alGetError();
-
-		/* rewind the source position and clear the buffer queue */
-		alSourceRewind(this->sourceID);
-		alSourcei(this->sourceID, AL_BUFFER, 0);
-		
-		auto & file = this->impl->file;
-		auto & info = this->impl->info;
-		auto & data = this->impl->data;
-		
-		/* fill the buffer queue */
-		int index = 0;
-		for (; index < NUM_BUFFERS; index++)
-		{
-			/* get some data to give it to the buffer */
-			sf_count_t length = sf_readf_short(file, &data[0], BUFFER_SAMPLES);
-			if (length < 1) break;
-
-			length *= info.channels * sizeof(short);
-			alBufferData(this->buffers[index], this->audioFormat, data.data(), length, info.samplerate);
-		}
-
-		if (alGetError() != AL_NO_ERROR)
-		{
-			CORE_ERROR("Failed buffering for playback");
-			return;
-		}
-
-		/* now queue and start playback */
-		alSourceQueueBuffers(this->sourceID, index, this->buffers);
 		alSourcePlay(this->sourceID);
-
-		if (alGetError() != AL_NO_ERROR)
-		{
-			CORE_ERROR("Failed starting playback");
-			return;
-		}
 	}
 
 	void Music::update()
 	{
-		/* clear error */
-		alGetError();
+		if (this->getState() != State::Playing) return;
 
-		ALint state = AL_NONE;
-		ALint processed = AL_NONE;
+		ALint buffersProcessed = 0;
+		
+		alGetSourcei(this->sourceID, AL_BUFFERS_PROCESSED, &buffersProcessed);
 
-		/*get relevant source info */
-		alGetSourcei(this->sourceID, AL_SOURCE_STATE, &state);
-		alGetSourcei(this->sourceID, AL_BUFFERS_PROCESSED, &processed);
-		if (alGetError() != AL_NO_ERROR)
-		{
-			CORE_ERROR("Error checking music source state");
+		if (buffersProcessed <= 0)
 			return;
-		}
 
-		auto & file = this->impl->file;
-		auto & info = this->impl->info;
-		auto & data = this->impl->data;
-
-		/* unqueue and handle each procesed buffer */
-		while (processed > 0)
+		while (buffersProcessed--)
 		{
-			ALuint bufferID = 0;
-			alSourceUnqueueBuffers(this->sourceID, 1, &bufferID);
-			
-			processed--;
+			ALuint buffer;
+			alSourceUnqueueBuffers(this->sourceID, 1, &buffer);
 
-			/*
-				read the next chunk of data, refill the buffer, and queue it
-				back on the source
-			*/
-			sf_count_t length = sf_readf_short(file, &data[0], BUFFER_SAMPLES);
-			if (length > 0)
+			ALsizei dataSize = BUFFER_SIZE;
+
+			char * data = new char[dataSize];
+			std::memset(data, 0, dataSize);
+
+			std::size_t dataSizeToCopy = BUFFER_SIZE;
+			if (cursor + BUFFER_SIZE > soundData.size())
+				dataSizeToCopy = soundData.size() - cursor;
+
+			std::memcpy(&data[0], &soundData[cursor], dataSizeToCopy);
+			cursor += dataSizeToCopy;
+
+			if (dataSizeToCopy < BUFFER_SIZE)
 			{
-				length *= info.channels * sizeof(short);
-				alBufferData(bufferID, this->audioFormat, data.data(), length, info.samplerate);
-				alSourceQueueBuffers(this->sourceID, 1, &bufferID);
+				cursor = 0;
+				std::memcpy(&data[dataSizeToCopy], &soundData[cursor], BUFFER_SIZE - dataSizeToCopy);
+				cursor = BUFFER_SIZE - dataSizeToCopy;
 			}
 
-			if (alGetError() != AL_NO_ERROR)
-			{
-				CORE_ERROR("Error buffering music data");
-				return;
-			}
-		}
+			alBufferData(buffer, this->audioFormat, data, BUFFER_SIZE, sampleRate);
+			alSourceQueueBuffers(this->sourceID, 1, &buffer);
 
-		/* make sure the source hasn't underrun */
-		if (state != AL_PLAYING && state != AL_PAUSED)
-		{
-			ALint queued = 0;
-			
-			/* if no buffers are queued, playback is finished */
-			alGetSourcei(this->sourceID, AL_BUFFERS_QUEUED, &queued);
-			if (queued == 0) return;
-
-			alSourcePlay(this->sourceID);
-			if (alGetError() != AL_NO_ERROR)
-			{
-				CORE_ERROR("Error restarting music playback");
-				return;
-			}
+			delete[] data;
 		}
 	}
 

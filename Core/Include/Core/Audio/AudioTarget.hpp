@@ -31,8 +31,8 @@ namespace Core
 
 	private:
 
-		SoundBufferCache cache;
-			
+		SoundBufferCache soundCache;
+		SoundBufferCache musicCache;
 	};
 
 }

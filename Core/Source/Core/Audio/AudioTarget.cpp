@@ -1,8 +1,9 @@
 #include <Core/Audio/AudioTarget.hpp>
 #include <Core/Audio/OpenALIDProvider.hpp>
 #include <Core/Audio/SoundDevice.hpp>
-#include <Core/Audio/OpenALBufferProperties.hpp>
-#include <Core/Audio/SoundFileReader.hpp>
+
+#include <Core/Audio/WaveFile.hpp>
+#include <Core/Audio/WaveFileReader.hpp>
 
 #include <Core/System/Logger.hpp>
 
@@ -32,22 +33,22 @@ namespace Core
 		u32_t bufferID = AL_NONE;
 
 		/* step 1: check cache */
-		if (this->cache.contains(filepath))
+		if (this->soundCache.contains(filepath))
 		{
-			bufferID = this->cache.get(filepath);
+			bufferID = this->soundCache.get(filepath);
 		} else
 		{
 			/* step 2: load sound */
-			OpenALBufferProperties properties = {};
-			std::memset(&properties, 0, sizeof OpenALBufferProperties);
+			WaveFile file = {};
+			std::memset(&file, 0, sizeof WaveFile);
 
-			if (!SoundFileReader::read(filepath, properties))
+			if (!WaveFileReader::read(filepath, file))
 			{
 				return Sound();
 			}
 
-			auto & header = properties.header;
-			auto & data = properties.data;
+			auto & header = file.header;
+			auto & data = file.data;
 
 			/* step 3: create buffer */
 			OpenALBufferIDProvider::generate(1, &bufferID);
@@ -65,9 +66,9 @@ namespace Core
 			}
 
 			/* fill in the buffer */
-			alBufferData(bufferID, format, data.data(), data.size(), header.samplerate);
+			alBufferData(bufferID, format, data.data(), data.size(), header.samplesPerSec);
 
-			this->cache.set(filepath, bufferID);
+			this->soundCache.set(filepath, bufferID);
 		}
 
 		/* step 4: create sound */
@@ -86,7 +87,8 @@ namespace Core
 	}
 
 	AudioTarget::AudioTarget(const std::string & deviceName) :
-		cache()
+		soundCache(),
+		musicCache()
 	{
 		SoundDevice::initialize(deviceName); // initialize the default SoundDevice
 	}
