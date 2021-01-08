@@ -87,8 +87,7 @@ namespace Core
 	}
 
 	AudioTarget::AudioTarget(const std::string & deviceName) :
-		soundCache(),
-		musicCache()
+		soundCache()
 	{
 		SoundDevice::initialize(deviceName); // initialize the default SoundDevice
 	}
