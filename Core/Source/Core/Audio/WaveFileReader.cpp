@@ -24,6 +24,12 @@ namespace Core
             return false;
         }
         
+        /* validate the header */
+        if (!validateWaveHeader(filepath, header))
+        {
+            return false;
+        }
+
         /* create room for the each sample */
         file.data.resize(header.subchunk2Size);
         
@@ -36,5 +42,34 @@ namespace Core
 
 		return true;
 	}
+
+    bool WaveFileReader::validateWaveHeader(const std::string & filepath, WaveFileHeader & header)
+    {
+        if (std::strncmp(header.riff, "RIFF", sizeof header.riff) != 0)
+        {
+            CORE_ERROR("Failed to read \"RIFF\" in \"%s\"", filepath.c_str());
+            return false;
+        }
+
+        if (std::strncmp(header.wave, "WAVE", sizeof header.wave) != 0)
+        {
+            CORE_ERROR("Failed to read \"WAVE\" in \"%s\"", filepath.c_str());
+            return false;
+        }
+
+        if (std::strncmp(header.subchunk1ID, "fmt ", sizeof header.subchunk1ID) != 0)
+        {
+            CORE_ERROR("Failed to read \"fmt \" in \"%s\"", filepath.c_str());
+            return false;
+        }
+
+        if (std::strncmp(header.subchunk2ID, "data", sizeof header.subchunk2ID) != 0)
+        {
+            CORE_ERROR("Failed to read \"data\" in \"%s\"", filepath.c_str());
+            return false;
+        }
+
+        return true;
+    }
 
 }
