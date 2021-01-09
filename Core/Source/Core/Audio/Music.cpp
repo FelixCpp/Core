@@ -11,9 +11,13 @@
 namespace Core
 {
 	
-	Music::Music()
+	Music::Music() :
+		audioFormat(AL_NONE),
+		sampleRate(0),
+		soundData(),
+		cursor(0),
+		bufferingFinished(true)
 	{
-
 	}
 
 	bool Music::init(i32_t audioFormat, i32_t sampleRate, const std::vector<char> & soundData)
@@ -21,40 +25,7 @@ namespace Core
 		/* create the source */
 		this->create(0);
 
-		/* create the buffers */
-		ALuint buffers[NUM_BUFFERS];
-		alGenBuffers(NUM_BUFFERS, buffers);
-
-		/* fill in the buffers with data */
-		for (i32_t i = 0; i < NUM_BUFFERS; i++)
-		{
-			alBufferData(buffers[i], audioFormat, &soundData[i * BUFFER_SIZE], BUFFER_SIZE, sampleRate);
-		}
-	
-		/* error handling */
-		if (alGetError() != AL_NO_ERROR)
-		{
-			CORE_ERROR("Failed to fill the buffers with data");
-			return false;
-		}
-
-		/* queue them up */
-		alSourceQueueBuffers(this->sourceID, NUM_BUFFERS, buffers);
-		
-		/* error handling */
-		if (alGetError() != AL_NO_ERROR)
-		{
-			CORE_ERROR("Failedd to queue the buffer up");
-			return false;
-		}
-
-		/* delete the buffers */
-		alDeleteBuffers(NUM_BUFFERS, buffers);
-
-		/* set the cursor */
-		this->cursor = BUFFER_SIZE * NUM_BUFFERS;
-		CORE_INFO("cursor: %d", (int)cursor);
-		//this->cursor = 0;
+		/* copy the values */
 		this->soundData = soundData;
 		this->audioFormat = audioFormat;
 		this->sampleRate = sampleRate;
@@ -64,51 +35,111 @@ namespace Core
 
 	void Music::play()
 	{
-		if (this->getState() != State::Playing)
+		/*
+		* check if the music is even playable
+		* if not, just return
+		*/
+		if (this->soundData.empty() || !this->sourceID)
 		{
-			alSourcePlay(this->sourceID);
+			return;
 		}
+
+		/*
+		* changes the state of the source to AL_INITIAL
+		* and sets it back to the beginning
+		*/
+		alSourceRewind(this->sourceID);
+		alSourcei(this->sourceID, AL_BUFFER, 0);
+		alSourceStop(this->sourceID);
+
+		/* we want to start from the beginning */
+		this->cursor = BUFFER_SIZE * NUM_BUFFERS;
+		this->bufferingFinished = false;
+
+		/* generate the buffers */
+		ALuint buffers[NUM_BUFFERS];
+		alGenBuffers(NUM_BUFFERS, buffers);
+
+		/* fill the buffers with data */
+		for (i32_t i = 0; i < NUM_BUFFERS; i++)
+		{
+			const size_t index = i * BUFFER_SIZE; // calculate the index where we want to take the soundData from inside the file
+			alBufferData(buffers[i], this->audioFormat, &this->soundData[index], BUFFER_SIZE, this->sampleRate);
+		}
+
+		/* queue the buffers up */
+		alSourceQueueBuffers(this->sourceID, NUM_BUFFERS, buffers);
+
+		/* delete the buffers */
+		alDeleteBuffers(NUM_BUFFERS, buffers);
+		
+		/* start playing the music */
+		alSourcePlay(this->sourceID);
 	}
 
 	void Music::update()
 	{
-		/* get the number of buffers which was processed */
+		/* get the number of buffers which needs to be processed */
 		ALint buffersProcessed = 0;
 		alGetSourcei(this->sourceID, AL_BUFFERS_PROCESSED, &buffersProcessed);
-		
-		//CORE_INFO("buffersProcessed: %d", buffersProcessed);
 
 		/* we don't need to do anything if there are no buffers to process */
 		if (buffersProcessed <= 0)
 			return;
 
-		static int i = 0;
 		while (buffersProcessed--)
 		{
 			/*
-				get the next buffer to process
-				and remove them from the queue
+			*	get the next buffer to process
+			*	and remove them from the queue
 			*/
 			ALuint buffer = 0;
 			alSourceUnqueueBuffers(this->sourceID, 1, &buffer);
 			
+			/*
+			* create the data.
+			* It holds the soundData for the
+			* current buffer
+			*/
 			const ALsizei dataSize = BUFFER_SIZE;
 			char * data = new char[dataSize];
 			std::memset(data, 0, dataSize);
 
+			/*
+			* a variable which defines how much data should be copied from the soundData
+			* into the data buffer
+			*/
 			std::size_t dataSizeToCopy = BUFFER_SIZE;
+
+			/* if we don't have that much data anymore, clamp the value */
 			if (this->cursor + BUFFER_SIZE > this->soundData.size())
 			{
 				dataSizeToCopy = this->soundData.size() - this->cursor;
 			}
 
-			static bool fill = true;
+			/* copy the data */
 			std::memcpy(data, &this->soundData[this->cursor], dataSizeToCopy);
+			
+			/*
+			* update the cursor so its at the end of the next chunk
+			* or at the end of the file
+			*/
 			this->cursor += dataSizeToCopy;
 
+			/*
+			* if the cursor is at the end of the file, we don't need to queue up
+			* any more buffers. We are finished buffering/loading buffers
+			*/
 			if (this->cursor == this->soundData.size())
-				fill = false;
-
+				this->bufferingFinished = true;
+			
+			/*
+			* copy the rest of the soundData into
+			* the data chunk (Take the beginning
+			* of the soundfile and append it
+			* to the last bit of data) this
+			* ends with kind of a loop
+			*/
 			if (dataSizeToCopy < BUFFER_SIZE)
 			{
 				this->cursor = 0;
@@ -116,12 +147,16 @@ namespace Core
 				this->cursor = BUFFER_SIZE - dataSizeToCopy;
 			}
 
-			if (fill)
+			/*
+			* we only want to queue up any more buffers if we're not finished buffering
+			*/
+			if (!this->bufferingFinished)
 			{
 				alBufferData(buffer, this->audioFormat, data, BUFFER_SIZE, this->sampleRate);
 				alSourceQueueBuffers(this->sourceID, 1, &buffer);
 			}
 
+			/* delete the data */
 			delete[] data;
 		}
 	}

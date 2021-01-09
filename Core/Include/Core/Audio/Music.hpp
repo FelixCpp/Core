@@ -51,6 +51,8 @@ namespace Core
 		std::vector<char> soundData;
 		std::size_t cursor;
 
+		bool bufferingFinished;
+
 	};
 
 }
