@@ -21,7 +21,6 @@
   <ItemGroup>
     <ClInclude Include="Include\Core\Application.hpp" />
     <ClInclude Include="Include\Core\Audio\AudioTarget.hpp" />
-    <ClInclude Include="Include\Core\Audio\ErrorHandler.hpp" />
     <ClInclude Include="Include\Core\Audio\Music.hpp" />
     <ClInclude Include="Include\Core\Audio\OpenALIDProvider.hpp" />
     <ClInclude Include="Include\Core\Audio\Playable.hpp" />
@@ -86,7 +85,6 @@
   <ItemGroup>
     <ClCompile Include="Source\Core\Application.cpp" />
     <ClCompile Include="Source\Core\Audio\AudioTarget.cpp" />
-    <ClCompile Include="Source\Core\Audio\ErrorHandler.cpp" />
     <ClCompile Include="Source\Core\Audio\Music.cpp" />
     <ClCompile Include="Source\Core\Audio\OpenALIDProvider.cpp" />
     <ClCompile Include="Source\Core\Audio\Playable.cpp" />

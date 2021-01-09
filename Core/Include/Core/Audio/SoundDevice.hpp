@@ -5,6 +5,9 @@
 
 #include <Core/System/StaticObject.hpp>
 
+struct ALCdevice_struct;
+struct ALCcontext_struct;
+
 namespace Core
 {
 
@@ -22,6 +25,11 @@ namespace Core
 
 		/* returns the name of the opened device */
 		static std::string name();
+
+	private:
+
+		static ALCdevice_struct * device;
+		static ALCcontext_struct * context;
 
 	};
 

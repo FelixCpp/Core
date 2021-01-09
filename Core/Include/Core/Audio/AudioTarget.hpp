@@ -29,6 +29,9 @@ namespace Core
 		/* opens the default AudioDevice and initializes the context. If the deviceName is empty, it will open the default SoundDevice. */
 		explicit AudioTarget(const std::string & deviceName);
 
+		/* returns an OpenAL Audio format based on the passed channel count */
+		static i32_t getAudioFormat(u16_t channels);
+
 	private:
 
 		SoundBufferCache soundCache;

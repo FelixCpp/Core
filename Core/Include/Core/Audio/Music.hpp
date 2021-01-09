@@ -27,7 +27,7 @@ namespace Core
 		~Music() = default;
 		
 		/* loads the data from a file */
-		bool loadFromFile(const std::string & filepath);
+		bool init(i32_t audioFormat, i32_t sampleRate, const std::vector<char> & soundData);
 
 		/* override the play method */
 		virtual void play() override;
