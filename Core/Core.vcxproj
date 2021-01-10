@@ -21,12 +21,14 @@
   <ItemGroup>
     <ClInclude Include="Include\Core\Application.hpp" />
     <ClInclude Include="Include\Core\Audio\AudioTarget.hpp" />
+    <ClInclude Include="Include\Core\Audio\Listener.hpp" />
     <ClInclude Include="Include\Core\Audio\Music.hpp" />
     <ClInclude Include="Include\Core\Audio\OpenALIDProvider.hpp" />
     <ClInclude Include="Include\Core\Audio\Playable.hpp" />
-    <ClInclude Include="Include\Core\Audio\SoundBufferCache.hpp" />
+    <ClInclude Include="Include\Core\Audio\Cache.hpp" />
     <ClInclude Include="Include\Core\Audio\SoundDevice.hpp" />
     <ClInclude Include="Include\Core\Audio\Sound.hpp" />
+    <ClInclude Include="Include\Core\Audio\SoundSpace.hpp" />
     <ClInclude Include="Include\Core\Audio\WaveFile.hpp" />
     <ClInclude Include="Include\Core\Audio\WaveFileReader.hpp" />
     <ClInclude Include="Include\Core\Rendering\Color.hpp" />
@@ -85,11 +87,12 @@
   <ItemGroup>
     <ClCompile Include="Source\Core\Application.cpp" />
     <ClCompile Include="Source\Core\Audio\AudioTarget.cpp" />
+    <ClCompile Include="Source\Core\Audio\Listener.cpp" />
     <ClCompile Include="Source\Core\Audio\Music.cpp" />
     <ClCompile Include="Source\Core\Audio\OpenALIDProvider.cpp" />
     <ClCompile Include="Source\Core\Audio\Playable.cpp" />
-    <ClCompile Include="Source\Core\Audio\SoundBufferCache.cpp" />
     <ClCompile Include="Source\Core\Audio\SoundDevice.cpp" />
+    <ClCompile Include="Source\Core\Audio\SoundSpace.cpp" />
     <ClCompile Include="Source\Core\Audio\WaveFileReader.cpp" />
     <ClCompile Include="Source\Core\Rendering\Color.cpp" />
     <ClCompile Include="Source\Core\Rendering\Helpers.cpp" />

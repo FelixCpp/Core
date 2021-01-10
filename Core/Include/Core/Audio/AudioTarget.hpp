@@ -4,7 +4,8 @@
 
 #include <Core/Audio/Music.hpp>
 #include <Core/Audio/Sound.hpp>
-#include <Core/Audio/SoundBufferCache.hpp>
+#include <Core/Audio/Cache.hpp>
+#include <Core/Audio/WaveFile.hpp>
 
 namespace Core
 {
@@ -12,6 +13,7 @@ namespace Core
 	class AudioTarget {
 	public:
 
+		/* virtual destructor */
 		virtual ~AudioTarget();
 
 		/* loads a sound effect, creates a buffer (if needed) and source and returns it */
@@ -34,8 +36,9 @@ namespace Core
 
 	private:
 
-		SoundBufferCache soundCache;
-	
+		Cache<std::string, u32_t> soundCache;
+		Cache<std::string, WaveFile> musicCache;
+
 	};
 
 }

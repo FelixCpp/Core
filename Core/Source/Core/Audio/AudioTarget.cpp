@@ -78,9 +78,16 @@ namespace Core
 	Music AudioTarget::loadMusic(const std::string & filepath)
 	{
 		WaveFile file = {};
-		if (!WaveFileReader::read(filepath, file))
+
+		if (this->musicCache.contains(filepath))
 		{
-			return Music();
+			file = this->musicCache.get(filepath);
+		} else
+		{
+			if (!WaveFileReader::read(filepath, file))
+			{
+				return Music();
+			}
 		}
 
 		const ALenum format = getAudioFormat(file.header.channels);
@@ -93,6 +100,7 @@ namespace Core
 		Music music;
 		if (music.init(format, file.header.samplesPerSec, file.data))
 		{
+			this->musicCache.set(filepath, file);
 			return music;
 		}
 

@@ -6,14 +6,8 @@
 namespace Core
 {
 
-
 	Playable::Playable() :
-		sourceID(0),
-		pitch(1.f),
-		volume(1.f),
-		position(0.f, 0.f, 0.f),
-		velocity(0.f, 0.f, 0.f),
-		loop(false)
+		sourceID(0)
 	{
 	}
 
@@ -22,11 +16,11 @@ namespace Core
 		u32_t & sourceID = this->sourceID;
 		OpenALSourceIDProvider::generate(1, &sourceID);
 
-		alSourcef(sourceID, AL_PITCH, this->pitch);
-		alSourcef(sourceID, AL_GAIN, this->volume);
-		alSource3f(sourceID, AL_POSITION, this->position.x, this->position.y, this->position.z);
-		alSource3f(sourceID, AL_VELOCITY, this->velocity.x, this->velocity.y, this->velocity.z);
-		alSourcei(sourceID, AL_LOOPING, this->loop);
+		alSourcef(sourceID, AL_PITCH, 1.f);
+		alSourcef(sourceID, AL_GAIN, 1.f);
+		alSource3f(sourceID, AL_POSITION, 0.f, 0.f, 0.f);
+		alSource3f(sourceID, AL_VELOCITY, 0.f, 0.f, 0.f);
+		alSourcei(sourceID, AL_LOOPING, AL_FALSE);
 		alSourcei(sourceID, AL_BUFFER, bufferID);
 	}
 
@@ -47,10 +41,6 @@ namespace Core
 
 	void Playable::setPosition(float x, float y, float z)
 	{
-		this->position.x = x;
-		this->position.y = y;
-		this->position.z = z;
-
 		alSource3f(this->sourceID, AL_POSITION, x, y, z);
 	}
 
@@ -59,17 +49,15 @@ namespace Core
 		this->setPosition(position.x, position.y, position.z);
 	}
 
-	const FVector3 & Playable::getPosition() const
+	FVector3 Playable::getPosition() const
 	{
-		return this->position;
+		ALfloat x = 0.f, y = 0.f, z = 0.f;
+		alGetSource3f(this->sourceID, AL_POSITION, &x, &y, &z);
+		return FVector3(x, y, z);
 	}
 
 	void Playable::setVelocity(float x, float y, float z)
 	{
-		this->velocity.x = x;
-		this->velocity.y = y;
-		this->velocity.z = z;
-
 		alSource3f(this->sourceID, AL_VELOCITY, x, y, z);
 	}
 
@@ -78,42 +66,112 @@ namespace Core
 		this->setVelocity(velocity.x, velocity.y, velocity.z);
 	}
 
-	const FVector3 & Playable::getVelocity() const
+	FVector3 Playable::getVelocity() const
 	{
-		return this->velocity;
+		ALfloat x = 0.f, y = 0.f, z = 0.f;
+		alGetSource3f(this->sourceID, AL_VELOCITY, &x, &y, &z);
+		return FVector3(x, y, z);
+	}
+
+	void Playable::setDirection(float x, float y, float z)
+	{
+		alSource3f(this->sourceID, AL_DIRECTION, x, y, z);
+	}
+
+	void Playable::setDirection(const FVector3 & direction)
+	{
+		this->setDirection(direction.x, direction.y, direction.z);
+	}
+
+	FVector3 Playable::getDirection() const
+	{
+		ALfloat x = 0.f, y = 0.f, z = 0.f;
+		alGetSource3f(this->sourceID, AL_DIRECTION, &x, &y, &z);
+		return FVector3(x, y, z);
+	}
+
+	void Playable::setRelativeToListener(bool relative)
+	{
+		alSourcei(this->sourceID, AL_SOURCE_RELATIVE, relative ? AL_TRUE : AL_FALSE);
+	}
+
+	bool Playable::isRelativeToListener() const
+	{
+		ALint isRelative = AL_FALSE;
+		alGetSourcei(this->sourceID, AL_SOURCE_RELATIVE, &isRelative);
+		return isRelative == AL_TRUE;
 	}
 
 	void Playable::setLooping(bool loop)
 	{
-		this->loop = loop;
 		alSourcei(this->sourceID, AL_LOOPING, loop ? AL_TRUE : AL_FALSE);
 	}
 
 	bool Playable::isLooping() const
 	{
-		return this->loop;
+		ALint looping = AL_FALSE;
+		alGetSourcei(this->sourceID, AL_LOOPING, &looping);
+		return looping == AL_TRUE;
 	}
 
 	void Playable::setVolume(float volume)
 	{
-		this->volume = volume < 0.f ? 0.f : volume;
-		alSourcef(this->sourceID, AL_GAIN, volume);
+		alSourcef(this->sourceID, AL_GAIN, volume < 0.f ? 0.f : volume);
 	}
 
 	float Playable::getVolume() const
 	{
-		return this->volume;
+		ALfloat volume = 0.f;
+		alGetSourcef(this->sourceID, AL_GAIN, &volume);
+		return volume;
 	}
 
 	void Playable::setPitch(float pitch)
 	{
-		this->pitch = pitch < 0.f ? 0.f : pitch;
-		alSourcef(this->sourceID, AL_PITCH, pitch);
+		alSourcef(this->sourceID, AL_PITCH, pitch < 0.f ? 0.f : pitch);
 	}
 
 	float Playable::getPitch() const
 	{
-		return this->pitch;
+		ALfloat pitch = 0.f;
+		alGetSourcef(this->sourceID, AL_PITCH, &pitch);
+		return pitch;
+	}
+
+	void Playable::setRolloffFactor(float factor)
+	{
+		alSourcef(this->sourceID, AL_ROLLOFF_FACTOR, factor);
+	}
+
+	float Playable::getRolloffFactor() const
+	{
+		ALfloat factor = 0.f;
+		alGetSourcef(this->sourceID, AL_ROLLOFF_FACTOR, &factor);
+		return factor;
+	}
+
+	void Playable::setReferenceDistance(float distance)
+	{
+		alSourcef(this->sourceID, AL_REFERENCE_DISTANCE, distance);
+	}
+
+	float Playable::getReferenceDistance() const
+	{
+		ALfloat referenceDistance = 0.f;
+		alGetSourcef(this->sourceID, AL_REFERENCE_DISTANCE, &referenceDistance);
+		return referenceDistance;
+	}
+
+	void Playable::setMaxDistance(float distance)
+	{
+		alSourcef(this->sourceID, AL_MAX_DISTANCE, distance);
+	}
+
+	float Playable::getMaxDistance() const
+	{
+		ALfloat maxDistance = 0.f;
+		alGetSourcef(this->sourceID, AL_MAX_DISTANCE, &maxDistance);
+		return maxDistance;
 	}
 
 	Playable::State Playable::getState() const

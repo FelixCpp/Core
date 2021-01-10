@@ -43,7 +43,7 @@ namespace Core
 		void setPosition(const FVector3 & position);
 
 		/* returns the current position */
-		const FVector3 & getPosition() const;
+		FVector3 getPosition() const;
 
 		/* changes the velocity */
 		void setVelocity(float x, float y, float z);
@@ -52,7 +52,22 @@ namespace Core
 		void setVelocity(const FVector3 & velocity);
 
 		/* returns the velocity */
-		const FVector3 & getVelocity() const;
+		FVector3 getVelocity() const;
+
+		/* changes the direction */
+		void setDirection(float x, float y, float z);
+
+		/* changes the direction */
+		void setDirection(const FVector3 & direction);
+
+		/* returns the direction */
+		FVector3 getDirection() const;
+
+		/* changes wether the source is played relative compared to the listener or not */
+		void setRelativeToListener(bool relative);
+
+		/* returns true if the source is relative compared to the listener */
+		bool isRelativeToListener() const;
 
 		/* loops the source after finishing playing */
 		void setLooping(bool loop);
@@ -72,6 +87,24 @@ namespace Core
 		/* returns the pitch */
 		float getPitch() const;
 
+		/* changes the rolloff factor */
+		void setRolloffFactor(float factor);
+
+		/* returns the rolloff factor */
+		float getRolloffFactor() const;
+
+		/* changes the reference distance */
+		void setReferenceDistance(float distance);
+
+		/* returns the reference distance */
+		float getReferenceDistance() const;
+
+		/* changes the max distance between the sound and the listener where the sound stops playing */
+		void setMaxDistance(float distance);
+
+		/* returns the max distance */
+		float getMaxDistance() const;
+
 		/* gets the state and returns it. */
 		State getState() const;
 
@@ -82,21 +115,6 @@ namespace Core
 
 		/* internal OpenAL soure id */
 		u32_t sourceID;
-
-		/* pitch */
-		float pitch;
-
-		/* volume */
-		float volume;
-
-		/* position in a 3D space */
-		FVector3 position;
-
-		/* velocity */
-		FVector3 velocity;
-
-		/* looping state */
-		bool loop;
 
 	};
 
