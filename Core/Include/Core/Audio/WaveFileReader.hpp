@@ -9,14 +9,9 @@
 namespace Core
 {
 
-	class WaveFileReader : StaticObject {
-	public:
-
-		static bool read(const std::string & filepath, WaveFile & file);
+	struct WaveFileReader : StaticObject {
 	
-	private:
-
-		static bool validateWaveHeader(const std::string & filepath, WaveFileHeader & header);
+		static bool read(const std::string & filepath, WaveFile & file);
 
 	};
 

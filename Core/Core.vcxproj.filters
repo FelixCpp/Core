@@ -192,9 +192,6 @@
     <ClInclude Include="Include\Core\Audio\OpenALIDProvider.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="Include\Core\Audio\WaveFile.hpp">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="Include\Core\Audio\WaveFileReader.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
@@ -205,6 +202,12 @@
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="Include\Core\Audio\Cache.hpp">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Core\Audio\AudioFile.hpp">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Core\Audio\WaveFile.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>
@@ -312,6 +315,9 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="Source\Core\Audio\SoundSpace.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Core\Audio\Sound.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>

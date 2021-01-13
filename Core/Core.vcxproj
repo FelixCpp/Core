@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\Core\Application.hpp" />
+    <ClInclude Include="Include\Core\Audio\AudioFile.hpp" />
     <ClInclude Include="Include\Core\Audio\AudioTarget.hpp" />
     <ClInclude Include="Include\Core\Audio\Listener.hpp" />
     <ClInclude Include="Include\Core\Audio\Music.hpp" />
@@ -91,6 +92,7 @@
     <ClCompile Include="Source\Core\Audio\Music.cpp" />
     <ClCompile Include="Source\Core\Audio\OpenALIDProvider.cpp" />
     <ClCompile Include="Source\Core\Audio\Playable.cpp" />
+    <ClCompile Include="Source\Core\Audio\Sound.cpp" />
     <ClCompile Include="Source\Core\Audio\SoundDevice.cpp" />
     <ClCompile Include="Source\Core\Audio\SoundSpace.cpp" />
     <ClCompile Include="Source\Core\Audio\WaveFileReader.cpp" />

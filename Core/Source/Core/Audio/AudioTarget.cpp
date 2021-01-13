@@ -2,13 +2,11 @@
 #include <Core/Audio/OpenALIDProvider.hpp>
 #include <Core/Audio/SoundDevice.hpp>
 
-#include <Core/Audio/WaveFile.hpp>
 #include <Core/Audio/WaveFileReader.hpp>
 
 #include <Core/System/Logger.hpp>
 
 #include <al.h>
-#include <inttypes.h>
 
 namespace Core
 {
@@ -40,21 +38,18 @@ namespace Core
 		} else
 		{
 			/* step 2: load sound */
-			WaveFile file = {};
-			std::memset(&file, 0, sizeof WaveFile);
+			WaveFile info = {};
+			std::memset(&info, 0, sizeof WaveFile);
 
-			if (!WaveFileReader::read(filepath, file))
+			if (!WaveFileReader::read(filepath, info))
 			{
 				return Sound();
 			}
 
-			auto & header = file.header;
-			auto & data = file.data;
-
 			/* step 3: create buffer */
 			OpenALBufferIDProvider::generate(1, &bufferID);
 
-			const ALenum format = getAudioFormat(header.channels);
+			const ALenum format = getAudioFormat(info.NumChannels);
 			if (format == AL_NONE)
 			{
 				CORE_ERROR("Invalid audio format");
@@ -62,7 +57,7 @@ namespace Core
 			}
 
 			/* fill in the buffer */
-			alBufferData(bufferID, format, data.data(), data.size(), header.samplesPerSec);
+			alBufferData(bufferID, format, &info.Data[0], info.Subchunk2Size, info.SampleRate);
 
 			this->soundCache.set(filepath, bufferID);
 		}
@@ -90,7 +85,7 @@ namespace Core
 			}
 		}
 
-		const ALenum format = getAudioFormat(file.header.channels);
+		const ALenum format = getAudioFormat(file.NumChannels);
 		if (format == AL_NONE)
 		{
 			CORE_ERROR("Invalid audio format");
@@ -98,7 +93,7 @@ namespace Core
 		}
 		
 		Music music;
-		if (music.init(format, file.header.samplesPerSec, file.data))
+		if (music.init(format, file.SampleRate, file.Data))
 		{
 			this->musicCache.set(filepath, file);
 			return music;

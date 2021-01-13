@@ -16,7 +16,8 @@ namespace Core
 		sampleRate(0),
 		soundData(),
 		cursor(0),
-		bufferingFinished(true)
+		bufferingFinished(true),
+		looping(false)
 	{
 	}
 
@@ -31,6 +32,16 @@ namespace Core
 		this->sampleRate = sampleRate;
 
 		return true;
+	}
+
+	void Music::setLooping(bool value)
+	{
+		this->looping = value;
+	}
+
+	bool Music::isLooping() const
+	{
+		return this->looping;
 	}
 
 	void Music::play()
@@ -95,70 +106,125 @@ namespace Core
 			*/
 			ALuint buffer = 0;
 			alSourceUnqueueBuffers(this->sourceID, 1, &buffer);
-			
-			/*
-			* create the data.
-			* It holds the soundData for the
-			* current buffer
-			*/
-			const ALsizei dataSize = BUFFER_SIZE;
-			char * data = new char[dataSize];
-			std::memset(data, 0, dataSize);
 
-			/*
-			* a variable which defines how much data should be copied from the soundData
-			* into the data buffer
-			*/
-			std::size_t dataSizeToCopy = BUFFER_SIZE;
-
-			/* if we don't have that much data anymore, clamp the value */
-			if (this->cursor + BUFFER_SIZE > this->soundData.size())
+			if (this->looping)
 			{
-				dataSizeToCopy = this->soundData.size() - this->cursor;
-			}
-
-			/* copy the data */
-			std::memcpy(data, &this->soundData[this->cursor], dataSizeToCopy);
-			
-			/*
-			* update the cursor so its at the end of the next chunk
-			* or at the end of the file
-			*/
-			this->cursor += dataSizeToCopy;
-
-			/*
-			* if the cursor is at the end of the file, we don't need to queue up
-			* any more buffers. We are finished buffering/loading buffers
-			*/
-			if (this->cursor == this->soundData.size())
-				this->bufferingFinished = true;
-			
-			/*
-			* copy the rest of the soundData into
-			* the data chunk (Take the beginning
-			* of the soundfile and append it
-			* to the last bit of data) this
-			* ends with kind of a loop
-			*/
-			if (dataSizeToCopy < BUFFER_SIZE)
+				this->updateBufferingLoop(buffer);
+			} else
 			{
-				this->cursor = 0;
-				std::memcpy(&data[dataSizeToCopy], &this->soundData[this->cursor], BUFFER_SIZE - dataSizeToCopy);
-				this->cursor = BUFFER_SIZE - dataSizeToCopy;
+				this->updateBuffering(buffer);
 			}
-
-			/*
-			* we only want to queue up any more buffers if we're not finished buffering
-			*/
-			if (!this->bufferingFinished)
-			{
-				alBufferData(buffer, this->audioFormat, data, BUFFER_SIZE, this->sampleRate);
-				alSourceQueueBuffers(this->sourceID, 1, &buffer);
-			}
-
-			/* delete the data */
-			delete[] data;
 		}
+	}
+
+	void Music::updateBufferingLoop(u32_t buffer)
+	{
+		/*
+		* create the data.
+		* It holds the soundData for the
+		* current buffer
+		*/
+		const ALsizei dataSize = BUFFER_SIZE;
+		char * data = new char[dataSize];
+		std::memset(data, 0, dataSize);
+
+		/*
+		* a variable which defines how much data should be copied from the soundData
+		* into the data buffer
+		*/
+		std::size_t dataSizeToCopy = BUFFER_SIZE;
+
+		/* if we don't have that much data anymore, clamp the value */
+		if (this->cursor + BUFFER_SIZE > this->soundData.size())
+		{
+			dataSizeToCopy = this->soundData.size() - this->cursor;
+		}
+
+		/* copy the data */
+		std::memcpy(data, &this->soundData[this->cursor], dataSizeToCopy);
+
+		/*
+		* update the cursor so its at the end of the next chunk
+		* or at the end of the file
+		*/
+		this->cursor += dataSizeToCopy;
+
+		/*
+		* copy the rest of the soundData into
+		* the data chunk (Take the beginning
+		* of the soundfile and append it
+		* to the last bit of data) this
+		* ends with kind of a loop
+		*/
+		if (dataSizeToCopy < BUFFER_SIZE)
+		{
+			this->cursor = 0;
+			std::memcpy(&data[dataSizeToCopy], &this->soundData[this->cursor], BUFFER_SIZE - dataSizeToCopy);
+			this->cursor = BUFFER_SIZE - dataSizeToCopy;
+		}
+
+		/*
+		* we only want to queue up any more buffers if we're not finished buffering
+		*/
+		alBufferData(buffer, this->audioFormat, data, BUFFER_SIZE, this->sampleRate);
+		alSourceQueueBuffers(this->sourceID, 1, &buffer);
+
+		/* delete the data */
+		delete[] data;
+	}
+
+	void Music::updateBuffering(u32_t buffer)
+	{
+		/*
+		* a variable which defines how much data should be copied from the soundData
+		* into the data buffer
+		*/
+		std::size_t dataSizeToCopy = BUFFER_SIZE;
+
+		/* if we don't have that much data anymore, clamp the value */
+		if (this->cursor + BUFFER_SIZE > this->soundData.size())
+		{
+			dataSizeToCopy = this->soundData.size() - this->cursor;
+		}
+
+		/*
+		* create the data.
+		* It holds the soundData for the
+		* current buffer
+		*/
+		char * data = new char[dataSizeToCopy];
+		std::memset(data, 0, dataSizeToCopy);
+
+		/* copy the data */
+		std::memcpy(data, &this->soundData[this->cursor], dataSizeToCopy);
+
+		/*
+		* we only want to queue up any more buffers if we're not finished buffering
+		*/
+		if (!this->bufferingFinished)
+		{
+			alBufferData(buffer, this->audioFormat, data, dataSizeToCopy, this->sampleRate);
+			alSourceQueueBuffers(this->sourceID, 1, &buffer);
+		}
+
+		/*
+		* update the cursor so its at the end of the next chunk
+		* or at the end of the file
+		*/
+		this->cursor += dataSizeToCopy;
+
+		/*
+		* if the cursor is at the end of the file, we don't need to queue up
+		* any more buffers. We are finished buffering/loading buffers
+		*/
+		if (this->cursor == this->soundData.size())
+		{
+			this->bufferingFinished = true;
+			this->cursor = 0;
+		}
+
+		/* delete the data */
+		delete[] data;
 	}
 
 }

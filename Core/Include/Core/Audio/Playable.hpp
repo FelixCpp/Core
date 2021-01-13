@@ -69,12 +69,6 @@ namespace Core
 		/* returns true if the source is relative compared to the listener */
 		bool isRelativeToListener() const;
 
-		/* loops the source after finishing playing */
-		void setLooping(bool loop);
-
-		/* if this returns true it means that the source is playing again after finishing */
-		bool isLooping() const;
-
 		/* changes the volume. The parameter should have a value between 0.0 and 1.0 */
 		void setVolume(float volume);
 

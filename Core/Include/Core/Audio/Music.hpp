@@ -3,7 +3,6 @@
 #include <memory>
 
 #include <Core/Audio/Playable.hpp>
-#include <Core/Audio/WaveFile.hpp>
 #include <Core/System/Datatypes.hpp>
 
 namespace Core
@@ -29,11 +28,25 @@ namespace Core
 		/* loads the data from a file */
 		bool init(i32_t audioFormat, i32_t sampleRate, const std::vector<char> & soundData);
 
+		/* overrides the setLooping function */
+		void setLooping(bool value);
+
+		/* returns true if the music is looping */
+		bool isLooping() const;
+
 		/* override the play method */
 		virtual void play() override;
 
 		/* continues loading the soundfile */
 		void update();
+
+	private:
+
+		/* buffers so the music can loop */
+		void updateBufferingLoop(u32_t buffer);
+
+		/* buffers so the music plays once */
+		void updateBuffering(u32_t buffer);
 
 	private:
 
@@ -52,6 +65,7 @@ namespace Core
 		std::size_t cursor;
 
 		bool bufferingFinished;
+		bool looping;
 
 	};
 

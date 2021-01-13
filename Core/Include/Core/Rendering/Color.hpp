@@ -32,7 +32,7 @@ namespace Core
 		Color(u8_t red, u8_t green, u8_t blue, u8_t alpha = 255);
 
 		/* takes in an 32-bit integer in an R-G-B format and the alpha component */
-		Color(i32_t rgb, u8_t alpha = 255);
+		Color(i32_t rgb, u8_t alpha);
 
 		/* takes in an 32-bit unsigned integer */
 		Color(u32_t rgba);

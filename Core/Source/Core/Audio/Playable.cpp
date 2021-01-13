@@ -102,18 +102,6 @@ namespace Core
 		return isRelative == AL_TRUE;
 	}
 
-	void Playable::setLooping(bool loop)
-	{
-		alSourcei(this->sourceID, AL_LOOPING, loop ? AL_TRUE : AL_FALSE);
-	}
-
-	bool Playable::isLooping() const
-	{
-		ALint looping = AL_FALSE;
-		alGetSourcei(this->sourceID, AL_LOOPING, &looping);
-		return looping == AL_TRUE;
-	}
-
 	void Playable::setVolume(float volume)
 	{
 		alSourcef(this->sourceID, AL_GAIN, volume < 0.f ? 0.f : volume);

@@ -207,7 +207,6 @@ namespace Core
 
 		if (ID2D1Brush * stroke = state.activeStroke)
 		{
-			std::printf("STROKE ACTIVE\n");
 			rt->DrawEllipse(ellipse, stroke, state.strokeWeight, state.strokeStyle.getStrokeStyle());
 		}
 	}
