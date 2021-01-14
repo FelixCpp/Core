@@ -20,7 +20,7 @@ namespace Core
 
 		/* returns a randomly generated number between min and max */
 		template<typename T, typename = std::enable_if_t<IsValid<T>>>
-		static T get(T min, T max)
+		static T Get(T min, T max)
 		{
 			if constexpr (IsInt<T>)
 			{
@@ -37,13 +37,13 @@ namespace Core
 
 		/* return a randomly generated number between 0.0 and max */
 		template<typename T, typename = std::enable_if_t<IsValid<T>>>
-		static T get(T max)
+		static T Get(T max)
 		{
-			return get((T)0, max);
+			return Get((T)0, max);
 		}
 
 		/* changes the seed of the RNG */
-		static void setSeed(u32_t seed);
+		static void SetSeed(u32_t seed);
 		
 	private:
 

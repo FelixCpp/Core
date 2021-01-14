@@ -25,7 +25,7 @@ namespace Core
 		this->matrix[0][2] = m02; this->matrix[1][2] = m12; this->matrix[2][2] = m22;
 	}
 
-	Matrix3x3 & Matrix3x3::translate(const FVector2 & position)
+	Matrix3x3 & Matrix3x3::Translate(const FVector2 & position)
 	{
 		const Matrix3x3 translation = Matrix3x3(
 			1.f, 0.f, position.x,
@@ -33,10 +33,10 @@ namespace Core
 			0.f, 0.f, 1.f
 		);
 
-		return this->multiply(translation);
+		return this->Multiply(translation);
 	}
 
-	Matrix3x3 & Matrix3x3::rotate(float radians)
+	Matrix3x3 & Matrix3x3::Rotate(float radians)
 	{
 		const float cos = std::cosf(radians);
 		const float sin = std::sinf(radians);
@@ -47,10 +47,10 @@ namespace Core
 			 0.f, 0.f, 1.f
 		);
 
-		return this->multiply(rotation);
+		return this->Multiply(rotation);
 	}
 
-	Matrix3x3 & Matrix3x3::scale(const FVector2 & factor)
+	Matrix3x3 & Matrix3x3::Scale(const FVector2 & factor)
 	{
 		const Matrix3x3 scaled = Matrix3x3(
 			factor.x, 0.f, 0.f,
@@ -58,10 +58,10 @@ namespace Core
 			0.f, 0.f, 1.f
 		);
 
-		return this->multiply(scaled);
+		return this->Multiply(scaled);
 	}
 
-	Matrix3x3 & Matrix3x3::shear(const FVector2 & size)
+	Matrix3x3 & Matrix3x3::Shear(const FVector2 & size)
 	{
 		const Matrix3x3 sheared = Matrix3x3(
 			1.f, size.width, 0.f,
@@ -69,10 +69,10 @@ namespace Core
 			0.f, 0.f, 1.f
 		);
 
-		return this->multiply(sheared);
+		return this->Multiply(sheared);
 	}
 
-	Matrix3x3 & Matrix3x3::multiply(const Matrix3x3 & other)
+	Matrix3x3 & Matrix3x3::Multiply(const Matrix3x3 & other)
 	{
 		MatrixType results;
 
@@ -94,7 +94,7 @@ namespace Core
 		return *this;
 	}
 
-	Matrix3x3 & Matrix3x3::invert()
+	Matrix3x3 & Matrix3x3::Invert()
 	{
 		const auto & o = this->matrix;
 		const float det =
@@ -123,7 +123,7 @@ namespace Core
 		return *this;
 	}
 
-	FVector2 Matrix3x3::transformPoint(const FVector2 & point) const
+	FVector2 Matrix3x3::TransformPoint(const FVector2 & point) const
 	{
 		FVector2 transformedPoint;
 		transformedPoint.x = point.x * this->matrix[0][0] + point.y * this->matrix[1][0] + this->matrix[2][0];
@@ -131,7 +131,7 @@ namespace Core
 		return transformedPoint;
 	}
 
-	std::string Matrix3x3::toString() const
+	std::string Matrix3x3::ToString() const
 	{
 		std::stringstream builder;
 
@@ -153,7 +153,7 @@ namespace Core
 		return builder.str();
 	}
 
-	const Matrix3x3::MatrixType & Matrix3x3::getMatrix() const
+	const Matrix3x3::MatrixType & Matrix3x3::GetMatrix() const
 	{
 		return this->matrix;
 	}
@@ -170,12 +170,12 @@ namespace Core
 
 	Matrix3x3 Matrix3x3::operator*(const Matrix3x3 & other) const
 	{
-		return Matrix3x3(*this).multiply(other);
+		return Matrix3x3(*this).Multiply(other);
 	}
 
 	Matrix3x3 & Matrix3x3::operator*=(const Matrix3x3 & other)
 	{
-		return this->multiply(other);
+		return this->Multiply(other);
 	}
 
 }

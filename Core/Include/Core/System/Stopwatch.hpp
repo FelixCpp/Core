@@ -19,25 +19,25 @@ namespace Core
 		Stopwatch();
 
 		/* starts the watch */
-		void start();
+		void Start();
 
 		/* stops the watch */
-		void stop();
+		void Stop();
 
 		/* resets the watch (note: it does not start itself again) */
-		void reset();
+		void Reset();
 
 		/* resets & starts the watch again */
-		void restart();
+		void Restart();
 
 		/* returns true if the stopwatch is currently ticking */
-		bool isRunning() const;
+		bool IsRunning() const;
 
 		/* returns the elapsed time since last start */
-		Duration getElapsedTime() const;
+		Duration GetElapsedTime() const;
 
 		/* returns a started stopwatch */
-		static Stopwatch startNew();
+		static Stopwatch StartNew();
 
 	private:
 

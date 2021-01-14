@@ -48,22 +48,22 @@ namespace Core
 		{
 		}
 
-		T distance(const Vector3 & point) const
+		T Distance(const Vector3 & point) const
 		{
-			return (*this - point).length();
+			return (*this - point).Length();
 		}
 
-		T length() const
+		T Length() const
 		{
-			return std::sqrt(this->lengthSq());
+			return std::sqrt(this->LengthSq());
 		}
 
-		T lengthSq() const
+		T LengthSq() const
 		{
 			return (this->x * this->x) + (this->y * this->y) + (this->z * this->z);
 		}
 
-		Vector3 cross(const Vector3 & other) const
+		Vector3 Cross(const Vector3 & other) const
 		{
 			const float crossX = this->y * other.z - other.y * this->z;
 			const float crossY = this->z * other.x - other.z * this->x;
@@ -72,14 +72,14 @@ namespace Core
 			return Vector3(crossX, crossY, crossZ);
 		}
 
-		float heading2D() const
+		float Heading2D() const
 		{
 			return std::atan2(this->y, this->x);
 		}
 
-		Vector3 & normalize()
+		Vector3 & Normalize()
 		{
-			const T length = this->length();
+			const T length = this->Length();
 			if (length != (T)0.0 && length != (T)1.0)
 			{
 				this->x /= length;
@@ -90,25 +90,25 @@ namespace Core
 			return *this;
 		}
 
-		Vector3 normalized() const
+		Vector3 Normalized() const
 		{
-			return Vector3(*this).normalize();
+			return Vector3(*this).Normalize();
 		}
 
-		Vector3 & setLength(const T & length)
+		Vector3 & SetLength(const T & length)
 		{
-			this->normalize();
+			this->Normalize();
 			return *this *= length;
 		}
 
-		static Vector3 fromAngle(const T & radians)
+		static Vector3 FromAngle(const T & radians)
 		{
 			return Vector3(std::cos(radians), std::sin(radians), 0.f);
 		}
 
-		static Vector3 random2D()
+		static Vector3 Random2D()
 		{
-			return Vector3::fromAngle(Random::get(FMath::TwoPi));
+			return Vector3::FromAngle(Random::Get(FMath::TwoPi));
 		}
 
 		inline Vector3 operator+(const Vector3 & other) const { return Vector3(this->x + other.x, this->y + other.y, this->z + other.z); }
@@ -137,7 +137,7 @@ namespace Core
 		inline bool operator==(T value) const { return this->x == value && this->y == value && this->z == value; }
 		inline bool operator!=(T value) const { return !(*this == value); }
 
-		inline std::string toString() const
+		inline std::string ToString() const
 		{
 			return '[' + std::to_string(this->x) + ", " + std::to_string(this->y) + ","  + std::to_string(this->z) + ']';
 		}

@@ -11,8 +11,8 @@ namespace Core
 	class OpenALSourceIDProvider : public StaticObject {
 	public:
 
-		static void generate(i32_t count, u32_t * elements);
-		static void clear();
+		static void Generate(i32_t count, u32_t * elements);
+		static void Clear();
 
 	private:
 
@@ -23,8 +23,8 @@ namespace Core
 	class OpenALBufferIDProvider : public StaticObject {
 	public:
 
-		static void generate(i32_t count, u32_t * elements);
-		static void clear();
+		static void Generate(i32_t count, u32_t * elements);
+		static void Clear();
 
 	private:
 

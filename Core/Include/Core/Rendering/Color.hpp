@@ -44,19 +44,19 @@ namespace Core
 		bool operator!=(const Color & other) const;
 
 		/* calcualtes a 32-bit unsigned integer value in R-G-B-A format */
-		u32_t rgba() const;
+		u32_t Rgba() const;
 
 		/* calcualtes a 32-bit unsigned integer value in A-R-G-B format */
-		u32_t argb() const;
+		u32_t Argb() const;
 
 		/* calculates a 32-bit integer value in R-G-B format */
-		i32_t rgb() const;
+		i32_t Rgb() const;
 
 		/* calculates a 8-bit unsigned integer holding the brightness value of the red, green and blue component */
-		u8_t brightness() const;
+		u8_t Brightness() const;
 
 		/* returns a random color */
-		static Color getRandomColor(bool randomAlpha = false);
+		static Color GetRandomColor(bool randomAlpha = false);
 
 		/*
 			don't change the order of this attributes !

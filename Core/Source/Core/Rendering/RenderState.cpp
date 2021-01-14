@@ -26,28 +26,28 @@ namespace Core
 		gctx(gctx)
 	{ }
 
-	void RenderState::setActiveMatrix(const D2D1::Matrix3x2F & matrix)
+	void RenderState::SetActiveMatrix(const D2D1::Matrix3x2F & matrix)
 	{
-		D2D1::Matrix3x2F & active = this->getActiveMatrix();
+		D2D1::Matrix3x2F & active = this->GetActiveMatrix();
 		active = matrix;
-		this->activateMatrix();
+		this->ActivateMatrix();
 	}
 
-	D2D1::Matrix3x2F & RenderState::getActiveMatrix()
+	D2D1::Matrix3x2F & RenderState::GetActiveMatrix()
 	{
 		return *this->activeMatrix;
 	}
 
-	void RenderState::pushMatrix()
+	void RenderState::PushMatrix()
 	{
 		/* we want to advance the matrix by the last active one. */
-		this->metrics.push(this->getActiveMatrix());
+		this->metrics.push(this->GetActiveMatrix());
 
 		/* activate the new matrix */
-		this->activateMatrix();
+		this->ActivateMatrix();
 	}
 
-	void RenderState::popMatrix()
+	void RenderState::PopMatrix()
 	{
 		/* we only want to pop a state from the stack if he's not empty */
 		if (!this->metrics.empty())
@@ -57,27 +57,27 @@ namespace Core
 		}
 
 		/* activate the new matrix */
-		this->activateMatrix();
+		this->ActivateMatrix();
 	}
 
-	void RenderState::reset()
+	void RenderState::Reset()
 	{
 		/* pop every element from the stack */
 		while (!this->metrics.empty())
 			this->metrics.pop();
 
 		this->defaultMatrix = D2D1::Matrix3x2F::Identity(); // reset to its identity value
-		this->activateMatrix();
+		this->ActivateMatrix();
 	}
 
-	void RenderState::activateMatrix()
+	void RenderState::ActivateMatrix()
 	{
 		this->activeMatrix = this->metrics.empty() ? &this->defaultMatrix : &this->metrics.top();
 
 		if (ID2D1HwndRenderTarget * rt = this->gctx->hwndRenderTarget.Get())
 		{
 			// activate the matrix as the new transformation
-			rt->SetTransform(this->getActiveMatrix());
+			rt->SetTransform(this->GetActiveMatrix());
 		}
 	}
 

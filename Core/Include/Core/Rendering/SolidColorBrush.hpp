@@ -15,14 +15,14 @@ namespace Core
 
 		explicit SolidColorBrush(GraphicsContext *& gctx);
 
-		void setColor(const Color & color);
-		const Color & getColor() const;
+		void SetColor(const Color & color);
+		const Color & GetColor() const;
 		
-		ID2D1Brush * getBrush() const;
+		ID2D1Brush * GetBrush() const;
 
 	private:
 
-		void create(const Color & color);
+		void Create(const Color & color);
 
 	private:
 

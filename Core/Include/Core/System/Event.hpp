@@ -53,7 +53,7 @@ namespace Core
 			return *this;
 		}
 
-		inline Event & removeAll(const EventItem & item)
+		inline Event & RemoveAll(const EventItem & item)
 		{
 			this->delegates.remove_if([&item](const EventItem & current) -> bool
 			{
@@ -63,7 +63,7 @@ namespace Core
 			return *this;
 		}
 
-		inline TReturnType invoke(const TArgs & ... arguments) const
+		inline TReturnType Invoke(const TArgs & ... arguments) const
 		{
 			if constexpr (std::is_void_v<TReturnType>)
 			{
@@ -94,7 +94,7 @@ namespace Core
 			return this->invoke(std::forward<decltype(arguments)>(arguments)...);
 		}
 
-		const List<EventItem> & getDelegates() const
+		const List<EventItem> & GetDelegates() const
 		{
 			return this->delegates;
 		}

@@ -15,13 +15,13 @@ namespace Core
 		explicit RenderStateManager(GraphicsContext *& gctx);
 		
 		/* pushes a RenderState onto the stack and actives the next */
-		void pushState();
+		void PushState();
 		
 		/* pops a RenderState from the stack and activates the next */
-		void popState();
+		void PopState();
 
 		/* pops all states from the stack and activates the RenderState */
-		void reset();
+		void Reset();
 
 		/*
 			if the stack of RenderStates is empty,
@@ -29,7 +29,7 @@ namespace Core
 			Otherwise it will return the highest element
 			of the stack
 		*/
-		RenderState & getActiveState();
+		RenderState & GetActiveState();
 
 	private:
 

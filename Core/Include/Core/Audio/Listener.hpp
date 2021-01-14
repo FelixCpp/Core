@@ -9,37 +9,37 @@ namespace Core
 	struct Listener : public StaticObject {
 	
 		/* changes the position in a 3D space */
-		static void setPosition(float x, float y, float z);
+		static void SetPosition(float x, float y, float z);
 
 		/* changes the position in a 3D space */
-		static void setPosition(const FVector3 & position);
+		static void SetPosition(const FVector3 & position);
 
 		/* returns the current position */
-		static FVector3 getPosition();
+		static FVector3 GetPosition();
 
 		/* changes the velocity */
-		void setVelocity(float x, float y, float z);
+		static void SetVelocity(float x, float y, float z);
 
 		/* changes the velocity */
-		void setVelocity(const FVector3 & velocity);
+		static void SetVelocity(const FVector3 & velocity);
 
 		/* returns the velocity */
-		static FVector3 getVelocity();
+		static FVector3 GetVelocity();
 
 		/* changes the orientation */
-		static void setOrientation(float px, float py, float pz, float upx, float upy, float upz);
+		static void SetOrientation(float px, float py, float pz, float upx, float upy, float upz);
 
 		/* changes the orientation */
-		static void setOrientation(const FVector3 & position, const FVector3 & up);
+		static void SetOrientation(const FVector3 & position, const FVector3 & up);
 
 		/* returns the orientation (an array with the length of 6 elements: float[6]) */
-		static float * getOrientation();
+		static float * GetOrientation();
 
 		/* changes the volume. The parameter should have a value between 0.0 and 1.0 */
-		static void setVolume(float volume);
+		static void SetVolume(float volume);
 
 		/* returns the volume */
-		static float getVolume();
+		static float GetVolume();
 
 	};
 

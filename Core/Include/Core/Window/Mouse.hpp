@@ -20,28 +20,28 @@ namespace Core
 		};
 
 		/* returns true if the passed button is currently being pressed */
-		static bool isButtonPressed(Button button);
+		static bool IsButtonPressed(Button button);
 		
 		/* checks every button state. If the button is pressed, he will be stored and returned */
-		static std::vector<Button> areButtonsPressed(const std::vector<Button> & buttons);
+		static std::vector<Button> AreButtonsPressed(const std::vector<Button> & buttons);
 
 		/* changes the cursors position based on the monitors 0, 0 location */
-		static void setPosition(i32_t x, i32_t y);
+		static void SetPosition(i32_t x, i32_t y);
 		
 		/* changes the cursors position based on the windows 0, 0 location */
-		static void setPosition(i32_t x, i32_t y, Windowhandle window);
+		static void SetPosition(i32_t x, i32_t y, Windowhandle window);
 
 		/* changes the cursors position based on the monitors 0, 0 location */
-		static void setPosition(const IVector2 & position);
+		static void SetPosition(const IVector2 & position);
 
 		/* changes the cursors position based on the windows 0, 0 location */
-		static void setPosition(const IVector2 & position, Windowhandle window);
+		static void SetPosition(const IVector2 & position, Windowhandle window);
 
 		/* returns the cursors position based on the monitors 0, 0 location */
-		static IVector2 getPosition();
+		static IVector2 GetPosition();
 
 		/* returns the cursors position based on the windows 0, 0 location */
-		static IVector2 getPosition(Windowhandle window);
+		static IVector2 GetPosition(Windowhandle window);
 
 	};
 

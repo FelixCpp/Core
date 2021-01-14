@@ -11,7 +11,7 @@ namespace Core
 
 	struct WaveFileReader : StaticObject {
 	
-		static bool read(const std::string & filepath, WaveFile & file);
+		static bool Read(const std::string & filepath, WaveFile & file);
 
 	};
 

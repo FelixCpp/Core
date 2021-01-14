@@ -39,166 +39,166 @@ namespace Core
 		virtual ~Window() = default;
 
 		/* enters the fullscreen-mode with the specified properties of the displayMode parameter */
-		bool enterFullscreen(const DisplayMode & displayMode);
+		bool EnterFullscreen(const DisplayMode & displayMode);
 
 		/* exits the fullscreen-mode */
-		bool exitFullscreen(u32_t width, u32_t height);
+		bool ExitFullscreen(u32_t width, u32_t height);
 
 		/* changes the framerate limit */
-		void setFramerateLimit(i32_t limit);
+		void SetFramerateLimit(i32_t limit);
 
 		/* releases the framerate limit */
-		void noFramerateLimit();
+		void NoFramerateLimit();
 
 		/* creates a window with the given properties */
-		virtual bool create(u32_t width, u32_t height, const std::string & title) = 0;
+		virtual bool Create(u32_t width, u32_t height, const std::string & title) = 0;
 
 		/* returns true if the window is currently open */
-		bool isOpen() const;
+		bool IsOpen() const;
 
 		/* closes the window */
-		void close();
+		void Close();
 
 		/* returns the state of the fullscreen attribute. For more description read the documentation of that field */
-		bool isFullscreen() const;
+		bool IsFullscreen() const;
 
 		/* changes the title of the window */
-		void setTitle(const std::string & title);
+		void SetTitle(const std::string & title);
 
 		/* returns the current title of the window */
-		const std::string & getTitle() const;
+		const std::string & GetTitle() const;
 
 		/* changes the size of the window */
-		void setSize(u32_t width, u32_t height);
+		void SetSize(u32_t width, u32_t height);
 		
 		/* returns the size of the window */
-		UVector2 getSize() const;
+		UVector2 GetSize() const;
 
 		/* changes the position of the window */
-		void setPosition(i32_t x, i32_t y);
+		void SetPosition(i32_t x, i32_t y);
 
 		/* returns the position of the window */
-		IVector2 getPosition() const;
+		IVector2 GetPosition() const;
 
 		/* changes the resizability of the window-edge */
-		void setResizable(bool resizable);
+		void SetResizable(bool resizable);
 
 		/* returns true if the window is resizable on the edges */
-		bool isResizable() const;
+		bool IsResizable() const;
 
 		/* enables / disables the maximize-button in the top-right corner of the window */
-		void setMaximizable(bool maximizable);
+		void SetMaximizable(bool maximizable);
 
 		/* checks the state of the maximize-button and returns true if he is clickable */
-		bool isMaximizable() const;
+		bool IsMaximizable() const;
 
 		/* enables / disables the minimize-button in the top-right corner of the window */
-		void setMinimizable(bool minimizable);
+		void SetMinimizable(bool minimizable);
 
 		/* checks the state of the minimize-button and returns true if he is clickable */
-		bool isMinimizable() const;
+		bool IsMinimizable() const;
 
 		/* enables / disables the close-button in the top-right corner of the window */
-		void setClosable(bool closable);
+		void SetClosable(bool closable);
 
 		/* checks the state of the close-button and returns true if he is clickable */
-		bool isClosable() const;
+		bool IsClosable() const;
 
 		/* changes the visibility of the mouse cursor */
-		void setMouseCursorVisible(bool visible);
+		void SetMouseCursorVisible(bool visible);
 
 		/* returns true if the mouse cursor is visible */
-		bool isMouseCursorVisible() const;
+		bool IsMouseCursorVisible() const;
 
 		/* changes the state of the mouse cursor being grabbed */
-		void setMouseCursorGrabbed(bool grabbed);
+		void SetMouseCursorGrabbed(bool grabbed);
 
 		/* returns the state of the mouse cursor being grabbed */
-		bool isMouseCursorGrabbed() const;
+		bool IsMouseCursorGrabbed() const;
 
 		/* centers the window on the monitor */
-		void recenter();
+		void Recenter();
 
 		/* loads the file and changes the icon to match the read data */
-		bool setIcon(const std::string & filepath);
+		bool SetIcon(const std::string & filepath);
 
 		/* loads the system icon and changes the icon to match it */
-		bool setIcon(SystemIcon icon);
+		bool SetIcon(SystemIcon icon);
 		
 		/* loads the file and changes the cursor to match the read data */
-		bool setCursor(const std::string & filepath);
+		bool SetCursor(const std::string & filepath);
 		
 		/* loads the system cursor and changes the cursor to match it */
-		bool setCursor(SystemCursor cursor);
+		bool SetCursor(SystemCursor cursor);
 
 		/* changes the visibility of the window */
-		void setVisible(bool visible);
+		void SetVisible(bool visible);
 
 		/* returns true if the window is visible */
-		bool isVisible() const;
+		bool IsVisible() const;
 
 	public:
 
 		/* gets raised if any key is pressed */
-		virtual void onKeyPressed(KeyboardEventArgs args) {}
+		virtual void OnKeyPressed(KeyboardEventArgs args) {}
 
 		/* gets raised if any key is released */
-		virtual void onKeyReleased(KeyboardEventArgs args) {}
+		virtual void OnKeyReleased(KeyboardEventArgs args) {}
 		
 		/* gets raised if a character was pressed */
-		virtual void onTextEntered(Keyboard::Key key) {}
+		virtual void OnTextEntered(Keyboard::Key key) {}
 		
 		/* gets raised if any mouse button is pressed */
-		virtual void onMousePressed(Mouse::Button button) {}
+		virtual void OnMousePressed(Mouse::Button button) {}
 		
 		/* gets raised if any mouse button is released */
-		virtual void onMouseReleased(Mouse::Button button) {}
+		virtual void OnMouseReleased(Mouse::Button button) {}
 		
 		/* gets raised if the mousewheel is scrolled */
-		virtual void onMouseWheelScrolled(i32_t delta) {}
+		virtual void OnMouseWheelScrolled(i32_t delta) {}
 
 		/* gets raised if the X-button is pressed */
-		virtual void onWindowClosed() {}
+		virtual void OnWindowClosed() {}
 
 		/* gets raised if the window is resized */
-		virtual void onWindowResized() {}
+		virtual void OnWindowResized() {}
 
 		/* gets raised if the window was moved */
-		virtual void onWindowMoved() {}
+		virtual void OnWindowMoved() {}
 
 		/* gets raised if the mouse was moved */
-		virtual void onMouseMoved() {}
+		virtual void OnMouseMoved() {}
 
 		/* gets raised if the window gained focus */
-		virtual void onFocusGained() {}
+		virtual void OnFocusGained() {}
 
 		/* gets raised if the window lost focus */
-		virtual void onFocusLost() {}
+		virtual void OnFocusLost() {}
 
 		/* gets raised if the mouse left the boundary of the window */
-		virtual void onMouseLeft() {}
+		virtual void OnMouseLeft() {}
 
 		/* gets raised if the mouse entered the boundary of the window */
-		virtual void onMouseEntered() {}
+		virtual void OnMouseEntered() {}
 
 	protected:
 
 		/* dispatches the windows events and raises the processEvents function */
-		void dispatchEvents() const;
+		void DispatchEvents() const;
 
 		/* calls the calculateFps and limitFps function */
-		void handleFps();
+		void HandleFps();
 
 	private:
 
 		/* grabs the mouse cursor based on the parameter */
-		void grabCursor(bool grabbed);
+		void GrabCursor(bool grabbed);
 
 		/* calculates the fps */
-		void calculateFps();
+		void CalculateFps();
 
 		/* sleeps the right amount of time to match the fpslimit */
-		void limitFps();
+		void LimitFps();
 
 	public:
 

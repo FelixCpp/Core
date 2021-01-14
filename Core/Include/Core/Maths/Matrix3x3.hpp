@@ -23,18 +23,18 @@ namespace Core
 						   float m01, float m11, float m21,
 						   float m02, float m12, float m22);
 
-		Matrix3x3 & translate(const FVector2 & position);
-		Matrix3x3 & rotate(float radians);
-		Matrix3x3 & scale(const FVector2 & factor);
-		Matrix3x3 & shear(const FVector2 & size);
-		Matrix3x3 & multiply(const Matrix3x3 & other);
-		Matrix3x3 & invert();
+		Matrix3x3 & Translate(const FVector2 & position);
+		Matrix3x3 & Rotate(float radians);
+		Matrix3x3 & Scale(const FVector2 & factor);
+		Matrix3x3 & Shear(const FVector2 & size);
+		Matrix3x3 & Multiply(const Matrix3x3 & other);
+		Matrix3x3 & Invert();
 
-		FVector2 transformPoint(const FVector2 & point) const;
+		FVector2 TransformPoint(const FVector2 & point) const;
 
-		std::string toString() const;
+		std::string ToString() const;
 
-		const MatrixType & getMatrix() const;
+		const MatrixType & GetMatrix() const;
 
 		bool operator==(const Matrix3x3 & other) const;
 		bool operator!=(const Matrix3x3 & other) const;

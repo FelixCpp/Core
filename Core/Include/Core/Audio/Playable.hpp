@@ -25,85 +25,85 @@ namespace Core
 		virtual ~Playable() = default;
 
 		/* creates an OpenAL source attached to a buffer */
-		void create(u32_t bufferID);
+		void Create(u32_t bufferID);
 
 		/* plays the source and attaches a buffer to it */
-		virtual void play();
+		virtual void Play();
 
 		/* paueses the source. If you call play() again it will continue */
-		void pause();
+		void Pause();
 
 		/* stops the source from playing. If you call play() again it will restart from the beginning */
-		void stop();
+		void Stop();
 
 		/* changes the position in a 3D space */
-		void setPosition(float x, float y, float z);
+		void SetPosition(float x, float y, float z);
 
 		/* changes the position in a 3D space */
-		void setPosition(const FVector3 & position);
+		void SetPosition(const FVector3 & position);
 
 		/* returns the current position */
-		FVector3 getPosition() const;
+		FVector3 GetPosition() const;
 
 		/* changes the velocity */
-		void setVelocity(float x, float y, float z);
+		void SetVelocity(float x, float y, float z);
 
 		/* changes the velocity */
-		void setVelocity(const FVector3 & velocity);
+		void SetVelocity(const FVector3 & velocity);
 
 		/* returns the velocity */
-		FVector3 getVelocity() const;
+		FVector3 GetVelocity() const;
 
 		/* changes the direction */
-		void setDirection(float x, float y, float z);
+		void SetDirection(float x, float y, float z);
 
 		/* changes the direction */
-		void setDirection(const FVector3 & direction);
+		void SetDirection(const FVector3 & direction);
 
 		/* returns the direction */
-		FVector3 getDirection() const;
+		FVector3 GetDirection() const;
 
 		/* changes wether the source is played relative compared to the listener or not */
-		void setRelativeToListener(bool relative);
+		void SetRelativeToListener(bool relative);
 
 		/* returns true if the source is relative compared to the listener */
-		bool isRelativeToListener() const;
+		bool IsRelativeToListener() const;
 
 		/* changes the volume. The parameter should have a value between 0.0 and 1.0 */
-		void setVolume(float volume);
+		void SetVolume(float volume);
 
 		/* returns the volume */
-		float getVolume() const;
+		float GetVolume() const;
 
 		/* changes the pitch. The paramter should have a value greater than 0.0 */
-		void setPitch(float pitch);
+		void SetPitch(float pitch);
 
 		/* returns the pitch */
-		float getPitch() const;
+		float GetPitch() const;
 
 		/* changes the rolloff factor */
-		void setRolloffFactor(float factor);
+		void SetRolloffFactor(float factor);
 
 		/* returns the rolloff factor */
-		float getRolloffFactor() const;
+		float GetRolloffFactor() const;
 
 		/* changes the reference distance */
-		void setReferenceDistance(float distance);
+		void SetReferenceDistance(float distance);
 
 		/* returns the reference distance */
-		float getReferenceDistance() const;
+		float GetReferenceDistance() const;
 
 		/* changes the max distance between the sound and the listener where the sound stops playing */
-		void setMaxDistance(float distance);
+		void SetMaxDistance(float distance);
 
 		/* returns the max distance */
-		float getMaxDistance() const;
+		float GetMaxDistance() const;
 
 		/* gets the state and returns it. */
-		State getState() const;
+		State GetState() const;
 
 		/* a getter for the sourceID */
-		u32_t getSourceID() const;
+		u32_t GetSourceID() const;
 
 	protected:
 

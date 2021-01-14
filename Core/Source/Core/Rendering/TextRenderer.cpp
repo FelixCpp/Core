@@ -26,138 +26,138 @@ namespace Core
 	{
 	}
 
-	void TextRenderer::setText(const std::string & text)
+	void TextRenderer::SetText(const std::string & text)
 	{
 		if (this->text != text)
 		{
 			this->text = text;
-			this->updateText();
+			this->UpdateText();
 		}
 	}
 
-	const std::string & TextRenderer::getText() const
+	const std::string & TextRenderer::GetText() const
 	{
 		return this->text;
 	}
 
-	void TextRenderer::setFont(const std::string & font)
+	void TextRenderer::SetFont(const std::string & font)
 	{
 		if (this->font != font)
 		{
 			this->font = font;
-			this->updateFont();
+			this->UpdateFont();
 		}
 	}
 
-	const std::string & TextRenderer::getFont() const
+	const std::string & TextRenderer::GetFont() const
 	{
 		return this->font;
 	}
 
-	void TextRenderer::setFontWeight(FontWeight fontWeight)
+	void TextRenderer::SetFontWeight(FontWeight fontWeight)
 	{
 		if (this->fontWeight != fontWeight)
 		{
 			this->fontWeight = fontWeight;
-			this->updateFontWeight();
+			this->UpdateFontWeight();
 		}
 	}
 
-	FontWeight TextRenderer::getFontWeight() const
+	FontWeight TextRenderer::GetFontWeight() const
 	{
 		return this->fontWeight;
 	}
 
-	void TextRenderer::setFontStyle(FontStyle fontStyle)
+	void TextRenderer::SetFontStyle(FontStyle fontStyle)
 	{
 		if (this->fontStyle != fontStyle)
 		{
 			this->fontStyle = fontStyle;
-			this->updateFontStyle();
+			this->UpdateFontStyle();
 		}
 	}
 
-	FontStyle TextRenderer::getFontStyle() const
+	FontStyle TextRenderer::GetFontStyle() const
 	{
 		return this->fontStyle;
 	}
 
-	void TextRenderer::setFontStretch(FontStretch fontStretch)
+	void TextRenderer::SetFontStretch(FontStretch fontStretch)
 	{
 		if (this->fontStretch != fontStretch)
 		{
 			this->fontStretch = fontStretch;
-			this->updateFontStretch();
+			this->UpdateFontStretch();
 		}
 	}
 
-	FontStretch TextRenderer::getFontStretch() const
+	FontStretch TextRenderer::GetFontStretch() const
 	{
 		return this->fontStretch;
 	}
 
-	void TextRenderer::setWordWrapping(WordWrapping wordWrapping)
+	void TextRenderer::SetWordWrapping(WordWrapping wordWrapping)
 	{
 		if (this->wordWrapping != wordWrapping)
 		{
 			this->wordWrapping = wordWrapping;
-			this->updateWordWrapping();
+			this->UpdateWordWrapping();
 		}
 	}
 
-	WordWrapping TextRenderer::getWordWrapping() const
+	WordWrapping TextRenderer::GetWordWrapping() const
 	{
 		return this->wordWrapping;
 	}
 
-	void TextRenderer::setTextAlignment(TextAlignment textAlignment)
+	void TextRenderer::SetTextAlignment(TextAlignment textAlignment)
 	{
 		if (this->textAlignment != textAlignment)
 		{
 			this->textAlignment = textAlignment;
-			this->updateTextAlignment();
+			this->UpdateTextAlignment();
 		}
 	}
 
-	TextAlignment TextRenderer::getTextAlignment() const
+	TextAlignment TextRenderer::GetTextAlignment() const
 	{
 		return this->textAlignment;
 	}
 
-	void TextRenderer::setParagraphAlignment(ParagraphAlignment paragraphAlignment)
+	void TextRenderer::SetParagraphAlignment(ParagraphAlignment paragraphAlignment)
 	{
 		if (this->paragraphAlignment != paragraphAlignment)
 		{
 			this->paragraphAlignment = paragraphAlignment;
-			this->updateParagrapAlignment();
+			this->UpdateParagrapAlignment();
 		}
 	}
 
-	ParagraphAlignment TextRenderer::getParagraphAlignment() const
+	ParagraphAlignment TextRenderer::GetParagraphAlignment() const
 	{
 		return this->paragraphAlignment;
 	}
 
-	void TextRenderer::setTextSize(float textSize)
+	void TextRenderer::SetTextSize(float textSize)
 	{
 		if (this->textSize != textSize)
 		{
 			this->textSize = textSize;
-			this->updateTextSize();
+			this->UpdateTextSize();
 		}
 	}
 
-	float TextRenderer::getTextSize() const
+	float TextRenderer::GetTextSize() const
 	{
 		return this->textSize;
 	}
 
-	void TextRenderer::setUnderline(bool active)
+	void TextRenderer::SetUnderline(bool active)
 	{
 		if (this->underline != active)
 		{
 			this->underline = active;
-			this->updateUnderline();
+			this->UpdateUnderline();
 		}
 	}
 
@@ -166,12 +166,12 @@ namespace Core
 		return this->underline;
 	}
 
-	void TextRenderer::setStrikeThrough(bool active)
+	void TextRenderer::SetStrikeThrough(bool active)
 	{
 		if (this->strikeThrough != active)
 		{
 			this->strikeThrough = active;
-			this->updateStrikeThrough();
+			this->UpdateStrikeThrough();
 		}
 	}
 
@@ -180,35 +180,35 @@ namespace Core
 		return this->strikeThrough;
 	}
 
-	void TextRenderer::setMaxWidth(float width)
+	void TextRenderer::SetMaxWidth(float width)
 	{
 		if (this->maxWidth != width)
 		{
 			this->maxWidth = width;
-			this->updateMaxWidth();
+			this->UpdateMaxWidth();
 		}
 	}
 
-	float TextRenderer::getMaxWidth() const
+	float TextRenderer::GetMaxWidth() const
 	{
 		return this->maxWidth;
 	}
 
-	void TextRenderer::setMaxHeight(float height)
+	void TextRenderer::SetMaxHeight(float height)
 	{
 		if (this->maxHeight != height)
 		{
 			this->maxHeight = height;
-			this->updateMaxHeight();
+			this->UpdateMaxHeight();
 		}
 	}
 
-	float TextRenderer::getMaxHeight() const
+	float TextRenderer::GetMaxHeight() const
 	{
 		return this->maxHeight;
 	}
 
-	FVector2 TextRenderer::getSize() const
+	FVector2 TextRenderer::GetSize() const
 	{
 		if (IDWriteTextLayout * layout = this->layout.Get())
 		{
@@ -220,12 +220,12 @@ namespace Core
 		return FVector2(0.f, 0.f);
 	}
 
-	IDWriteTextLayout * TextRenderer::getTextLayout() const
+	IDWriteTextLayout * TextRenderer::GetTextLayout() const
 	{
 		return this->layout.Get();
 	}
 
-	void TextRenderer::updateText()
+	void TextRenderer::UpdateText()
 	{
 		IDWriteFactory * writeFactory = this->gctx->writeFactory.Get();
 		const std::wstring wFont(this->font.begin(), this->font.end());
@@ -271,7 +271,7 @@ namespace Core
 		this->layout->SetParagraphAlignment(static_cast<DWRITE_PARAGRAPH_ALIGNMENT>(this->paragraphAlignment));
 	}
 
-	void TextRenderer::updateFont()
+	void TextRenderer::UpdateFont()
 	{
 		if (IDWriteTextLayout * layout = this->layout.Get())
 		{
@@ -280,67 +280,67 @@ namespace Core
 		}
 	}
 
-	void TextRenderer::updateFontWeight()
+	void TextRenderer::UpdateFontWeight()
 	{
 		if (IDWriteTextLayout * layout = this->layout.Get())
 			layout->SetFontWeight(static_cast<DWRITE_FONT_WEIGHT>(this->fontWeight), this->range);
 	}
 
-	void TextRenderer::updateFontStyle()
+	void TextRenderer::UpdateFontStyle()
 	{
 		if (IDWriteTextLayout * layout = this->layout.Get())
 			layout->SetFontStyle(static_cast<DWRITE_FONT_STYLE>(this->fontStyle), this->range);
 	}
 
-	void TextRenderer::updateFontStretch()
+	void TextRenderer::UpdateFontStretch()
 	{
 		if (IDWriteTextLayout * layout = this->layout.Get())
 			layout->SetFontStretch(static_cast<DWRITE_FONT_STRETCH>(this->fontStretch), this->range);
 	}
 
-	void TextRenderer::updateWordWrapping()
+	void TextRenderer::UpdateWordWrapping()
 	{
 		if (IDWriteTextLayout * layout = this->layout.Get())
 			layout->SetWordWrapping(static_cast<DWRITE_WORD_WRAPPING>(this->wordWrapping));
 	}
 
-	void TextRenderer::updateTextAlignment()
+	void TextRenderer::UpdateTextAlignment()
 	{
 		if (IDWriteTextLayout * layout = this->layout.Get())
 			layout->SetTextAlignment(static_cast<DWRITE_TEXT_ALIGNMENT>(this->textAlignment));
 	}
 
-	void TextRenderer::updateParagrapAlignment()
+	void TextRenderer::UpdateParagrapAlignment()
 	{
 		if (IDWriteTextLayout * layout = this->layout.Get())
 			layout->SetParagraphAlignment(static_cast<DWRITE_PARAGRAPH_ALIGNMENT>(this->paragraphAlignment));
 	}
 
-	void TextRenderer::updateTextSize()
+	void TextRenderer::UpdateTextSize()
 	{
 		if (IDWriteTextLayout * layout = this->layout.Get())
 			layout->SetFontSize(this->textSize, this->range);
 	}
 
-	void TextRenderer::updateMaxWidth()
+	void TextRenderer::UpdateMaxWidth()
 	{
 		if (IDWriteTextLayout * layout = this->layout.Get())
 			layout->SetMaxWidth(this->maxWidth);
 	}
 
-	void TextRenderer::updateMaxHeight()
+	void TextRenderer::UpdateMaxHeight()
 	{
 		if (IDWriteTextLayout * layout = this->layout.Get())
 			layout->SetMaxHeight(this->maxHeight);
 	}
 
-	void TextRenderer::updateUnderline()
+	void TextRenderer::UpdateUnderline()
 	{
 		if (IDWriteTextLayout * layout = this->layout.Get())
 			layout->SetUnderline(this->underline, this->range);
 	}
 
-	void TextRenderer::updateStrikeThrough()
+	void TextRenderer::UpdateStrikeThrough()
 	{
 		if (IDWriteTextLayout * layout = this->layout.Get())
 			layout->SetStrikethrough(this->strikeThrough, this->range);

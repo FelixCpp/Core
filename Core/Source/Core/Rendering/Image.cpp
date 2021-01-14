@@ -22,7 +22,7 @@ namespace Core
 		impl(std::make_shared<Implementation>())
 	{ }
 
-	bool Image::create(u32_t width, u32_t height, const Color & color, GraphicsContext * gctx)
+	bool Image::Create(u32_t width, u32_t height, const Color & color, GraphicsContext * gctx)
 	{
 		ID2D1HwndRenderTarget * rt = gctx->hwndRenderTarget.Get();
 		if (!rt) return false;
@@ -32,7 +32,7 @@ namespace Core
 		rt->GetDpi(&dpiX, &dpiY);
 
 		u32_t * srcData = new u32_t[width * height];
-		std::fill_n(srcData, width * height, color.argb());
+		std::fill_n(srcData, width * height, color.Argb());
 		
 		const HRESULT hr = rt->CreateBitmap(
 			D2D1::SizeU(width, height),
@@ -57,7 +57,7 @@ namespace Core
 		return true;
 	}
 
-	bool Image::loadFromMemory(u32_t width, u32_t height, const Color * colors, GraphicsContext * gctx)
+	bool Image::LoadFromMemory(u32_t width, u32_t height, const Color * colors, GraphicsContext * gctx)
 	{
 		ID2D1HwndRenderTarget * rt = gctx->hwndRenderTarget.Get();
 		if (!rt) return false;
@@ -103,7 +103,7 @@ namespace Core
 		return true;
 	}
 
-	bool Image::loadFromFile(const std::string & filepath, GraphicsContext * gctx)
+	bool Image::LoadFromFile(const std::string & filepath, GraphicsContext * gctx)
 	{
 		IWICImagingFactory * factory = gctx->imagingFactory.Get();
 		if (!factory) return false;
@@ -185,7 +185,7 @@ namespace Core
 		return true;
 	}
 
-	bool Image::loadFromScreen(i32_t x, i32_t y, i32_t width, i32_t height, GraphicsContext * gctx)
+	bool Image::LoadFromScreen(i32_t x, i32_t y, i32_t width, i32_t height, GraphicsContext * gctx)
 	{
 		ID2D1HwndRenderTarget * rt = gctx->hwndRenderTarget.Get();
 		if (!rt) return false;
@@ -230,7 +230,7 @@ namespace Core
 		return true;
 	}
 
-	ID2D1Bitmap * Image::getBitmap() const
+	ID2D1Bitmap * Image::GetBitmap() const
 	{
 		return this->impl->bitmap.Get();
 	}

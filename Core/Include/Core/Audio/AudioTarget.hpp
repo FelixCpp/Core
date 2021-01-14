@@ -17,14 +17,14 @@ namespace Core
 		virtual ~AudioTarget();
 
 		/* loads a sound effect, creates a buffer (if needed) and source and returns it */
-		Sound loadSound(const std::string & filepath);
+		Sound LoadSound(const std::string & filepath);
 
 		/*
 			loads music. The difference between sound and music is the preloading (buffering / streaming) 
 			Music doesn't get loaded in one step. It loads chunks so the music can play immediately even
 			if the file is really large.
 		*/
-		Music loadMusic(const std::string & filepath);
+		Music LoadMusic(const std::string & filepath);
 
 	protected:
 
@@ -32,7 +32,7 @@ namespace Core
 		explicit AudioTarget(const std::string & deviceName);
 
 		/* returns an OpenAL Audio format based on the passed channel count */
-		static i32_t getAudioFormat(u16_t channels);
+		static i32_t GetAudioFormat(u16_t channels);
 
 	private:
 

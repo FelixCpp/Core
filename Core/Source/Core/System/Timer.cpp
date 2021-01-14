@@ -10,14 +10,14 @@ namespace Core
 	{
 	}
 	
-	void Timer::setTimeout(const CompletionCallback & completion, const Duration & delay)
+	void Timer::SetTimeout(const CompletionCallback & completion, const Duration & delay)
 	{
 		this->active = true;
 
 		std::thread workerThread([=]()
 		{
 			if (!this->active) return;
-			std::this_thread::sleep_for(std::chrono::milliseconds(delay.toMilliseconds()));
+			std::this_thread::sleep_for(std::chrono::milliseconds(delay.ToMilliseconds()));
 			if (!this->active) return;
 			completion();
 		});
@@ -25,7 +25,7 @@ namespace Core
 		workerThread.detach();
 	}
 	
-	void Timer::setInterval(const CompletionCallback & completion, const Duration & interval)
+	void Timer::SetInterval(const CompletionCallback & completion, const Duration & interval)
 	{
 		this->active = true;
 
@@ -34,7 +34,7 @@ namespace Core
 			while (true)
 			{
 				if (!this->active) return;
-				std::this_thread::sleep_for(std::chrono::milliseconds(interval.toMilliseconds()));
+				std::this_thread::sleep_for(std::chrono::milliseconds(interval.ToMilliseconds()));
 				if (!this->active) return;
 
 				completion();
@@ -44,7 +44,7 @@ namespace Core
 		workerThread.detach();
 	}
 	
-	void Timer::stop()
+	void Timer::Stop()
 	{
 		this->active = false;
 	}

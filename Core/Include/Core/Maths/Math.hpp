@@ -44,15 +44,15 @@ namespace Core
 		inline static constexpr T InvLog10			= (T)0.434294481903251827651128918916605;
 
 		/* linear interpolation */
-		inline static T lerp(T v0, T v1, T t)
+		inline static T Lerp(T v0, T v1, T t)
 		{
 			return ((1 - t) * v0) + (t * v1);
 		}
 
 		/* linear interpolation with execution */
-		inline static T lerp(T v0, T v1, T t, T execute)
+		inline static T Lerp(T v0, T v1, T t, T execute)
 		{
-			const T value = MathImpl::lerp(v0, v1, t);
+			const T value = MathImpl::Lerp(v0, v1, t);
 			const T diff = (value - v1);
 			
 			if (diff <= execute)
@@ -64,7 +64,7 @@ namespace Core
 		}
 
 		/* calculates the distance in 2D space between two points */
-		inline static T distance(T x1, T y1, T x2, T y2)
+		inline static T Distance(T x1, T y1, T x2, T y2)
 		{
 			const T xDiff = x2 - x1;
 			const T yDiff = y2 - y1;
@@ -73,23 +73,23 @@ namespace Core
 		}
 
 		/* basically clamps a value between min and max */
-		inline static T constrain(T value, T min, T max)
+		inline static T Constrain(T value, T min, T max)
 		{
 			return value <= min ? min : value >= max ? max : value;
 		}
 
 		/* maps the value from istart, istop to ostart and ostop */
 		template<typename = std::enable_if_t<std::is_floating_point_v<T>>>
-		inline static T map(T value, T istart, T istop, T ostart, T ostop)
+		inline static T Map(T value, T istart, T istop, T ostart, T ostop)
 		{
 			return ostart + (ostop - ostart) * ((value - istart) / (istop - istart));
 		}
 
 		/* maps the value from istart, istop to ostart and ostop constrained by ostart and ostop */
 		template<typename = std::enable_if_t<std::is_floating_point_v<T>>>
-		inline static T cmap(T value, T istart, T istop, T ostart, T ostop)
+		inline static T CMap(T value, T istart, T istop, T ostart, T ostop)
 		{
-			const T output = MathImpl::map(value, istart, istop, ostart, ostop);
+			const T output = MathImpl::Map(value, istart, istop, ostart, ostop);
 			const T min = std::fmin(ostart, ostop);
 			const T max = std::fmax(ostart, ostop);
 
@@ -97,13 +97,13 @@ namespace Core
 		}
 
 		/* returns the radians converted in degrees */
-		inline static T degrees(T radians)
+		inline static T Degrees(T radians)
 		{
 			return radians * (T)180 / MathImpl::Pi;
 		}
 
 		/* returns the degrees converted in radians */
-		inline static T radians(T degrees)
+		inline static T Radians(T degrees)
 		{
 			return degrees * MathImpl::Pi / (T)180;
 		}

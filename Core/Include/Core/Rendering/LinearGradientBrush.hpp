@@ -19,22 +19,22 @@ namespace Core
 
 		explicit LinearGradientBrush(GraphicsContext *& gctx);
 
-		void setStart(float x, float y);
-		const FVector2 & getStart() const;
+		void SetStart(float x, float y);
+		const FVector2 & GetStart() const;
 
-		void setEnd(float x, float y);
-		const FVector2 & getEnd() const;
+		void SetEnd(float x, float y);
+		const FVector2 & GetEnd() const;
 
-		void setColors(const std::vector<Color> & colors);
-		const std::vector<Color> & getColors() const;
+		void SetColors(const std::vector<Color> & colors);
+		const std::vector<Color> & GetColors() const;
 
-		ID2D1Brush * getBrush() const;
+		ID2D1Brush * GetBrush() const;
 
 	private:
 
-		void updateStart();
-		void updateEnd();
-		void updateBrush();
+		void UpdateStart();
+		void UpdateEnd();
+		void UpdateBrush();
 
 	private:
 

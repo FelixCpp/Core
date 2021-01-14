@@ -15,22 +15,22 @@ namespace Core
 		explicit ImageTarget(GraphicsContext *& gctx, RenderStateManager *& rsm);
 
 		/* creates an image with the passed dimensions and color */
-		Image createImage(u32_t width, u32_t height, const Color & color = Color::White);
+		Image CreateImage(u32_t width, u32_t height, const Color & color = Color::White);
 
 		/* loads an image from memory. */
-		Image loadImageFromMemory(u32_t width, u32_t height, const Color * colors);
+		Image LoadImageFromMemory(u32_t width, u32_t height, const Color * colors);
 
 		/* loads an image from a filepath */
-		Image loadImageFromFile(const std::string & filepath);
+		Image LoadImageFromFile(const std::string & filepath);
 
 		/* loads an image from the rendertarget (screen) */
-		Image loadImageFromScreen(i32_t x, i32_t y, i32_t width, i32_t height);
+		Image LoadImageFromScreen(i32_t x, i32_t y, i32_t width, i32_t height);
 
 		/* Draws an image at x, y with the images width and height as size */
-		void image(const Image & image, float x, float y);
+		void Image(const Core::Image & image, float x, float y);
 
 		/* Draws an image at x, y, with the specified width and height as size */
-		void image(const Image & image, float x, float y, float width, float height);
+		void Image(const Core::Image & image, float x, float y, float width, float height);
 
 	private:
 

@@ -20,7 +20,7 @@ namespace Core
 		/*
 		* returns true if the key is already inserted
 		*/
-		bool contains(const TKey & key) const
+		bool Contains(const TKey & key) const
 		{
 			return storage.find(key) != this->storage.end();
 		}
@@ -28,7 +28,7 @@ namespace Core
 		/*
 		* inserts a new value into the dictionary	
 		*/
-		void set(const TKey & key, const TValue & value)
+		void Set(const TKey & key, const TValue & value)
 		{
 			this->storage[key] = value;
 		}
@@ -36,7 +36,7 @@ namespace Core
 		/*
 		* simply returns the value behind the key
 		*/
-		TValue & get(const TKey & key)
+		TValue & Get(const TKey & key)
 		{
 			return this->storage.at(key);
 		}

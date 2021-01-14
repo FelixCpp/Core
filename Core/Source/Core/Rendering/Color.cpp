@@ -58,33 +58,33 @@ namespace Core
 		return !(*this == other);
 	}
 
-	u32_t Color::rgba() const
+	u32_t Color::Rgba() const
 	{
 		return (this->r << 24) | (this->g << 16) | (this->b << 8) | (this->a << 0);
 	}
 
-	u32_t Color::argb() const
+	u32_t Color::Argb() const
 	{
 		return (this->a << 24) | (this->r << 16) | (this->g << 8) | (this->b << 0);
 	}
 
-	i32_t Color::rgb() const
+	i32_t Color::Rgb() const
 	{
 		return (this->r << 16) | (this->g << 8) | (this->b << 0);
 	}
 
-	u8_t Color::brightness() const
+	u8_t Color::Brightness() const
 	{
 		return (u8_t)(0.2126f * this->r) + (u8_t)(0.7152f * this->g) + (u8_t)(0.0722f * this->b);
 	}
 
-	Color Color::getRandomColor(bool randomAlpha)
+	Color Color::GetRandomColor(bool randomAlpha)
 	{
 		return Color(
-			Core::Random::get(255),
-			Core::Random::get(255),
-			Core::Random::get(255),
-			randomAlpha ? Core::Random::get(255) : 255
+			Core::Random::Get(255),
+			Core::Random::Get(255),
+			Core::Random::Get(255),
+			randomAlpha ? Core::Random::Get(255) : 255
 		);
 	}
 

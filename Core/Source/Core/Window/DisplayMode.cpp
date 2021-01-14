@@ -18,7 +18,7 @@ namespace Core
 	{
 	}
 
-	std::vector<DisplayMode> DisplayMode::getFullscreenModes()
+	std::vector<DisplayMode> DisplayMode::GetFullscreenModes()
 	{
 		/* create a DEVMODEA instance to read the DevModes in */
 		DEVMODEA devMode = {};
@@ -45,7 +45,7 @@ namespace Core
 		return modes;
 	}
 
-	DisplayMode DisplayMode::getDesktopMode()
+	DisplayMode DisplayMode::GetDesktopMode()
 	{
 		/* create a DEVMODEA instance to read the Monitor DisplaySettings in */
 		DEVMODEA devMode = {};

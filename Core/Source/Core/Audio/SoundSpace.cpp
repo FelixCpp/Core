@@ -5,43 +5,43 @@
 namespace Core
 {
 
-	void SoundSpace::setDistanceModel(DistanceModel model)
+	void SoundSpace::SetDistanceModel(DistanceModel model)
 	{
 		alDistanceModel(static_cast<ALenum>(model));
 	}
 
-	DistanceModel SoundSpace::getDistanceModel()
+	DistanceModel SoundSpace::GetDistanceModel()
 	{
 		ALint distanceModel = alGetInteger(AL_DISTANCE_MODEL);
 		return static_cast<DistanceModel>(distanceModel);
 	}
 
-	void SoundSpace::setDopplerFactor(float value)
+	void SoundSpace::SetDopplerFactor(float value)
 	{
 		alDopplerFactor(value);
 	}
 
-	float SoundSpace::getDopplerFactor()
+	float SoundSpace::GetDopplerFactor()
 	{
 		return alGetFloat(AL_DOPPLER_FACTOR);
 	}
 
-	void SoundSpace::setDopplerVelocity(float value)
+	void SoundSpace::SetDopplerVelocity(float value)
 	{
 		alDopplerVelocity(value);
 	}
 
-	float SoundSpace::getDopplerVelocity()
+	float SoundSpace::GetDopplerVelocity()
 	{
 		return alGetFloat(AL_DOPPLER_VELOCITY);
 	}
 
-	void SoundSpace::setSpeedOfSound(float value)
+	void SoundSpace::SetSpeedOfSound(float value)
 	{
 		alSpeedOfSound(value);
 	}
 
-	float SoundSpace::getSpeedOfSound()
+	float SoundSpace::GetSpeedOfSound()
 	{
 		return alGetFloat(AL_SPEED_OF_SOUND);
 	}

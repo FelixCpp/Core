@@ -10,32 +10,32 @@ namespace Core
 	{
 	}
 
-	float Duration::toSeconds() const
+	float Duration::ToSeconds() const
 	{
 		return this->microseconds / 1000.f / 1000.f;
 	}
 
-	i32_t Duration::toMilliseconds() const
+	i32_t Duration::ToMilliseconds() const
 	{
 		return this->microseconds / 1000;
 	}
 
-	i64_t Duration::toMicroseconds() const
+	i64_t Duration::ToMicroseconds() const
 	{
 		return this->microseconds;
 	}
 
-	Duration Duration::fromSeconds(float seconds)
+	Duration Duration::FromSeconds(float seconds)
 	{
 		return Duration(seconds * 1000 * 1000);
 	}
 
-	Duration Duration::fromMilliseconds(i32_t milliseconds)
+	Duration Duration::FromMilliseconds(i32_t milliseconds)
 	{
 		return Duration(milliseconds * 1000);
 	}
 
-	Duration Duration::fromMicroseconds(i64_t microseconds)
+	Duration Duration::FromMicroseconds(i64_t microseconds)
 	{
 		return Duration(microseconds);
 	}
@@ -72,27 +72,27 @@ namespace Core
 
 	Duration Duration::operator+(const Duration & other) const
 	{
-		return Duration::fromMicroseconds(this->microseconds + other.microseconds);
+		return Duration::FromMicroseconds(this->microseconds + other.microseconds);
 	}
 
 	Duration Duration::operator-(const Duration & other) const
 	{
-		return Duration::fromMicroseconds(this->microseconds - other.microseconds);
+		return Duration::FromMicroseconds(this->microseconds - other.microseconds);
 	}
 
 	Duration Duration::operator/(const Duration & other) const
 	{
-		return Duration::fromMicroseconds(this->microseconds / other.microseconds);
+		return Duration::FromMicroseconds(this->microseconds / other.microseconds);
 	}
 
 	Duration Duration::operator*(const Duration & other) const
 	{
-		return Duration::fromMicroseconds(this->microseconds * other.microseconds);
+		return Duration::FromMicroseconds(this->microseconds * other.microseconds);
 	}
 
 	Duration Duration::operator%(const Duration & other) const
 	{
-		return Duration::fromMicroseconds(this->microseconds % other.microseconds);
+		return Duration::FromMicroseconds(this->microseconds % other.microseconds);
 	}
 
 	Duration & Duration::operator+=(const Duration & other)

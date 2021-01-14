@@ -56,7 +56,7 @@ namespace Core
 		explicit RenderState(GraphicsContext *& gctx);
 
 		/* changes the active matrix to match the parameter. This method also calls activateMatrix() */
-		void setActiveMatrix(const D2D1::Matrix3x2F & matrix);
+		void SetActiveMatrix(const D2D1::Matrix3x2F & matrix);
 
 		/*
 			If the stack of metrics is empty,
@@ -64,32 +64,32 @@ namespace Core
 			Otherwise it will return the highest element
 			of the stack
 		*/
-		D2D1::Matrix3x2F & getActiveMatrix();
+		D2D1::Matrix3x2F & GetActiveMatrix();
 
 		/*
 			Pushes another D2D1::Matrix3x2F element
 			onto the stack and calls activateMatrix()
 			so it gets activates using the RenderTarget
 		*/
-		void pushMatrix();
+		void PushMatrix();
 
 		/*
 			Pops the highest element from metrics
 			and activates the next matrix
 		*/
-		void popMatrix();
+		void PopMatrix();
 
 		/*
 			simply pops every matrix from the stack
 			and activates the defaultMatrix
 		*/
-		void reset();
+		void Reset();
 
 		/*
 			activates the RenderState.
 			It means to tell the RenderTarget which matrix to use
 		*/
-		void activateMatrix();
+		void ActivateMatrix();
 
 	private:
 

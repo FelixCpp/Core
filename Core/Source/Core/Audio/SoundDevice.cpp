@@ -12,7 +12,7 @@ namespace Core
 	ALCdevice_struct * SoundDevice::device = nullptr;
 	ALCcontext_struct * SoundDevice::context = nullptr;
 
-	std::string SoundDevice::name()
+	std::string SoundDevice::Name()
 	{
 		if (alcIsExtensionPresent(device, "ALC_ENUMERATE_ALL_EXT"))
 		{
@@ -22,7 +22,7 @@ namespace Core
 		return alcGetString(device, ALC_DEVICE_SPECIFIER);
 	}
 
-	bool SoundDevice::initialize(const std::string & deviceName)
+	bool SoundDevice::Initialize(const std::string & deviceName)
 	{
 		/* just to make clear that the deviceName can be empty */
 		const char * deviceNameCStr = deviceName.empty() ? nullptr : deviceName.c_str();
@@ -32,7 +32,7 @@ namespace Core
 		if (!device)
 		{
 			CORE_ERROR("Failed to open the default AudioDevice");
-			shutdown();
+			Shutdown();
 			return false;
 		}
 
@@ -41,7 +41,7 @@ namespace Core
 		if (!context)
 		{
 			CORE_ERROR("Failed to create an AudioDevice");
-			shutdown();
+			Shutdown();
 			return false;
 		}
 
@@ -49,12 +49,12 @@ namespace Core
 		if (!alcMakeContextCurrent(context))
 		{
 			CORE_ERROR("Failed to make context current");
-			shutdown();
+			Shutdown();
 			return false;
 		}
 	}
 
-	std::vector<std::string> SoundDevice::getAvailableDevices()
+	std::vector<std::string> SoundDevice::GetAvailableDevices()
 	{
 		const ALCchar * devices = alcGetString(device, ALC_DEVICE_SPECIFIER);
 		if (!devices)
@@ -74,7 +74,7 @@ namespace Core
 		return result;
 	}
 
-	void SoundDevice::shutdown()
+	void SoundDevice::Shutdown()
 	{
 		alcMakeContextCurrent(nullptr);
 		if(context) alcDestroyContext(context);

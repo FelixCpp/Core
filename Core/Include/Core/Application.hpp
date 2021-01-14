@@ -18,19 +18,19 @@ namespace Core
 
 		virtual ~Application();
 
-		virtual void setup() {}
-		virtual void draw() {}
+		virtual void Setup() {}
+		virtual void Draw() {}
 
 		// pause & continue draw() call
-		void pauseDrawing();
-		void startDrawing();
+		void PauseDrawing();
+		void StartDrawing();
 
 		/* exits the application (calls close() on the Window base) */
-		void exit();
+		void Exit();
 
 		/* call this function to start the sketch */
 		template<class TDerived, typename ... TArgs, typename = std::enable_if_t<std::is_base_of_v<Application, TDerived>>>
-		static void launch(const TArgs & ... arguments)
+		static void Launch(const TArgs & ... arguments)
 		{
 			TDerived instance(std::forward<decltype(arguments)>(arguments)...);
 			instance.startSketch();
@@ -43,10 +43,10 @@ namespace Core
 
 	private:
 
-		void setupImpl();
-		void drawImpl();
+		void SetupImpl();
+		void DrawImpl();
 
-		void startSketch();
+		void StartSketch();
 
 	private:
 

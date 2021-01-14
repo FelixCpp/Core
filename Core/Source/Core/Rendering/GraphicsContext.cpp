@@ -11,12 +11,11 @@ namespace Core
 		imagingFactory(nullptr),
 		writeFactory(nullptr),
 		hwndRenderTarget(nullptr),
-		gdiToken(0ull),
 		drawing(false)
 	{
 	}
 
-	bool GraphicsContext::initialize(Windowhandle handle)
+	bool GraphicsContext::Initialize(Windowhandle handle)
 	{
 		HRESULT hr = D2D1CreateFactory(D2D1_FACTORY_TYPE_SINGLE_THREADED, this->mainFactory.ReleaseAndGetAddressOf());
 		if (FAILED(hr))
@@ -73,20 +72,11 @@ namespace Core
 			return false;
 		}
 
-		const Gdiplus::Status status = Gdiplus::GdiplusStartup(&this->gdiToken, &this->gdiInput, nullptr);
-		if (status != Gdiplus::Status::Ok)
-		{
-			CORE_ERROR("failed to initialize Gdiplus");
-			return false;
-		}
-
 		return true;
 	}
 
-	void GraphicsContext::destroy()
+	void GraphicsContext::Destroy()
 	{
-		Gdiplus::GdiplusShutdown(this->gdiToken);
-
 		//CoUninitialize(); /* not allowed to do this call before uninitializing every image which was loaded with that imagingFactory */
 		this->imagingFactory.Reset();
 		this->writeFactory.Reset();
@@ -94,7 +84,7 @@ namespace Core
 		this->mainFactory.Reset();
 	}
 
-	void GraphicsContext::beginDraw()
+	void GraphicsContext::BeginDraw()
 	{
 		if (!this->drawing)
 		{
@@ -103,7 +93,7 @@ namespace Core
 		}
 	}
 
-	void GraphicsContext::endDraw()
+	void GraphicsContext::EndDraw()
 	{
 		if (this->drawing)
 		{
@@ -112,7 +102,7 @@ namespace Core
 		}
 	}
 
-	void GraphicsContext::resizeViewport(u32_t width, u32_t height)
+	void GraphicsContext::ResizeViewport(u32_t width, u32_t height)
 	{
 		if (this->drawing)
 		{

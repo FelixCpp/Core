@@ -17,10 +17,10 @@ namespace Core
 		explicit DisplayMode(i32_t width, i32_t height, i32_t bitsPerPel, i32_t displayFrequency);
 
 		/* returns a list of valid DisplayModes which are valid for fullscreen-mode */
-		static std::vector<DisplayMode> getFullscreenModes();
+		static std::vector<DisplayMode> GetFullscreenModes();
 
 		/* returns the DisplayMode of the primary monitor */
-		static DisplayMode getDesktopMode();
+		static DisplayMode GetDesktopMode();
 
 	public:
 

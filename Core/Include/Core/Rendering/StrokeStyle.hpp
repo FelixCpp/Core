@@ -17,31 +17,31 @@ namespace Core
 
 		explicit StrokeStyle(GraphicsContext *& gctx);
 
-        void setStartCap(CapStyle style);
-        CapStyle getStartCap() const;
+        void SetStartCap(CapStyle style);
+        CapStyle GetStartCap() const;
 
-        void setEndCap(CapStyle style);
-        CapStyle getEndCap() const;
+        void SetEndCap(CapStyle style);
+        CapStyle GetEndCap() const;
 
-        void setDashCap(CapStyle style);
-        CapStyle getDashCap() const;
+        void SetDashCap(CapStyle style);
+        CapStyle GetDashCap() const;
 
-        void setLineJoin(LineJoin lineJoin);
-        LineJoin getLineJoin() const;
+        void SetLineJoin(LineJoin lineJoin);
+        LineJoin GetLineJoin() const;
 
-        void setDashStyle(DashStyle style);
-        DashStyle getDashStyle() const;
+        void SetDashStyle(DashStyle style);
+        DashStyle GetDashStyle() const;
 
-        void setDashOffset(float offset);
-        float getDashOffset() const;
+        void SetDashOffset(float offset);
+        float GetDashOffset() const;
 
-        void setMiterLimit(float miterLimit);
-        float getMiterLimit() const;
+        void SetMiterLimit(float miterLimit);
+        float GetMiterLimit() const;
 
-        void setDashes(const std::vector<float> & dashes);
-        const std::vector<float> & getDashes() const;
+        void SetDashes(const std::vector<float> & dashes);
+        const std::vector<float> & GetDashes() const;
 
-		ID2D1StrokeStyle * getStrokeStyle() const;
+		ID2D1StrokeStyle * GetStrokeStyle() const;
 
 	private:
 

@@ -17,9 +17,9 @@ namespace Core
 
 		Timer();
 
-		void setTimeout(const CompletionCallback & completion, const Duration & delay);
-		void setInterval(const CompletionCallback & completion, const Duration & interval);
-		void stop();
+		void SetTimeout(const CompletionCallback & completion, const Duration & delay);
+		void SetInterval(const CompletionCallback & completion, const Duration & interval);
+		void Stop();
 
 	private:
 

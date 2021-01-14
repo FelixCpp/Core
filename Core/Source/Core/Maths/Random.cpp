@@ -8,7 +8,7 @@ namespace Core
 	std::random_device Random::device;
 	std::default_random_engine Random::generator(device());
 
-	void Random::setSeed(u32_t seed)
+	void Random::SetSeed(u32_t seed)
 	{
 		generator.seed(seed);
 	}

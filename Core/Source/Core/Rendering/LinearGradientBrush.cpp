@@ -17,70 +17,70 @@ namespace Core
 	{
 	}
 	
-	void LinearGradientBrush::setStart(float x, float y)
+	void LinearGradientBrush::SetStart(float x, float y)
 	{
 		if (this->start.x != x || this->start.y != y)
 		{
 			this->start.x = x;
 			this->start.y = y;
 
-			this->updateStart();
+			this->UpdateStart();
 		}
 	}
 
-	const FVector2 & LinearGradientBrush::getStart() const
+	const FVector2 & LinearGradientBrush::GetStart() const
 	{
 		return this->start;
 	}
 
-	void LinearGradientBrush::setEnd(float x, float y)
+	void LinearGradientBrush::SetEnd(float x, float y)
 	{
 		if (this->end.x != x || this->end.y != y)
 		{
 			this->end.x = x;
 			this->end.y = y;
 
-			this->updateEnd();
+			this->UpdateEnd();
 		}
 	}
 
-	const FVector2 & LinearGradientBrush::getEnd() const
+	const FVector2 & LinearGradientBrush::GetEnd() const
 	{
 		return this->end;
 	}
 
-	void LinearGradientBrush::setColors(const std::vector<Color> & colors)
+	void LinearGradientBrush::SetColors(const std::vector<Color> & colors)
 	{
 		if (this->colors != colors)
 		{
 			this->colors = colors;
-			this->updateBrush();
+			this->UpdateBrush();
 		}
 	}
 
-	const std::vector<Color> & LinearGradientBrush::getColors() const
+	const std::vector<Color> & LinearGradientBrush::GetColors() const
 	{
 		return this->colors;
 	}
 
-	ID2D1Brush * LinearGradientBrush::getBrush() const
+	ID2D1Brush * LinearGradientBrush::GetBrush() const
 	{
 		return this->brush.Get();
 	}
 
-	void LinearGradientBrush::updateStart()
+	void LinearGradientBrush::UpdateStart()
 	{
 		if (ID2D1LinearGradientBrush * brush = this->brush.Get())
 			brush->SetStartPoint(D2D1::Point2F(this->start.x, this->start.y));
 	}
 
-	void LinearGradientBrush::updateEnd()
+	void LinearGradientBrush::UpdateEnd()
 	{
 		if (ID2D1LinearGradientBrush * brush = this->brush.Get())
 			brush->SetEndPoint(D2D1::Point2F(this->end.x, this->end.y));
 	}
 
-	void LinearGradientBrush::updateBrush()
+	void LinearGradientBrush::UpdateBrush()
 	{
 		if (!this->gctx) return;
 

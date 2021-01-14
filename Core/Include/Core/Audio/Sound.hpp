@@ -11,10 +11,10 @@ namespace Core
 	struct Sound : Playable {
 
 		/* loops the source after finishing playing */
-		void setLooping(bool loop);
+		void SetLooping(bool loop);
 
 		/* if this returns true it means that the source is playing again after finishing */
-		bool isLooping() const;
+		bool IsLooping() const;
 
 	};
 

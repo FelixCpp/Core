@@ -14,7 +14,7 @@ namespace Core
 	{
 	}
 
-	void SolidColorBrush::setColor(const Color & color)
+	void SolidColorBrush::SetColor(const Color & color)
 	{
 		if (this->color != color)
 		{
@@ -30,22 +30,22 @@ namespace Core
 				));
 			} else
 			{
-				this->create(color);
+				this->Create(color);
 			}
 		}
 	}
 
-	const Color & SolidColorBrush::getColor() const
+	const Color & SolidColorBrush::GetColor() const
 	{
 		return this->color;
 	}
 
-	ID2D1Brush * SolidColorBrush::getBrush() const
+	ID2D1Brush * SolidColorBrush::GetBrush() const
 	{
 		return this->brush.Get();
 	}
 
-	void SolidColorBrush::create(const Color & color)
+	void SolidColorBrush::Create(const Color & color)
 	{
 		if (this->gctx)
 		{

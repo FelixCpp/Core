@@ -31,7 +31,7 @@ namespace
 namespace Core
 {
 
-    bool WaveFileReader::read(const std::string & filepath, WaveFile & file)
+    bool WaveFileReader::Read(const std::string & filepath, WaveFile & file)
 	{
 		using namespace std::string_literals;
 

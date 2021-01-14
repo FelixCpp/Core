@@ -10,13 +10,13 @@ namespace Core
 
 		Duration();
 
-		float toSeconds() const;
-		i32_t toMilliseconds() const;
-		i64_t toMicroseconds() const;
+		float ToSeconds() const;
+		i32_t ToMilliseconds() const;
+		i64_t ToMicroseconds() const;
 
-		static Duration fromSeconds(float seconds);
-		static Duration fromMilliseconds(i32_t milliseconds);
-		static Duration fromMicroseconds(i64_t microseconds);
+		static Duration FromSeconds(float seconds);
+		static Duration FromMilliseconds(i32_t milliseconds);
+		static Duration FromMicroseconds(i64_t microseconds);
 
 		static const Duration Zero;
 

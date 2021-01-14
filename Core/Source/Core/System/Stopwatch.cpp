@@ -10,7 +10,7 @@ namespace Core
 	{
 	}
 
-	void Stopwatch::start()
+	void Stopwatch::Start()
 	{
 		if (!this->running)
 		{
@@ -19,7 +19,7 @@ namespace Core
 		}
 	}
 
-	void Stopwatch::stop()
+	void Stopwatch::Stop()
 	{
 		if (this->running)
 		{
@@ -28,35 +28,35 @@ namespace Core
 		}
 	}
 
-	void Stopwatch::reset()
+	void Stopwatch::Reset()
 	{
 		this->running = false;
 		this->startTime = Clock::now();
 		this->endTime = Clock::now();
 	}
 
-	void Stopwatch::restart()
+	void Stopwatch::Restart()
 	{
-		this->reset();
-		this->start();
+		this->Reset();
+		this->Start();
 	}
 
-	bool Stopwatch::isRunning() const
+	bool Stopwatch::IsRunning() const
 	{
 		return this->running;
 	}
 
-	Duration Stopwatch::getElapsedTime() const
+	Duration Stopwatch::GetElapsedTime() const
 	{
 		const TimePoint tp = this->running ? Clock::now() : this->endTime;
 		const std::chrono::microseconds time = std::chrono::duration_cast<std::chrono::microseconds>(tp - this->startTime);
-		return Duration::fromMicroseconds(time.count());
+		return Duration::FromMicroseconds(time.count());
 	}
 
-	Stopwatch Stopwatch::startNew()
+	Stopwatch Stopwatch::StartNew()
 	{
 		Stopwatch watch;
-		watch.start();
+		watch.Start();
 		return watch;
 	}
 

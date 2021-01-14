@@ -88,7 +88,7 @@ namespace Core
 		/// If the function succeeds, the return value is one
 		/// of the following menu - item values.
 		/// </returns>
-		static MsgBoxResult show(const std::string & text,
+		static MsgBoxResult Show(const std::string & text,
 								 const std::string & caption = "Error",
 								 MsgBoxButton button = MsgBoxButton::Ok,
 								 MsgBoxIcon icon = MsgBoxIcon::Error,

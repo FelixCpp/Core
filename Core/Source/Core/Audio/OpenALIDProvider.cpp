@@ -8,7 +8,7 @@ namespace Core
 	std::vector<u32_t> OpenALSourceIDProvider::sources;
 	std::vector<u32_t> OpenALBufferIDProvider::buffers;
 
-	void OpenALSourceIDProvider::generate(i32_t count, u32_t * elements)
+	void OpenALSourceIDProvider::Generate(i32_t count, u32_t * elements)
 	{
 		alGenSources(count, elements);
 
@@ -16,12 +16,12 @@ namespace Core
 			sources.push_back(elements[i]);
 	}
 
-	void OpenALSourceIDProvider::clear()
+	void OpenALSourceIDProvider::Clear()
 	{
 		alDeleteSources(sources.size(), sources.data());
 	}
 
-	void OpenALBufferIDProvider::generate(i32_t count, u32_t * elements)
+	void OpenALBufferIDProvider::Generate(i32_t count, u32_t * elements)
 	{
 		alGenBuffers(count, elements);
 		
@@ -29,7 +29,7 @@ namespace Core
 			buffers.push_back(elements[i]);
 	}
 
-	void OpenALBufferIDProvider::clear()
+	void OpenALBufferIDProvider::Clear()
 	{
 		alDeleteBuffers(buffers.size(), buffers.data());
 	}

@@ -11,8 +11,8 @@
 namespace Core
 {
 
-	const i32_t Window::displayWidth = DisplayMode::getDesktopMode().width;
-	const i32_t Window::displayHeight = DisplayMode::getDesktopMode().height;
+	const i32_t Window::displayWidth = DisplayMode::GetDesktopMode().width;
+	const i32_t Window::displayHeight = DisplayMode::GetDesktopMode().height;
 
 	Window::Window(GraphicsContext *& gctx) :
 		width(0),
@@ -31,16 +31,16 @@ namespace Core
 		mouseCursorVisible(true),
 		mouseCursorGrabbed(false),
 		fullscreen(false),
-		fpsLimit(Duration::fromSeconds(0.f)),
-		delayWatch(Stopwatch::startNew()),
-		fpsWatch(Stopwatch::startNew()),
-		calcWatch(Stopwatch::startNew()),
+		fpsLimit(Duration::FromSeconds(0.f)),
+		delayWatch(Stopwatch::StartNew()),
+		fpsWatch(Stopwatch::StartNew()),
+		calcWatch(Stopwatch::StartNew()),
 		internalFrameCount(0),
 		gctx(gctx)
 	{
 	}
 
-	bool Window::enterFullscreen(const DisplayMode & displayMode)
+	bool Window::EnterFullscreen(const DisplayMode & displayMode)
 	{
 		/* create a DEVMODEA object to fill in */
 		DEVMODEA fullscreenSettings = {};
@@ -81,12 +81,12 @@ namespace Core
 		ShowWindow(this->windowHandle, SW_MAXIMIZE);
 
 		/* grab the cursor */
-		this->setMouseCursorGrabbed(true);
+		this->SetMouseCursorGrabbed(true);
 		this->fullscreen = true;
 		return true;
 	}
 
-	bool Window::exitFullscreen(u32_t width, u32_t height)
+	bool Window::ExitFullscreen(u32_t width, u32_t height)
 	{
 		const BOOL success = ChangeDisplaySettingsA(nullptr, CDS_RESET) == DISP_CHANGE_SUCCESSFUL;
 		if (success == FALSE)
@@ -114,7 +114,7 @@ namespace Core
 		ShowWindow(this->windowHandle, SW_RESTORE);
 
 		/* release the cursor from being grabbed */
-		this->setMouseCursorGrabbed(false);
+		this->SetMouseCursorGrabbed(false);
 
 		SendMessageA(this->windowHandle, WM_SETICON, ICON_SMALL, (LPARAM)this->iconHandle);
 		SendMessageA(this->windowHandle, WM_SETICON, ICON_BIG, (LPARAM)this->iconHandle);
@@ -123,38 +123,38 @@ namespace Core
 		return true;
 	}
 
-	void Window::setFramerateLimit(i32_t limit)
+	void Window::SetFramerateLimit(i32_t limit)
 	{
 		if (limit > 0)
 		{
-			this->fpsLimit = Duration::fromSeconds(1.f / (float)limit);
+			this->fpsLimit = Duration::FromSeconds(1.f / (float)limit);
 		} else
 		{
-			this->noFramerateLimit();
+			this->NoFramerateLimit();
 		}
 	}
 
-	void Window::noFramerateLimit()
+	void Window::NoFramerateLimit()
 	{
 		this->fpsLimit = Duration::Zero;
 	}
 
-	bool Window::isOpen() const
+	bool Window::IsOpen() const
 	{
 		return this->windowHandle != nullptr;
 	}
 
-	void Window::close()
+	void Window::Close()
 	{
 		SendMessageA(this->windowHandle, WM_CLOSE, 0, 0);
 	}
 
-	bool Window::isFullscreen() const
+	bool Window::IsFullscreen() const
 	{
 		return this->fullscreen;
 	}
 
-	void Window::setTitle(const std::string & title)
+	void Window::SetTitle(const std::string & title)
 	{
 		if (this->title != title)
 		{
@@ -163,12 +163,12 @@ namespace Core
 		}
 	}
 
-	const std::string & Window::getTitle() const
+	const std::string & Window::GetTitle() const
 	{
 		return this->title;
 	}
 
-	void Window::setSize(u32_t width, u32_t height)
+	void Window::SetSize(u32_t width, u32_t height)
 	{
 		RECT wndRect = { 0l, 0l, (LONG)width, (LONG)height };
 		AdjustWindowRect(&wndRect, GetWindowLongA(this->windowHandle, GWL_STYLE), FALSE);
@@ -177,7 +177,7 @@ namespace Core
 		SetWindowPos(this->windowHandle, nullptr, 0, 0, cx, cy, SWP_NOZORDER | SWP_NOMOVE);
 	}
 
-	UVector2 Window::getSize() const
+	UVector2 Window::GetSize() const
 	{
 		RECT wndRect = {};
 		GetClientRect(this->windowHandle, &wndRect);
@@ -186,22 +186,22 @@ namespace Core
 		return UVector2(cx, cy);
 	}
 
-	void Window::setPosition(i32_t x, i32_t y)
+	void Window::SetPosition(i32_t x, i32_t y)
 	{
 		SetWindowPos(this->windowHandle, nullptr, x, y, 0, 0, SWP_NOZORDER | SWP_NOSIZE);
 		
 		if (this->mouseCursorGrabbed)
-			grabCursor(true);
+			this->GrabCursor(true);
 	}
 
-	IVector2 Window::getPosition() const
+	IVector2 Window::GetPosition() const
 	{
 		RECT wndRect = {};
 		GetWindowRect(this->windowHandle, &wndRect);
 		return IVector2(wndRect.left, wndRect.top);
 	}
 
-	void Window::setResizable(bool resizable)
+	void Window::SetResizable(bool resizable)
 	{
 		LONG_PTR style = GetWindowLongPtrA(this->windowHandle, GWL_STYLE);
 		if (resizable) style |= WS_SIZEBOX;
@@ -209,12 +209,12 @@ namespace Core
 		SetWindowLongPtrA(this->windowHandle, GWL_STYLE, style);
 	}
 
-	bool Window::isResizable() const
+	bool Window::IsResizable() const
 	{
 		return GetWindowLongPtrA(this->windowHandle, GWL_STYLE) & WS_SIZEBOX;
 	}
 
-	void Window::setMaximizable(bool maximizable)
+	void Window::SetMaximizable(bool maximizable)
 	{
 		LONG_PTR style = GetWindowLongPtrA(this->windowHandle, GWL_STYLE);
 		if (maximizable) style |= WS_MAXIMIZEBOX;
@@ -222,12 +222,12 @@ namespace Core
 		SetWindowLongPtrA(this->windowHandle, GWL_STYLE, style);
 	}
 
-	bool Window::isMaximizable() const
+	bool Window::IsMaximizable() const
 	{
 		return GetWindowLongPtrA(this->windowHandle, GWL_STYLE) & WS_MAXIMIZEBOX;
 	}
 
-	void Window::setMinimizable(bool minimizable)
+	void Window::SetMinimizable(bool minimizable)
 	{
 		LONG_PTR style = GetWindowLongPtrA(this->windowHandle, GWL_STYLE);
 		if (minimizable) style |= WS_MINIMIZEBOX;
@@ -235,19 +235,19 @@ namespace Core
 		SetWindowLongPtrA(this->windowHandle, GWL_STYLE, style);
 	}
 
-	bool Window::isMinimizable() const
+	bool Window::IsMinimizable() const
 	{
 		return GetWindowLongPtrA(this->windowHandle, GWL_STYLE) & WS_MINIMIZEBOX;
 	}
 
-	void Window::setClosable(bool closable)
+	void Window::SetClosable(bool closable)
 	{
 		HMENU menu = GetSystemMenu(this->windowHandle, FALSE);
 		const UINT uEnable = MF_BYCOMMAND | (closable ? MF_ENABLED : (MF_DISABLED | MF_GRAYED));
 		EnableMenuItem(menu, SC_CLOSE, uEnable);
 	}
 
-	bool Window::isClosable() const
+	bool Window::IsClosable() const
 	{
 		HMENU menu = GetSystemMenu(this->windowHandle, FALSE);
 		MENUITEMINFOA info = {};
@@ -258,26 +258,26 @@ namespace Core
 		return !(info.fState & MFS_ENABLED);
 	}
 
-	void Window::setMouseCursorVisible(bool visible)
+	void Window::SetMouseCursorVisible(bool visible)
 	{
 		this->mouseCursorVisible = visible;
-		SetCursor(visible ? this->cursorHandle : nullptr);
+		::SetCursor(visible ? this->cursorHandle : nullptr);
 	}
 
-	bool Window::isMouseCursorVisible() const
+	bool Window::IsMouseCursorVisible() const
 	{
 		return this->mouseCursorVisible;
 	}
 
-	void Window::recenter()
+	void Window::Recenter()
 	{
-		this->setPosition(
+		this->SetPosition(
 			GetSystemMetrics(SM_CXSCREEN) / 2 - this->width / 2,
 			GetSystemMetrics(SM_CYSCREEN) / 2 - this->height / 2
 		);
 	}
 
-	bool Window::setIcon(const std::string & filepath)
+	bool Window::SetIcon(const std::string & filepath)
 	{
 		if (this->iconHandle != nullptr || filepath.empty())
 			DestroyIcon(this->iconHandle);
@@ -302,7 +302,7 @@ namespace Core
 		return true;
 	}
 
-	bool Window::setIcon(SystemIcon icon)
+	bool Window::SetIcon(SystemIcon icon)
 	{
 		if (this->iconHandle != nullptr)
 			DestroyIcon(this->iconHandle);
@@ -322,7 +322,7 @@ namespace Core
 		return true;
 	}
 
-	bool Window::setCursor(const std::string & filepath)
+	bool Window::SetCursor(const std::string & filepath)
 	{
 		if (this->cursorHandle != nullptr || filepath.empty())
 			DestroyCursor(this->cursorHandle);
@@ -340,7 +340,7 @@ namespace Core
 		return true;
 	}
 
-	bool Window::setCursor(SystemCursor cursor)
+	bool Window::SetCursor(SystemCursor cursor)
 	{
 		if (this->cursorHandle != nullptr)
 			DestroyCursor(this->cursorHandle);
@@ -359,17 +359,17 @@ namespace Core
 		return true;
 	}
 
-	void Window::setVisible(bool visible)
+	void Window::SetVisible(bool visible)
 	{
 		ShowWindow(this->windowHandle, visible ? SW_SHOW : SW_HIDE);
 	}
 
-	bool Window::isVisible() const
+	bool Window::IsVisible() const
 	{
 		return IsWindowVisible(this->windowHandle);
 	}
 
-	void Window::dispatchEvents() const
+	void Window::DispatchEvents() const
 	{
 		MSG msg = {};
 		while (PeekMessageA(&msg, this->windowHandle, 0, 0, 0))
@@ -382,15 +382,15 @@ namespace Core
 		}
 	}
 
-	void Window::handleFps()
+	void Window::HandleFps()
 	{
 		this->internalFrameCount++;
 		this->frameCount++;
-		this->calculateFps();
-		this->limitFps();
+		this->CalculateFps();
+		this->LimitFps();
 	}
 	
-	void Window::grabCursor(bool grabbed)
+	void Window::GrabCursor(bool grabbed)
 	{
 		if (grabbed)
 		{
@@ -404,41 +404,41 @@ namespace Core
 		}
 	}
 
-	void Window::setMouseCursorGrabbed(bool grabbed)
+	void Window::SetMouseCursorGrabbed(bool grabbed)
 	{
 		this->mouseCursorGrabbed = grabbed;
-		this->grabCursor(this->mouseCursorGrabbed);
+		this->GrabCursor(this->mouseCursorGrabbed);
 	}
 
-	bool Window::isMouseCursorGrabbed() const
+	bool Window::IsMouseCursorGrabbed() const
 	{
 		return this->mouseCursorGrabbed;
 	}
 
-	void Window::calculateFps()
+	void Window::CalculateFps()
 	{
-		if (this->delayWatch.getElapsedTime().toSeconds() > 0.25f)
+		if (this->delayWatch.GetElapsedTime().ToSeconds() > 0.25f)
 		{
-			this->fps = (i32_t)(float)(this->internalFrameCount / this->fpsWatch.getElapsedTime().toSeconds());
+			this->fps = (i32_t)(float)(this->internalFrameCount / this->fpsWatch.GetElapsedTime().ToSeconds());
 			this->internalFrameCount = 0u;
-			this->fpsWatch.restart();
-			this->delayWatch.restart();
+			this->fpsWatch.Restart();
+			this->delayWatch.Restart();
 		}
 	}
 
-	void Window::limitFps()
+	void Window::LimitFps()
 	{
 		if (this->fpsLimit != Duration::Zero)
 		{
-			const Duration diff = this->fpsLimit - this->calcWatch.getElapsedTime();
-			const i32_t milliseconds = diff.toMilliseconds();
+			const Duration diff = this->fpsLimit - this->calcWatch.GetElapsedTime();
+			const i32_t milliseconds = diff.ToMilliseconds();
 
 			if (milliseconds > 0)
 			{
 				std::this_thread::sleep_for(std::chrono::milliseconds(milliseconds));
 			}
 
-			this->calcWatch.restart();
+			this->calcWatch.Restart();
 		}
 	}
 

@@ -39,34 +39,34 @@ namespace Core
 			y(static_cast<T>(other.y))
 		{ }
 
-		T distance(const Vector2 & point) const
+		T Distance(const Vector2 & point) const
 		{
-			return (*this - point).length();
+			return (*this - point).Length();
 		}
 
-		T length() const
+		T Length() const
 		{
-			return std::sqrt(this->lengthSq());
+			return std::sqrt(this->LengthSq());
 		}
 
-		T lengthSq() const
+		T LengthSq() const
 		{
 			return (this->x * this->x) + (this->y * this->y);
 		}
 
-		T cross(const Vector2 & other) const
+		T Cross(const Vector2 & other) const
 		{
 			return this->x * other.y - this->y * other.x;
 		}
 
-		float heading() const
+		float Heading() const
 		{
 			return std::atan2(this->y, this->x);
 		}
 
-		Vector2 & normalize()
+		Vector2 & Normalize()
 		{
-			const T length = this->length();
+			const T length = this->Length();
 			if (length != (T)0.0 && length != (T)1.0)
 			{
 				this->x /= length;
@@ -76,25 +76,25 @@ namespace Core
 			return *this;
 		}
 
-		Vector2 normalized() const
+		Vector2 Normalized() const
 		{
-			return Vector2(*this).normalize();
+			return Vector2(*this).Normalize();
 		}
 
-		Vector2 & setLength(const T & length)
+		Vector2 & SetLength(const T & length)
 		{
-			this->normalize();
+			this->Normalize();
 			return *this *= length;
 		}
 
-		static Vector2 fromAngle(const T & radians)
+		static Vector2 FromAngle(const T & radians)
 		{
 			return Vector2(std::cos(radians), std::sin(radians));
 		}
 
-		static Vector2 random2D()
+		static Vector2 Random2D()
 		{
-			return Vector2::fromAngle(Random::get(FMath::TwoPi));
+			return Vector2::FromAngle(Random::Get(FMath::TwoPi));
 		}
 
 		inline Vector2 operator+(const Vector2 & other) const { return Vector2(this->x + other.x, this->y + other.y); }
@@ -123,7 +123,7 @@ namespace Core
 		inline bool operator==(T value) const { return this->x == value && this->y == value; }
 		inline bool operator!=(T value) const { return !(*this == value); }
 		
-		inline std::string toString() const
+		inline std::string ToString() const
 		{
 			return '[' + std::to_string(this->x) + ", " + std::to_string(this->y) + ']';
 		}

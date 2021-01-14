@@ -22,19 +22,19 @@ namespace Core
 		Image();
 
 		/* creates an image with the given dimensions */
-		bool create(u32_t width, u32_t height, const Color & color, GraphicsContext * gctx);
+		bool Create(u32_t width, u32_t height, const Color & color, GraphicsContext * gctx);
 
 		/* loads the image from the pixel data provided by the 'colors' parameter */
-		bool loadFromMemory(u32_t width, u32_t height, const Color * colors, GraphicsContext * gctx);
+		bool LoadFromMemory(u32_t width, u32_t height, const Color * colors, GraphicsContext * gctx);
 
 		/* loads the image from a file */
-		bool loadFromFile(const std::string & filepath, GraphicsContext * gctx);
+		bool LoadFromFile(const std::string & filepath, GraphicsContext * gctx);
 
 		/* loads an image from the screen */
-		bool loadFromScreen(i32_t x, i32_t y, i32_t width, i32_t height, GraphicsContext * gctx);
+		bool LoadFromScreen(i32_t x, i32_t y, i32_t width, i32_t height, GraphicsContext * gctx);
 
 		/* returns the raw Direct2D Bitmap */
-		ID2D1Bitmap * getBitmap() const;
+		ID2D1Bitmap * GetBitmap() const;
 
 	public:
 

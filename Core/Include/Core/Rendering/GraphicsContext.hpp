@@ -9,10 +9,6 @@
 #include <dwrite.h>
 #pragma comment(lib, "dwrite")
 
-#include <gdiplus.h>
-#pragma comment(lib, "gdi32")
-#pragma comment(lib, "gdiplus")
-
 #include <wincodec.h>
 #pragma comment(lib, "windowscodecs")
 
@@ -33,19 +29,19 @@ namespace Core
 		~GraphicsContext() = default;
 
 		/* initializes the Factories & RenderTarget(s) */
-		bool initialize(Windowhandle handle);
+		bool Initialize(Windowhandle handle);
 
 		/* destroys the Factories & RenderTarget(s) */
-		void destroy();
+		void Destroy();
 
 		/* tells the RenderTarget to start listening on rendercommands */
-		void beginDraw();
+		void BeginDraw();
 
 		/* tells the RenderTarget to stop listening on rendercommands */
-		void endDraw();
+		void EndDraw();
 
 		/* resizes the viewport of the RenderTarget */
-		void resizeViewport(u32_t width, u32_t height);
+		void ResizeViewport(u32_t width, u32_t height);
 
 	public:
 
@@ -61,10 +57,6 @@ namespace Core
 		/* Direct2D WindowRenderTarget (used to draw anything on screen) */
 		Microsoft::WRL::ComPtr<ID2D1HwndRenderTarget> hwndRenderTarget;
 		
-		/* Currently unused */
-		Gdiplus::GdiplusStartupInput gdiInput;
-		ULONG_PTR gdiToken;
-
 		/* we need to keep track of the drawing-state when we're resizing */
 		bool drawing;
 

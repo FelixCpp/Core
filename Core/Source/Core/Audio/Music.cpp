@@ -21,10 +21,10 @@ namespace Core
 	{
 	}
 
-	bool Music::init(i32_t audioFormat, i32_t sampleRate, const std::vector<char> & soundData)
+	bool Music::Init(i32_t audioFormat, i32_t sampleRate, const std::vector<char> & soundData)
 	{
 		/* create the source */
-		this->create(0);
+		this->Create(0);
 
 		/* copy the values */
 		this->soundData = soundData;
@@ -34,17 +34,17 @@ namespace Core
 		return true;
 	}
 
-	void Music::setLooping(bool value)
+	void Music::SetLooping(bool value)
 	{
 		this->looping = value;
 	}
 
-	bool Music::isLooping() const
+	bool Music::IsLooping() const
 	{
 		return this->looping;
 	}
 
-	void Music::play()
+	void Music::Play()
 	{
 		/*
 		* check if the music is even playable
@@ -88,7 +88,7 @@ namespace Core
 		alSourcePlay(this->sourceID);
 	}
 
-	void Music::update()
+	void Music::Update()
 	{
 		/* get the number of buffers which needs to be processed */
 		ALint buffersProcessed = 0;
@@ -109,15 +109,15 @@ namespace Core
 
 			if (this->looping)
 			{
-				this->updateBufferingLoop(buffer);
+				this->UpdateBufferingLoop(buffer);
 			} else
 			{
-				this->updateBuffering(buffer);
+				this->UpdateBuffering(buffer);
 			}
 		}
 	}
 
-	void Music::updateBufferingLoop(u32_t buffer)
+	void Music::UpdateBufferingLoop(u32_t buffer)
 	{
 		/*
 		* create the data.
@@ -173,7 +173,7 @@ namespace Core
 		delete[] data;
 	}
 
-	void Music::updateBuffering(u32_t buffer)
+	void Music::UpdateBuffering(u32_t buffer)
 	{
 		/*
 		* a variable which defines how much data should be copied from the soundData

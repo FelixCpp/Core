@@ -21,7 +21,7 @@ namespace Core
 	{
 	}
 
-	void StrokeStyle::setStartCap(CapStyle style)
+	void StrokeStyle::SetStartCap(CapStyle style)
 	{
 		if (this->startCap != style)
 		{
@@ -30,12 +30,12 @@ namespace Core
 		}
 	}
 
-	CapStyle StrokeStyle::getStartCap() const
+	CapStyle StrokeStyle::GetStartCap() const
 	{
 		return this->startCap;
 	}
 
-	void StrokeStyle::setEndCap(CapStyle style)
+	void StrokeStyle::SetEndCap(CapStyle style)
 	{
 		if (this->endCap != style)
 		{
@@ -44,12 +44,12 @@ namespace Core
 		}
 	}
 
-	CapStyle StrokeStyle::getEndCap() const
+	CapStyle StrokeStyle::GetEndCap() const
 	{
 		return this->endCap;
 	}
 
-	void StrokeStyle::setDashCap(CapStyle style)
+	void StrokeStyle::SetDashCap(CapStyle style)
 	{
 		if (this->dashCap != style)
 		{
@@ -58,12 +58,12 @@ namespace Core
 		}
 	}
 
-	CapStyle StrokeStyle::getDashCap() const
+	CapStyle StrokeStyle::GetDashCap() const
 	{
 		return this->dashCap;
 	}
 
-	void StrokeStyle::setLineJoin(LineJoin lineJoin)
+	void StrokeStyle::SetLineJoin(LineJoin lineJoin)
 	{
 		if (this->lineJoin != lineJoin)
 		{
@@ -72,12 +72,12 @@ namespace Core
 		}
 	}
 
-	LineJoin StrokeStyle::getLineJoin() const
+	LineJoin StrokeStyle::GetLineJoin() const
 	{
 		return this->lineJoin;
 	}
 
-	void StrokeStyle::setDashStyle(DashStyle style)
+	void StrokeStyle::SetDashStyle(DashStyle style)
 	{
 		if (this->dashStyle != style)
 		{
@@ -86,12 +86,12 @@ namespace Core
 		}
 	}
 
-	DashStyle StrokeStyle::getDashStyle() const
+	DashStyle StrokeStyle::GetDashStyle() const
 	{
 		return this->dashStyle;
 	}
 
-	void StrokeStyle::setDashOffset(float offset)
+	void StrokeStyle::SetDashOffset(float offset)
 	{
 		if (this->dashOffset != offset)
 		{
@@ -100,12 +100,12 @@ namespace Core
 		}
 	}
 
-	float StrokeStyle::getDashOffset() const
+	float StrokeStyle::GetDashOffset() const
 	{
 		return this->dashOffset;
 	}
 
-	void StrokeStyle::setMiterLimit(float miterLimit)
+	void StrokeStyle::SetMiterLimit(float miterLimit)
 	{
 		if (this->miterLimit != miterLimit)
 		{
@@ -114,27 +114,27 @@ namespace Core
 		}
 	}
 
-	float StrokeStyle::getMiterLimit() const
+	float StrokeStyle::GetMiterLimit() const
 	{
 		return this->miterLimit;
 	}
 
-	void StrokeStyle::setDashes(const std::vector<float> & dashes)
+	void StrokeStyle::SetDashes(const std::vector<float> & dashes)
 	{
 		if (this->dashes != dashes)
 		{
 			this->dashes = dashes;
-			this->setDashStyle(DashStyle::Custom);
+			this->SetDashStyle(DashStyle::Custom);
 			this->updated = false;
 		}
 	}
 
-	const std::vector<float> & StrokeStyle::getDashes() const
+	const std::vector<float> & StrokeStyle::GetDashes() const
 	{
 		return this->dashes;
 	}
 
-	ID2D1StrokeStyle * StrokeStyle::getStrokeStyle() const
+	ID2D1StrokeStyle * StrokeStyle::GetStrokeStyle() const
 	{
 		if (!this->updated)
 		{

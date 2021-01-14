@@ -26,27 +26,27 @@ namespace Core
 		~Music() = default;
 		
 		/* loads the data from a file */
-		bool init(i32_t audioFormat, i32_t sampleRate, const std::vector<char> & soundData);
+		bool Init(i32_t audioFormat, i32_t sampleRate, const std::vector<char> & soundData);
 
 		/* overrides the setLooping function */
-		void setLooping(bool value);
+		void SetLooping(bool value);
 
 		/* returns true if the music is looping */
-		bool isLooping() const;
+		bool IsLooping() const;
 
 		/* override the play method */
-		virtual void play() override;
+		virtual void Play() override;
 
 		/* continues loading the soundfile */
-		void update();
+		void Update();
 
 	private:
 
 		/* buffers so the music can loop */
-		void updateBufferingLoop(u32_t buffer);
+		void UpdateBufferingLoop(u32_t buffer);
 
 		/* buffers so the music plays once */
-		void updateBuffering(u32_t buffer);
+		void UpdateBuffering(u32_t buffer);
 
 	private:
 

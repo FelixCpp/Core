@@ -13,12 +13,12 @@ namespace Core
 	
 	AudioTarget::~AudioTarget()
 	{
-		OpenALBufferIDProvider::clear();
-		OpenALSourceIDProvider::clear();
-		SoundDevice::shutdown(); // destroy the sounddevice
+		OpenALBufferIDProvider::Clear();
+		OpenALSourceIDProvider::Clear();
+		SoundDevice::Shutdown(); // destroy the sounddevice
 	}
 
-	Sound AudioTarget::loadSound(const std::string & filepath)
+	Sound AudioTarget::LoadSound(const std::string & filepath)
 	{	
 		/*
 			step 1: check cache
@@ -32,24 +32,24 @@ namespace Core
 		u32_t bufferID = AL_NONE;
 
 		/* step 1: check cache */
-		if (this->soundCache.contains(filepath))
+		if (this->soundCache.Contains(filepath))
 		{
-			bufferID = this->soundCache.get(filepath);
+			bufferID = this->soundCache.Get(filepath);
 		} else
 		{
 			/* step 2: load sound */
 			WaveFile info = {};
 			std::memset(&info, 0, sizeof WaveFile);
 
-			if (!WaveFileReader::read(filepath, info))
+			if (!WaveFileReader::Read(filepath, info))
 			{
 				return Sound();
 			}
 
 			/* step 3: create buffer */
-			OpenALBufferIDProvider::generate(1, &bufferID);
+			OpenALBufferIDProvider::Generate(1, &bufferID);
 
-			const ALenum format = getAudioFormat(info.NumChannels);
+			const ALenum format = GetAudioFormat(info.NumChannels);
 			if (format == AL_NONE)
 			{
 				CORE_ERROR("Invalid audio format");
@@ -59,33 +59,33 @@ namespace Core
 			/* fill in the buffer */
 			alBufferData(bufferID, format, &info.Data[0], info.Subchunk2Size, info.SampleRate);
 
-			this->soundCache.set(filepath, bufferID);
+			this->soundCache.Set(filepath, bufferID);
 		}
 
 		/* step 4: create sound */
 		Sound sound;
-		sound.create(bufferID);
+		sound.Create(bufferID);
 		
 		/* step 5: return source */
 		return sound;
 	}
 
-	Music AudioTarget::loadMusic(const std::string & filepath)
+	Music AudioTarget::LoadMusic(const std::string & filepath)
 	{
 		WaveFile file = {};
 
-		if (this->musicCache.contains(filepath))
+		if (this->musicCache.Contains(filepath))
 		{
-			file = this->musicCache.get(filepath);
+			file = this->musicCache.Get(filepath);
 		} else
 		{
-			if (!WaveFileReader::read(filepath, file))
+			if (!WaveFileReader::Read(filepath, file))
 			{
 				return Music();
 			}
 		}
 
-		const ALenum format = getAudioFormat(file.NumChannels);
+		const ALenum format = GetAudioFormat(file.NumChannels);
 		if (format == AL_NONE)
 		{
 			CORE_ERROR("Invalid audio format");
@@ -93,9 +93,9 @@ namespace Core
 		}
 		
 		Music music;
-		if (music.init(format, file.SampleRate, file.Data))
+		if (music.Init(format, file.SampleRate, file.Data))
 		{
-			this->musicCache.set(filepath, file);
+			this->musicCache.Set(filepath, file);
 			return music;
 		}
 
@@ -105,10 +105,10 @@ namespace Core
 	AudioTarget::AudioTarget(const std::string & deviceName) :
 		soundCache()
 	{
-		SoundDevice::initialize(deviceName); // initialize the default SoundDevice
+		SoundDevice::Initialize(deviceName); // initialize the default SoundDevice
 	}
 
-	i32_t AudioTarget::getAudioFormat(u16_t channels)
+	i32_t AudioTarget::GetAudioFormat(u16_t channels)
 	{
 		switch (channels)
 		{

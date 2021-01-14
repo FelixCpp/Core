@@ -5,7 +5,7 @@
 namespace Core
 {
 	
-	MsgBoxResult MsgBox::show(const std::string & text, const std::string & caption, MsgBoxButton button, MsgBoxIcon icon, MsgBoxDefaultButton defaultButton, MsgBoxModality modality, MsgBoxOptions options, Windowhandle handle)
+	MsgBoxResult MsgBox::Show(const std::string & text, const std::string & caption, MsgBoxButton button, MsgBoxIcon icon, MsgBoxDefaultButton defaultButton, MsgBoxModality modality, MsgBoxOptions options, Windowhandle handle)
 	{
 		const UINT uType = (int)button | (int)icon | (int)defaultButton | (int)modality | (int)options;
 

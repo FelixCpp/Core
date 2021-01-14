@@ -33,10 +33,10 @@ namespace Core
 		*/
 
 		/* changes the distance model */
-		static void setDistanceModel(DistanceModel model);
+		static void SetDistanceModel(DistanceModel model);
 
 		/* returns the current distance model */
-		static DistanceModel getDistanceModel();
+		static DistanceModel GetDistanceModel();
 
 		/*
 		* -- Doppler factor --
@@ -44,10 +44,10 @@ namespace Core
 		*/
 
 		/* changes the doppler factor */
-		static void setDopplerFactor(float value);
+		static void SetDopplerFactor(float value);
 
 		/* returns the doppler factor */
-		static float getDopplerFactor();
+		static float GetDopplerFactor();
 
 		/*
 		* -- Doppler velocity --
@@ -55,10 +55,10 @@ namespace Core
 		*/
 
 		/* changes the dopplers velocity */
-		static void setDopplerVelocity(float value);
+		static void SetDopplerVelocity(float value);
 
 		/* returns the dopplers velocity */
-		static float getDopplerVelocity();
+		static float GetDopplerVelocity();
 
 		/* 
 		* -- Speed of sound --
@@ -66,10 +66,10 @@ namespace Core
 		*/
 
 		/* changes the speed of sound */
-		static void setSpeedOfSound(float value);
+		static void SetSpeedOfSound(float value);
 
 		/* returns the speed of sound */
-		static float getSpeedOfSound();
+		static float GetSpeedOfSound();
 
 	private:
 				

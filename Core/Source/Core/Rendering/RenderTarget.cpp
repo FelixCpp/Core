@@ -14,51 +14,51 @@ namespace Core
 	{
 	}
 
-	void RenderTarget::push()
+	void RenderTarget::Push()
 	{
-		this->rsm->pushState();
+		this->rsm->PushState();
 	}
 
-	void RenderTarget::pop()
+	void RenderTarget::Pop()
 	{
-		this->rsm->popState();
+		this->rsm->PopState();
 	}
 
-	void RenderTarget::resetMatrix()
+	void RenderTarget::ResetMatrix()
 	{
-		D2D1::Matrix3x2F & matrix = this->rsm->getActiveState().getActiveMatrix();
-		this->rsm->getActiveState().setActiveMatrix(D2D1::Matrix3x2F::Identity());
+		D2D1::Matrix3x2F & matrix = this->rsm->GetActiveState().GetActiveMatrix();
+		this->rsm->GetActiveState().SetActiveMatrix(D2D1::Matrix3x2F::Identity());
 	}
 
-	void RenderTarget::pushMatrix()
+	void RenderTarget::PushMatrix()
 	{
-		this->rsm->getActiveState().pushMatrix();
+		this->rsm->GetActiveState().PushMatrix();
 	}
 
-	void RenderTarget::popMatrix()
+	void RenderTarget::PopMatrix()
 	{
-		this->rsm->getActiveState().popMatrix();
+		this->rsm->GetActiveState().PopMatrix();
 	}
 
-	void RenderTarget::translate(float x, float y)
+	void RenderTarget::Translate(float x, float y)
 	{
-		const D2D1::Matrix3x2F & matrix = this->rsm->getActiveState().getActiveMatrix();
-		this->rsm->getActiveState().setActiveMatrix(matrix * D2D1::Matrix3x2F::Translation(x, y));	
+		const D2D1::Matrix3x2F & matrix = this->rsm->GetActiveState().GetActiveMatrix();
+		this->rsm->GetActiveState().SetActiveMatrix(matrix * D2D1::Matrix3x2F::Translation(x, y));	
 	}
 
-	void RenderTarget::rotate(float degrees)
+	void RenderTarget::Rotate(float degrees)
 	{
-		const D2D1::Matrix3x2F & matrix = this->rsm->getActiveState().getActiveMatrix();
-		this->rsm->getActiveState().setActiveMatrix(matrix * D2D1::Matrix3x2F::Rotation(degrees, D2D1::Point2F(matrix.dx, matrix.dy)));
+		const D2D1::Matrix3x2F & matrix = this->rsm->GetActiveState().GetActiveMatrix();
+		this->rsm->GetActiveState().SetActiveMatrix(matrix * D2D1::Matrix3x2F::Rotation(degrees, D2D1::Point2F(matrix.dx, matrix.dy)));
 	}
 
-	void RenderTarget::scale(float factorX, float factorY)
+	void RenderTarget::Scale(float factorX, float factorY)
 	{
-		const D2D1::Matrix3x2F & matrix = this->rsm->getActiveState().getActiveMatrix();
-		this->rsm->getActiveState().setActiveMatrix(matrix * D2D1::Matrix3x2F::Scale(factorX, factorY, D2D1::Point2F(matrix.dx, matrix.dy)));
+		const D2D1::Matrix3x2F & matrix = this->rsm->GetActiveState().GetActiveMatrix();
+		this->rsm->GetActiveState().SetActiveMatrix(matrix * D2D1::Matrix3x2F::Scale(factorX, factorY, D2D1::Point2F(matrix.dx, matrix.dy)));
 	}
 
-	void RenderTarget::background(const Color & color)
+	void RenderTarget::Background(const Color & color)
 	{
 		this->gctx->hwndRenderTarget->Clear(D2D1::ColorF(
 			(float)color.r / 255.f,
@@ -68,82 +68,82 @@ namespace Core
 		));
 	}
 
-	void RenderTarget::strokeWeight(float strokeWeight)
+	void RenderTarget::StrokeWeight(float strokeWeight)
 	{
-		this->rsm->getActiveState().strokeWeight = strokeWeight;
+		this->rsm->GetActiveState().strokeWeight = strokeWeight;
 	}
 
-	void RenderTarget::noFill()
+	void RenderTarget::NoFill()
 	{
-		this->rsm->getActiveState().activeFill = nullptr;
+		this->rsm->GetActiveState().activeFill = nullptr;
 	}
 
-	void RenderTarget::noStroke()
+	void RenderTarget::NoStroke()
 	{
-		this->rsm->getActiveState().activeStroke = nullptr;
+		this->rsm->GetActiveState().activeStroke = nullptr;
 	}
 
-	void RenderTarget::fill(const Color & color)
+	void RenderTarget::Fill(const Color & color)
 	{
-		RenderState & state = this->rsm->getActiveState();
-		state.solidFill.setColor(color);
-		state.activeFill = state.solidFill.getBrush();
+		RenderState & state = this->rsm->GetActiveState();
+		state.solidFill.SetColor(color);
+		state.activeFill = state.solidFill.GetBrush();
 	}
 
-	void RenderTarget::stroke(const Color & color)
+	void RenderTarget::Stroke(const Color & color)
 	{
-		RenderState & state = this->rsm->getActiveState();
-		state.solidStroke.setColor(color);
-		state.activeStroke = state.solidStroke.getBrush();
+		RenderState & state = this->rsm->GetActiveState();
+		state.solidStroke.SetColor(color);
+		state.activeStroke = state.solidStroke.GetBrush();
 	}
 
-	void RenderTarget::linearFill(const std::vector<Color> & colors, float startX, float startY, float endX, float endY)
+	void RenderTarget::LinearFill(const std::vector<Color> & colors, float startX, float startY, float endX, float endY)
 	{
-		RenderState & state = this->rsm->getActiveState();
-		state.linearFill.setStart(startX, startY);
-		state.linearFill.setEnd(endX, endY);
-		state.linearFill.setColors(colors);
-		state.activeFill = state.linearFill.getBrush();
+		RenderState & state = this->rsm->GetActiveState();
+		state.linearFill.SetStart(startX, startY);
+		state.linearFill.SetEnd(endX, endY);
+		state.linearFill.SetColors(colors);
+		state.activeFill = state.linearFill.GetBrush();
 	}
 
-	void RenderTarget::linearStroke(const std::vector<Color> & colors, float startX, float startY, float endX, float endY)
+	void RenderTarget::LinearStroke(const std::vector<Color> & colors, float startX, float startY, float endX, float endY)
 	{
-		RenderState & state = this->rsm->getActiveState();
-		state.linearStroke.setStart(startX, startY);
-		state.linearStroke.setEnd(endX, endY);
-		state.linearStroke.setColors(colors);
-		state.activeStroke = state.linearStroke.getBrush();
+		RenderState & state = this->rsm->GetActiveState();
+		state.linearStroke.SetStart(startX, startY);
+		state.linearStroke.SetEnd(endX, endY);
+		state.linearStroke.SetColors(colors);
+		state.activeStroke = state.linearStroke.GetBrush();
 	}
 
-	void RenderTarget::radialFill(const std::vector<Color> & colors, float centerX, float centerY, float radiusX, float radiusY, float offsetX, float offsetY)
+	void RenderTarget::RadialFill(const std::vector<Color> & colors, float centerX, float centerY, float radiusX, float radiusY, float offsetX, float offsetY)
 	{
-		RenderState & state = this->rsm->getActiveState();
-		state.radialFill.setCenter(centerX, centerY);
-		state.radialFill.setRadius(radiusX, radiusY);
-		state.radialFill.setOffset(offsetX, offsetY);
-		state.radialFill.setColors(colors);
-		state.activeFill = state.radialFill.getBrush();
+		RenderState & state = this->rsm->GetActiveState();
+		state.radialFill.SetCenter(centerX, centerY);
+		state.radialFill.SetRadius(radiusX, radiusY);
+		state.radialFill.SetOffset(offsetX, offsetY);
+		state.radialFill.SetColors(colors);
+		state.activeFill = state.radialFill.GetBrush();
 	}
 
-	void RenderTarget::radialStroke(const std::vector<Color> & colors, float centerX, float centerY, float radiusX, float radiusY, float offsetX, float offsetY)
+	void RenderTarget::RadialStroke(const std::vector<Color> & colors, float centerX, float centerY, float radiusX, float radiusY, float offsetX, float offsetY)
 	{
-		RenderState & state = this->rsm->getActiveState();
-		state.radialStroke.setCenter(centerX, centerY);
-		state.radialStroke.setRadius(radiusX, radiusY);
-		state.radialStroke.setOffset(offsetX, offsetY);
-		state.radialStroke.setColors(colors);
-		state.activeStroke = state.radialStroke.getBrush();
+		RenderState & state = this->rsm->GetActiveState();
+		state.radialStroke.SetCenter(centerX, centerY);
+		state.radialStroke.SetRadius(radiusX, radiusY);
+		state.radialStroke.SetOffset(offsetX, offsetY);
+		state.radialStroke.SetColors(colors);
+		state.activeStroke = state.radialStroke.GetBrush();
 	}
 
-	void RenderTarget::rectMode(DrawMode mode)
+	void RenderTarget::RectMode(DrawMode mode)
 	{
-		this->rsm->getActiveState().rectMode = mode;
+		this->rsm->GetActiveState().rectMode = mode;
 	}
 
-	void RenderTarget::rect(float x1, float y1, float x2, float y2, float cornerRadiusX, float cornerRadiusY)
+	void RenderTarget::Rect(float x1, float y1, float x2, float y2, float cornerRadiusX, float cornerRadiusY)
 	{
 		ID2D1HwndRenderTarget * rt = this->gctx->hwndRenderTarget.Get();
-		RenderState & state = this->rsm->getActiveState();
+		RenderState & state = this->rsm->GetActiveState();
 
 		D2D1_RECT_F rect = D2D1::RectF();
 
@@ -164,24 +164,24 @@ namespace Core
 
 		if (ID2D1Brush * stroke = state.activeStroke)
 		{
-			rt->DrawRoundedRectangle(roundedRect, stroke, state.strokeWeight, state.strokeStyle.getStrokeStyle());
+			rt->DrawRoundedRectangle(roundedRect, stroke, state.strokeWeight, state.strokeStyle.GetStrokeStyle());
 		}
 	}
 
-	void RenderTarget::quad(float x, float y, float size, float cornerRadiusX, float cornerRadiusY)
+	void RenderTarget::Quad(float x, float y, float size, float cornerRadiusX, float cornerRadiusY)
 	{
-		rect(x, y, size, size, cornerRadiusX, cornerRadiusY);
+		Rect(x, y, size, size, cornerRadiusX, cornerRadiusY);
 	}
 
-	void RenderTarget::ellipseMode(DrawMode mode)
+	void RenderTarget::EllipseMode(DrawMode mode)
 	{
-		this->rsm->getActiveState().ellipseMode = mode;
+		this->rsm->GetActiveState().ellipseMode = mode;
 	}
 
-	void RenderTarget::ellipse(float x, float y, float rx, float ry)
+	void RenderTarget::Ellipse(float x, float y, float rx, float ry)
 	{
 		ID2D1HwndRenderTarget * rt = this->gctx->hwndRenderTarget.Get();
-		RenderState & state = this->rsm->getActiveState();
+		RenderState & state = this->rsm->GetActiveState();
 
 		D2D1_ELLIPSE ellipse;
 
@@ -207,19 +207,19 @@ namespace Core
 
 		if (ID2D1Brush * stroke = state.activeStroke)
 		{
-			rt->DrawEllipse(ellipse, stroke, state.strokeWeight, state.strokeStyle.getStrokeStyle());
+			rt->DrawEllipse(ellipse, stroke, state.strokeWeight, state.strokeStyle.GetStrokeStyle());
 		}
 	}
 
-	void RenderTarget::circle(float x, float y, float radius)
+	void RenderTarget::Circle(float x, float y, float radius)
 	{
-		ellipse(x, y, radius, radius);
+		this->Ellipse(x, y, radius, radius);
 	}
 
-	void RenderTarget::point(float x, float y)
+	void RenderTarget::Point(float x, float y)
 	{
 		ID2D1HwndRenderTarget * rt = this->gctx->hwndRenderTarget.Get();
-		RenderState & state = this->rsm->getActiveState();
+		RenderState & state = this->rsm->GetActiveState();
 		const D2D1_ELLIPSE ellipse = D2D1::Ellipse(D2D1::Point2F(x, y), state.strokeWeight, state.strokeWeight);
 
 		if (ID2D1Brush * stroke = state.activeStroke)
@@ -228,33 +228,33 @@ namespace Core
 		}
 	}
 
-	void RenderTarget::line(float x1, float y1, float x2, float y2)
+	void RenderTarget::Line(float x1, float y1, float x2, float y2)
 	{
 		ID2D1HwndRenderTarget * rt = this->gctx->hwndRenderTarget.Get();
-		RenderState & state = this->rsm->getActiveState();
+		RenderState & state = this->rsm->GetActiveState();
 
 		if (ID2D1Brush * stroke = state.activeStroke)
 		{
-			rt->DrawLine(D2D1::Point2F(x1, y1), D2D1::Point2F(x2, y2), stroke, state.strokeWeight, state.strokeStyle.getStrokeStyle());
+			rt->DrawLine(D2D1::Point2F(x1, y1), D2D1::Point2F(x2, y2), stroke, state.strokeWeight, state.strokeStyle.GetStrokeStyle());
 		}
 	}
 
-	void RenderTarget::imageMode(DrawMode mode)
+	void RenderTarget::ImageMode(DrawMode mode)
 	{
-		this->rsm->getActiveState().imageMode = mode;
+		this->rsm->GetActiveState().imageMode = mode;
 	}
 
-	void RenderTarget::beginShape(ShapeBegin begin)
+	void RenderTarget::BeginShape(ShapeBegin begin)
 	{
-		Shape & shape = this->rsm->getActiveState().shape;
+		Shape & shape = this->rsm->GetActiveState().shape;
 		shape.SetShapeBegin(begin);
 		shape.Begin();
 	}
 
-	void RenderTarget::endShape(ShapeEnd end)
+	void RenderTarget::EndShape(ShapeEnd end)
 	{
 		ID2D1HwndRenderTarget * rt = this->gctx->hwndRenderTarget.Get();
-		RenderState & state = this->rsm->getActiveState();
+		RenderState & state = this->rsm->GetActiveState();
 		Shape & shape = state.shape;
 
 		shape.SetShapeEnd(end);
@@ -269,103 +269,103 @@ namespace Core
 
 		if (ID2D1Brush * stroke = state.activeStroke)
 		{
-			rt->DrawGeometry(geometry, stroke, state.strokeWeight, state.strokeStyle.getStrokeStyle());
+			rt->DrawGeometry(geometry, stroke, state.strokeWeight, state.strokeStyle.GetStrokeStyle());
 		}
 	}
 
-	void RenderTarget::shapeFillMode(FillMode fillMode)
+	void RenderTarget::ShapeFillMode(FillMode fillMode)
 	{
-		this->rsm->getActiveState().shape.SetFillMode(fillMode);
+		this->rsm->GetActiveState().shape.SetFillMode(fillMode);
 	}
 
-	void RenderTarget::shapePathSegment(PathSegment pathSegment)
+	void RenderTarget::ShapePathSegment(PathSegment pathSegment)
 	{
-		this->rsm->getActiveState().shape.SetPathSegment(pathSegment);
+		this->rsm->GetActiveState().shape.SetPathSegment(pathSegment);
 	}
 
-	void RenderTarget::vertex(float x, float y)
+	void RenderTarget::Vertex(float x, float y)
 	{
-		this->rsm->getActiveState().shape.Vertex(x, y);
+		this->rsm->GetActiveState().shape.Vertex(x, y);
 	}
 
-	void RenderTarget::quadraticBezier(float x1, float y1, float x2, float y2)
+	void RenderTarget::QuadraticBezier(float x1, float y1, float x2, float y2)
 	{
-		this->rsm->getActiveState().shape.QuadraticBezier(x1, y1, x2, y2);
+		this->rsm->GetActiveState().shape.QuadraticBezier(x1, y1, x2, y2);
 	}
 
-	void RenderTarget::bezier(float x1, float y1, float x2, float y2, float x3, float y3)
+	void RenderTarget::Bezier(float x1, float y1, float x2, float y2, float x3, float y3)
 	{
-		this->rsm->getActiveState().shape.Bezier(x1, y1, x2, y2, x3, y3);
+		this->rsm->GetActiveState().shape.Bezier(x1, y1, x2, y2, x3, y3);
 	}
 
-	void RenderTarget::arc(float x, float y, float width, float height, float rotationInDegrees, SweepDirection direction, ArcSize size)
+	void RenderTarget::Arc(float x, float y, float width, float height, float rotationInDegrees, SweepDirection direction, ArcSize size)
 	{
-		this->rsm->getActiveState().shape.Arc(x, y, width, height, rotationInDegrees, direction, size);
+		this->rsm->GetActiveState().shape.Arc(x, y, width, height, rotationInDegrees, direction, size);
 	}
 
-	void RenderTarget::strokeStartCap(CapStyle style)
+	void RenderTarget::StrokeStartCap(CapStyle style)
 	{
-		this->rsm->getActiveState().strokeStyle.setStartCap(style);
+		this->rsm->GetActiveState().strokeStyle.SetStartCap(style);
 	}
 
-	void RenderTarget::strokeEndCap(CapStyle style)
+	void RenderTarget::StrokeEndCap(CapStyle style)
 	{
-		this->rsm->getActiveState().strokeStyle.setEndCap(style);
+		this->rsm->GetActiveState().strokeStyle.SetEndCap(style);
 	}
 
-	void RenderTarget::strokeDashCap(CapStyle style)
+	void RenderTarget::StrokeDashCap(CapStyle style)
 	{
-		this->rsm->getActiveState().strokeStyle.setDashCap(style);
+		this->rsm->GetActiveState().strokeStyle.SetDashCap(style);
 	}
 
-	void RenderTarget::strokeLineJoin(LineJoin lineJoin)
+	void RenderTarget::StrokeLineJoin(LineJoin lineJoin)
 	{
-		this->rsm->getActiveState().strokeStyle.setLineJoin(lineJoin);
+		this->rsm->GetActiveState().strokeStyle.SetLineJoin(lineJoin);
 	}
 
-	void RenderTarget::strokeDashStyle(DashStyle style)
+	void RenderTarget::StrokeDashStyle(DashStyle style)
 	{
-		this->rsm->getActiveState().strokeStyle.setDashStyle(style);
+		this->rsm->GetActiveState().strokeStyle.SetDashStyle(style);
 	}
 
-	void RenderTarget::strokeDashes(const std::vector<float> & dashes)
+	void RenderTarget::StrokeDashes(const std::vector<float> & dashes)
 	{
-		this->rsm->getActiveState().strokeStyle.setDashes(dashes);
+		this->rsm->GetActiveState().strokeStyle.SetDashes(dashes);
 	}
 
-	void RenderTarget::strokeDashOffset(float offset)
+	void RenderTarget::StrokeDashOffset(float offset)
 	{
-		this->rsm->getActiveState().strokeStyle.setDashOffset(offset);
+		this->rsm->GetActiveState().strokeStyle.SetDashOffset(offset);
 	}
 
-	void RenderTarget::strokeMiterLimit(float limit)
+	void RenderTarget::StrokeMiterLimit(float limit)
 	{
-		this->rsm->getActiveState().strokeStyle.setMiterLimit(limit);
+		this->rsm->GetActiveState().strokeStyle.SetMiterLimit(limit);
 	}
 
-	void RenderTarget::text(const std::string & string, float x, float y)
+	void RenderTarget::Text(const std::string & string, float x, float y)
 	{
-		const FVector2 size = getTextSize(string);
-		text(string, x, y, size.width, size.height);
+		const FVector2 size = this->GetTextSize(string);
+		this->Text(string, x, y, size.width, size.height);
 	}
 
-	void RenderTarget::text(const std::string & string, float x, float y, float width)
+	void RenderTarget::Text(const std::string & string, float x, float y, float width)
 	{
-		const FVector2 size = getTextSize(string);
-		text(string, x, y, width, size.height);
+		const FVector2 size = this->GetTextSize(string);
+		this->Text(string, x, y, width, size.height);
 	}
 
-	void RenderTarget::text(const std::string & string, float x, float y, float width, float height)
+	void RenderTarget::Text(const std::string & string, float x, float y, float width, float height)
 	{
-		RenderState & state = this->rsm->getActiveState();
+		RenderState & state = this->rsm->GetActiveState();
 		ID2D1HwndRenderTarget * rt = this->gctx->hwndRenderTarget.Get();
 
 		TextRenderer & textRenderer = state.textRenderer;
-		textRenderer.setText(string);
-		textRenderer.setMaxWidth(width);
-		textRenderer.setMaxHeight(height);
+		textRenderer.SetText(string);
+		textRenderer.SetMaxWidth(width);
+		textRenderer.SetMaxHeight(height);
 
-		IDWriteTextLayout * layout = textRenderer.getTextLayout();
+		IDWriteTextLayout * layout = textRenderer.GetTextLayout();
 		if (!layout) return;
 
 		if (ID2D1Brush * brush = state.activeFill)
@@ -378,68 +378,68 @@ namespace Core
 		}
 	}
 
-	void RenderTarget::textSize(float textSize)
+	void RenderTarget::TextSize(float textSize)
 	{
-		this->rsm->getActiveState().textRenderer.setTextSize(textSize);
+		this->rsm->GetActiveState().textRenderer.SetTextSize(textSize);
 	}
 
-	void RenderTarget::textUnderline(bool active)
+	void RenderTarget::TextUnderline(bool active)
 	{
-		this->rsm->getActiveState().textRenderer.setUnderline(active);
+		this->rsm->GetActiveState().textRenderer.SetUnderline(active);
 	}
 
-	void RenderTarget::textStrikeThrough(bool active)
+	void RenderTarget::TextStrikeThrough(bool active)
 	{
-		this->rsm->getActiveState().textRenderer.setStrikeThrough(active);
+		this->rsm->GetActiveState().textRenderer.SetStrikeThrough(active);
 	}
 
-	void RenderTarget::textFont(const std::string & font)
+	void RenderTarget::TextFont(const std::string & font)
 	{
-		this->rsm->getActiveState().textRenderer.setFont(font);
+		this->rsm->GetActiveState().textRenderer.SetFont(font);
 	}
 
-	void RenderTarget::textFontWeight(FontWeight fontWeight)
+	void RenderTarget::TextFontWeight(FontWeight fontWeight)
 	{
-		this->rsm->getActiveState().textRenderer.setFontWeight(fontWeight);
+		this->rsm->GetActiveState().textRenderer.SetFontWeight(fontWeight);
 	}
 
-	void RenderTarget::textFontStyle(FontStyle fontStyle)
+	void RenderTarget::TextFontStyle(FontStyle fontStyle)
 	{
-		this->rsm->getActiveState().textRenderer.setFontStyle(fontStyle);
+		this->rsm->GetActiveState().textRenderer.SetFontStyle(fontStyle);
 	}
 
-	void RenderTarget::textFontStretch(FontStretch fontStretch)
+	void RenderTarget::TextFontStretch(FontStretch fontStretch)
 	{
-		this->rsm->getActiveState().textRenderer.setFontStretch(fontStretch);
+		this->rsm->GetActiveState().textRenderer.SetFontStretch(fontStretch);
 	}
 
-	void RenderTarget::textWordWrapping(WordWrapping wordWrapping)
+	void RenderTarget::TextWordWrapping(WordWrapping wordWrapping)
 	{
-		this->rsm->getActiveState().textRenderer.setWordWrapping(wordWrapping);
+		this->rsm->GetActiveState().textRenderer.SetWordWrapping(wordWrapping);
 	}
 
-	void RenderTarget::textAlignment(Core::TextAlignment textAlignment)
+	void RenderTarget::TextAlignment(Core::TextAlignment textAlignment)
 	{
-		this->rsm->getActiveState().textRenderer.setTextAlignment(textAlignment);
+		this->rsm->GetActiveState().textRenderer.SetTextAlignment(textAlignment);
 	}
 
-	void RenderTarget::textParagraphAlignment(ParagraphAlignment paragraphAlignment)
+	void RenderTarget::TextParagraphAlignment(ParagraphAlignment paragraphAlignment)
 	{
-		this->rsm->getActiveState().textRenderer.setParagraphAlignment(paragraphAlignment);
+		this->rsm->GetActiveState().textRenderer.SetParagraphAlignment(paragraphAlignment);
 	}
 
-	FVector2 RenderTarget::getTextSize()
+	FVector2 RenderTarget::GetTextSize()
 	{
-		return this->rsm->getActiveState().textRenderer.getSize();
+		return this->rsm->GetActiveState().textRenderer.GetSize();
 	}
 
-	FVector2 RenderTarget::getTextSize(const std::string & content)
+	FVector2 RenderTarget::GetTextSize(const std::string & content)
 	{
-		this->rsm->getActiveState().textRenderer.setText(content);
-		return getTextSize();
+		this->rsm->GetActiveState().textRenderer.SetText(content);
+		return this->GetTextSize();
 	}
 
-	GraphicsContext *& RenderTarget::getGraphicsContext() const
+	GraphicsContext *& RenderTarget::GetGraphicsContext() const
 	{
 		return this->gctx;
 	}

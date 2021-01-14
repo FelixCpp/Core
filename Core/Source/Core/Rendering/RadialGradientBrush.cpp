@@ -18,77 +18,77 @@ namespace Core
 	{
 	}
 
-	void RadialGradientBrush::setCenter(float x, float y)
+	void RadialGradientBrush::SetCenter(float x, float y)
 	{
 		if (this->center.x != x || this->center.y != y)
 		{
 			this->center.x = x;
 			this->center.y = y;
-			this->updateCenter();
+			this->UpdateCenter();
 		}
 	}
 
-	const FVector2 & RadialGradientBrush::getCenter() const
+	const FVector2 & RadialGradientBrush::GetCenter() const
 	{
 		return this->center;
 	}
 
-	void RadialGradientBrush::setRadius(float x, float y)
+	void RadialGradientBrush::SetRadius(float x, float y)
 	{
 		if (this->radius.x != x || this->radius.y != y)
 		{
 			this->radius.x = x;
 			this->radius.y = y;
-			this->updateRadius();
+			this->UpdateRadius();
 		}
 	}
 
-	const FVector2 & RadialGradientBrush::getRadius() const
+	const FVector2 & RadialGradientBrush::GetRadius() const
 	{
 		return this->radius;
 	}
 
-	void RadialGradientBrush::setOffset(float x, float y)
+	void RadialGradientBrush::SetOffset(float x, float y)
 	{
 		if (this->offset.x != x || this->offset.y != y)
 		{
 			this->offset.x = x;
 			this->offset.y = y;
-			this->updateOffset();
+			this->UpdateOffset();
 		}
 	}
 
-	const FVector2 & RadialGradientBrush::getOffset() const
+	const FVector2 & RadialGradientBrush::GetOffset() const
 	{
 		return this->offset;
 	}
 
-	void RadialGradientBrush::setColors(const std::vector<Color> & colors)
+	void RadialGradientBrush::SetColors(const std::vector<Color> & colors)
 	{
 		if (this->colors != colors)
 		{
 			this->colors = colors;
-			this->updateColors();
+			this->UpdateColors();
 		}
 	}
 
-	const std::vector<Color> & RadialGradientBrush::getColors()
+	const std::vector<Color> & RadialGradientBrush::GetColors()
 	{
 		return this->colors;
 	}
 
-	ID2D1Brush * RadialGradientBrush::getBrush() const
+	ID2D1Brush * RadialGradientBrush::GetBrush() const
 	{
 		return this->brush.Get();
 	}
 
-	void RadialGradientBrush::updateCenter()
+	void RadialGradientBrush::UpdateCenter()
 	{
 		if (ID2D1RadialGradientBrush * brush = this->brush.Get())
 			brush->SetCenter(D2D1::Point2F(this->center.x, this->center.y));
 	}
 
-	void RadialGradientBrush::updateRadius()
+	void RadialGradientBrush::UpdateRadius()
 	{
 		if (ID2D1RadialGradientBrush * brush = this->brush.Get())
 		{
@@ -97,13 +97,13 @@ namespace Core
 		}
 	}
 
-	void RadialGradientBrush::updateOffset()
+	void RadialGradientBrush::UpdateOffset()
 	{
 		if (ID2D1RadialGradientBrush * brush = this->brush.Get())
 			brush->SetGradientOriginOffset(D2D1::Point2F(this->offset.x, this->offset.y));
 	}
 
-	void RadialGradientBrush::updateColors()
+	void RadialGradientBrush::UpdateColors()
 	{
 		if (!this->gctx) return;
 

@@ -14,19 +14,19 @@ namespace Core
 		this->rsm = nullptr;
 	}
 
-	void Application::pauseDrawing()
+	void Application::PauseDrawing()
 	{
 		this->drawingPaused = true;
 	}
 
-	void Application::startDrawing()
+	void Application::StartDrawing()
 	{
 		this->drawingPaused = false;
 	}
 
-	void Application::exit()
+	void Application::Exit()
 	{
-		this->close();
+		this->Close();
 	}
 	
 	Application::Application(i32_t width, i32_t height, const std::string & title) :
@@ -35,51 +35,51 @@ namespace Core
 		gctx(new GraphicsContext()),
 		rsm(new RenderStateManager(this->gctx))
 	{
-		this->create(width, height, title);
-		this->setResizable(false);
-		this->setMaximizable(false);
-		this->setMinimizable(false);
+		this->Create(width, height, title);
+		this->SetResizable(false);
+		this->SetMaximizable(false);
+		this->SetMinimizable(false);
 	}
 
-	void Application::setupImpl()
+	void Application::SetupImpl()
 	{
-		this->gctx->beginDraw();
-		this->setup();
-		this->gctx->endDraw();
+		this->gctx->BeginDraw();
+		this->Setup();
+		this->gctx->EndDraw();
 	}
 
-	void Application::drawImpl()
+	void Application::DrawImpl()
 	{
-		this->gctx->beginDraw();
-		this->draw();
-		this->gctx->endDraw();
+		this->gctx->BeginDraw();
+		this->Draw();
+		this->gctx->EndDraw();
 	}
 
-	void Application::startSketch()
+	void Application::StartSketch()
 	{
 		/* set the framerate limit */
-		this->setFramerateLimit(60);
+		this->SetFramerateLimit(60);
 		
 		/* setup */
-		this->setupImpl();
+		this->SetupImpl();
 		
 		/* start calling the drawImpl function */
-		this->startDrawing();
+		this->StartDrawing();
 
-		while (this->isOpen())
+		while (this->IsOpen())
 		{
 			/* pops every renderstate and activates the default*/
-			this->rsm->reset();
+			this->rsm->Reset();
 
 			/* call draw surrounded by begin/end-Draw() */
 			if (!this->drawingPaused)
-				this->drawImpl();
+				this->DrawImpl();
 
 			/* calculate & limit fps */
-			this->handleFps();
+			this->HandleFps();
 
 			/* raise processEvents() function */
-			this->dispatchEvents();
+			this->DispatchEvents();
 		}
 	}
 

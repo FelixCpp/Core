@@ -12,49 +12,49 @@ namespace Core
 	{
 	}
 
-	Image ImageTarget::createImage(u32_t width, u32_t height, const Color & color)
+	Image ImageTarget::CreateImage(u32_t width, u32_t height, const Color & color)
 	{
-		Image image;
-		image.create(width, height, color, this->gctx);
+		Core::Image image;
+		image.Create(width, height, color, this->gctx);
 		return image;
 	}
 
-	Image ImageTarget::loadImageFromMemory(u32_t width, u32_t height, const Color * colors)
+	Image ImageTarget::LoadImageFromMemory(u32_t width, u32_t height, const Color * colors)
 	{
-		Image image;
-		image.loadFromMemory(width, height, colors, this->gctx);
+		Core::Image image;
+		image.LoadFromMemory(width, height, colors, this->gctx);
 		return image;
 	}
 
-	Image ImageTarget::loadImageFromFile(const std::string & filepath)
+	Image ImageTarget::LoadImageFromFile(const std::string & filepath)
 	{
-		Image image;
-		image.loadFromFile(filepath, this->gctx);
+		Core::Image image;
+		image.LoadFromFile(filepath, this->gctx);
 		return image;
 	}
 
-	Image ImageTarget::loadImageFromScreen(i32_t x, i32_t y, i32_t width, i32_t height)
+	Image ImageTarget::LoadImageFromScreen(i32_t x, i32_t y, i32_t width, i32_t height)
 	{
-		Image image;
-		image.loadFromScreen(x, y, width, height, this->gctx);
+		Core::Image image;
+		image.LoadFromScreen(x, y, width, height, this->gctx);
 		return image;
 	}
 
-	void ImageTarget::image(const Image & image, float x, float y)
+	void ImageTarget::Image(const Core::Image & image, float x, float y)
 	{
-		this->image(image, x, y, (float)image.width, (float)image.height);
+		this->Image(image, x, y, (float)image.width, (float)image.height);
 	}
 
-	void ImageTarget::image(const Image & image, float x, float y, float width, float height)
+	void ImageTarget::Image(const Core::Image & image, float x, float y, float width, float height)
 	{
 		ID2D1HwndRenderTarget * rt = this->gctx->hwndRenderTarget.Get();
 		if (!rt) return;
 
-		ID2D1Bitmap * bitmap = image.getBitmap();
+		ID2D1Bitmap * bitmap = image.GetBitmap();
 		if (!bitmap) return;
 
 		D2D1_RECT_F destinationRectangle = D2D1::RectF();
-		switch (this->rsm->getActiveState().imageMode)
+		switch (this->rsm->GetActiveState().imageMode)
 		{
 			case DrawMode::Corner: destinationRectangle = D2D1::RectF(x, y, x + width, y + height); break;
 			case DrawMode::Corners: destinationRectangle = D2D1::RectF(x, y, width, height); break;

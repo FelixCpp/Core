@@ -19,26 +19,26 @@ namespace Core
 
 		explicit RadialGradientBrush(GraphicsContext *& gctx);
 
-		void setCenter(float x, float y);
-		const FVector2 & getCenter() const;
+		void SetCenter(float x, float y);
+		const FVector2 & GetCenter() const;
 
-		void setRadius(float x, float y);
-		const FVector2 & getRadius() const;
+		void SetRadius(float x, float y);
+		const FVector2 & GetRadius() const;
 		
-		void setOffset(float x, float y);
-		const FVector2 & getOffset() const;
+		void SetOffset(float x, float y);
+		const FVector2 & GetOffset() const;
 		
-		void setColors(const std::vector<Color> & colors);
-		const std::vector<Color> & getColors();
+		void SetColors(const std::vector<Color> & colors);
+		const std::vector<Color> & GetColors();
 
-		ID2D1Brush * getBrush() const;
+		ID2D1Brush * GetBrush() const;
 
 	private:
 		
-		void updateCenter();
-		void updateRadius();
-		void updateOffset();
-		void updateColors();
+		void UpdateCenter();
+		void UpdateRadius();
+		void UpdateOffset();
+		void UpdateColors();
 
 	private:
 

@@ -7,7 +7,7 @@ namespace Core
 
 	float random(float min, float max)
 	{
-		return Random::get(min, max);
+		return Random::Get(min, max);
 	}
 
 	float random(float max)

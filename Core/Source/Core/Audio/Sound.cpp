@@ -5,12 +5,12 @@
 namespace Core
 {
 
-	void Sound::setLooping(bool loop)
+	void Sound::SetLooping(bool loop)
 	{
 		alSourcei(this->sourceID, AL_LOOPING, loop ? AL_TRUE : AL_FALSE);
 	}
 
-	bool Sound::isLooping() const
+	bool Sound::IsLooping() const
 	{
 		ALint looping = AL_FALSE;
 		alGetSourcei(this->sourceID, AL_LOOPING, &looping);
