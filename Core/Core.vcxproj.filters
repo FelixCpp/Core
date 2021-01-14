@@ -135,9 +135,6 @@
     <ClInclude Include="Include\Core\Rendering\ShapeAttributes.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="Include\Core\Rendering\ShapeRenderer.hpp">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="Include\Core\Rendering\SolidColorBrush.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
@@ -210,6 +207,9 @@
     <ClInclude Include="Include\Core\Audio\WaveFile.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="Include\Core\Rendering\Shape.hpp">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Core\Maths\Random.cpp">
@@ -261,9 +261,6 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="Source\Core\Rendering\RenderTarget.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Core\Rendering\ShapeRenderer.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="Source\Core\Rendering\SolidColorBrush.cpp">
@@ -318,6 +315,9 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="Source\Core\Audio\Sound.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Core\Rendering\Shape.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>

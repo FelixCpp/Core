@@ -49,7 +49,7 @@
     <ClInclude Include="Include\Core\Rendering\LinearGradientBrush.hpp" />
     <ClInclude Include="Include\Core\Rendering\RadialGradientBrush.hpp" />
     <ClInclude Include="Include\Core\Rendering\RenderState.hpp" />
-    <ClInclude Include="Include\Core\Rendering\ShapeRenderer.hpp" />
+    <ClInclude Include="Include\Core\Rendering\Shape.hpp" />
     <ClInclude Include="Include\Core\Rendering\ShapeAttributes.hpp" />
     <ClInclude Include="Include\Core\Rendering\SolidColorBrush.hpp" />
     <ClInclude Include="Include\Core\Rendering\StrokeStyle.hpp" />
@@ -107,7 +107,7 @@
     <ClCompile Include="Source\Core\Rendering\RadialGradientBrush.cpp" />
     <ClCompile Include="Source\Core\Rendering\RenderState.cpp" />
     <ClCompile Include="Source\Core\Rendering\RenderWindow.cpp" />
-    <ClCompile Include="Source\Core\Rendering\ShapeRenderer.cpp" />
+    <ClCompile Include="Source\Core\Rendering\Shape.cpp" />
     <ClCompile Include="Source\Core\Rendering\SolidColorBrush.cpp" />
     <ClCompile Include="Source\Core\Rendering\StrokeStyle.cpp" />
     <ClCompile Include="Source\Core\Rendering\TextRenderer.cpp" />

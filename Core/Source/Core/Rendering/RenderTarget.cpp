@@ -244,57 +244,63 @@ namespace Core
 		this->rsm->getActiveState().imageMode = mode;
 	}
 
-	void RenderTarget::beginShape()
+	void RenderTarget::beginShape(ShapeBegin begin)
 	{
-		this->rsm->getActiveState().shapeRenderer.beginShape();
+		Shape & shape = this->rsm->getActiveState().shape;
+		shape.SetShapeBegin(begin);
+		shape.Begin();
 	}
 
-	void RenderTarget::endShape(ShapeEndType type)
+	void RenderTarget::endShape(ShapeEnd end)
 	{
 		ID2D1HwndRenderTarget * rt = this->gctx->hwndRenderTarget.Get();
 		RenderState & state = this->rsm->getActiveState();
-		ShapeRenderer & shapeRenderer = state.shapeRenderer;
-		shapeRenderer.endShape(type);
+		Shape & shape = state.shape;
+
+		shape.SetShapeEnd(end);
+		shape.End();
+
+		ID2D1Geometry * geometry = shape.GetGeometry();
 
 		if (ID2D1Brush * fill = state.activeFill)
 		{
-			rt->FillGeometry(shapeRenderer.getGeometry(), fill);
+			rt->FillGeometry(geometry, fill);
 		}
 
 		if (ID2D1Brush * stroke = state.activeStroke)
 		{
-			rt->DrawGeometry(shapeRenderer.getGeometry(), stroke, state.strokeWeight, state.strokeStyle.getStrokeStyle());
+			rt->DrawGeometry(geometry, stroke, state.strokeWeight, state.strokeStyle.getStrokeStyle());
 		}
 	}
 
 	void RenderTarget::shapeFillMode(FillMode fillMode)
 	{
-		this->rsm->getActiveState().shapeRenderer.setFillMode(fillMode);
+		this->rsm->getActiveState().shape.SetFillMode(fillMode);
 	}
 
 	void RenderTarget::shapePathSegment(PathSegment pathSegment)
 	{
-		this->rsm->getActiveState().shapeRenderer.setPathSegment(pathSegment);
+		this->rsm->getActiveState().shape.SetPathSegment(pathSegment);
 	}
 
 	void RenderTarget::vertex(float x, float y)
 	{
-		this->rsm->getActiveState().shapeRenderer.vertex(x, y);
+		this->rsm->getActiveState().shape.Vertex(x, y);
 	}
 
 	void RenderTarget::quadraticBezier(float x1, float y1, float x2, float y2)
 	{
-		this->rsm->getActiveState().shapeRenderer.quadraticBezier(x1, y1, x2, y2);
+		this->rsm->getActiveState().shape.QuadraticBezier(x1, y1, x2, y2);
 	}
 
 	void RenderTarget::bezier(float x1, float y1, float x2, float y2, float x3, float y3)
 	{
-		this->rsm->getActiveState().shapeRenderer.bezier(x1, y1, x2, y2, x3, y3);
+		this->rsm->getActiveState().shape.Bezier(x1, y1, x2, y2, x3, y3);
 	}
 
-	void RenderTarget::arc(float x, float y, float width, float height, float rotationInDegrees, SweepDirection sweepDirection, ArcSize size)
+	void RenderTarget::arc(float x, float y, float width, float height, float rotationInDegrees, SweepDirection direction, ArcSize size)
 	{
-		this->rsm->getActiveState().shapeRenderer.arc(x, y, width, height, rotationInDegrees, sweepDirection, size);
+		this->rsm->getActiveState().shape.Arc(x, y, width, height, rotationInDegrees, direction, size);
 	}
 
 	void RenderTarget::strokeStartCap(CapStyle style)

@@ -5,7 +5,7 @@ namespace Core
 {
 
 	RenderState::RenderState(GraphicsContext *& gctx) :
-		shapeRenderer(gctx),
+		shape(gctx),
 		textRenderer(gctx),
 		strokeStyle(gctx),
 		activeFill(nullptr),

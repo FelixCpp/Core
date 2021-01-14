@@ -107,10 +107,10 @@ namespace Core
 		void imageMode(DrawMode mode);
 		
 		/* begins listening on shape calls (vertex, bezier, ...) */
-		void beginShape();
+		void beginShape(ShapeBegin begin = ShapeBegin::Filled);
 
 		/* stops listening on shape calls and draws the shape */
-		void endShape(ShapeEndType type);
+		void endShape(ShapeEnd end = ShapeEnd::Open);
 
 		/* changes the fill-mode of the shape */
 		void shapeFillMode(FillMode fillMode);
@@ -128,7 +128,7 @@ namespace Core
 		void bezier(float x1, float y1, float x2, float y2, float x3, float y3);
 
 		/* puts an arc-segment into a shape (call this between beginShape() and endShape() */
-		void arc(float x, float y, float width, float height, float rotationInDegrees, SweepDirection sweepDirection, ArcSize size);
+		void arc(float x, float y, float width, float height, float rotationInDegrees, SweepDirection direction, ArcSize size);
 
 		/* changes the start of the outline */
 		void strokeStartCap(CapStyle style);

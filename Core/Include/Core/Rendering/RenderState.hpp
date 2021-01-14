@@ -3,7 +3,7 @@
 #include <Core/Rendering/DrawMode.hpp>
 #include <Core/Rendering/StrokeStyle.hpp>
 #include <Core/Rendering/TextRenderer.hpp>
-#include <Core/Rendering/ShapeRenderer.hpp>
+#include <Core/Rendering/Shape.hpp>
 #include <Core/Rendering/SolidColorBrush.hpp>
 #include <Core/Rendering/LinearGradientBrush.hpp>
 #include <Core/Rendering/RadialGradientBrush.hpp>
@@ -20,7 +20,7 @@ namespace Core
 	public:
 
 		/* manages the shape rendering */
-		ShapeRenderer shapeRenderer;
+		Shape shape;
 
 		/* manages the text rendering */
 		TextRenderer textRenderer;
