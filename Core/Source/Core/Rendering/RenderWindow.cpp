@@ -345,7 +345,7 @@ namespace Core
 		tme.dwFlags = active ? TME_LEAVE : TME_CANCEL;
 		tme.hwndTrack = this->windowHandle;
 		tme.dwHoverTime = HOVER_DEFAULT;
-		TrackMouseEvent(&tme);
+		::TrackMouseEvent(&tme);
 	}
 
 }
