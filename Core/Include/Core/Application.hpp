@@ -33,7 +33,7 @@ namespace Core
 		static void Launch(const TArgs & ... arguments)
 		{
 			TDerived instance(std::forward<decltype(arguments)>(arguments)...);
-			instance.startSketch();
+			instance.StartSketch();
 		}
 
 	protected:
