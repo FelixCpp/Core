@@ -84,7 +84,7 @@ namespace Core
 	{
 		if (!this->gctx) return;
 
-		ID2D1HwndRenderTarget * rt = this->gctx->hwndRenderTarget.Get();
+		ID2D1HwndRenderTarget * rt = this->gctx->renderTarget.Get();
 		
 		const size_t size = this->colors.size();
 		std::vector<D2D1_GRADIENT_STOP> gradientStops(size);

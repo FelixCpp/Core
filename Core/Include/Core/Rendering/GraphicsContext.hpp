@@ -55,7 +55,7 @@ namespace Core
 		Microsoft::WRL::ComPtr<IDWriteFactory> writeFactory;
 
 		/* Direct2D WindowRenderTarget (used to draw anything on screen) */
-		Microsoft::WRL::ComPtr<ID2D1HwndRenderTarget> hwndRenderTarget;
+		Microsoft::WRL::ComPtr<ID2D1HwndRenderTarget> renderTarget;
 		
 		/* we need to keep track of the drawing-state when we're resizing */
 		bool drawing;

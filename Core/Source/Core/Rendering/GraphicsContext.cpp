@@ -10,7 +10,7 @@ namespace Core
 		mainFactory(nullptr),
 		imagingFactory(nullptr),
 		writeFactory(nullptr),
-		hwndRenderTarget(nullptr),
+		renderTarget(nullptr),
 		drawing(false)
 	{
 	}
@@ -64,7 +64,7 @@ namespace Core
 		hr = mainFactory->CreateHwndRenderTarget(
 			D2D1::RenderTargetProperties(),
 			D2D1::HwndRenderTargetProperties(handle, D2D1::SizeU(width, height), D2D1_PRESENT_OPTIONS_IMMEDIATELY),
-			&this->hwndRenderTarget
+			&this->renderTarget
 		);
 		if (FAILED(hr))
 		{
@@ -80,7 +80,7 @@ namespace Core
 		//CoUninitialize(); /* not allowed to do this call before uninitializing every image which was loaded with that imagingFactory */
 		this->imagingFactory.Reset();
 		this->writeFactory.Reset();
-		this->hwndRenderTarget.Reset();
+		this->renderTarget.Reset();
 		this->mainFactory.Reset();
 	}
 
@@ -88,7 +88,7 @@ namespace Core
 	{
 		if (!this->drawing)
 		{
-			this->hwndRenderTarget->BeginDraw();
+			this->renderTarget->BeginDraw();
 			this->drawing = true;
 		}
 	}
@@ -97,7 +97,7 @@ namespace Core
 	{
 		if (this->drawing)
 		{
-			this->hwndRenderTarget->EndDraw();
+			this->renderTarget->EndDraw();
 			this->drawing = false;
 		}
 	}
@@ -106,7 +106,7 @@ namespace Core
 	{
 		if (this->drawing)
 		{
-			if (ID2D1HwndRenderTarget * rt = this->hwndRenderTarget.Get())
+			if (ID2D1HwndRenderTarget * rt = this->renderTarget.Get())
 			{
 				rt->EndDraw();
 				rt->Resize(D2D1::SizeU(width, height));
@@ -114,7 +114,7 @@ namespace Core
 			}
 		} else
 		{
-			if(ID2D1HwndRenderTarget * rt = this->hwndRenderTarget.Get())
+			if(ID2D1HwndRenderTarget * rt = this->renderTarget.Get())
 				rt->Resize(D2D1::SizeU(width, height));
 		}
 	}

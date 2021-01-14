@@ -49,7 +49,7 @@ namespace Core
 	{
 		if (this->gctx)
 		{
-			HRESULT hr = this->gctx->hwndRenderTarget->CreateSolidColorBrush(D2D1::ColorF(
+			HRESULT hr = this->gctx->renderTarget->CreateSolidColorBrush(D2D1::ColorF(
 				(float)color.r / 255.f,
 				(float)color.g / 255.f,
 				(float)color.b / 255.f,

@@ -24,7 +24,7 @@ namespace Core
 
 	bool Image::Create(u32_t width, u32_t height, const Color & color, GraphicsContext * gctx)
 	{
-		ID2D1HwndRenderTarget * rt = gctx->hwndRenderTarget.Get();
+		ID2D1HwndRenderTarget * rt = gctx->renderTarget.Get();
 		if (!rt) return false;
 
 		const D2D1_PIXEL_FORMAT pixelFormat = rt->GetPixelFormat();
@@ -59,7 +59,7 @@ namespace Core
 
 	bool Image::LoadFromMemory(u32_t width, u32_t height, const Color * colors, GraphicsContext * gctx)
 	{
-		ID2D1HwndRenderTarget * rt = gctx->hwndRenderTarget.Get();
+		ID2D1HwndRenderTarget * rt = gctx->renderTarget.Get();
 		if (!rt) return false;
 
 		if (this->impl->bitmap)
@@ -162,7 +162,7 @@ namespace Core
 			return false;
 		}
 
-		ID2D1HwndRenderTarget * rt = gctx->hwndRenderTarget.Get();
+		ID2D1HwndRenderTarget * rt = gctx->renderTarget.Get();
 		if (!rt) return false;
 
 		/* Create a Direct2D bitmap from the WIC bitmap. */
@@ -187,7 +187,7 @@ namespace Core
 
 	bool Image::LoadFromScreen(i32_t x, i32_t y, i32_t width, i32_t height, GraphicsContext * gctx)
 	{
-		ID2D1HwndRenderTarget * rt = gctx->hwndRenderTarget.Get();
+		ID2D1HwndRenderTarget * rt = gctx->renderTarget.Get();
 		if (!rt) return false;
 
 		const D2D1_SIZE_F viewport = rt->GetSize();

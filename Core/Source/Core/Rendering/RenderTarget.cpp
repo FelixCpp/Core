@@ -60,7 +60,7 @@ namespace Core
 
 	void RenderTarget::Background(const Color & color)
 	{
-		this->gctx->hwndRenderTarget->Clear(D2D1::ColorF(
+		this->gctx->renderTarget->Clear(D2D1::ColorF(
 			(float)color.r / 255.f,
 			(float)color.g / 255.f,
 			(float)color.b / 255.f,
@@ -142,7 +142,7 @@ namespace Core
 
 	void RenderTarget::Rect(float x1, float y1, float x2, float y2, float cornerRadiusX, float cornerRadiusY)
 	{
-		ID2D1HwndRenderTarget * rt = this->gctx->hwndRenderTarget.Get();
+		ID2D1HwndRenderTarget * rt = this->gctx->renderTarget.Get();
 		RenderState & state = this->rsm->GetActiveState();
 
 		D2D1_RECT_F rect = D2D1::RectF();
@@ -180,7 +180,7 @@ namespace Core
 
 	void RenderTarget::Ellipse(float x, float y, float rx, float ry)
 	{
-		ID2D1HwndRenderTarget * rt = this->gctx->hwndRenderTarget.Get();
+		ID2D1HwndRenderTarget * rt = this->gctx->renderTarget.Get();
 		RenderState & state = this->rsm->GetActiveState();
 
 		D2D1_ELLIPSE ellipse;
@@ -218,7 +218,7 @@ namespace Core
 
 	void RenderTarget::Point(float x, float y)
 	{
-		ID2D1HwndRenderTarget * rt = this->gctx->hwndRenderTarget.Get();
+		ID2D1HwndRenderTarget * rt = this->gctx->renderTarget.Get();
 		RenderState & state = this->rsm->GetActiveState();
 		const D2D1_ELLIPSE ellipse = D2D1::Ellipse(D2D1::Point2F(x, y), state.strokeWeight, state.strokeWeight);
 
@@ -230,7 +230,7 @@ namespace Core
 
 	void RenderTarget::Line(float x1, float y1, float x2, float y2)
 	{
-		ID2D1HwndRenderTarget * rt = this->gctx->hwndRenderTarget.Get();
+		ID2D1HwndRenderTarget * rt = this->gctx->renderTarget.Get();
 		RenderState & state = this->rsm->GetActiveState();
 
 		if (ID2D1Brush * stroke = state.activeStroke)
@@ -253,7 +253,7 @@ namespace Core
 
 	void RenderTarget::EndShape(ShapeEnd end)
 	{
-		ID2D1HwndRenderTarget * rt = this->gctx->hwndRenderTarget.Get();
+		ID2D1HwndRenderTarget * rt = this->gctx->renderTarget.Get();
 		RenderState & state = this->rsm->GetActiveState();
 		Shape & shape = state.shape;
 
@@ -358,7 +358,7 @@ namespace Core
 	void RenderTarget::Text(const std::string & string, float x, float y, float width, float height)
 	{
 		RenderState & state = this->rsm->GetActiveState();
-		ID2D1HwndRenderTarget * rt = this->gctx->hwndRenderTarget.Get();
+		ID2D1HwndRenderTarget * rt = this->gctx->renderTarget.Get();
 
 		TextRenderer & textRenderer = state.textRenderer;
 		textRenderer.SetText(string);
