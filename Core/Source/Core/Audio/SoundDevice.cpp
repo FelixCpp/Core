@@ -52,6 +52,8 @@ namespace Core
 			Shutdown();
 			return false;
 		}
+
+		return true;
 	}
 
 	std::vector<std::string> SoundDevice::GetAvailableDevices()

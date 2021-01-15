@@ -33,7 +33,7 @@ namespace Core
 		static void SetOrientation(const FVector3 & position, const FVector3 & up);
 
 		/* returns the orientation (an array with the length of 6 elements: float[6]) */
-		static float * GetOrientation();
+		static void GetOrientation(float (&orientation)[6]);
 
 		/* changes the volume. The parameter should have a value between 0.0 and 1.0 */
 		static void SetVolume(float volume);

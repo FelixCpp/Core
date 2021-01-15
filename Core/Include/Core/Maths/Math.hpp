@@ -43,23 +43,16 @@ namespace Core
 		inline static constexpr T Log17				= (T)2.8332133440562160802495346178731;
 		inline static constexpr T InvLog10			= (T)0.434294481903251827651128918916605;
 
-		/* linear interpolation */
-		inline static T Lerp(T v0, T v1, T t)
-		{
-			return ((1 - t) * v0) + (t * v1);
-		}
-
 		/* linear interpolation with execution */
-		inline static T Lerp(T v0, T v1, T t, T execute)
+		inline static T LerpEx(T v0, T v1, T t, T execute)
 		{
-			const T value = MathImpl::Lerp(v0, v1, t);
-			const T diff = (value - v1);
+			const T value = std::lerp(v0, v1, t);
 			
-			if (diff <= execute)
+			if (std::abs(value - t) <= execute)
 			{
 				return v1;
 			}
-
+			
 			return value;
 		}
 

@@ -43,11 +43,9 @@ namespace Core
 		SetOrientation(position.x, position.y, position.z, up.x, up.y, up.z);
 	}
 
-	float * Listener::GetOrientation()
+	void Listener::GetOrientation(float (&orientation)[6])
 	{
-		float values[6] = { 0.f, 0.f, 0.f, 0.f, 0.f, 0.f };
-		alGetListenerfv(AL_ORIENTATION, values);
-		return values;
+		alGetListenerfv(AL_ORIENTATION, orientation);
 	}
 
 	FVector3 Listener::GetVelocity()
