@@ -9,6 +9,7 @@ namespace Core
 
 	RenderTarget::RenderTarget(GraphicsContext *& gctx, RenderStateManager *& rsm) :
 		ImageTarget(gctx, rsm),
+		ShapeTarget(gctx, rsm),
 		gctx(gctx),
 		rsm(rsm)
 	{
@@ -242,65 +243,6 @@ namespace Core
 	void RenderTarget::ImageMode(DrawMode mode)
 	{
 		this->rsm->GetActiveState().imageMode = mode;
-	}
-
-	void RenderTarget::BeginShape(ShapeBegin begin)
-	{
-		Shape & shape = this->rsm->GetActiveState().shape;
-		shape.SetShapeBegin(begin);
-		shape.Begin();
-	}
-
-	void RenderTarget::EndShape(ShapeEnd end)
-	{
-		ID2D1HwndRenderTarget * rt = this->gctx->renderTarget.Get();
-		RenderState & state = this->rsm->GetActiveState();
-		Shape & shape = state.shape;
-
-		shape.SetShapeEnd(end);
-		shape.End();
-
-		ID2D1Geometry * geometry = shape.GetGeometry();
-
-		if (ID2D1Brush * fill = state.activeFill)
-		{
-			rt->FillGeometry(geometry, fill);
-		}
-
-		if (ID2D1Brush * stroke = state.activeStroke)
-		{
-			rt->DrawGeometry(geometry, stroke, state.strokeWeight, state.strokeStyle.GetStrokeStyle());
-		}
-	}
-
-	void RenderTarget::ShapeFillMode(FillMode fillMode)
-	{
-		this->rsm->GetActiveState().shape.SetFillMode(fillMode);
-	}
-
-	void RenderTarget::ShapePathSegment(PathSegment pathSegment)
-	{
-		this->rsm->GetActiveState().shape.SetPathSegment(pathSegment);
-	}
-
-	void RenderTarget::Vertex(float x, float y)
-	{
-		this->rsm->GetActiveState().shape.Vertex(x, y);
-	}
-
-	void RenderTarget::QuadraticBezier(float x1, float y1, float x2, float y2)
-	{
-		this->rsm->GetActiveState().shape.QuadraticBezier(x1, y1, x2, y2);
-	}
-
-	void RenderTarget::Bezier(float x1, float y1, float x2, float y2, float x3, float y3)
-	{
-		this->rsm->GetActiveState().shape.Bezier(x1, y1, x2, y2, x3, y3);
-	}
-
-	void RenderTarget::Arc(float x, float y, float width, float height, float rotationInDegrees, SweepDirection direction, ArcSize size)
-	{
-		this->rsm->GetActiveState().shape.Arc(x, y, width, height, rotationInDegrees, direction, size);
 	}
 
 	void RenderTarget::StrokeStartCap(CapStyle style)

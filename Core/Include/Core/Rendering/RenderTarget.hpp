@@ -3,7 +3,7 @@
 #include <Core/Rendering/Helpers.hpp>
 #include <Core/Rendering/DrawMode.hpp>
 #include <Core/Rendering/ImageTarget.hpp>
-#include <Core/Rendering/ShapeAttributes.hpp>
+#include <Core/Rendering/ShapeTarget.hpp>
 #include <Core/Rendering/TextAttributes.hpp>
 #include <Core/Rendering/StrokeStyleAttributes.hpp>
 #include <Core/Maths/Vector2.hpp>
@@ -16,7 +16,7 @@ namespace Core
 
 	class GraphicsContext;
 
-	class RenderTarget : public ImageTarget {
+	class RenderTarget : public ImageTarget, public ShapeTarget {
 	public:
 
 		/* RenderTarget constructor */
@@ -106,30 +106,6 @@ namespace Core
 		/* changes the image-mode (the way the parameters of image(...) are used) */
 		void ImageMode(DrawMode mode);
 		
-		/* begins listening on shape calls (vertex, bezier, ...) */
-		void BeginShape(ShapeBegin begin = ShapeBegin::Filled);
-
-		/* stops listening on shape calls and draws the shape */
-		void EndShape(ShapeEnd end = ShapeEnd::Open);
-
-		/* changes the fill-mode of the shape */
-		void ShapeFillMode(FillMode fillMode);
-
-		/* changes the path segment of the shape */
-		void ShapePathSegment(PathSegment pathSegment);
-
-		/* puts a vertex (point) into a shape (call this between beginShape() and endShape() */
-		void Vertex(float x, float y);
-
-		/* puts a quadratic bezier-segment into a shape (call this between beginShape() and endShape() */
-		void QuadraticBezier(float x1, float y1, float x2, float y2);
-
-		/* puts a bezier-segment (curve) into a shape (call this between beginShape() and endShape() */
-		void Bezier(float x1, float y1, float x2, float y2, float x3, float y3);
-
-		/* puts an arc-segment into a shape (call this between beginShape() and endShape() */
-		void Arc(float x, float y, float width, float height, float rotationInDegrees, SweepDirection direction, ArcSize size);
-
 		/* changes the start of the outline */
 		void StrokeStartCap(CapStyle style);
 		
