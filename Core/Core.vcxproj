@@ -41,9 +41,11 @@
     <ClInclude Include="Include\Core\Rendering\Targets\ImageTarget.hpp" />
     <ClInclude Include="Include\Core\Rendering\RenderStateManager.hpp" />
     <ClInclude Include="Include\Core\Rendering\RenderWindow.hpp" />
+    <ClInclude Include="Include\Core\Rendering\Targets\PrimitiveRenderTarget.hpp" />
     <ClInclude Include="Include\Core\Rendering\Targets\ShapeTarget.hpp" />
     <ClInclude Include="Include\Core\Rendering\Targets\StrokeStyleTarget.hpp" />
     <ClInclude Include="Include\Core\Rendering\Targets\RenderStateTarget.hpp" />
+    <ClInclude Include="Include\Core\Rendering\Targets\TextTarget.hpp" />
     <ClInclude Include="Include\Core\Rendering\Targets\TransformationTarget.hpp" />
     <ClInclude Include="Include\Core\System\Logger.hpp" />
     <ClInclude Include="Include\Core\Window\DisplayMode.hpp" />
@@ -106,6 +108,7 @@
     <ClCompile Include="Source\Core\Rendering\Targets\BrushTarget.cpp" />
     <ClCompile Include="Source\Core\Rendering\Targets\ImageTarget.cpp" />
     <ClCompile Include="Source\Core\Rendering\RenderStateManager.cpp" />
+    <ClCompile Include="Source\Core\Rendering\Targets\PrimitiveRenderTarget.cpp" />
     <ClCompile Include="Source\Core\Rendering\Targets\RenderTarget.cpp" />
     <ClCompile Include="Source\Core\Rendering\GraphicsContext.cpp" />
     <ClCompile Include="Source\Core\Rendering\Image.cpp" />
@@ -119,6 +122,7 @@
     <ClCompile Include="Source\Core\Rendering\StrokeStyle.cpp" />
     <ClCompile Include="Source\Core\Rendering\Targets\StrokeStyleTarget.cpp" />
     <ClCompile Include="Source\Core\Rendering\Targets\RenderStateTarget.cpp" />
+    <ClCompile Include="Source\Core\Rendering\Targets\TextTarget.cpp" />
     <ClCompile Include="Source\Core\Rendering\Targets\TransformationTarget.cpp" />
     <ClCompile Include="Source\Core\Rendering\TextRenderer.cpp" />
     <ClCompile Include="Source\Core\Maths\Matrix3x3.cpp" />

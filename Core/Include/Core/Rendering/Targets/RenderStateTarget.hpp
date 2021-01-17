@@ -61,4 +61,32 @@ namespace Core
 
 	};
 
+	/// <summary>
+	/// Example:
+	/// <code>
+	/// 
+	/// ...
+	/// float time = 0.f;
+	/// 
+	/// Fill(Core::Color::LightRed);
+	/// Stroke(Core::Color::White);
+	/// Quad(100.f, 100.f, 75.f);
+	/// 
+	/// Push();
+	/// Fill(Core::Color::LightBlue);
+	/// Translate(width / 2, height / 2);
+	/// Rotate(time);
+	/// RectMode(Core::DrawMode::Center);
+	/// Quad(0.f, 0.f, 100.f);
+	/// Pop();
+	/// 
+	/// NoStroke();
+	/// Ellipse(100.f, 200.f, 50.f);
+	/// 
+	/// time += 0.1f;
+	/// ...
+	/// 
+	/// </code>
+	/// </summary>
+
 }

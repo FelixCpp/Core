@@ -2,6 +2,8 @@
 
 #include <Core/Rendering/Image.hpp>
 
+#include <Core/Rendering/DrawMode.hpp>
+
 namespace Core
 {
 
