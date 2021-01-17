@@ -11,13 +11,21 @@
 #include <Core/Rendering/Targets/TransformationTarget.hpp>
 #include <Core/Rendering/Targets/BrushTarget.hpp>
 
-#include <vector>
-
 namespace Core
 {
 
+	/// <summary>
+	/// Predeclarations
+	/// of classes the user
+	/// shouldn't interact with
+	/// </summary>
 	class GraphicsContext;
 
+	/// <summary>
+	/// A Target class to handle
+	/// everything based around
+	/// Rendering anything
+	/// </summary>
 	class RenderTarget :
 		public ImageRenderTarget,
 		public ShapeRenderTarget,
@@ -30,22 +38,34 @@ namespace Core
 	{
 	public:
 
-		/* RenderTarget constructor */
+		/// <summary>
+		/// passes the parameters to the base classes and
+		/// copies them into the member variable "gctx".
+		/// </summary>
+		/// <param name="gctx">the GraphicsContext</param>
+		/// <param name="rsm">the RenderStateManger</param>
 		explicit RenderTarget(GraphicsContext *& gctx, RenderStateManager *& rsm);
 		
-		/* virtual destructor */
+		/// <summary>
+		/// A virtual destructor
+		/// </summary>
 		virtual ~RenderTarget() = default;
 
-		/* clears/erases the background */
+		/// <summary>
+		/// Clears/Erases the background to
+		/// a flat color
+		/// </summary>
+		/// <param name="color"></param>
 		void Background(const Color & color);
 
 	private:
 
-		/* instance of a GraphicsContext. Used for drawing routines */
+		/// <summary>
+		/// An instance of the GraphicsContext
+		/// to get access to the RenderTarget
+		/// used to clear the background
+		/// </summary>
 		GraphicsContext *& gctx;
-
-		/* instance of a RenderStateManager. */
-		RenderStateManager *& rsm;
 
 	};
 

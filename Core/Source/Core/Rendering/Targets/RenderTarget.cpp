@@ -1,8 +1,5 @@
 #include <Core/Rendering/Targets/RenderTarget.hpp>
 #include <Core/Rendering/GraphicsContext.hpp>
-#include <Core/Rendering/RenderStateManager.hpp>
-
-#include <Core/Window/Window.hpp>
 
 namespace Core
 {
@@ -16,8 +13,7 @@ namespace Core
 		BrushTarget(rsm),
 		TextRenderTarget(gctx, rsm),
 		PrimitiveRenderTarget(gctx, rsm),
-		gctx(gctx),
-		rsm(rsm)
+		gctx(gctx)
 	{
 	}
 

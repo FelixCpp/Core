@@ -176,8 +176,7 @@ namespace Core
 	/// Vertex(300.f, 600.f);
 	/// Vertex(600.f, 600.f);
 	/// Vertex(600.f, 300.f);
-	/// Vertex(450.f, 150.f);
-	/// Vertex(300.f, 300.f);
+	/// Bezier(600.f, 300.f, 450.f, 100.f, 300.f, 300.f);
 	/// EndShape();
 	/// ...
 	/// 

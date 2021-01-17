@@ -10,17 +10,19 @@ namespace Core
 	/// </summary>
 	class RenderStateManager;
 
+	/// <summary>
+	/// A Target class to handle
+	/// everything based around
+	/// RenderStates
+	/// </summary>
 	class RenderStateTarget {
 	public:
 
 		/// <summary>
 		/// constructor which passes the RenderStateManager
 		/// to its member variables.
-		/// 
-		/// Its needed to get access to the Shape attribute
-		/// in the active RenderState
 		/// </summary>
-		/// <param name="rsm">the RenderStateManager which is needed to get access to the current RenderState which holds the shape object</param>
+		/// <param name="rsm">the RenderStateManager which holds the RenderStates to modify</param>
 		explicit RenderStateTarget(RenderStateManager *& rsm);
 
 		/// <summary>
@@ -54,8 +56,7 @@ namespace Core
 
 		/// <summary>
 		/// An instance of the RenderStateManager
-		/// to get access to the brushes / drawing
-		/// properties
+		/// to get access the RenderStates
 		/// </summary>
 		RenderStateManager *& rsm;
 

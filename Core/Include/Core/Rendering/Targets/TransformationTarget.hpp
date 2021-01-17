@@ -22,11 +22,8 @@ namespace Core
 		/// <summary>
 		/// constructor which passes the RenderStateManager
 		/// to its member variables.
-		/// 
-		/// Its needed to get access to the Shape attribute
-		/// in the active RenderState
 		/// </summary>
-		/// <param name="rsm">the RenderStateManager which is needed to get access to the current RenderState which holds the shape object</param>
+		/// <param name="rsm">the RenderStateManager which is needed to get access to the current RenderState holding informations about the transformation metrics</param>
 		explicit TransformationTarget(RenderStateManager *& rsm);
 
 		/// <summary>
