@@ -26,7 +26,7 @@ namespace Core
         /// <summary>
         /// Triangle line cap.
         /// </summary>
-        Triangle,
+        Triangle
 
     };
 
@@ -40,7 +40,7 @@ namespace Core
         Dot,
         DashDot,
         DashDotDot,
-        Custom,
+        Custom
     };
 
 
@@ -67,7 +67,8 @@ namespace Core
         /// <summary>
         /// Miter/Bevel join.
         /// </summary>
-        MiterOrBevel,
+        MiterOrBevel
+
     };
 
 }

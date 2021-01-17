@@ -41,6 +41,7 @@
     <ClInclude Include="Include\Core\Rendering\RenderStateManager.hpp" />
     <ClInclude Include="Include\Core\Rendering\RenderWindow.hpp" />
     <ClInclude Include="Include\Core\Rendering\ShapeTarget.hpp" />
+    <ClInclude Include="Include\Core\Rendering\StrokeStyleTarget.hpp" />
     <ClInclude Include="Include\Core\System\Logger.hpp" />
     <ClInclude Include="Include\Core\Window\DisplayMode.hpp" />
     <ClInclude Include="Include\Core\Window\SystemCursor.hpp" />
@@ -112,6 +113,7 @@
     <ClCompile Include="Source\Core\Rendering\ShapeTarget.cpp" />
     <ClCompile Include="Source\Core\Rendering\SolidColorBrush.cpp" />
     <ClCompile Include="Source\Core\Rendering\StrokeStyle.cpp" />
+    <ClCompile Include="Source\Core\Rendering\StrokeStyleTarget.cpp" />
     <ClCompile Include="Source\Core\Rendering\TextRenderer.cpp" />
     <ClCompile Include="Source\Core\Maths\Matrix3x3.cpp" />
     <ClCompile Include="Source\Core\Maths\Random.cpp" />

@@ -4,8 +4,8 @@
 #include <Core/Rendering/DrawMode.hpp>
 #include <Core/Rendering/ImageTarget.hpp>
 #include <Core/Rendering/ShapeTarget.hpp>
+#include <Core/Rendering/StrokeStyleTarget.hpp>
 #include <Core/Rendering/TextAttributes.hpp>
-#include <Core/Rendering/StrokeStyleAttributes.hpp>
 #include <Core/Maths/Vector2.hpp>
 #include <Core/Rendering/Color.hpp>
 
@@ -16,7 +16,11 @@ namespace Core
 
 	class GraphicsContext;
 
-	class RenderTarget : public ImageTarget, public ShapeTarget {
+	class RenderTarget :
+		public ImageTarget,
+		public ShapeTarget,
+		public StrokeStyleTarget
+	{
 	public:
 
 		/* RenderTarget constructor */
@@ -106,30 +110,6 @@ namespace Core
 		/* changes the image-mode (the way the parameters of image(...) are used) */
 		void ImageMode(DrawMode mode);
 		
-		/* changes the start of the outline */
-		void StrokeStartCap(CapStyle style);
-		
-		/* changes the end of the outline */
-		void StrokeEndCap(CapStyle style);
-		
-		/* changes the center between the lines of an outline */
-		void StrokeDashCap(CapStyle style);
-
-		/* changes the join of the outline lines */
-		void StrokeLineJoin(LineJoin lineJoin);
-
-		/* changes the connection style of the outline */
-		void StrokeDashStyle(DashStyle style);
-
-		/* changes the pattern of an outline */
-		void StrokeDashes(const std::vector<float> & dashes);
-
-		/* changes the offset between the outline dashes */
-		void StrokeDashOffset(float offset);
-		
-		/* changes the miter limit of the outline dashes */
-		void StrokeMiterLimit(float limit);
-
 		/* draws text at x, y to the screen */
 		void Text(const std::string & string, float x, float y);
 		

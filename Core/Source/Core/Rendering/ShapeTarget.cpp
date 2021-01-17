@@ -13,14 +13,14 @@ namespace Core
 
 	void ShapeTarget::BeginShape(ShapeBegin begin)
 	{
-		Shape & shape = this->shape();
+		Shape & shape = this->GetShape();
 		shape.SetShapeBegin(begin);
 		shape.Begin();
 	}
 
 	void ShapeTarget::EndShape(ShapeEnd end)
 	{
-		Shape & shape = this->shape();
+		Shape & shape = this->GetShape();
 		shape.SetShapeEnd(end);
 		shape.End();
 
@@ -29,35 +29,35 @@ namespace Core
 
 	void ShapeTarget::ShapeFillMode(FillMode fillMode)
 	{
-		this->shape().SetFillMode(fillMode);
+		this->GetShape().SetFillMode(fillMode);
 	}
 
 	void ShapeTarget::ShapePathSegment(PathSegment pathSegment)
 	{
-		this->shape().SetPathSegment(pathSegment);
+		this->GetShape().SetPathSegment(pathSegment);
 	}
 
 	void ShapeTarget::Vertex(float x, float y)
 	{
-		this->shape().Vertex(x, y);
+		this->GetShape().Vertex(x, y);
 	}
 
 	void ShapeTarget::QuadraticBezier(float x1, float y1, float x2, float y2)
 	{
-		this->shape().QuadraticBezier(x1, y1, x2, y2);
+		this->GetShape().QuadraticBezier(x1, y1, x2, y2);
 	}
 
 	void ShapeTarget::Bezier(float x1, float y1, float x2, float y2, float x3, float y3)
 	{
-		this->shape().Bezier(x1, y1, x2, y2, x3, y3);
+		this->GetShape().Bezier(x1, y1, x2, y2, x3, y3);
 	}
 
 	void ShapeTarget::Arc(float x, float y, float width, float height, float rotationInDegrees, SweepDirection direction, ArcSize size)
 	{
-		this->shape().Arc(x, y, width, height, rotationInDegrees, direction, size);
+		this->GetShape().Arc(x, y, width, height, rotationInDegrees, direction, size);
 	}
 
-	Shape & ShapeTarget::shape()
+	Shape & ShapeTarget::GetShape()
 	{
 		return this->rsm->GetActiveState().shape;
 	}
@@ -69,7 +69,7 @@ namespace Core
 		if (!renderTarget) { return; }
 
 		// get the geometry
-		ID2D1Geometry * geometry = this->shape().GetGeometry();
+		ID2D1Geometry * geometry = this->GetShape().GetGeometry();
 		if (!geometry) { return; }
 
 		RenderState & state = this->rsm->GetActiveState();

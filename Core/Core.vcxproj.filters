@@ -213,6 +213,9 @@
     <ClInclude Include="Include\Core\Rendering\ShapeTarget.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="Include\Core\Rendering\StrokeStyleTarget.hpp">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Core\Maths\Random.cpp">
@@ -324,6 +327,9 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="Source\Core\Rendering\ShapeTarget.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Core\Rendering\StrokeStyleTarget.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>

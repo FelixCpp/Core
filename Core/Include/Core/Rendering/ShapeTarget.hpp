@@ -23,13 +23,14 @@ namespace Core
 	public:
 
 		/// <summary>
-		/// constructor which passes the RenderStateManager
-		/// to its member variable.
+		/// constructor which passes the GraphicsContext & RenderStateManager
+		/// to its member variables.
 		/// 
 		/// Its needed to get access to the Shape attribute
 		/// in the active RenderState
 		/// </summary>
-		/// <param name="rsm"></param>
+		/// <param name="gctx">the GraphicsContext which is needed to draw the shape</param>
+		/// <param name="rsm">the RenderStateManager which is needed to get access to the current RenderState which holds the shape object</param>
 		explicit ShapeTarget(GraphicsContext *& gctx, RenderStateManager *& rsm);
 
 		/// <summary>
@@ -139,7 +140,7 @@ namespace Core
 		/// returns the current shape of the
 		/// active RenderState
 		/// </summary>
-		Shape & shape();
+		Shape & GetShape();
 
 		/// <summary>
 		/// Draws the shape build by
