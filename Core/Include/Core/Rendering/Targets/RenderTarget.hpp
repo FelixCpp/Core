@@ -2,12 +2,14 @@
 
 #include <Core/Rendering/Helpers.hpp>
 #include <Core/Rendering/DrawMode.hpp>
-#include <Core/Rendering/ImageTarget.hpp>
-#include <Core/Rendering/ShapeTarget.hpp>
-#include <Core/Rendering/StrokeStyleTarget.hpp>
 #include <Core/Rendering/TextAttributes.hpp>
 #include <Core/Maths/Vector2.hpp>
 #include <Core/Rendering/Color.hpp>
+
+#include <Core/Rendering/Targets/ImageTarget.hpp>
+#include <Core/Rendering/Targets/ShapeTarget.hpp>
+#include <Core/Rendering/Targets/StrokeStyleTarget.hpp>
+#include <Core/Rendering/Targets/RenderStateTarget.hpp>
 
 #include <vector>
 
@@ -19,7 +21,8 @@ namespace Core
 	class RenderTarget :
 		public ImageTarget,
 		public ShapeTarget,
-		public StrokeStyleTarget
+		public StrokeStyleTarget,
+		public RenderStateTarget
 	{
 	public:
 
@@ -28,12 +31,6 @@ namespace Core
 		
 		/* virtual destructor */
 		virtual ~RenderTarget() = default;
-
-		/* pushes a new RenderState onto the stack. fill/stroke etc. will be resetted */
-		void Push();
-
-		/* pops the current RenderState from the stack. The RenderState below this one will be activated */
-		void Pop();
 
 		/* resets the matrix to its identity value */
 		void ResetMatrix();

@@ -15,16 +15,6 @@ namespace Core
 	{
 	}
 
-	void RenderTarget::Push()
-	{
-		this->rsm->PushState();
-	}
-
-	void RenderTarget::Pop()
-	{
-		this->rsm->PopState();
-	}
-
 	void RenderTarget::ResetMatrix()
 	{
 		D2D1::Matrix3x2F & matrix = this->rsm->GetActiveState().GetActiveMatrix();
@@ -243,46 +233,6 @@ namespace Core
 	void RenderTarget::ImageMode(DrawMode mode)
 	{
 		this->rsm->GetActiveState().imageMode = mode;
-	}
-
-	void RenderTarget::StrokeStartCap(CapStyle style)
-	{
-		this->rsm->GetActiveState().strokeStyle.SetStartCap(style);
-	}
-
-	void RenderTarget::StrokeEndCap(CapStyle style)
-	{
-		this->rsm->GetActiveState().strokeStyle.SetEndCap(style);
-	}
-
-	void RenderTarget::StrokeDashCap(CapStyle style)
-	{
-		this->rsm->GetActiveState().strokeStyle.SetDashCap(style);
-	}
-
-	void RenderTarget::StrokeLineJoin(LineJoin lineJoin)
-	{
-		this->rsm->GetActiveState().strokeStyle.SetLineJoin(lineJoin);
-	}
-
-	void RenderTarget::StrokeDashStyle(DashStyle style)
-	{
-		this->rsm->GetActiveState().strokeStyle.SetDashStyle(style);
-	}
-
-	void RenderTarget::StrokeDashes(const std::vector<float> & dashes)
-	{
-		this->rsm->GetActiveState().strokeStyle.SetDashes(dashes);
-	}
-
-	void RenderTarget::StrokeDashOffset(float offset)
-	{
-		this->rsm->GetActiveState().strokeStyle.SetDashOffset(offset);
-	}
-
-	void RenderTarget::StrokeMiterLimit(float limit)
-	{
-		this->rsm->GetActiveState().strokeStyle.SetMiterLimit(limit);
 	}
 
 	void RenderTarget::Text(const std::string & string, float x, float y)

@@ -2,7 +2,7 @@
 
 #include <Core/Window/Window.hpp>
 
-#include <Core/Rendering/RenderTarget.hpp>
+#include <Core/Rendering/Targets/RenderTarget.hpp>
 
 namespace Core
 {
