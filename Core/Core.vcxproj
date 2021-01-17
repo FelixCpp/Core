@@ -32,8 +32,10 @@
     <ClInclude Include="Include\Core\Audio\SoundSpace.hpp" />
     <ClInclude Include="Include\Core\Audio\WaveFile.hpp" />
     <ClInclude Include="Include\Core\Audio\WaveFileReader.hpp" />
+    <ClInclude Include="Include\Core\Rendering\BitmapBrush.hpp" />
     <ClInclude Include="Include\Core\Rendering\Color.hpp" />
     <ClInclude Include="Include\Core\Rendering\DrawMode.hpp" />
+    <ClInclude Include="Include\Core\Rendering\ExtendMode.hpp" />
     <ClInclude Include="Include\Core\Rendering\Helpers.hpp" />
     <ClInclude Include="Include\Core\Maths\Vector3.hpp" />
     <ClInclude Include="Include\Core\Rendering\ImageInterpolationMode.hpp" />
@@ -103,6 +105,7 @@
     <ClCompile Include="Source\Core\Audio\SoundDevice.cpp" />
     <ClCompile Include="Source\Core\Audio\SoundSpace.cpp" />
     <ClCompile Include="Source\Core\Audio\WaveFileReader.cpp" />
+    <ClCompile Include="Source\Core\Rendering\BitmapBrush.cpp" />
     <ClCompile Include="Source\Core\Rendering\Color.cpp" />
     <ClCompile Include="Source\Core\Rendering\Helpers.cpp" />
     <ClCompile Include="Source\Core\Rendering\Targets\BrushTarget.cpp" />

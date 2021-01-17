@@ -77,6 +77,28 @@ namespace Core
 		state.activeStroke = state.radialStroke.GetBrush();
 	}
 
+	void BrushTarget::ImageFill(const Image & image, ImageInterpolationMode mode, ExtendMode modeX, ExtendMode modeY, i32_t opacity)
+	{
+		RenderState & state = this->GetState();
+		state.bitmapFill.SetImage(image);
+		state.bitmapFill.SetInterpolationMode(mode);
+		state.bitmapFill.SetExtendModeX(modeX);
+		state.bitmapFill.SetExtendModeY(modeY);
+		state.bitmapFill.SetOpacity(opacity);
+		state.activeFill = state.bitmapFill.GetBrush();
+	}
+
+	void BrushTarget::ImageStroke(const Image & image, ImageInterpolationMode mode, ExtendMode modeX, ExtendMode modeY, i32_t opacity)
+	{
+		RenderState & state = this->GetState();
+		state.bitmapStroke.SetImage(image);
+		state.bitmapStroke.SetInterpolationMode(mode);
+		state.bitmapStroke.SetExtendModeX(modeX);
+		state.bitmapStroke.SetExtendModeY(modeY);
+		state.bitmapStroke.SetOpacity(opacity);
+		state.activeStroke = state.bitmapStroke.GetBrush();
+	}
+
 	RenderState & BrushTarget::GetState()
 	{
 		return this->rsm->GetActiveState();

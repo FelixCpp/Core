@@ -16,6 +16,8 @@ namespace Core
 		linearStroke(LinearGradientBrush(gctx)),
 		radialFill(RadialGradientBrush(gctx)),
 		radialStroke(RadialGradientBrush(gctx)),
+		bitmapFill(BitmapBrush(gctx)),
+		bitmapStroke(BitmapBrush(gctx)),
 		rectMode(DrawMode::Corner),
 		ellipseMode(DrawMode::Center),
 		imageMode(DrawMode::Corner),

@@ -7,6 +7,7 @@
 #include <Core/Rendering/SolidColorBrush.hpp>
 #include <Core/Rendering/LinearGradientBrush.hpp>
 #include <Core/Rendering/RadialGradientBrush.hpp>
+#include <Core/Rendering/BitmapBrush.hpp>
 
 #include <d2d1.h>
 #include <stack>
@@ -39,6 +40,9 @@ namespace Core
 		
 		/* this brush-pair holds the radial color brush */
 		RadialGradientBrush radialFill, radialStroke;
+
+		/* this brush-pair holds the a brush managed by bitmaps */
+		BitmapBrush bitmapFill, bitmapStroke;
 
 		/* the current rectangle mode */
 		DrawMode rectMode;

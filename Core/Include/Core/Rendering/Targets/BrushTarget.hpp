@@ -3,6 +3,8 @@
 #include <vector>
 
 #include <Core/Rendering/Color.hpp>
+#include <Core/Rendering/ExtendMode.hpp>
+#include <Core/Rendering/ImageInterpolationMode.hpp>
 
 namespace Core
 {
@@ -12,6 +14,7 @@ namespace Core
 	/// of classes the user
 	/// shouldn't interact with
 	/// </summary>
+	class Image;
 	class RenderState;
 	class RenderStateManager;
 
@@ -120,6 +123,30 @@ namespace Core
 		/// <param name="offsetX">offset x from the center x in pixel space</param>
 		/// <param name="offsetY">offset y from the center y in pixel space</param>
 		void RadialStroke(const std::vector<Color> & colors, float centerX, float centerY, float radiusX, float radiusY, float offsetX, float offsetY);
+
+		/// <summary>
+		/// Changes and activates
+		/// the bitmap brush
+		/// as fill
+		/// </summary>
+		/// <param name="image">the image to use filling the area</param>
+		/// <param name="mode">interpolation mode of the image</param>
+		/// <param name="modeX">extend mode (horizontal)</param>
+		/// <param name="modeY">extend mode (vertical)</param>
+		/// <param name="opacity">opacity of the image</param>
+		void ImageFill(const Image & image, ImageInterpolationMode mode = ImageInterpolationMode::NearestNeighbor, ExtendMode modeX = ExtendMode::Clamp, ExtendMode modeY = ExtendMode::Clamp, i32_t opacity = 255);
+		
+		/// <summary>
+		/// Changes and activates
+		/// the bitmap brush
+		/// as outline
+		/// </summary>
+		/// <param name="image">the image to use filling the area</param>
+		/// <param name="mode">interpolation mode of the image</param>
+		/// <param name="modeX">extend mode (horizontal)</param>
+		/// <param name="modeY">extend mode (vertical)</param>
+		/// <param name="opacity">opacity of the image</param>
+		void ImageStroke(const Image & image, ImageInterpolationMode mode = ImageInterpolationMode::NearestNeighbor, ExtendMode modeX = ExtendMode::Clamp, ExtendMode modeY = ExtendMode::Clamp, i32_t opacity = 255);
 
 	private:
 
