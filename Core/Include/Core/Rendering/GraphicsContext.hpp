@@ -22,42 +22,83 @@ namespace Core
 	class GraphicsContext {
 	public:
 
-		/* default constructor */
+		/// <summary>
+		/// Default constructor
+		/// </summary>
 		GraphicsContext();
 
-		/* destructor */
+		/// <summary>
+		/// default destructor
+		/// </summary>
 		~GraphicsContext() = default;
 
-		/* initializes the Factories & RenderTarget(s) */
+		/// <summary>
+		/// initializes the factories + rendertarget
+		/// </summary>
+		/// <param name="handle">A handle used to create the RenderTarget</param>
+		/// <returns>True if everythings works as expected</returns>
 		bool Initialize(Windowhandle handle);
 
-		/* destroys the Factories & RenderTarget(s) */
+		/// <summary>
+		/// Destroys the GraphicsContext
+		/// </summary>
 		void Destroy();
 
-		/* tells the RenderTarget to start listening on rendercommands */
+		/// <summary>
+		/// Tells the RenderTarget to prepare
+		/// listening on Render commands
+		/// </summary>
 		void BeginDraw();
 
-		/* tells the RenderTarget to stop listening on rendercommands */
+		/// <summary>
+		/// Tells the RenderTarget stop
+		/// listening on Render commands
+		/// </summary>
 		void EndDraw();
 
-		/* resizes the viewport of the RenderTarget */
+		/// <summary>
+		/// Resizes the viewport.
+		/// The RenderTarget can't be resized
+		/// between BeginDraw() and EndDraw()
+		/// but handles that using the drawing
+		/// attribute.
+		/// </summary>
+		/// <param name="width">the new width</param>
+		/// <param name="height">the new height</param>
 		void ResizeViewport(u32_t width, u32_t height);
 
 	public:
 
-		/* Direct2D Factory (used to create Direct2D content) */
+		/// <summary>
+		/// Direct2D factory
+		/// used to create Direct2D content
+		/// </summary>
 		Microsoft::WRL::ComPtr<ID2D1Factory> mainFactory;
 
-		/* Imaging Factory (used to load images from files) */
+		/// <summary>
+		/// Imaging factory.
+		/// Used to load images from file
+		/// </summary>
 		Microsoft::WRL::ComPtr<IWICImagingFactory> imagingFactory;
 
-		/* DirectWrite Factory (used to create text-objects to display) */
+		/// <summary>
+		/// DirectWrite factory.
+		/// Used to create text-objects to display
+		/// </summary>
 		Microsoft::WRL::ComPtr<IDWriteFactory> writeFactory;
 
-		/* Direct2D WindowRenderTarget (used to draw anything on screen) */
+		/// <summary>
+		/// Direct2D RenderTarget
+		/// Used to draw anything
+		/// on screen
+		/// </summary>
 		Microsoft::WRL::ComPtr<ID2D1HwndRenderTarget> renderTarget;
 		
-		/* we need to keep track of the drawing-state when we're resizing */
+		/// <summary>
+		/// Keeps track of the drawing-state.
+		/// We need this to restore the state
+		/// after Resizing the viewport
+		/// </summary>
 		bool drawing;
 
 	};

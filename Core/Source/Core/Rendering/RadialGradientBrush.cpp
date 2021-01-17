@@ -129,7 +129,7 @@ namespace Core
 
 		HRESULT hr = rt->CreateGradientStopCollection(
 			gradientStops.data(),
-			gradientStops.size(),
+			(UINT32)gradientStops.size(),
 			&this->collection
 		);
 		if (FAILED(hr))

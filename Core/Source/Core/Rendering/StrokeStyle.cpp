@@ -152,7 +152,7 @@ namespace Core
 			HRESULT hr = factory->CreateStrokeStyle(
 				properties,
 				this->dashes.data(),
-				this->dashes.size(),
+				(UINT32)this->dashes.size(),
 				&this->style
 			);
 			if (FAILED(hr))

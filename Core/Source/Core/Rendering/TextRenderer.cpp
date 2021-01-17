@@ -249,7 +249,7 @@ namespace Core
 		const std::wstring string(this->text.begin(), this->text.end());
 		hr = writeFactory->CreateTextLayout(
 			string.c_str(),
-			string.length(),
+			(UINT32)string.length(),
 			format.Get(),
 			this->maxWidth,
 			this->maxHeight,
@@ -262,7 +262,7 @@ namespace Core
 		}
 		
 		this->range.startPosition = 0;
-		this->range.length = string.length();
+		this->range.length = (UINT32)string.length();
 
 		this->layout->SetStrikethrough(this->strikeThrough, this->range);
 		this->layout->SetUnderline(this->underline, this->range);
