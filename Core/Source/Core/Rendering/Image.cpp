@@ -18,7 +18,7 @@ namespace Core
 		width(0),
 		height(0),
 		mode(ImageInterpolationMode::NearestNeighbor),
-		opacity(1.f),
+		opacity(255),
 		impl(std::make_shared<Implementation>())
 	{ }
 

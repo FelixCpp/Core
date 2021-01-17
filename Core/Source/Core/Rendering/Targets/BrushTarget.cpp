@@ -84,7 +84,6 @@ namespace Core
 		state.bitmapFill.SetInterpolationMode(mode);
 		state.bitmapFill.SetExtendModeX(modeX);
 		state.bitmapFill.SetExtendModeY(modeY);
-		state.bitmapFill.SetOpacity(opacity);
 		state.activeFill = state.bitmapFill.GetBrush();
 	}
 
@@ -95,7 +94,6 @@ namespace Core
 		state.bitmapStroke.SetInterpolationMode(mode);
 		state.bitmapStroke.SetExtendModeX(modeX);
 		state.bitmapStroke.SetExtendModeY(modeY);
-		state.bitmapStroke.SetOpacity(opacity);
 		state.activeStroke = state.bitmapStroke.GetBrush();
 	}
 

@@ -70,7 +70,7 @@ namespace Core
 		rt->DrawBitmap(
 			bitmap,
 			destinationRectangle,
-			image.opacity,
+			(FLOAT)image.opacity / 255.f,
 			static_cast<D2D1_BITMAP_INTERPOLATION_MODE>(image.mode),
 			D2D1::RectF(0.f, 0.f, (float)image.width, (float)image.height)
 		);

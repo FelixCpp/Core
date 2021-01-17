@@ -48,8 +48,7 @@ namespace Core
 		image(),
 		interpolationMode(ImageInterpolationMode::NearestNeighbor),
 		modeX(ExtendMode::Clamp),
-		modeY(ExtendMode::Clamp),
-		opacity(255)
+		modeY(ExtendMode::Clamp)
 	{
 	}
 
@@ -62,6 +61,7 @@ namespace Core
 		if (this->impl->brush)
 		{
 			this->impl->SetBitmap(bitmap);
+			this->impl->SetOpacity(image.opacity);
 		} else
 		{
 			if (ID2D1HwndRenderTarget * renderTarget = this->gctx->renderTarget.Get())
@@ -70,7 +70,7 @@ namespace Core
 				this->impl->SetExtendModeX(this->modeX);
 				this->impl->SetExtendModeY(this->modeY);
 				this->impl->SetInterpolationMode(this->interpolationMode);
-				this->impl->SetOpacity(this->opacity);
+				this->impl->SetOpacity(image.opacity);
 			}
 		}
 	}
@@ -132,24 +132,6 @@ namespace Core
 	ExtendMode BitmapBrush::GetExtendModeY() const
 	{
 		return this->modeY;
-	}
-
-	void BitmapBrush::SetOpacity(i32_t opacity)
-	{
-		if (this->opacity != opacity)
-		{
-			this->opacity = opacity;
-
-			if (this->impl->brush)
-			{
-				this->impl->SetOpacity(opacity);
-			}
-		}
-	}
-
-	i32_t BitmapBrush::GetOpacity() const
-	{
-		return this->opacity;
 	}
 
 	ID2D1Brush * BitmapBrush::GetBrush() const

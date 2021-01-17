@@ -29,9 +29,6 @@ namespace Core
 		void SetExtendModeY(ExtendMode modeY);
 		ExtendMode GetExtendModeY() const;
 
-		void SetOpacity(i32_t opacity);
-		i32_t GetOpacity() const;
-
 		ID2D1Brush * GetBrush() const;
 
 	private:
@@ -47,8 +44,6 @@ namespace Core
 		ExtendMode modeX;
 		ExtendMode modeY;
 		
-		i32_t opacity;
-
 	};
 
 }

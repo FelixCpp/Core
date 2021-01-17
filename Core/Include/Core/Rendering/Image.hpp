@@ -48,7 +48,7 @@ namespace Core
 		ImageInterpolationMode mode;
 
 		/* the opacity of the image. This value should have a value between 0.0 and 1.0 */
-		float opacity;
+		i32_t opacity;
 
 	private:
 
