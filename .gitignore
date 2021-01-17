@@ -338,3 +338,4 @@ ASALocalRun/
 
 # BeatPulse healthcheck temp database
 healthchecksdb
+/Core/Include/Core/Rendering/Targets/TextTarget.hpp

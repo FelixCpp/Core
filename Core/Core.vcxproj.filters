@@ -222,6 +222,12 @@
     <ClInclude Include="Include\Core\Rendering\Targets\TransformationTarget.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="Include\Core\Rendering\Targets\BrushTarget.hpp">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Core\Rendering\Targets\TextTarget.hpp">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Core\Maths\Random.cpp">
@@ -342,6 +348,9 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="Source\Core\Rendering\Targets\TransformationTarget.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Core\Rendering\Targets\BrushTarget.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>

@@ -40,6 +40,11 @@ namespace Core
 		return image;
 	}
 
+	void ImageTarget::ImageMode(DrawMode mode)
+	{
+		this->rsm->GetActiveState().imageMode = mode;
+	}
+
 	void ImageTarget::Image(const Core::Image & image, float x, float y)
 	{
 		this->Image(image, x, y, (float)image.width, (float)image.height);

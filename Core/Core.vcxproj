@@ -37,12 +37,14 @@
     <ClInclude Include="Include\Core\Rendering\Helpers.hpp" />
     <ClInclude Include="Include\Core\Maths\Vector3.hpp" />
     <ClInclude Include="Include\Core\Rendering\ImageInterpolationMode.hpp" />
+    <ClInclude Include="Include\Core\Rendering\Targets\BrushTarget.hpp" />
     <ClInclude Include="Include\Core\Rendering\Targets\ImageTarget.hpp" />
     <ClInclude Include="Include\Core\Rendering\RenderStateManager.hpp" />
     <ClInclude Include="Include\Core\Rendering\RenderWindow.hpp" />
     <ClInclude Include="Include\Core\Rendering\Targets\ShapeTarget.hpp" />
     <ClInclude Include="Include\Core\Rendering\Targets\StrokeStyleTarget.hpp" />
     <ClInclude Include="Include\Core\Rendering\Targets\RenderStateTarget.hpp" />
+    <ClInclude Include="Include\Core\Rendering\Targets\TextTarget.hpp" />
     <ClInclude Include="Include\Core\Rendering\Targets\TransformationTarget.hpp" />
     <ClInclude Include="Include\Core\System\Logger.hpp" />
     <ClInclude Include="Include\Core\Window\DisplayMode.hpp" />
@@ -102,6 +104,7 @@
     <ClCompile Include="Source\Core\Audio\WaveFileReader.cpp" />
     <ClCompile Include="Source\Core\Rendering\Color.cpp" />
     <ClCompile Include="Source\Core\Rendering\Helpers.cpp" />
+    <ClCompile Include="Source\Core\Rendering\Targets\BrushTarget.cpp" />
     <ClCompile Include="Source\Core\Rendering\Targets\ImageTarget.cpp" />
     <ClCompile Include="Source\Core\Rendering\RenderStateManager.cpp" />
     <ClCompile Include="Source\Core\Rendering\Targets\RenderTarget.cpp" />

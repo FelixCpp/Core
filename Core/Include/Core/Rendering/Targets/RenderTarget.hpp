@@ -11,6 +11,7 @@
 #include <Core/Rendering/Targets/StrokeStyleTarget.hpp>
 #include <Core/Rendering/Targets/RenderStateTarget.hpp>
 #include <Core/Rendering/Targets/TransformationTarget.hpp>
+#include <Core/Rendering/Targets/BrushTarget.hpp>
 
 #include <vector>
 
@@ -24,7 +25,8 @@ namespace Core
 		public ShapeTarget,
 		public StrokeStyleTarget,
 		public RenderStateTarget,
-		public TransformationTarget
+		public TransformationTarget,
+		public BrushTarget
 	{
 	public:
 
@@ -36,33 +38,6 @@ namespace Core
 
 		/* clears/erases the background */
 		void Background(const Color & color);
-
-		/* changes the strokeweight */
-		void StrokeWeight(float strokeWeight);
-
-		/* deactivates the fill */
-		void NoFill();
-
-		/* deactivates the outline */
-		void NoStroke();
-
-		/* activates & changes the fill to a solid color */
-		void Fill(const Color & color);
-
-		/* activates & changes the outline to a solid color */
-		void Stroke(const Color & color);
-
-		/* activates & changes the fill to a linear gradient */
-		void LinearFill(const std::vector<Color> & colors, float startX, float startY, float endX, float endY);
-		
-		/* activates & changes the outline to a linear gradient */
-		void LinearStroke(const std::vector<Color> & colors, float startX, float startY, float endX, float endY);
-
-		/* activates & changes the fill to a radial gradient */
-		void RadialFill(const std::vector<Color> & colors, float centerX, float centerY, float radiusX, float radiusY, float offsetX, float offsetY);
-		
-		/* activates & changes the outline to a radial gradient */
-		void RadialStroke(const std::vector<Color> & colors, float centerX, float centerY, float radiusX, float radiusY, float offsetX, float offsetY);
 
 		/* changes the rectmode (the way the parameters of rect(...) are used */
 		void RectMode(DrawMode mode);
@@ -88,9 +63,6 @@ namespace Core
 		/* draws a line from x1, y1 to x2, y2. It uses the stroke as fill */
 		void Line(float x1, float y1, float x2, float y2);
 
-		/* changes the image-mode (the way the parameters of image(...) are used) */
-		void ImageMode(DrawMode mode);
-		
 		/* draws text at x, y to the screen */
 		void Text(const std::string & string, float x, float y);
 		

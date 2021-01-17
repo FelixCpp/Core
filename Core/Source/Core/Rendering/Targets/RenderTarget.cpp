@@ -13,6 +13,7 @@ namespace Core
 		StrokeStyleTarget(rsm),
 		RenderStateTarget(rsm),
 		TransformationTarget(rsm),
+		BrushTarget(rsm),
 		gctx(gctx),
 		rsm(rsm)
 	{
@@ -26,73 +27,6 @@ namespace Core
 			(float)color.b / 255.f,
 			1.f
 		));
-	}
-
-	void RenderTarget::StrokeWeight(float strokeWeight)
-	{
-		this->rsm->GetActiveState().strokeWeight = strokeWeight;
-	}
-
-	void RenderTarget::NoFill()
-	{
-		this->rsm->GetActiveState().activeFill = nullptr;
-	}
-
-	void RenderTarget::NoStroke()
-	{
-		this->rsm->GetActiveState().activeStroke = nullptr;
-	}
-
-	void RenderTarget::Fill(const Color & color)
-	{
-		RenderState & state = this->rsm->GetActiveState();
-		state.solidFill.SetColor(color);
-		state.activeFill = state.solidFill.GetBrush();
-	}
-
-	void RenderTarget::Stroke(const Color & color)
-	{
-		RenderState & state = this->rsm->GetActiveState();
-		state.solidStroke.SetColor(color);
-		state.activeStroke = state.solidStroke.GetBrush();
-	}
-
-	void RenderTarget::LinearFill(const std::vector<Color> & colors, float startX, float startY, float endX, float endY)
-	{
-		RenderState & state = this->rsm->GetActiveState();
-		state.linearFill.SetStart(startX, startY);
-		state.linearFill.SetEnd(endX, endY);
-		state.linearFill.SetColors(colors);
-		state.activeFill = state.linearFill.GetBrush();
-	}
-
-	void RenderTarget::LinearStroke(const std::vector<Color> & colors, float startX, float startY, float endX, float endY)
-	{
-		RenderState & state = this->rsm->GetActiveState();
-		state.linearStroke.SetStart(startX, startY);
-		state.linearStroke.SetEnd(endX, endY);
-		state.linearStroke.SetColors(colors);
-		state.activeStroke = state.linearStroke.GetBrush();
-	}
-
-	void RenderTarget::RadialFill(const std::vector<Color> & colors, float centerX, float centerY, float radiusX, float radiusY, float offsetX, float offsetY)
-	{
-		RenderState & state = this->rsm->GetActiveState();
-		state.radialFill.SetCenter(centerX, centerY);
-		state.radialFill.SetRadius(radiusX, radiusY);
-		state.radialFill.SetOffset(offsetX, offsetY);
-		state.radialFill.SetColors(colors);
-		state.activeFill = state.radialFill.GetBrush();
-	}
-
-	void RenderTarget::RadialStroke(const std::vector<Color> & colors, float centerX, float centerY, float radiusX, float radiusY, float offsetX, float offsetY)
-	{
-		RenderState & state = this->rsm->GetActiveState();
-		state.radialStroke.SetCenter(centerX, centerY);
-		state.radialStroke.SetRadius(radiusX, radiusY);
-		state.radialStroke.SetOffset(offsetX, offsetY);
-		state.radialStroke.SetColors(colors);
-		state.activeStroke = state.radialStroke.GetBrush();
 	}
 
 	void RenderTarget::RectMode(DrawMode mode)
@@ -197,11 +131,6 @@ namespace Core
 		{
 			rt->DrawLine(D2D1::Point2F(x1, y1), D2D1::Point2F(x2, y2), stroke, state.strokeWeight, state.strokeStyle.GetStrokeStyle());
 		}
-	}
-
-	void RenderTarget::ImageMode(DrawMode mode)
-	{
-		this->rsm->GetActiveState().imageMode = mode;
 	}
 
 	void RenderTarget::Text(const std::string & string, float x, float y)

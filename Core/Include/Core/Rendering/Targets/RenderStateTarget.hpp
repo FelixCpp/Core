@@ -14,7 +14,7 @@ namespace Core
 	public:
 
 		/// <summary>
-		/// constructor which passes the GraphicsContext & RenderStateManager
+		/// constructor which passes the RenderStateManager
 		/// to its member variables.
 		/// 
 		/// Its needed to get access to the Shape attribute

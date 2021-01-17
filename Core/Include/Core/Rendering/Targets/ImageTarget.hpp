@@ -31,10 +31,27 @@ namespace Core
 		/* loads an image from the rendertarget (screen) */
 		Image LoadImageFromScreen(i32_t x, i32_t y, i32_t width, i32_t height);
 
-		/* Draws an image at x, y with the images width and height as size */
+		/// <summary>
+		/// Changes the drawmode of
+		/// images for the current RenderState
+		/// </summary>
+		/// <param name="mode">the new draw-mode</param>
+		void ImageMode(DrawMode mode);
+
+		/// <summary>
+		/// Draws an image at x, y with the images width and height as size
+		/// </summary>
+		/// <param name="image">the image to draw</param>
+		/// <param name="x">position x in pixel space</param>
+		/// <param name="y">position y in pixel space</param>
 		void Image(const Core::Image & image, float x, float y);
 
-		/* Draws an image at x, y, with the specified width and height as size */
+		/// <summary>
+		/// Draws an image at x, y with the specified width and height as size
+		/// </summary>
+		/// <param name="image">the image to draw</param>
+		/// <param name="x">position x in pixel space</param>
+		/// <param name="y">position y in pixel space</param>
 		void Image(const Core::Image & image, float x, float y, float width, float height);
 
 	private:
