@@ -23,7 +23,7 @@ namespace Core
 	/// everything based around
 	/// text
 	/// </summary>
-	class TextTarget {
+	class TextRenderTarget {
 	public:
 
 		/// <summary>
@@ -35,12 +35,12 @@ namespace Core
 		/// </summary>
 		/// <param name="gctx">the GraphicsContext which is needed to draw the text</param>
 		/// <param name="rsm">the RenderStateManager which is needed to get access to the current RenderState which holds the shape object</param>
-		explicit TextTarget(GraphicsContext *& gctx, RenderStateManager *& rsm);
+		explicit TextRenderTarget(GraphicsContext *& gctx, RenderStateManager *& rsm);
 
 		/// <summary>
 		/// A virtual destructor
 		/// </summary>
-		virtual ~TextTarget() = default;
+		virtual ~TextRenderTarget() = default;
 
 		/// <summary>
 		/// Draws the text to the screen

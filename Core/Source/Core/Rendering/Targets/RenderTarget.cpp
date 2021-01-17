@@ -8,13 +8,13 @@ namespace Core
 {
 
 	RenderTarget::RenderTarget(GraphicsContext *& gctx, RenderStateManager *& rsm) :
-		ImageTarget(gctx, rsm),
-		ShapeTarget(gctx, rsm),
+		ImageRenderTarget(gctx, rsm),
+		ShapeRenderTarget(gctx, rsm),
 		StrokeStyleTarget(rsm),
 		RenderStateTarget(rsm),
 		TransformationTarget(rsm),
 		BrushTarget(rsm),
-		TextTarget(gctx, rsm),
+		TextRenderTarget(gctx, rsm),
 		PrimitiveRenderTarget(gctx, rsm),
 		gctx(gctx),
 		rsm(rsm)

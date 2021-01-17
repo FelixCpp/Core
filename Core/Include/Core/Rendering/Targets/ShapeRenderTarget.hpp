@@ -19,7 +19,7 @@ namespace Core
 	/// everything based around
 	/// geometries/shapes
 	/// </summary>
-	class ShapeTarget {
+	class ShapeRenderTarget {
 	public:
 
 		/// <summary>
@@ -31,12 +31,12 @@ namespace Core
 		/// </summary>
 		/// <param name="gctx">the GraphicsContext which is needed to draw the shape</param>
 		/// <param name="rsm">the RenderStateManager which is needed to get access to the current RenderState which holds the shape object</param>
-		explicit ShapeTarget(GraphicsContext *& gctx, RenderStateManager *& rsm);
+		explicit ShapeRenderTarget(GraphicsContext *& gctx, RenderStateManager *& rsm);
 
 		/// <summary>
 		/// A virtual destructor
 		/// </summary>
-		virtual ~ShapeTarget() = default;
+		virtual ~ShapeRenderTarget() = default;
 
 		/// <summary>
 		/// Tells the shape to prepare getting

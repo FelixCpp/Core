@@ -1,4 +1,4 @@
-#include <Core/Rendering/Targets/ImageTarget.hpp>
+#include <Core/Rendering/Targets/ImageRenderTarget.hpp>
 
 #include <Core/Rendering/GraphicsContext.hpp>
 #include <Core/Rendering/RenderStateManager.hpp>
@@ -6,51 +6,51 @@
 namespace Core
 {
 
-	ImageTarget::ImageTarget(GraphicsContext *& gctx, RenderStateManager *& rsm) :
+	ImageRenderTarget::ImageRenderTarget(GraphicsContext *& gctx, RenderStateManager *& rsm) :
 		gctx(gctx),
 		rsm(rsm)
 	{
 	}
 
-	Image ImageTarget::CreateImage(u32_t width, u32_t height, const Color & color)
+	Image ImageRenderTarget::CreateImage(u32_t width, u32_t height, const Color & color)
 	{
 		Core::Image image;
 		image.Create(width, height, color, this->gctx);
 		return image;
 	}
 
-	Image ImageTarget::LoadImageFromMemory(u32_t width, u32_t height, const Color * colors)
+	Image ImageRenderTarget::LoadImageFromMemory(u32_t width, u32_t height, const Color * colors)
 	{
 		Core::Image image;
 		image.LoadFromMemory(width, height, colors, this->gctx);
 		return image;
 	}
 
-	Image ImageTarget::LoadImageFromFile(const std::string & filepath)
+	Image ImageRenderTarget::LoadImageFromFile(const std::string & filepath)
 	{
 		Core::Image image;
 		image.LoadFromFile(filepath, this->gctx);
 		return image;
 	}
 
-	Image ImageTarget::LoadImageFromScreen(i32_t x, i32_t y, i32_t width, i32_t height)
+	Image ImageRenderTarget::LoadImageFromScreen(i32_t x, i32_t y, i32_t width, i32_t height)
 	{
 		Core::Image image;
 		image.LoadFromScreen(x, y, width, height, this->gctx);
 		return image;
 	}
 
-	void ImageTarget::ImageMode(DrawMode mode)
+	void ImageRenderTarget::ImageMode(DrawMode mode)
 	{
 		this->rsm->GetActiveState().imageMode = mode;
 	}
 
-	void ImageTarget::Image(const Core::Image & image, float x, float y)
+	void ImageRenderTarget::Image(const Core::Image & image, float x, float y)
 	{
 		this->Image(image, x, y, (float)image.width, (float)image.height);
 	}
 
-	void ImageTarget::Image(const Core::Image & image, float x, float y, float width, float height)
+	void ImageRenderTarget::Image(const Core::Image & image, float x, float y, float width, float height)
 	{
 		ID2D1HwndRenderTarget * rt = this->gctx->renderTarget.Get();
 		if (!rt) return;

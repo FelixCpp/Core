@@ -207,13 +207,7 @@
     <ClInclude Include="Include\Core\Rendering\Targets\RenderStateTarget.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="Include\Core\Rendering\Targets\ImageTarget.hpp">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="Include\Core\Rendering\Targets\RenderTarget.hpp">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\Core\Rendering\Targets\ShapeTarget.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="Include\Core\Rendering\Targets\StrokeStyleTarget.hpp">
@@ -225,10 +219,16 @@
     <ClInclude Include="Include\Core\Rendering\Targets\BrushTarget.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="Include\Core\Rendering\Targets\TextTarget.hpp">
+    <ClInclude Include="Include\Core\Rendering\Targets\PrimitiveRenderTarget.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="Include\Core\Rendering\Targets\PrimitiveRenderTarget.hpp">
+    <ClInclude Include="Include\Core\Rendering\Targets\ImageRenderTarget.hpp">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Core\Rendering\Targets\TextRenderTarget.hpp">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Core\Rendering\Targets\ShapeRenderTarget.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>
@@ -338,13 +338,7 @@
     <ClCompile Include="Source\Core\Rendering\Targets\RenderStateTarget.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Core\Rendering\Targets\ImageTarget.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Core\Rendering\Targets\RenderTarget.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Core\Rendering\Targets\ShapeTarget.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="Source\Core\Rendering\Targets\StrokeStyleTarget.cpp">
@@ -356,10 +350,16 @@
     <ClCompile Include="Source\Core\Rendering\Targets\BrushTarget.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Core\Rendering\Targets\TextTarget.cpp">
+    <ClCompile Include="Source\Core\Rendering\Targets\PrimitiveRenderTarget.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Core\Rendering\Targets\PrimitiveRenderTarget.cpp">
+    <ClCompile Include="Source\Core\Rendering\Targets\ImageRenderTarget.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Core\Rendering\Targets\TextRenderTarget.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Core\Rendering\Targets\ShapeRenderTarget.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>

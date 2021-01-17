@@ -10,16 +10,16 @@ namespace Core
 	class RenderStateManager;
 	class GraphicsContext;
 
-	class ImageTarget {
+	class ImageRenderTarget {
 	public:
 
 		/* assigns the member variable to the parameter */
-		explicit ImageTarget(GraphicsContext *& gctx, RenderStateManager *& rsm);
+		explicit ImageRenderTarget(GraphicsContext *& gctx, RenderStateManager *& rsm);
 
 		/// <summary>
 		/// virtual destructor
 		/// </summary>
-		virtual ~ImageTarget() = default;
+		virtual ~ImageRenderTarget() = default;
 
 		/* creates an image with the passed dimensions and color */
 		Image CreateImage(u32_t width, u32_t height, const Color & color = Color::White);

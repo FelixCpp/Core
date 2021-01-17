@@ -1,4 +1,4 @@
-#include <Core/Rendering/Targets/TextTarget.hpp>
+#include <Core/Rendering/Targets/TextRenderTarget.hpp>
 #include <Core/Rendering/RenderStateManager.hpp>
 #include <Core/Rendering/GraphicsContext.hpp>
 #include <Core/Rendering/RenderState.hpp>
@@ -6,24 +6,24 @@
 namespace Core
 {
 
-	TextTarget::TextTarget(GraphicsContext *& gctx, RenderStateManager *& rsm) :
+	TextRenderTarget::TextRenderTarget(GraphicsContext *& gctx, RenderStateManager *& rsm) :
 		gctx(gctx),
 		rsm(rsm)
 	{ }
 
-	void TextTarget::Text(const std::string & string, float x, float y)
+	void TextRenderTarget::Text(const std::string & string, float x, float y)
 	{
 		const FVector2 size = this->GetTextSize(string);
 		this->Text(string, x, y, size.width, size.height);
 	}
 
-	void TextTarget::Text(const std::string & string, float x, float y, float width)
+	void TextRenderTarget::Text(const std::string & string, float x, float y, float width)
 	{
 		const FVector2 size = this->GetTextSize(string);
 		this->Text(string, x, y, width, size.height);
 	}
 
-	void TextTarget::Text(const std::string & string, float x, float y, float width, float height)
+	void TextRenderTarget::Text(const std::string & string, float x, float y, float width, float height)
 	{
 		RenderState & state = this->GetState();
 		ID2D1HwndRenderTarget * rt = this->gctx->renderTarget.Get();
@@ -46,68 +46,68 @@ namespace Core
 		}
 	}
 
-	void TextTarget::TextSize(float textSize)
+	void TextRenderTarget::TextSize(float textSize)
 	{
 		this->GetState().textRenderer.SetTextSize(textSize);
 	}
 
-	void TextTarget::TextUnderline(bool active)
+	void TextRenderTarget::TextUnderline(bool active)
 	{
 		this->GetState().textRenderer.SetUnderline(active);
 	}
 
-	void TextTarget::TextStrikeThrough(bool active)
+	void TextRenderTarget::TextStrikeThrough(bool active)
 	{
 		this->GetState().textRenderer.SetStrikeThrough(active);
 	}
 
-	void TextTarget::TextFont(const std::string & font)
+	void TextRenderTarget::TextFont(const std::string & font)
 	{
 		this->GetState().textRenderer.SetFont(font);
 	}
 
-	void TextTarget::TextFontWeight(FontWeight fontWeight)
+	void TextRenderTarget::TextFontWeight(FontWeight fontWeight)
 	{
 		this->GetState().textRenderer.SetFontWeight(fontWeight);
 	}
 
-	void TextTarget::TextFontStyle(FontStyle fontStyle)
+	void TextRenderTarget::TextFontStyle(FontStyle fontStyle)
 	{
 		this->GetState().textRenderer.SetFontStyle(fontStyle);
 	}
 
-	void TextTarget::TextFontStretch(FontStretch fontStretch)
+	void TextRenderTarget::TextFontStretch(FontStretch fontStretch)
 	{
 		this->GetState().textRenderer.SetFontStretch(fontStretch);
 	}
 
-	void TextTarget::TextWordWrapping(WordWrapping wordWrapping)
+	void TextRenderTarget::TextWordWrapping(WordWrapping wordWrapping)
 	{
 		this->GetState().textRenderer.SetWordWrapping(wordWrapping);
 	}
 
-	void TextTarget::TextAlignment(Core::TextAlignment textAlignment)
+	void TextRenderTarget::TextAlignment(Core::TextAlignment textAlignment)
 	{
 		this->GetState().textRenderer.SetTextAlignment(textAlignment);
 	}
 
-	void TextTarget::TextParagraphAlignment(ParagraphAlignment paragraphAlignment)
+	void TextRenderTarget::TextParagraphAlignment(ParagraphAlignment paragraphAlignment)
 	{
 		this->GetState().textRenderer.SetParagraphAlignment(paragraphAlignment);
 	}
 
-	FVector2 TextTarget::GetTextSize()
+	FVector2 TextRenderTarget::GetTextSize()
 	{
 		return this->GetState().textRenderer.GetSize();
 	}
 
-	FVector2 TextTarget::GetTextSize(const std::string & content)
+	FVector2 TextRenderTarget::GetTextSize(const std::string & content)
 	{
 		this->GetState().textRenderer.SetText(content);
 		return this->GetTextSize();
 	}
 
-	RenderState & TextTarget::GetState()
+	RenderState & TextRenderTarget::GetState()
 	{
 		return this->rsm->GetActiveState();
 	}
