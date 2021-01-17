@@ -18,7 +18,7 @@ namespace Core
 		/// <summary>
 		/// Linear filtering.
 		/// </summary>
-		Linear,
+		Linear
 	};
 
 }

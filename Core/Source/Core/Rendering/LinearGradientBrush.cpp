@@ -111,7 +111,7 @@ namespace Core
 		);
 		if (FAILED(hr))
 		{
-			CORE_ERROR("CreateGradientStopCollection");
+			CORE_ERROR("Failed to create a GradientStopCollection");
 			return;
 		}
 
@@ -125,7 +125,7 @@ namespace Core
 		);
 		if (FAILED(hr))
 		{
-			CORE_ERROR("CreateLinearGradientBrush");
+			CORE_ERROR("Failed to create a LinearGradientBrush");
 			return;
 		}
 	}
