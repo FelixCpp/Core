@@ -7,7 +7,7 @@ See [Repos wiki](https://github.com/FelixCpp/Core/wiki)
 
 ## General informations about Core
 
-This  C++ Project is heavily inspired by Processing and p5.js.
+This  C++ Project is heavily inspired by [Processing](https://github.com/processing/processing) and [p5.js](https://github.com/processing/p5.js).
 
 It provides several functionalities in these modules:
 
@@ -23,4 +23,4 @@ Core contains fast, richly featured drawing routines and algorithms to
 * Prototype and experiment
 * Educate
 
-Core is actively maintained and develoed.
+This repository is actively maintained and develoed.
