@@ -29,6 +29,11 @@ namespace Core
 		explicit StrokeStyleTarget(RenderStateManager *& rsm);
 
 		/// <summary>
+		/// A virtual destructor
+		/// </summary>
+		virtual ~StrokeStyleTarget() = default;
+
+		/// <summary>
 		/// changes the style the line
 		/// starts
 		/// </summary>

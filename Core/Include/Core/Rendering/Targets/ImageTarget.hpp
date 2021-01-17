@@ -14,6 +14,11 @@ namespace Core
 		/* assigns the member variable to the parameter */
 		explicit ImageTarget(GraphicsContext *& gctx, RenderStateManager *& rsm);
 
+		/// <summary>
+		/// virtual destructor
+		/// </summary>
+		virtual ~ImageTarget() = default;
+
 		/* creates an image with the passed dimensions and color */
 		Image CreateImage(u32_t width, u32_t height, const Color & color = Color::White);
 

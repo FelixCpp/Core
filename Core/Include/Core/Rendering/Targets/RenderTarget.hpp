@@ -10,6 +10,7 @@
 #include <Core/Rendering/Targets/ShapeTarget.hpp>
 #include <Core/Rendering/Targets/StrokeStyleTarget.hpp>
 #include <Core/Rendering/Targets/RenderStateTarget.hpp>
+#include <Core/Rendering/Targets/TransformationTarget.hpp>
 
 #include <vector>
 
@@ -22,7 +23,8 @@ namespace Core
 		public ImageTarget,
 		public ShapeTarget,
 		public StrokeStyleTarget,
-		public RenderStateTarget
+		public RenderStateTarget,
+		public TransformationTarget
 	{
 	public:
 
@@ -31,24 +33,6 @@ namespace Core
 		
 		/* virtual destructor */
 		virtual ~RenderTarget() = default;
-
-		/* resets the matrix to its identity value */
-		void ResetMatrix();
-
-		/* pushes another matrix. The new matrix advances by the current matrix (they build up on each other) */
-		void PushMatrix();
-		
-		/* pops the current matrix from the stack and activates the matrix below */
-		void PopMatrix();
-
-		/* translates the to x, y location in screen coordinates (0, 0, width, height) */
-		void Translate(float x, float y);
-
-		/* rotates by the angle in degrees. */
-		void Rotate(float degrees);
-
-		/* scales by the given factors */
-		void Scale(float factorX, float factorY);
 
 		/* clears/erases the background */
 		void Background(const Color & color);

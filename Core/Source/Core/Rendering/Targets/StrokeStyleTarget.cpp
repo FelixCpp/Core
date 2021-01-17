@@ -1,4 +1,4 @@
-#include <Core/Rendering/StrokeStyleTarget.hpp>
+#include <Core/Rendering/Targets/StrokeStyleTarget.hpp>
 #include <Core/Rendering/RenderStateManager.hpp>
 #include <Core/Rendering/StrokeStyle.hpp>
 

@@ -1,4 +1,4 @@
-#include <Core/Rendering/RenderTarget.hpp>
+#include <Core/Rendering/Targets/RenderTarget.hpp>
 #include <Core/Rendering/GraphicsContext.hpp>
 #include <Core/Rendering/RenderStateManager.hpp>
 
@@ -10,43 +10,12 @@ namespace Core
 	RenderTarget::RenderTarget(GraphicsContext *& gctx, RenderStateManager *& rsm) :
 		ImageTarget(gctx, rsm),
 		ShapeTarget(gctx, rsm),
+		StrokeStyleTarget(rsm),
+		RenderStateTarget(rsm),
+		TransformationTarget(rsm),
 		gctx(gctx),
 		rsm(rsm)
 	{
-	}
-
-	void RenderTarget::ResetMatrix()
-	{
-		D2D1::Matrix3x2F & matrix = this->rsm->GetActiveState().GetActiveMatrix();
-		this->rsm->GetActiveState().SetActiveMatrix(D2D1::Matrix3x2F::Identity());
-	}
-
-	void RenderTarget::PushMatrix()
-	{
-		this->rsm->GetActiveState().PushMatrix();
-	}
-
-	void RenderTarget::PopMatrix()
-	{
-		this->rsm->GetActiveState().PopMatrix();
-	}
-
-	void RenderTarget::Translate(float x, float y)
-	{
-		const D2D1::Matrix3x2F & matrix = this->rsm->GetActiveState().GetActiveMatrix();
-		this->rsm->GetActiveState().SetActiveMatrix(matrix * D2D1::Matrix3x2F::Translation(x, y));	
-	}
-
-	void RenderTarget::Rotate(float degrees)
-	{
-		const D2D1::Matrix3x2F & matrix = this->rsm->GetActiveState().GetActiveMatrix();
-		this->rsm->GetActiveState().SetActiveMatrix(matrix * D2D1::Matrix3x2F::Rotation(degrees, D2D1::Point2F(matrix.dx, matrix.dy)));
-	}
-
-	void RenderTarget::Scale(float factorX, float factorY)
-	{
-		const D2D1::Matrix3x2F & matrix = this->rsm->GetActiveState().GetActiveMatrix();
-		this->rsm->GetActiveState().SetActiveMatrix(matrix * D2D1::Matrix3x2F::Scale(factorX, factorY, D2D1::Point2F(matrix.dx, matrix.dy)));
 	}
 
 	void RenderTarget::Background(const Color & color)

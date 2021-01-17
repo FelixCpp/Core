@@ -1,4 +1,4 @@
-#include <Core/Rendering/ShapeTarget.hpp>
+#include <Core/Rendering/Targets/ShapeTarget.hpp>
 #include <Core/Rendering/GraphicsContext.hpp>
 #include <Core/Rendering/RenderStateManager.hpp>
 #include <Core/Rendering/Shape.hpp>

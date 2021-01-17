@@ -1,4 +1,4 @@
-#include <Core/Rendering/ImageTarget.hpp>
+#include <Core/Rendering/Targets/ImageTarget.hpp>
 
 #include <Core/Rendering/GraphicsContext.hpp>
 #include <Core/Rendering/RenderStateManager.hpp>
