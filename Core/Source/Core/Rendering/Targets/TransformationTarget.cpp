@@ -43,6 +43,12 @@ namespace Core
 		this->GetState().SetActiveMatrix(matrix * D2D1::Matrix3x2F::Scale(factorX, factorY, D2D1::Point2F(matrix.dx, matrix.dy)));
 	}
 
+	void TransformationTarget::Skew(float angleX, float angleY)
+	{
+		D2D1::Matrix3x2F & matrix = this->GetState().GetActiveMatrix();
+		this->GetState().SetActiveMatrix(matrix * D2D1::Matrix3x2F::Skew(angleX, angleY, D2D1::Point2F(matrix.dx, matrix.dy)));
+	}
+
 	RenderState & TransformationTarget::GetState()
 	{
 		return this->rsm->GetActiveState();

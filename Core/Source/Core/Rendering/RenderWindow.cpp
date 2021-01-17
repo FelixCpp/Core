@@ -9,7 +9,7 @@ namespace Core
 {
 
 	RenderWindow::RenderWindow(GraphicsContext *& gctx, RenderStateManager *& rsm) :
-		Window(gctx),
+		Window(),
 		RenderTarget(gctx, rsm),
 		mouseInsideWindow(false),
 		resizing(false),
@@ -148,7 +148,7 @@ namespace Core
 						}
 
 						/* grab the cursor after resizing */
-						window->SetMouseCursorGrabbed(window->IsMouseCursorGrabbed());
+						window->GrabCursor(window->mouseCursorGrabbed);
 					}
 				}
 			} break;
@@ -157,7 +157,7 @@ namespace Core
 			case WM_ENTERSIZEMOVE:
 			{
 				window->resizing = true;
-				window->SetMouseCursorGrabbed(false);
+				window->GrabCursor(false);
 			} break;
 
 			// Stop resizing
@@ -184,7 +184,7 @@ namespace Core
 				}
 
 				// Restore/update cursor grabbing
-				window->SetMouseCursorGrabbed(window->IsMouseCursorGrabbed());
+				window->GrabCursor(window->mouseCursorGrabbed);
 			} break;
 
 			case WM_MOVE:
@@ -311,8 +311,8 @@ namespace Core
 			case WM_RBUTTONUP: window->OnMouseReleased(Mouse::Button::Right); break;
 			case WM_MBUTTONUP: window->OnMouseReleased(Mouse::Button::Middle); break;
 			case WM_XBUTTONUP: window->OnMouseReleased(GET_XBUTTON_WPARAM(wParam) == XBUTTON1 ? Mouse::Button::XButton1 : Mouse::Button::XButton2); break;
-			case WM_SETFOCUS: window->SetMouseCursorGrabbed(window->IsMouseCursorGrabbed()); window->OnFocusGained(); break;
-			case WM_KILLFOCUS: window->SetMouseCursorGrabbed(false); window->OnFocusLost(); break;
+			case WM_SETFOCUS: window->GrabCursor(window->mouseCursorGrabbed); window->OnFocusGained(); break;
+			case WM_KILLFOCUS: window->GrabCursor(false); window->OnFocusLost(); break;
 
 			default: return DefWindowProcA(handle, msg, wParam, lParam);
 		}

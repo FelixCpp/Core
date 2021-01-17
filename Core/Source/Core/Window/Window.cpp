@@ -11,10 +11,10 @@
 namespace Core
 {
 
-	const i32_t Window::displayWidth = DisplayMode::GetDesktopMode().width;
-	const i32_t Window::displayHeight = DisplayMode::GetDesktopMode().height;
+	const i32_t Window::DisplayWidth = DisplayMode::GetDesktopMode().width;
+	const i32_t Window::DisplayHeight = DisplayMode::GetDesktopMode().height;
 
-	Window::Window(GraphicsContext *& gctx) :
+	Window::Window() :
 		width(0),
 		height(0),
 		pmouseX(0),
@@ -28,15 +28,14 @@ namespace Core
 		windowHandle(nullptr),
 		cursorHandle(LoadCursor(nullptr, IDC_ARROW)),
 		iconHandle(LoadIcon(nullptr, IDI_APPLICATION)),
-		mouseCursorVisible(true),
 		mouseCursorGrabbed(false),
+		mouseCursorVisible(true),
 		fullscreen(false),
 		fpsLimit(Duration::FromSeconds(0.f)),
 		delayWatch(Stopwatch::StartNew()),
 		fpsWatch(Stopwatch::StartNew()),
 		calcWatch(Stopwatch::StartNew()),
-		internalFrameCount(0),
-		gctx(gctx)
+		internalFrameCount(0)
 	{
 	}
 
@@ -83,6 +82,7 @@ namespace Core
 		/* grab the cursor */
 		this->SetMouseCursorGrabbed(true);
 		this->fullscreen = true;
+
 		return true;
 	}
 
@@ -113,13 +113,13 @@ namespace Core
 		/* show the window as a restored one */
 		ShowWindow(this->windowHandle, SW_RESTORE);
 
-		/* release the cursor from being grabbed */
-		this->SetMouseCursorGrabbed(false);
-
 		SendMessageA(this->windowHandle, WM_SETICON, ICON_SMALL, (LPARAM)this->iconHandle);
 		SendMessageA(this->windowHandle, WM_SETICON, ICON_BIG, (LPARAM)this->iconHandle);
 
+		/* release the cursor from being grabbed */
+		this->GrabCursor(false);
 		this->fullscreen = false;
+
 		return true;
 	}
 

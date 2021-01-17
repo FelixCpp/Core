@@ -19,27 +19,25 @@
 namespace Core
 {
 
-	class GraphicsContext;
-
 	class Window {
 	public:
 
 		/* the monitors width */
-		static const i32_t displayWidth;
+		static const i32_t DisplayWidth;
 		
 		/* the monitors height */
-		static const i32_t displayHeight;
+		static const i32_t DisplayHeight;
 
 	public:
 
 		/* the default constructor */
-		explicit Window(GraphicsContext *& gctx);
+		Window();
 
 		/* a virtual destructor because this class should be a baseclass. */
 		virtual ~Window() = default;
 
 		/* enters the fullscreen-mode with the specified properties of the displayMode parameter */
-		bool EnterFullscreen(const DisplayMode & displayMode);
+		bool EnterFullscreen(const DisplayMode & displayMode = DisplayMode::GetDesktopMode());
 
 		/* exits the fullscreen-mode */
 		bool ExitFullscreen(u32_t width, u32_t height);
@@ -189,10 +187,10 @@ namespace Core
 		/* calls the calculateFps and limitFps function */
 		void HandleFps();
 
-	private:
-
 		/* grabs the mouse cursor based on the parameter */
 		void GrabCursor(bool grabbed);
+
+	private:
 
 		/* calculates the fps */
 		void CalculateFps();
@@ -244,13 +242,13 @@ namespace Core
 		/* holds the handle for the window-icon */
 		Resourcehandle iconHandle;
 
+		/* indicates wether the mouse cursor is grabbed inside the windows boundary or not */
+		bool mouseCursorGrabbed;
+
 	private:
 
 		/* indicates the state of the cursors visibility */
 		bool mouseCursorVisible;
-
-		/* indicates wether the mouse cursor is grabbed inside the windows boundary or not */
-		bool mouseCursorGrabbed;
 
 		/* indicates wether the window is in fullscreen-mode or not */
 		bool fullscreen;
@@ -271,10 +269,6 @@ namespace Core
 
 		/* frameCount which gets increased everytime when handleFps() is called */
 		u32_t internalFrameCount;
-
-	private:
-
-		GraphicsContext *& gctx;
 
 	};
 

@@ -77,6 +77,13 @@ namespace Core
 		/// <param name="factorY">height factor</param>
 		void Scale(float factorX, float factorY);
 
+		/// <summary>
+		/// Shears the matrix by given angles
+		/// </summary>
+		/// <param name="angleX">angle for left & right side in degrees</param>
+		/// <param name="angleY">angle for top & bottom side in degrees</param>
+		void Skew(float angleX, float angleY);
+
 	private:
 
 		/// <summary>

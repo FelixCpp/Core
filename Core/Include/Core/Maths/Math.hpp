@@ -86,7 +86,7 @@ namespace Core
 			const T min = std::fmin(ostart, ostop);
 			const T max = std::fmax(ostart, ostop);
 
-			return constrain(output, min, max);
+			return MathImpl::Constrain(output, min, max);
 		}
 
 		/* returns the radians converted in degrees */
