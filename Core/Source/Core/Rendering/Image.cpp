@@ -67,9 +67,9 @@ namespace Core
 			return false;
 		}
 
+		// Copy the values
 		this->width = width;
 		this->height = height;
-		this->colors.resize(width * height);
 		this->colors.assign(colors, colors + width * height);
 
 		return true;
@@ -265,8 +265,6 @@ namespace Core
 			// Copy the values
 			this->width = width;
 			this->height = height;
-
-			this->colors.resize(width * height);
 			this->colors.assign(colors, colors + width * height);
 		} else
 		{
