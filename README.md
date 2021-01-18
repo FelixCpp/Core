@@ -190,7 +190,7 @@ maybe this?
 virtual void Draw() override
 {
     Background(Color::Black);
-	Image(image, 0, 0, image.width / 2, image.height / 2);
+    Image(image, 0, 0, image.width / 2, image.height / 2);
 }
 ...
 ```
@@ -202,7 +202,7 @@ or this?
 virtual void Draw() override
 {
     Background(Color::Black);
-	Image(image, 0, 0, mouseX, mouseY);
+    Image(image, 0, 0, mouseX, mouseY);
 }
 ...
 ```
