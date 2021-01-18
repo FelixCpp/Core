@@ -4,6 +4,7 @@
 /// Core
 /// </summary>
 #include <Core/Rendering/Image.hpp> // Core::Image
+#include <Core/Rendering/Texture.hpp> // Core::Texture
 #include <Core/Rendering/ImageSource.hpp> // Core::ImageSource
 #include <Core/Rendering/DrawMode.hpp> // Core::DrawMode
 
@@ -80,6 +81,30 @@ namespace Core
 		Image LoadImageFromScreen(i32_t x, i32_t y, i32_t width, i32_t height);
 
 		/// <summary>
+		/// Creates a flat texture based on
+		/// the parameters
+		/// </summary>
+		/// <param name="width">width of the image in pixels</param>
+		/// <param name="height">height of the image in pixels</param>
+		/// <param name="color">a flat color copied by each pixel</param>
+		Texture CreateTexture(u32_t width, u32_t height, const Color & color = Color::White);
+
+		/// <summary>
+		/// Creates an texture based on
+		/// the parameters
+		/// </summary>
+		/// <param name="width">the width of the image in pixels</param>
+		/// <param name="height">the height of the image in pixels</param>
+		/// <param name="colors">an array[width * height] holding a color value for each pixel</param>
+		Texture LoadTextureFromMemory(u32_t width, u32_t height, const Color * colors);
+
+		/// <summary>
+		/// Loads an texture from the filepath
+		/// </summary>
+		/// <param name="filepath">a path starting from your root directory</param>
+		Texture LoadTextureFromFile(const std::string & filepath);
+
+		/// <summary>
 		/// Changes the drawmode of
 		/// images for the current RenderState
 		/// </summary>
@@ -100,9 +125,27 @@ namespace Core
 		/// <param name="image">the image to draw</param>
 		/// <param name="x">position x in pixel space</param>
 		/// <param name="y">position y in pixel space</param>
-		/// <param name="width">width of the image in pixels. The content of the image gets stretched to fit everything from x to x + width</param>
-		/// <param name="height">height of the image in pixels. The content of the image gets stretched to fit everything from y to y + height</param>
+		/// <param name="width">width of the image in pixels. The content gets stretched to fit everything from x to x + width</param>
+		/// <param name="height">height of the image in pixels. The content gets stretched to fit everything from y to y + height</param>
 		void Image(const Core::Image & image, float x, float y, float width, float height);
+
+		/// <summary>
+		/// Draws a texture at x, y with the images width and height as size
+		/// </summary>
+		/// <param name="image">the texture to draw</param>
+		/// <param name="x">position x in pixel space</param>
+		/// <param name="y">position y in pixel space</param>
+		void Texture(const Core::Texture & texture, float x, float y);
+
+		/// <summary>
+		/// Draws a texture at x, y with the specified width and height as size
+		/// </summary>
+		/// <param name="image">the texture to draw</param>
+		/// <param name="x">position x in pixel space</param>
+		/// <param name="y">position y in pixel space</param>
+		/// <param name="width">width of the texture in pixels. The content gets stretched to fit everything from x to x + width</param>
+		/// <param name="height">height of the texture in pixels. The content gets stretched to fit everything from y to y + height</param>
+		void Texture(const Core::Texture & texture, float x, float y, float width, float height);
 
 	private:
 

@@ -380,5 +380,8 @@
     <ClCompile Include="Source\Core\Rendering\ImageSource.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Core\Rendering\Texture.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

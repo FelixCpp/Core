@@ -133,6 +133,7 @@
     <ClCompile Include="Source\Core\Rendering\TextRenderer.cpp" />
     <ClCompile Include="Source\Core\Maths\Matrix3x3.cpp" />
     <ClCompile Include="Source\Core\Maths\Random.cpp" />
+    <ClCompile Include="Source\Core\Rendering\Texture.cpp" />
     <ClCompile Include="Source\Core\System\Logger.cpp" />
     <ClCompile Include="Source\Core\System\Stopwatch.cpp" />
     <ClCompile Include="Source\Core\System\Timer.cpp" />

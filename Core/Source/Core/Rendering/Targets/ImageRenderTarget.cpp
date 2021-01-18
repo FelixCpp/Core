@@ -47,6 +47,27 @@ namespace Core
 		return image;
 	}
 
+	Texture ImageRenderTarget::CreateTexture(u32_t width, u32_t height, const Color & color)
+	{
+		Core::Texture texture;
+		texture.LoadFromMemory(width, height, std::vector(width * height, color).data(), this->gctx);
+		return texture;
+	}
+
+	Texture ImageRenderTarget::LoadTextureFromMemory(u32_t width, u32_t height, const Color * colors)
+	{
+		Core::Texture texture;
+		texture.LoadFromMemory(width, height, colors, this->gctx);
+		return texture;
+	}
+
+	Texture ImageRenderTarget::LoadTextureFromFile(const std::string & filepath)
+	{
+		Core::Texture texture;
+		texture.LoadFromFile(filepath, this->gctx);
+		return texture;
+	}
+
 	void ImageRenderTarget::ImageMode(DrawMode mode)
 	{
 		this->rsm->GetActiveState().imageMode = mode;
@@ -80,6 +101,37 @@ namespace Core
 			(FLOAT)image.opacity / 255.f,
 			static_cast<D2D1_BITMAP_INTERPOLATION_MODE>(image.mode),
 			D2D1::RectF(0.f, 0.f, (float)image.width, (float)image.height)
+		);
+	}
+
+	void ImageRenderTarget::Texture(const Core::Texture & texture, float x, float y)
+	{
+		this->Texture(texture, x, y, (float)texture.width, (float)texture.height);
+	}
+
+	void ImageRenderTarget::Texture(const Core::Texture & texture, float x, float y, float width, float height)
+	{
+		ID2D1HwndRenderTarget * rt = this->gctx->renderTarget.Get();
+		if (!rt) return;
+
+		ID2D1Bitmap * bitmap = texture.GetBitmap();
+		if (!bitmap) return;
+
+		D2D1_RECT_F destinationRectangle = D2D1::RectF();
+		switch (this->rsm->GetActiveState().imageMode)
+		{
+			case DrawMode::Corner: destinationRectangle = D2D1::RectF(x, y, x + width, y + height); break;
+			case DrawMode::Corners: destinationRectangle = D2D1::RectF(x, y, width, height); break;
+			case DrawMode::Center: destinationRectangle = D2D1::RectF(x - width / 2.f, y - height / 2.f, x + width / 2.f, y + height / 2.f); break;
+			default: break;
+		}
+
+		rt->DrawBitmap(
+			bitmap,
+			destinationRectangle,
+			(FLOAT)texture.opacity / 255.f,
+			static_cast<D2D1_BITMAP_INTERPOLATION_MODE>(texture.mode),
+			D2D1::RectF(0.f, 0.f, (float)texture.width, (float)texture.height)
 		);
 	}
 
