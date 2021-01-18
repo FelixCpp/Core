@@ -132,7 +132,7 @@ protected:
 
 
 
-##### playing with colors
+playing with colors
 
 ```c++
 ...
@@ -174,10 +174,36 @@ protected:
 
     virtual void Draw() override
     {
-        Background(Color::LightBlue);
+        Background(Color::Black);
         Image(image, 0, 0);
-        PauseDrawing();
     }
     
 };
 ```
+
+playing with parameters
+
+maybe this?
+
+```c++
+...
+virtual void Draw() override
+{
+    Background(Color::Black);
+	Image(image, 0, 0, image.width / 2, image.height / 2);
+}
+...
+```
+
+or this?
+
+```c++
+...
+virtual void Draw() override
+{
+    Background(Color::Black);
+	Image(image, 0, 0, mouseX, mouseY);
+}
+...
+```
+
