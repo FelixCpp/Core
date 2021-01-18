@@ -30,6 +30,41 @@ This repository is actively maintained and develoed.
 ## Examples
 
 
+##### Hello World
+
+``` C++
+#include <Core/Application.hpp>
+using namespace Core;
+
+class App : public Application {
+public:
+
+	App() :
+		Application(400, 400, "Hello World App")
+	{ }
+
+protected:
+
+	virtual void Setup() override
+	{
+		TextSize(42.f);
+		NoStroke();
+		Fill(Color::White);
+	}
+
+	virtual void Draw() override
+	{
+		Background(Color::Black);
+		Text("Hello World", 0.f, 0.f, (float)width, (float)height);
+	}
+
+};
+
+int main()
+{
+	Application::Launch<App>();
+}
+```
 
 ##### Bouncing Ball
 
