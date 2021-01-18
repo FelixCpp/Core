@@ -140,3 +140,46 @@ virtual void Setup() override
 }
 ...
 ```
+
+
+#### Loading images
+
+To see the image on your screen you need to add an image into your Projects root directory and rename it to "colorful.jpg"
+
+```c++
+#include <Core/Application.hpp>
+using namespace Core;
+
+class App : public Application {
+public:
+
+    Core::Image image;
+
+    App() :
+        Application(200, 200, "Loading an image")
+    {
+    }
+
+protected:
+
+    virtual void Setup() override
+    {
+        image = LoadImageFromFile("colorful.jpg");
+        SetSize(image.width, image.height);
+        Recenter();
+    }
+
+    virtual void Draw() override
+    {
+        Background(Color::LightBlue);
+        Image(image, 0, 0);
+        PauseDrawing();
+    }
+    
+};
+
+int main()
+{
+    Application::Launch<App>();
+}
+```
