@@ -30,12 +30,31 @@ This repository is actively maintained and develoed.
 ## Examples
 
 
+
+##### How to start an Application
+
+```c++
+int main()
+{
+	Application::Launch<App>();
+}
+```
+
+
+
+##### Preparation
+
+```c++
+#include <Core/Application.hpp>
+using namespace Core;
+```
+
+
+
+
 ##### Hello World
 
 ``` C++
-#include <Core/Application.hpp>
-using namespace Core;
-
 class App : public Application {
 public:
 
@@ -59,19 +78,11 @@ protected:
 	}
 
 };
-
-int main()
-{
-	Application::Launch<App>();
-}
 ```
 
 ##### Bouncing Ball
 
 ```c++
-#include <Core/Application.hpp>
-using namespace Core;
-
 class App : public Application {
 public:
 
@@ -117,11 +128,6 @@ protected:
     }
     
 };
-
-int main()
-{
-    Application::Launch<App>();
-}
 ```
 
 
@@ -147,9 +153,6 @@ virtual void Setup() override
 To see the image on your screen you need to add an image into your Projects root directory and rename it to "colorful.jpg"
 
 ```c++
-#include <Core/Application.hpp>
-using namespace Core;
-
 class App : public Application {
 public:
 
@@ -177,9 +180,4 @@ protected:
     }
     
 };
-
-int main()
-{
-    Application::Launch<App>();
-}
 ```
