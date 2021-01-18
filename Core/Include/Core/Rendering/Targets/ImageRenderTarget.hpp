@@ -1,8 +1,11 @@
 #pragma once
 
-#include <Core/Rendering/Image.hpp>
-
-#include <Core/Rendering/DrawMode.hpp>
+/// <summary>
+/// Core
+/// </summary>
+#include <Core/Rendering/Image.hpp> // Core::Image
+#include <Core/Rendering/ImageSource.hpp> // Core::ImageSource
+#include <Core/Rendering/DrawMode.hpp> // Core::DrawMode
 
 namespace Core
 {
@@ -35,6 +38,13 @@ namespace Core
 		/// virtual destructor
 		/// </summary>
 		virtual ~ImageRenderTarget() = default;
+
+		/// <summary>
+		/// Loads the image and creates
+		/// an ImageSource object
+		/// </summary>
+		/// <param name="filepath">location of the image</param>
+		ImageSource LoadImageSourceFromFile(const std::string & filepath);
 
 		/// <summary>
 		/// Creates a flat image based on

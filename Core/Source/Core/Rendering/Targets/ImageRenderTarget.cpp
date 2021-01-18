@@ -12,6 +12,13 @@ namespace Core
 	{
 	}
 
+	ImageSource ImageRenderTarget::LoadImageSourceFromFile(const std::string & filepath)
+	{
+		ImageSource source;
+		source.LoadFromFile(filepath, this->gctx);
+		return source;
+	}
+
 	Image ImageRenderTarget::CreateImage(u32_t width, u32_t height, const Color & color)
 	{
 		Core::Image image;

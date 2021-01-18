@@ -39,6 +39,7 @@
     <ClInclude Include="Include\Core\Rendering\Helpers.hpp" />
     <ClInclude Include="Include\Core\Maths\Vector3.hpp" />
     <ClInclude Include="Include\Core\Rendering\ImageInterpolationMode.hpp" />
+    <ClInclude Include="Include\Core\Rendering\ImageSource.hpp" />
     <ClInclude Include="Include\Core\Rendering\Targets\BrushTarget.hpp" />
     <ClInclude Include="Include\Core\Rendering\Targets\ImageRenderTarget.hpp" />
     <ClInclude Include="Include\Core\Rendering\RenderStateManager.hpp" />
@@ -49,6 +50,7 @@
     <ClInclude Include="Include\Core\Rendering\Targets\RenderStateTarget.hpp" />
     <ClInclude Include="Include\Core\Rendering\Targets\TextRenderTarget.hpp" />
     <ClInclude Include="Include\Core\Rendering\Targets\TransformationTarget.hpp" />
+    <ClInclude Include="Include\Core\Rendering\Texture.hpp" />
     <ClInclude Include="Include\Core\System\Logger.hpp" />
     <ClInclude Include="Include\Core\Window\DisplayMode.hpp" />
     <ClInclude Include="Include\Core\Window\SystemCursor.hpp" />
@@ -108,6 +110,7 @@
     <ClCompile Include="Source\Core\Rendering\BitmapBrush.cpp" />
     <ClCompile Include="Source\Core\Rendering\Color.cpp" />
     <ClCompile Include="Source\Core\Rendering\Helpers.cpp" />
+    <ClCompile Include="Source\Core\Rendering\ImageSource.cpp" />
     <ClCompile Include="Source\Core\Rendering\Targets\BrushTarget.cpp" />
     <ClCompile Include="Source\Core\Rendering\Targets\ImageRenderTarget.cpp" />
     <ClCompile Include="Source\Core\Rendering\RenderStateManager.cpp" />
