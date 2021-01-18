@@ -1,17 +1,21 @@
- #include <Core/Rendering/Image.hpp>
-#include <Core/Rendering/GraphicsContext.hpp>
+#include <Core/Rendering/Image.hpp>
+#include <Core/Rendering/GraphicsContext.hpp> // GraphicsContext
+#include <Core/System/Logger.hpp> // CORE_ERROR
 
-#include <Core/System/Logger.hpp>
+#include <wrl/client.h> // Microsoft::WRL::ComPtr
+#include <d2d1.h> // Direct2D functionality
+#include <wincodec.h> // WIC (Windows Imaging Component)
 
-#include <wrl/client.h>
+using Microsoft::WRL::ComPtr;
 
 namespace Core
 {
 
+	/// <summary>
+	/// Image implementation
+	/// </summary>
 	struct Image::Implementation {
-		
-		Microsoft::WRL::ComPtr<ID2D1Bitmap> bitmap = nullptr;
-
+		ComPtr<ID2D1Bitmap> bitmap = nullptr;
 	};
 
 	Image::Image() :
@@ -19,104 +23,75 @@ namespace Core
 		height(0),
 		mode(ImageInterpolationMode::NearestNeighbor),
 		opacity(255),
+		colors(),
 		impl(std::make_shared<Implementation>())
-	{ }
-
-	bool Image::Create(u32_t width, u32_t height, const Color & color, GraphicsContext * gctx)
 	{
-		ID2D1HwndRenderTarget * rt = gctx->renderTarget.Get();
-		if (!rt) return false;
-
-		const D2D1_PIXEL_FORMAT pixelFormat = rt->GetPixelFormat();
-		FLOAT dpiX = 0.f, dpiY = 0.f;
-		rt->GetDpi(&dpiX, &dpiY);
-
-		u32_t * srcData = new u32_t[width * height];
-		std::fill_n(srcData, width * height, color.Argb());
-		
-		const HRESULT hr = rt->CreateBitmap(
-			D2D1::SizeU(width, height),
-			srcData,
-			width * sizeof u32_t + 0,
-			D2D1::BitmapProperties(pixelFormat, dpiX, dpiY),
-			&this->impl->bitmap
-		);
-
-		delete[] srcData;
-		srcData = nullptr;
-
-		if (FAILED(hr))
-		{
-			CORE_ERROR("Failed to create a Bitmap");
-			return false;
-		}
-		
-		this->width = (i32_t)width;
-		this->height = (i32_t)height;
-
-		return true;
 	}
 
-	bool Image::LoadFromMemory(u32_t width, u32_t height, const Color * colors, GraphicsContext * gctx)
+	bool Image::Create(i32_t width, i32_t height, const Color colors[], GraphicsContext * gctx)
 	{
-		ID2D1HwndRenderTarget * rt = gctx->renderTarget.Get();
-		if (!rt) return false;
+		// handy typedef for the implementations attribute
+		auto & bitmap = this->impl->bitmap;
 
-		if (this->impl->bitmap)
+		// Get the RenderTarget
+		ID2D1HwndRenderTarget * renderTarget = gctx->renderTarget.Get();
+		if (!renderTarget)
 		{
-			/* copy the data into the existing image */
-			const D2D1_RECT_U dstRect = D2D1::RectU(0, 0, width, height);
-			const HRESULT hr = this->impl->bitmap->CopyFromMemory(
-				&dstRect, colors, width * sizeof Color + 0
-			);
-
-			if (FAILED(hr))
-			{
-				CORE_ERROR("Failed to copy the pixels into the image");
-				return false;
-			}
-		} else
-		{
-			/* create an image */
-			const D2D1_PIXEL_FORMAT pixelFormat = rt->GetPixelFormat();
-			FLOAT dpiX = 0.f, dpiY = 0.f;
-			rt->GetDpi(&dpiX, &dpiY);
-
-			const HRESULT hr = rt->CreateBitmap(
-				D2D1::SizeU(width, height),
-				colors,
-				width * sizeof Color + 0,
-				D2D1::BitmapProperties(pixelFormat, dpiX, dpiY),
-				&this->impl->bitmap
-			);
-
-			if (FAILED(hr))
-			{
-				CORE_ERROR("Failed to create a bitmap with the specified colors");
-				return false;
-			}
+			CORE_ERROR("There is no RenderTarget");
+			return false;
 		}
 
-		this->width = (i32_t)width;
-		this->height = (i32_t)height;
+		// Get the pixel format
+		const D2D1_PIXEL_FORMAT pixelFormat = renderTarget->GetPixelFormat();
+
+		// Get the dpiX, dpiY values
+		FLOAT dpiX = 0.f, dpiY = 0.f;
+		renderTarget->GetDpi(&dpiX, &dpiY);
+
+		// Calculate the pitch (width * sizeof element + byteoffset in class)
+		const UINT pitch = width * sizeof Color + 0;
+
+		// create the bitmap
+		HRESULT hr = renderTarget->CreateBitmap(
+			D2D1::SizeU(width, height),
+			colors,
+			pitch,
+			D2D1::BitmapProperties(pixelFormat, dpiX, dpiY),
+			&bitmap
+		);
+
+		// error handling
+		if (FAILED(hr))
+		{
+			CORE_ERROR("Failed to create a new Bitmap with the given colors");
+			return false;
+		}
+
+		this->width = width;
+		this->height = height;
+		this->colors.resize(width * height);
+		this->colors.assign(colors, colors + width * height);
 
 		return true;
 	}
 
 	bool Image::LoadFromFile(const std::string & filepath, GraphicsContext * gctx)
 	{
+		// Get the ImagingFactory
 		IWICImagingFactory * factory = gctx->imagingFactory.Get();
-		if (!factory) return false;
 
-		Microsoft::WRL::ComPtr<IWICBitmapDecoder> pDecoder = nullptr;
-		Microsoft::WRL::ComPtr<IWICBitmapFrameDecode> pSource = nullptr;
-		Microsoft::WRL::ComPtr<IWICStream> pStream = nullptr;
-		Microsoft::WRL::ComPtr<IWICFormatConverter> pConverter = nullptr;
-		Microsoft::WRL::ComPtr<IWICBitmapScaler> pScaler = nullptr;
+		// error handling
+		if (!factory)
+		{
+			CORE_ERROR("There is no ImagingFactory");
+			return false;
+		}
 
-		const std::wstring uri(filepath.begin(), filepath.end());
+		// Create a Decoder from the filepath
+		const std::wstring wFilepath(filepath.begin(), filepath.end());
+		ComPtr<IWICBitmapDecoder> pDecoder = nullptr;
 		HRESULT hr = factory->CreateDecoderFromFilename(
-			uri.c_str(),
+			wFilepath.c_str(),
 			nullptr,
 			GENERIC_READ,
 			WICDecodeMetadataCacheOnLoad,
@@ -125,29 +100,34 @@ namespace Core
 
 		if (FAILED(hr))
 		{
-			CORE_ERROR("Failed to create an ImageDecoder from filename \"%s\"", filepath.c_str());
+			CORE_ERROR("Failed to create a Decoder from \"%s\"", filepath.c_str());
 			return false;
 		}
 
-		/* Create the initial frame. */
+		// Create the initial frame.
+		ComPtr<IWICBitmapFrameDecode> pSource = nullptr;
 		hr = pDecoder->GetFrame(0, &pSource);
+
+		// error handling
 		if (FAILED(hr))
 		{
-			CORE_ERROR("Failed to get the initial frame of the ImageDecoder");
+			CORE_ERROR("Failed to get the initial frame");
 			return false;
 		}
-		
-		/*
-			Convert the image format to 32bppPBGRA
-			(DXGI_FORMAT_B8G8R8A8_UNORM + D2D1_ALPHA_MODE_PREMULTIPLIED).
-		*/
+
+		// Convert the image format to 32bppPBGRA
+		// (DXGI_FORMAT_B8G8R8A8_UNORM + D2D1_ALPHA_MODE_PREMULTIPLIED).
+		ComPtr<IWICFormatConverter> pConverter = nullptr;
 		hr = factory->CreateFormatConverter(&pConverter);
+		
+		// error handling
 		if (FAILED(hr))
 		{
 			CORE_ERROR("Failed to create a FormatConverter");
 			return false;
 		}
 
+		// Initialize the FormatConverter
 		hr = pConverter->Initialize(
 			pSource.Get(),
 			GUID_WICPixelFormat32bppPBGRA,
@@ -156,78 +136,162 @@ namespace Core
 			0.0,
 			WICBitmapPaletteTypeMedianCut
 		);
+
+		// error handling
 		if (FAILED(hr))
 		{
 			CORE_ERROR("Failed to initialize the FormatConverter");
 			return false;
 		}
+		
+		// Get the RenderTarget
+		ID2D1HwndRenderTarget * renderTarget = gctx->renderTarget.Get();
+		if (!renderTarget)
+		{
+			CORE_ERROR("There is no RenderTarget");
+			return false;
+		}
 
-		ID2D1HwndRenderTarget * rt = gctx->renderTarget.Get();
-		if (!rt) return false;
-
-		/* Create a Direct2D bitmap from the WIC bitmap. */
-		hr = rt->CreateBitmapFromWicBitmap(
+		// Create a Direct2D bitmap from the WIC bitmap.
+		hr = renderTarget->CreateBitmapFromWicBitmap(
 			pConverter.Get(),
 			nullptr,
 			&this->impl->bitmap
 		);
-		if (FAILED(hr))
+
+		// error handling
+		if(FAILED(hr))
 		{
-			CORE_ERROR("Failed to create a Bitmap from WicBitmap");
+			CORE_ERROR("Failed to create a ID2D1Bitmap from IWICBitmap");
 			return false;
 		}
 
-		/* copy the size */
-		const D2D1_SIZE_F size = this->impl->bitmap->GetSize();
-		this->width = (i32_t)size.width;
-		this->height = (i32_t)size.height;
+		// Get the size of the image
+		UINT uiWidth = 0, uiHeight = 0;
+		hr = pConverter->GetSize(&uiWidth, &uiHeight);
+		
+		// error handling
+		if (FAILED(hr))
+		{
+			CORE_ERROR("Failed to get the size from the FormatConverter");
+			return false;
+		}
+
+		// Copy the values
+		this->width = (i32_t)uiWidth;
+		this->height = (i32_t)uiHeight;
+
+		// Get the color values
+		
+		// Create the bitmap from the image frame
+		ComPtr<IWICBitmap> wicBitmap = nullptr;
+		hr = factory->CreateBitmapFromSource(
+			pSource.Get(),			// Create a bitmap from the image frame
+			WICBitmapCacheOnDemand,	// Cache metadata when needed
+			&wicBitmap				// Pointer to the bitmap
+		);
+
+		// error handling
+		if (FAILED(hr))
+		{
+			CORE_ERROR("Failed to create a Bitmap from the initial frame");
+			return false;
+		}
+
+		// Obtain a bitmap lock for exclusive write.
+		// The lock is for a 10x10 rectangle starting at the top left of the
+		// bitmap.
+		const WICRect lockBoundary = { 0, 0, (INT)uiWidth, (INT)uiHeight };
+		ComPtr<IWICBitmapLock> bitmapLock = nullptr;
+		hr = wicBitmap->Lock(&lockBoundary, WICBitmapLockRead, &bitmapLock);
+		
+		// error handling
+		if (FAILED(hr))
+		{
+			CORE_ERROR("Failed locking bitmap for reading the pixels");
+			return false;
+		}
+
+		UINT cbBufferSize = 0;
+		BYTE * data = NULL;
+
+		// Retrieve a pointer to the pixel data.
+		hr = bitmapLock->GetDataPointer(&cbBufferSize, &data);
+		
+		if (FAILED(hr))
+		{
+			CORE_ERROR("Failed to get raw data from the bitmap");
+			return false;
+		}
+
+		// Pixel manipulation using the image data pointer pv.
+		// ...
+		const bool hasAlpha = cbBufferSize == uiWidth * uiHeight * 4;
+		const i32_t colorChannels = hasAlpha ? 4 : 3;
+
+		// make space for the colors
+		this->colors.resize(uiWidth * uiHeight);
+		for (UINT y = 0u; y < uiHeight; y++)
+		{
+			for (UINT x = 0u; x < uiWidth; x++)
+			{
+				const UINT dataIndex  = (y * uiWidth + x) * colorChannels;
+				const UINT colorIndex = (y * uiWidth + x);
+
+				this->colors[colorIndex].r = data[dataIndex + 0];
+				this->colors[colorIndex].g = data[dataIndex + 1];
+				this->colors[colorIndex].b = data[dataIndex + 2];
+				this->colors[colorIndex].a = hasAlpha ? data[dataIndex + 3] : 255;
+			}
+		}
 
 		return true;
 	}
 
-	bool Image::LoadFromScreen(i32_t x, i32_t y, i32_t width, i32_t height, GraphicsContext * gctx)
+	bool Image::LoadFromMemory(i32_t width, i32_t height, const Color colors[], GraphicsContext * gctx)
 	{
-		ID2D1HwndRenderTarget * rt = gctx->renderTarget.Get();
-		if (!rt) return false;
-
-		const D2D1_SIZE_F viewport = rt->GetSize();
-
-		if (width > viewport.width) width = viewport.width;
-		if (height > viewport.height) height = viewport.height;
-		if (x < 0) x = 0; if (x + width > viewport.width) x = viewport.width - width;
-		if (y < 0) y = 0; if (y + height > viewport.height) y = viewport.height - height;
-
-		if (!this->impl->bitmap)
+		auto & bitmap = this->impl->bitmap;
+	
+		if (bitmap)
 		{
-			const D2D1_PIXEL_FORMAT pixelFormat = rt->GetPixelFormat();
-			FLOAT dpiX = 0.f, dpiY = 0.f;
-			rt->GetDpi(&dpiX, &dpiY);
-
-			const HRESULT hr = rt->CreateBitmap(
-				D2D1::SizeU(width, height),
-				D2D1::BitmapProperties(pixelFormat, dpiX, dpiY),
-				&this->impl->bitmap
-			);
-			if (FAILED(hr))
+			// Copy the pixels into the existing bitmap
+			// we can't return this method because we want to copy the values
+			// into their member variables futher down
+			if (!this->CopyFromRawData(width, height, colors))
 			{
-				CORE_ERROR("Failed to create a Bitmap");
 				return false;
 			}
-		}
 
-		const D2D1_POINT_2U dstPoint = D2D1::Point2U(x, y);
-		const D2D1_RECT_U srcRect = D2D1::RectU(0, 0, width, height);
-		const HRESULT hr = this->impl->bitmap->CopyFromRenderTarget(&dstPoint, rt, &srcRect);
-		if (FAILED(hr))
+			// Copy the values
+			this->width = width;
+			this->height = height;
+
+			this->colors.resize(width * height);
+			this->colors.assign(colors, colors + width * height);
+		} else
 		{
-			CORE_ERROR("Failed to load an image from the RenderTarget");
-			return false;
-		}
+			// Create a brand new bitmap
+			if (!this->Create(width, height, colors, gctx))
+			{
+				return false;
+			}
 
-		this->width  = width;
-		this->height = height;
+			// note: we don't need to copy the data here because
+			// Create(...) already does that for us
+		}
 
 		return true;
+	}
+
+	void Image::LoadColors()
+	{
+		// nothing to do
+	}
+
+	bool Image::UpdateColors()
+	{
+		// TODO: Copy the colors into the bitmap
+		return this->CopyFromRawData(this->width, this->height, this->colors.data());
 	}
 
 	ID2D1Bitmap * Image::GetBitmap() const
@@ -235,5 +299,22 @@ namespace Core
 		return this->impl->bitmap.Get();
 	}
 
+	bool Image::CopyFromRawData(i32_t width, i32_t height, const Color colors[])
+	{
+		auto & bitmap = this->impl->bitmap;
 
-}
+		// copy the colors from memory into the bitmap
+		const D2D1_RECT_U dstRect = { 0u, 0u, (UINT)width, (UINT)height };
+		HRESULT hr = bitmap->CopyFromMemory(&dstRect, colors, width * sizeof Color + 0);
+
+		// error handling
+		if (FAILED(hr))
+		{
+			CORE_ERROR("Failed to copy the pixels from memory into existing Bitmap");
+			return false;
+		}
+
+		return true;
+	}
+
+} // namespace Core
