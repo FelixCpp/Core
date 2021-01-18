@@ -281,6 +281,93 @@ namespace Core
 		return true;
 	}
 
+	bool Image::LoadFromImage(const Image & other, i32_t x, i32_t y, i32_t width, i32_t height, GraphicsContext * gctx)
+	{
+		auto & bitmap = this->impl->bitmap;
+		ID2D1Bitmap * source = other.GetBitmap();
+		if (!source)
+		{
+			this->width = 0;
+			this->height = 0;
+			this->colors.clear();
+			bitmap.Reset();
+			return true;
+		}
+
+		// clamp the values so the full width and full height can always be copied
+		x = (i32_t)FMath::Constrain((float)x, 0.f, (float)(other.width - width));
+		y = (i32_t)FMath::Constrain((float)y, 0.f, (float)(other.height - height));
+
+		if (!bitmap)
+		{
+			// we need to create a brand new bitmap to copy the data into later
+			// Get the RenderTarget
+			ID2D1HwndRenderTarget * renderTarget = gctx->renderTarget.Get();
+			if (!renderTarget)
+			{
+				CORE_ERROR("There is no RenderTarget");
+				return false;
+			}
+
+			// Get the pixel format
+			const D2D1_PIXEL_FORMAT pixelFormat = source->GetPixelFormat();
+
+			// Get the dpiX, dpiY values
+			FLOAT dpiX = 0.f, dpiY = 0.f;
+			source->GetDpi(&dpiX, &dpiY);
+
+			// Calculate the pitch (width * sizeof element + byteoffset in class)
+			const UINT pitch = width * sizeof Color + 0;
+
+			// create the bitmap
+			HRESULT hr = renderTarget->CreateBitmap(
+				D2D1::SizeU(width, height),
+				D2D1::BitmapProperties(pixelFormat, dpiX, dpiY),
+				&bitmap
+			);
+
+			// error handling
+			if (FAILED(hr))
+			{
+				CORE_ERROR("Failed to create a new Bitmap with the given colors");
+				return false;
+			}
+		}
+
+		// copy the section
+		const D2D1_POINT_2U destPoint = { 0u, 0u };
+		const D2D1_RECT_U srcRect = { (UINT)x, (UINT)y, x + (UINT)width, y + (UINT)height };
+		
+		// Copy the bitmap
+		HRESULT hr = bitmap->CopyFromBitmap(&destPoint, source, &srcRect);
+
+		// error handling
+		if (FAILED(hr))
+		{
+			CORE_ERROR("Failed to copy the bitmap from the given image");
+			return false;
+		}
+
+		// copy the dimensions
+		this->width = width;
+		this->height = height;
+		
+		// copy the pixels
+		this->colors.resize(this->width * this->height);
+
+		const auto xd = x;
+		const auto yd = y;
+		for (u32_t y = 0; y < this->height; y++)
+		{
+			for (u32_t x = 0; x < this->width; x++)
+			{
+				this->colors[y * this->width + x] = other.colors[yd * width + xd];
+			}
+		}
+
+		return true;
+	}
+
 	void Image::LoadColors()
 	{
 		// nothing to do

@@ -73,6 +73,28 @@ namespace Core
 		bool LoadFromMemory(i32_t width, i32_t height, const Color colors[], GraphicsContext * gctx);
 
 		/// <summary>
+		/// Copies an area from the other image
+		/// and puts them into the bitmap
+		/// structure.
+		/// 
+		/// If the boundary is invalid, the boundary
+		/// shrinks to fit.
+		/// 
+		/// <remarks>
+		/// shrinking the boundary (area to copy)
+		/// won't not return false
+		/// </remarks>
+		/// </summary>
+		/// <param name="other">the image to copy from</param>
+		/// <param name="x">start x in pixels</param>
+		/// <param name="y">start y in pixels</param>
+		/// <param name="width">width to copy in pixels</param>
+		/// <param name="height">height to copy in pixels</param>
+		/// <param name="gctx">a GraphicsContext to get access to the RenderTarget</param>
+		/// <returns>True if the image was copied successfully</returns>
+		bool LoadFromImage(const Image & other, i32_t x, i32_t y, i32_t width, i32_t height, GraphicsContext * gctx);
+
+		/// <summary>
 		/// Loads the pixels
 		/// </summary>
 		void LoadColors();

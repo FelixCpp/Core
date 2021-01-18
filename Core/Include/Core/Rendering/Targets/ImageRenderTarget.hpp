@@ -69,7 +69,18 @@ namespace Core
 		/// <param name="y">start y position in pixel space</param>
 		/// <param name="width">width of the image in pixels</param>
 		/// <param name="height">height of the image in pixels</param>
-		Image LoadImageFromScreen(i32_t x, i32_t y, i32_t width, i32_t height);
+		//Image LoadImageFromScreen(i32_t x, i32_t y, i32_t width, i32_t height);
+
+		/// <summary>
+		/// Copies a section from the source
+		/// </summary>
+		/// <param name="source">the image to copy from</param>
+		/// <param name="x">start x position in pixels</param>
+		/// <param name="y">start y position in pixels</param>
+		/// <param name="width">width of the area to copy</param>
+		/// <param name="height">height of the area to copy</param>
+		/// <returns>A new image containing the copied content</returns>
+		Image LoadImageFromImage(const Core::Image & source, i32_t x, i32_t y, i32_t width, i32_t height);
 
 		/// <summary>
 		/// Changes the drawmode of
