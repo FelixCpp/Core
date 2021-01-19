@@ -23,5 +23,40 @@ Core contains fast, richly featured drawing routines and algorithms to
 
 This repository is actively maintained and develoed.
 
-## More informations / Code examples
-See [here](https://github.com/FelixCpp/Core/wiki)
+## Code example
+
+``` C++
+#include <Core/Application.hpp>
+using namespace Core;
+
+class App : public Application {
+public:
+
+	App() :
+		Application(400, 400, "Hello World App")
+	{ }
+
+protected:
+
+	virtual void Setup() override
+	{
+		TextSize(42.f);
+		NoStroke();
+		Fill(Color::White);
+	}
+
+	virtual void Draw() override
+	{
+		Background(Color::Black);
+		Text("Hello World", 0.f, 0.f, (float)width, (float)height);
+	}
+
+};
+
+int main()
+{
+    Application::Launch<App>();
+}
+```
+
+For more informations / code examples click [here](https://github.com/FelixCpp/Core/wiki)
