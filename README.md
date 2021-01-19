@@ -59,4 +59,4 @@ int main()
 }
 ```
 
-For more informations / code examples click [here](https://github.com/FelixCpp/Core/wiki)
+## For more informations / code examples click [here](https://github.com/FelixCpp/Core/wiki)
