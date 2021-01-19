@@ -2,9 +2,6 @@
 
 A library based on Processing/P5.js to create simple 2D applications in C++
 
-## Code examples
-See [here](https://github.com/FelixCpp/Core/wiki)
-
 ## General informations about Core
 
 This  C++ Project is heavily inspired by [Processing](https://github.com/processing/processing) and [p5.js](https://github.com/processing/p5.js).
@@ -14,7 +11,7 @@ It provides several functionalities in these modules:
 * Audio
 * Maths
 * Rendering
-* System (stl extensions)
+* System
 * Window
 
 Core contains fast, richly featured drawing routines and algorithms to
@@ -25,3 +22,6 @@ Core contains fast, richly featured drawing routines and algorithms to
 * Educate
 
 This repository is actively maintained and develoed.
+
+## More informations / Code examples
+See [here](https://github.com/FelixCpp/Core/wiki)
