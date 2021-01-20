@@ -16,6 +16,7 @@ namespace Core
 	RenderWindow::RenderWindow(Renderer *& renderer, RenderStateManager *& rsm) :
 		Window(),
 		RenderTarget(renderer, rsm),
+		FrameSaver(renderer),
 		mouseInsideWindow(false),
 		resizing(false),
 		renderer(renderer)
@@ -119,7 +120,7 @@ namespace Core
 				window->OnWindowClosed();
 
 				/* destroy Direct2D */
-				//window->renderer->Destroy();
+				window->renderer->Destroy();
 
 				FactoryManager::Destroy();
 

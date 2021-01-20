@@ -56,6 +56,13 @@ namespace Core
 		virtual void ResizeViewport(u32_t width, u32_t height) override;
 
 		/// <summary>
+		/// Saves the current screen
+		/// of the Renderer to a file
+		/// </summary>
+		/// <param name="filepath">where the image gets stored to</param>
+		virtual void SaveFrame(const std::string & filepath) override;
+
+		/// <summary>
 		/// Returns the RenderTarget
 		/// </summary>
 		virtual ID2D1RenderTarget * GetRenderTarget() const override;

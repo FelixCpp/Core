@@ -5,6 +5,14 @@
 /// </summary>
 #include <Core/System/Datatypes.hpp>
 
+/// <summary>
+/// C++ / STL
+/// </summary>
+#include <string>
+
+/// <summary>
+/// Ignore this
+/// </summary>
 struct ID2D1RenderTarget;
 
 namespace Core
@@ -53,6 +61,13 @@ namespace Core
 		/// <param name="width">width of the area</param>
 		/// <param name="height">height of the area</param>
 		virtual void ResizeViewport(u32_t width, u32_t height) = 0;
+
+		/// <summary>
+		/// Saves the current screen
+		/// of the Renderer to a file
+		/// </summary>
+		/// <param name="filepath">where the image gets stored to</param>
+		virtual void SaveFrame(const std::string & filepath) = 0;
 
 		/// <summary>
 		/// Returns the RenderTarget

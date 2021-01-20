@@ -2,13 +2,16 @@
 #include <Core/Rendering/FactoryManager.hpp>
 #include <Core/System/Logger.hpp> // CORE_ERROR
 
+#include <shlwapi.h>
+#pragma comment(lib, "Shlwapi")
+
 namespace Core
 {
 
 	BitmapRenderer::BitmapRenderer() :
-		dcRenderTarget(nullptr),
-		bitmapRenderTarget(nullptr),
-		windowHandle(nullptr)
+		renderTarget(nullptr),
+		windowHandle(nullptr),
+        bitmap(nullptr)
 	{
 	}
 
@@ -25,91 +28,124 @@ namespace Core
 			D2D1_RENDER_TARGET_TYPE_DEFAULT, pixelFormat, 0.f, 0.f, D2D1_RENDER_TARGET_USAGE_NONE, D2D1_FEATURE_LEVEL_DEFAULT
 		);
 
-		// Create a DC RenderTarget
-		HRESULT hr = FactoryManager::d2dFactory->CreateDCRenderTarget(&properties, &this->dcRenderTarget);
-		
-		// error handling
-		if (FAILED(hr))
-		{
-			CORE_ERROR("Failed to create a DCRenderTarget");
-			return false;
-		}
-
-		// get a DC from the window
-		HDC hdc = GetDC(handle);
-
-		// Get the windows rectangle
-		RECT wndRect = {};
-		if (!GetClientRect(handle, &wndRect))
+		// Create a bitmap RenderTarget
+		RECT rect = {};
+		if (!GetClientRect(handle, &rect))
 		{
 			CORE_ERROR("Failed to get the windows size");
 			return false;
 		}
 
-		// bind the dc to the DCRenderTarget
-		this->dcRenderTarget->BindDC(hdc, &wndRect);
+		const UINT width = (UINT)(rect.right - rect.left);
+		const UINT height = (UINT)(rect.bottom - rect.top);
 
-		// Create a BitmapRenderTarget
-		hr = this->dcRenderTarget->CreateCompatibleRenderTarget(&this->bitmapRenderTarget);
-
+		HRESULT hr = FactoryManager::wicFactory->CreateBitmap(width, height, GUID_WICPixelFormat32bppPBGRA, WICBitmapCacheOnLoad, &this->bitmap);
+		
 		// error handling
 		if (FAILED(hr))
 		{
-			CORE_ERROR("Failed to create a BitmapRenderTarget");
+			CORE_ERROR("Failed to create a IWICBitmap");
 			return false;
 		}
 
-		this->windowHandle = handle;
+		hr = FactoryManager::d2dFactory->CreateWicBitmapRenderTarget(
+			this->bitmap.Get(),
+			properties,
+			&this->renderTarget
+		);
+
+		if (FAILED(hr))
+		{
+			CORE_ERROR("Failed to create a WicBitmapRenderTarget");
+			return false;
+		}
+
+		hr = FactoryManager::d2dFactory->CreateHwndRenderTarget(
+			properties,
+			D2D1::HwndRenderTargetProperties(handle, D2D1::SizeU(width, height), D2D1_PRESENT_OPTIONS_IMMEDIATELY),
+			&this->hwndRenderTarget
+		);
 
 		return true;
 	}
 
 	void BitmapRenderer::Destroy()
 	{
-		this->dcRenderTarget.Reset();
-		this->bitmapRenderTarget.Reset();
+		this->renderTarget.Reset();
+		this->bitmap.Reset();
 	}
 
 	void BitmapRenderer::BeginDraw()
 	{
-		this->bitmapRenderTarget->BeginDraw();
+		this->renderTarget->BeginDraw();
 	}
 
 	void BitmapRenderer::EndDraw()
 	{
-		this->bitmapRenderTarget->EndDraw();
+		this->renderTarget->EndDraw();
 
-		// get the bitmap
-		Microsoft::WRL::ComPtr<ID2D1Bitmap> bitmap = nullptr;
-		this->bitmapRenderTarget->GetBitmap(&bitmap);
-	
-		this->dcRenderTarget->BeginDraw();
-		this->dcRenderTarget->DrawBitmap(bitmap.Get());
-		this->dcRenderTarget->EndDraw();
+		Microsoft::WRL::ComPtr<ID2D1Bitmap> d2dBitmap = nullptr;
+		this->hwndRenderTarget->CreateBitmapFromWicBitmap(this->bitmap.Get(), &d2dBitmap);
+		
+		this->hwndRenderTarget->BeginDraw();
+		this->hwndRenderTarget->DrawBitmap(d2dBitmap.Get());
+		this->hwndRenderTarget->EndDraw();
 	}
 
 	void BitmapRenderer::ResizeViewport(u32_t width, u32_t height)
 	{
-		// Get a DC from the Windowhandle
-		HDC hdc = GetDC(this->windowHandle);
-
-		// Get the size of the window
-		RECT windowBoundary = {};
-		GetClientRect(this->windowHandle, &windowBoundary);
-
-		// bind the dc and the size
-		this->dcRenderTarget->BindDC(hdc, &windowBoundary);
-
-		// Recreate the BitmapRenderTarget
-		this->dcRenderTarget->CreateCompatibleRenderTarget(&this->bitmapRenderTarget);
 		
-		// Release the DC
-		ReleaseDC(this->windowHandle, hdc);
 	}
+
+	void BitmapRenderer::SaveFrame(const std::string & filepath)
+	{
+		// -- Steps --
+		
+		// 5) Save to a file
+		Microsoft::WRL::ComPtr<IStream> file;
+		std::wstring wFilepath(filepath.begin(), filepath.end());
+		HRESULT hr = SHCreateStreamOnFileEx(
+			wFilepath.c_str(),
+			STGM_CREATE | STGM_WRITE | STGM_SHARE_EXCLUSIVE,
+			FILE_ATTRIBUTE_NORMAL,
+			TRUE, // create
+			nullptr, // template
+			&file
+		);
+
+		Microsoft::WRL::ComPtr<IWICBitmapEncoder> encoder = nullptr;
+
+		hr = FactoryManager::wicFactory->CreateEncoder(
+			GUID_ContainerFormatPng,
+			nullptr, // vendor
+			encoder.GetAddressOf()
+		);
+
+		hr = encoder->Initialize(file.Get(), WICBitmapEncoderNoCache);
+
+		Microsoft::WRL::ComPtr<IWICBitmapFrameEncode> frame = nullptr;
+		Microsoft::WRL::ComPtr<IPropertyBag2> bag = nullptr;
+
+		hr = encoder->CreateNewFrame(&frame, &bag);
+		hr = frame->Initialize(bag.Get());
+
+		UINT width = 0, height = 0;
+		this->bitmap->GetSize(&width, &height);
+		hr = frame->SetSize(width, height);
+
+		GUID format;
+		hr = this->bitmap->GetPixelFormat(&format);
+
+		GUID negotiated = format;
+		hr = frame->SetPixelFormat(&negotiated);
+		hr = frame->WriteSource(this->bitmap.Get(), nullptr);
+		hr = frame->Commit();
+		hr = encoder->Commit();
+    }
 
 	ID2D1RenderTarget * BitmapRenderer::GetRenderTarget() const
 	{
-		return this->bitmapRenderTarget.Get();
+		return this->renderTarget.Get();
 	}
 
 } // namespace Core

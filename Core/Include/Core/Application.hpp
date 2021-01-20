@@ -24,9 +24,6 @@ namespace Core
 
 		virtual ~Application();
 
-		virtual void Setup() {}
-		virtual void Draw() {}
-
 		// pause & continue draw() call
 		void PauseDrawing();
 		void StartDrawing();
@@ -44,19 +41,60 @@ namespace Core
 
 	protected:
 
-		/* create an Application with the given dimensions as window size */
+		/// <summary>
+		/// Creates a brand new Application
+		/// </summary>
+		/// <param name="width">width of the window</param>
+		/// <param name="height">height of the window</param>
+		/// <param name="title">title of the window</param>
+		/// <param name="type">type of the Renderer</param>
 		explicit Application(i32_t width = 200, i32_t height = 200, const std::string & title = "Core - Application", RendererType type = RendererType::WindowRenderer);
+
+		/// <summary>
+		/// This method gets called
+		/// after every Draw() call
+		/// </summary>
+		virtual void OnFrameProcessed() {}
+
+		/// <summary>
+		/// Gets called once
+		/// </summary>
+		virtual void Setup() {}
+
+		/// <summary>
+		/// Gets called every frame
+		/// in a loop
+		/// </summary>
+		virtual void Draw() {}
+
 
 	private:
 
+		/// <summary>
+		/// Calls Setup() surrounded with
+		/// BeginDraw() and EndDraw()
+		/// </summary>
 		void SetupImpl();
+
+		/// <summary>
+		/// Calls Draw() surrounded with
+		/// BeginDraw() and EndDraw()
+		/// </summary>
 		void DrawImpl();
 
+		/// <summary>
+		/// Starts the sketch
+		/// </summary>
 		void StartSketch();
 
 	private:
 
-		/* since we have raw pointers we don't want anyone to copy this class */
+		/// <summary>
+		/// Since this class contains raw pointers
+		/// we do not allow copying or moving
+		/// this class to another instance
+		/// </summary>
+		
 		Application(const Application &) = delete;
 		Application(Application &&) = delete;
 		Application & operator=(const Application &) = delete;

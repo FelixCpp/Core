@@ -3,6 +3,7 @@
 #include <Core/Window/Window.hpp>
 
 #include <Core/Rendering/Targets/RenderTarget.hpp>
+#include <Core/Rendering/FrameSaver.hpp>
 
 namespace Core
 {
@@ -10,7 +11,7 @@ namespace Core
 	class Renderer;
 	class RenderStateManager;
 
-	class RenderWindow : public Window, public RenderTarget {
+	class RenderWindow : public Window, public RenderTarget, public FrameSaver {
 	private:
 
 		/* internal window-class identifier */

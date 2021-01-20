@@ -74,7 +74,10 @@ namespace Core
 
 			/* call draw surrounded by begin/end-Draw() */
 			if (!this->drawingPaused)
+			{
 				this->DrawImpl();
+				this->OnFrameProcessed();
+			}
 
 			/* calculate & limit fps */
 			this->HandleFps();

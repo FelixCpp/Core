@@ -9,6 +9,12 @@
 /// Direct2D dependencies
 /// </summary>
 #include <d2d1.h>
+
+/// <summary>
+/// WIC (Windows Imaging Component)
+/// </summary>
+#include <wincodec.h>
+
 #include <wrl/client.h>
 
 namespace Core
@@ -56,6 +62,13 @@ namespace Core
 		virtual void ResizeViewport(u32_t width, u32_t height) override;
 
 		/// <summary>
+		/// Saves the current screen
+		/// of the Renderer to a file
+		/// </summary>
+		/// <param name="filepath">where the image gets stored to</param>
+		virtual void SaveFrame(const std::string & filepath) override;
+
+		/// <summary>
 		/// Returns the BitmapRenderTarget
 		/// </summary>
 		virtual ID2D1RenderTarget * GetRenderTarget() const override;
@@ -63,15 +76,12 @@ namespace Core
 	public:
 
 		/// <summary>
-		/// The DC RenderTarget
-		/// </summary>
-		Microsoft::WRL::ComPtr<ID2D1DCRenderTarget> dcRenderTarget;
-
-		/// <summary>
 		/// The Bitmap RenderTarget.
 		/// Use this for rendering
 		/// </summary>
-		Microsoft::WRL::ComPtr<ID2D1BitmapRenderTarget> bitmapRenderTarget;
+		Microsoft::WRL::ComPtr<ID2D1RenderTarget> renderTarget;
+
+		Microsoft::WRL::ComPtr<ID2D1HwndRenderTarget> hwndRenderTarget;
 
 		/// <summary>
 		/// the actual Windowhandle.
@@ -79,6 +89,15 @@ namespace Core
 		/// the DC properly
 		/// </summary>
 		Windowhandle windowHandle;
+
+		/// <summary>
+		/// The bitmap which gets updated everytime
+		/// when EndDraw() is called.
+		/// 
+		/// This bitmap contains the data from
+		/// every render command
+		/// </summary>
+		Microsoft::WRL::ComPtr<IWICBitmap> bitmap;
 
 	}; // class BitmapRenderer
 
