@@ -1,20 +1,35 @@
 #pragma once
 
+/// <summary>
+/// Core
+/// </summary>
 #include <Core/System/Datatypes.hpp>
 #include <Core/Maths/Vector2.hpp>
+#include <Core/Rendering/Renderers/RendererType.hpp>
+#include <Core/Rendering/Renderers/RendererBase.hpp>
 
+/// <summary>
+/// Direct2D content
+/// </summary>
 #include <d2d1.h>
 #pragma comment(lib, "d2d1")
 
+/// <summary>
+/// DirectWrite content
+/// </summary>
 #include <dwrite.h>
 #pragma comment(lib, "dwrite")
 
+/// <summary>
+/// WIC (Windows Imaging Component)
+/// </summary>
 #include <wincodec.h>
 #pragma comment(lib, "windowscodecs")
 
+/// <summary>
+/// ComPtr
+/// </summary>
 #include <wrl/client.h>
-
-#include <memory>
 
 namespace Core
 {
@@ -37,7 +52,7 @@ namespace Core
 		/// </summary>
 		/// <param name="handle">A handle used to create the RenderTarget</param>
 		/// <returns>True if everythings works as expected</returns>
-		bool Initialize(Windowhandle handle);
+		bool Initialize(Windowhandle handle, RendererType type);
 
 		/// <summary>
 		/// Destroys the GraphicsContext
@@ -92,8 +107,15 @@ namespace Core
 		/// Used to draw anything
 		/// on screen
 		/// </summary>
-		Microsoft::WRL::ComPtr<ID2D1HwndRenderTarget> renderTarget;
+		//Microsoft::WRL::ComPtr<ID2D1HwndRenderTarget> renderTarget;
 		
+		/// <summary>
+		/// The renderer
+		/// </summary>
+		RendererBase * renderer;
+
+		ID2D1RenderTarget * renderTarget;
+
 		/// <summary>
 		/// Keeps track of the drawing-state.
 		/// We need this to restore the state

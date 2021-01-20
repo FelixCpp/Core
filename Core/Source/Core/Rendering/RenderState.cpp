@@ -76,7 +76,7 @@ namespace Core
 	{
 		this->activeMatrix = this->metrics.empty() ? &this->defaultMatrix : &this->metrics.top();
 
-		if (ID2D1HwndRenderTarget * rt = this->gctx->renderTarget.Get())
+		if (ID2D1RenderTarget * rt = this->gctx->renderTarget)
 		{
 			// activate the matrix as the new transformation
 			rt->SetTransform(this->GetActiveMatrix());

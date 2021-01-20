@@ -15,7 +15,7 @@ namespace Core
 			this->brush->SetBitmap(bitmap);
 		}
 
-		void CreateBrush(ID2D1HwndRenderTarget * renderTarget, ID2D1Bitmap * bitmap)
+		void CreateBrush(ID2D1RenderTarget * renderTarget, ID2D1Bitmap * bitmap)
 		{
 			renderTarget->CreateBitmapBrush(bitmap, &this->brush);
 		}
@@ -64,7 +64,7 @@ namespace Core
 			this->impl->SetOpacity(image.opacity);
 		} else
 		{
-			if (ID2D1HwndRenderTarget * renderTarget = this->gctx->renderTarget.Get())
+			if (ID2D1RenderTarget * renderTarget = this->gctx->renderTarget)
 			{
 				this->impl->CreateBrush(renderTarget, bitmap);
 				this->impl->SetExtendModeX(this->modeX);

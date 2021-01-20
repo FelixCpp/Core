@@ -65,7 +65,7 @@ namespace Core
 	void ShapeRenderTarget::DrawShape()
 	{
 		// get the render target
-		ID2D1HwndRenderTarget * renderTarget = this->gctx->renderTarget.Get();
+		ID2D1RenderTarget * renderTarget = this->gctx->renderTarget;
 		if (!renderTarget) { return; }
 
 		// get the geometry

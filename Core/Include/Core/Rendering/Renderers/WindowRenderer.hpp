@@ -1,0 +1,80 @@
+#pragma once
+
+/// <summary>
+/// Core
+/// </summary>
+#include <Core/Rendering/Renderers/RendererBase.hpp>
+
+/// <summary>
+/// Direct2D dependencies
+/// </summary>
+#include <d2d1.h>
+#include <wrl/client.h>
+
+namespace Core
+{
+
+	class WindowRenderer : public RendererBase {
+	public:
+
+		/// <summary>
+		/// Default constructor
+		/// </summary>
+		WindowRenderer();
+
+		/// <summary>
+		/// Initializes the RenderTarget
+		/// </summary>
+		/// <param name="factory">the graphics factory</param>
+		/// <param name="handle">the Window handle</param>
+		virtual bool Initialize(ID2D1Factory * factory, Windowhandle handle) override;
+
+		/// <summary>
+		/// Tells the RenderTarget to start
+		/// listening on render commands
+		/// </summary>
+		virtual void BeginDraw() override;
+
+		/// <summary>
+		/// Stops listening on
+		/// Render commands and
+		/// draws the content to
+		/// the screen
+		/// </summary>
+		virtual void EndDraw() override;
+
+		/// <summary>
+		/// Resizes the rendering
+		/// area
+		/// </summary>
+		/// <param name="width">width of the area</param>
+		/// <param name="height">height of the area</param>
+		virtual void ResizeViewport(u32_t width, u32_t height) override;
+
+		/// <summary>
+		/// Returns the RenderTarget
+		/// </summary>
+		virtual ID2D1RenderTarget * GetRenderTarget() const override;
+
+	public:
+
+		/// <summary>
+		/// The actual RenderTarget
+		/// </summary>
+		Microsoft::WRL::ComPtr<ID2D1HwndRenderTarget> renderTarget;
+
+		/// <summary>
+		/// A boolean to keep
+		/// track of wether
+		/// the RenderTarget is
+		/// currently drawing or not.
+		/// 
+		/// We need this to restore the
+		/// drawing state after force
+		/// the Resize method to execute
+		/// </summary>
+		bool drawing;
+
+	}; // class BitmapRenderer
+
+} // namespace Core

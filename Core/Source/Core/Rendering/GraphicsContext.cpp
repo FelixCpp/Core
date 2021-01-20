@@ -1,6 +1,8 @@
 #include <Core/Rendering/GraphicsContext.hpp>
 #include <Core/Rendering/RenderState.hpp>
 
+#include <Core/Rendering/Renderers/RendererFactory.hpp>
+
 #include <Core/System/Logger.hpp>
 
 namespace Core
@@ -10,12 +12,13 @@ namespace Core
 		mainFactory(nullptr),
 		imagingFactory(nullptr),
 		writeFactory(nullptr),
+		renderer(nullptr),
 		renderTarget(nullptr),
 		drawing(false)
 	{
 	}
 
-	bool GraphicsContext::Initialize(Windowhandle handle)
+	bool GraphicsContext::Initialize(Windowhandle handle, RendererType type)
 	{
 		HRESULT hr = D2D1CreateFactory(D2D1_FACTORY_TYPE_SINGLE_THREADED, this->mainFactory.ReleaseAndGetAddressOf());
 		if (FAILED(hr))
@@ -51,62 +54,56 @@ namespace Core
 			return false;
 		}
 
-		RECT rect = {};
-		if (!GetClientRect(handle, &rect))
+		// Initialize the Renderer
+		this->renderer = RendererFactory::Create(type);
+		if (!this->renderer)
 		{
-			CORE_ERROR("failed to get the window size");
+			CORE_ERROR("Invalid RendererType");
 			return false;
 		}
 
-		const UINT width = rect.right - rect.left;
-		const UINT height = rect.bottom - rect.top;
-
-		hr = mainFactory->CreateHwndRenderTarget(
-			D2D1::RenderTargetProperties(),
-			D2D1::HwndRenderTargetProperties(handle, D2D1::SizeU(width, height), D2D1_PRESENT_OPTIONS_IMMEDIATELY),
-			&this->renderTarget
-		);
-		if (FAILED(hr))
+		// Initialize the RenderTarget
+		if (!this->renderer->Initialize(this->mainFactory.Get(), handle))
 		{
-			CORE_ERROR("failed to create a RenderTarget");
 			return false;
 		}
+
+		this->renderTarget = this->renderer->GetRenderTarget();
 
 		return true;
 	}
 
 	void GraphicsContext::Destroy()
 	{
-		//CoUninitialize(); /* not allowed to do this call before uninitializing every image which was loaded with that imagingFactory */
+		// We need to destroy the ImagingFactory first!
 		this->imagingFactory.Reset();
+		CoUninitialize();
+		
 		this->writeFactory.Reset();
-		this->renderTarget.Reset();
 		this->mainFactory.Reset();
+
+		delete this->renderer;
+		this->renderer = nullptr;
+
+		this->renderTarget = nullptr;
 	}
 
 	void GraphicsContext::BeginDraw()
 	{
-		if (!this->drawing)
-		{
-			this->renderTarget->BeginDraw();
-			this->drawing = true;
-		}
+		this->renderer->BeginDraw();
 	}
 
 	void GraphicsContext::EndDraw()
 	{
-		if (this->drawing)
-		{
-			this->renderTarget->EndDraw();
-			this->drawing = false;
-		}
+		this->renderer->EndDraw();
 	}
 
 	void GraphicsContext::ResizeViewport(u32_t width, u32_t height)
 	{
-		if (this->drawing)
+		this->renderer->ResizeViewport(width, height);
+		/*if (this->drawing)
 		{
-			if (ID2D1HwndRenderTarget * rt = this->renderTarget.Get())
+			if (ID2D1RenderTarget * rt = this->renderTarget.Get())
 			{
 				rt->EndDraw();
 				rt->Resize(D2D1::SizeU(width, height));
@@ -116,7 +113,7 @@ namespace Core
 		{
 			if(ID2D1HwndRenderTarget * rt = this->renderTarget.Get())
 				rt->Resize(D2D1::SizeU(width, height));
-		}
+		}*/
 	}
 	
 }

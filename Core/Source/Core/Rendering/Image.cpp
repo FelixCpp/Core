@@ -34,7 +34,7 @@ namespace Core
 		auto & bitmap = this->impl->bitmap;
 
 		// Get the RenderTarget
-		ID2D1HwndRenderTarget * renderTarget = gctx->renderTarget.Get();
+		ID2D1RenderTarget * renderTarget = gctx->renderTarget;
 		if (!renderTarget)
 		{
 			CORE_ERROR("There is no RenderTarget");
@@ -145,7 +145,7 @@ namespace Core
 		}
 		
 		// Get the RenderTarget
-		ID2D1HwndRenderTarget * renderTarget = gctx->renderTarget.Get();
+		ID2D1RenderTarget * renderTarget = gctx->renderTarget;
 		if (!renderTarget)
 		{
 			CORE_ERROR("There is no RenderTarget");
@@ -302,7 +302,7 @@ namespace Core
 		{
 			// we need to create a brand new bitmap to copy the data into later
 			// Get the RenderTarget
-			ID2D1HwndRenderTarget * renderTarget = gctx->renderTarget.Get();
+			ID2D1RenderTarget * renderTarget = gctx->renderTarget;
 			if (!renderTarget)
 			{
 				CORE_ERROR("There is no RenderTarget");

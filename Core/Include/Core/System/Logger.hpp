@@ -1,12 +1,12 @@
 #pragma once
 
+#include <cstdio> // std::printf
+
 namespace Core
 {
 	void ChangeConsoleColorBasedOnLogLevel(const char * logLevel);
 	void ChangeConsoleColorToDefault();
 }
-
-extern int _cdecl printf(char const * const _Format, ...);
 
 #ifdef CORE_DONT_SHOW_DEBUG
 #define CORE_SHOW_DEBUG 0

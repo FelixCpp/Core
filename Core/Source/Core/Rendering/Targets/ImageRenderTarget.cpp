@@ -59,7 +59,7 @@ namespace Core
 
 	void ImageRenderTarget::Image(const Core::Image & image, float x, float y, float width, float height)
 	{
-		ID2D1HwndRenderTarget * rt = this->gctx->renderTarget.Get();
+		ID2D1RenderTarget * rt = this->gctx->renderTarget;
 		if (!rt) return;
 
 		ID2D1Bitmap * bitmap = image.GetBitmap();

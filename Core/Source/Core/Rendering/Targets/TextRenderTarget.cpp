@@ -26,7 +26,7 @@ namespace Core
 	void TextRenderTarget::Text(const std::string & string, float x, float y, float width, float height)
 	{
 		RenderState & state = this->GetState();
-		ID2D1HwndRenderTarget * rt = this->gctx->renderTarget.Get();
+		ID2D1RenderTarget * rt = this->gctx->renderTarget;
 
 		TextRenderer & textRenderer = state.textRenderer;
 		textRenderer.SetText(string);

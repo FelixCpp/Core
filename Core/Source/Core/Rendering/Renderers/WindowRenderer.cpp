@@ -1,0 +1,94 @@
+#include <Core/Rendering/Renderers/WindowRenderer.hpp>
+#include <Core/System/Logger.hpp>
+
+namespace Core
+{
+
+	WindowRenderer::WindowRenderer() :
+		renderTarget(nullptr),
+		drawing(false)
+	{
+	}
+
+	bool WindowRenderer::Initialize(ID2D1Factory * factory, Windowhandle handle)
+	{
+		// get the size of the window
+		RECT wndRect = {};
+		if (!GetClientRect(handle, &wndRect))
+		{
+			CORE_ERROR("Failed to get the clients rect");
+			return false;
+		}
+
+		// create a D2D1_SIZE_U object
+		const D2D1_SIZE_U pixelSize = D2D1::SizeU(
+			wndRect.right - wndRect.left,
+			wndRect.bottom - wndRect.top
+		);
+
+		// Create a PixelFormat object
+		const D2D1_PIXEL_FORMAT pixelFormat = D2D1::PixelFormat(
+			DXGI_FORMAT_B8G8R8A8_UNORM,
+			D2D1_ALPHA_MODE_PREMULTIPLIED
+		);
+
+		// Create the RenderTarget properties
+		const D2D1_RENDER_TARGET_PROPERTIES properties = D2D1::RenderTargetProperties(
+			D2D1_RENDER_TARGET_TYPE_DEFAULT, pixelFormat, 0.f, 0.f, D2D1_RENDER_TARGET_USAGE_NONE, D2D1_FEATURE_LEVEL_DEFAULT
+		);
+
+		// Create a HwndRenderTarget
+		const HRESULT hr = factory->CreateHwndRenderTarget(
+			properties,
+			D2D1::HwndRenderTargetProperties(handle, pixelSize, D2D1_PRESENT_OPTIONS_IMMEDIATELY),
+			&this->renderTarget
+		);
+
+		// error handling
+		if (FAILED(hr))
+		{
+			CORE_ERROR("Failed to create a HwndRenderTarget");
+			return false;
+		}
+
+		return true;
+	}
+
+	void WindowRenderer::BeginDraw()
+	{
+		if (!this->drawing)
+		{
+			this->renderTarget->BeginDraw();
+			this->drawing = true;
+		}
+	}
+
+	void WindowRenderer::EndDraw()
+	{
+		if (this->drawing)
+		{
+			this->renderTarget->EndDraw();
+			this->drawing = false;
+		}
+	}
+
+	void WindowRenderer::ResizeViewport(u32_t width, u32_t height)
+	{
+		printf("width: %d, height: %d\n", width, height);
+		if (this->drawing)
+		{
+			this->renderTarget->EndDraw();
+			this->renderTarget->Resize(D2D1::SizeU(width, height));
+			this->renderTarget->BeginDraw();
+		} else
+		{
+			this->renderTarget->Resize(D2D1::SizeU(width, height));
+		}
+	}
+
+	ID2D1RenderTarget * WindowRenderer::GetRenderTarget() const
+	{
+		return this->renderTarget.Get();
+	}
+
+} // namespace Core

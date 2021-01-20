@@ -84,7 +84,7 @@ namespace Core
 				}
 
 				/* initialize Direct2D */
-				window->gctx->Initialize(handle);
+				window->gctx->Initialize(handle, RendererType::WindowRenderer);
 			} break;
 
 			case WM_SETCURSOR:

@@ -18,7 +18,7 @@ namespace Core
 
 	void PrimitiveRenderTarget::Rect(float x1, float y1, float x2, float y2, float cornerRadiusX, float cornerRadiusY)
 	{
-		ID2D1HwndRenderTarget * rt = this->gctx->renderTarget.Get();
+		ID2D1RenderTarget * rt = this->gctx->renderTarget;
 		RenderState & state = this->GetState();
 
 		D2D1_RECT_F rect = D2D1::RectF();
@@ -56,7 +56,7 @@ namespace Core
 
 	void PrimitiveRenderTarget::Ellipse(float x, float y, float rx, float ry)
 	{
-		ID2D1HwndRenderTarget * rt = this->gctx->renderTarget.Get();
+		ID2D1RenderTarget * rt = this->gctx->renderTarget;
 		RenderState & state = this->GetState();
 
 		D2D1_ELLIPSE ellipse;
@@ -94,7 +94,7 @@ namespace Core
 
 	void PrimitiveRenderTarget::Point(float x, float y)
 	{
-		ID2D1HwndRenderTarget * rt = this->gctx->renderTarget.Get();
+		ID2D1RenderTarget * rt = this->gctx->renderTarget;
 		RenderState & state = this->GetState();
 		const D2D1_ELLIPSE ellipse = D2D1::Ellipse(D2D1::Point2F(x, y), state.strokeWeight, state.strokeWeight);
 
@@ -106,7 +106,7 @@ namespace Core
 
 	void PrimitiveRenderTarget::Line(float x1, float y1, float x2, float y2)
 	{
-		ID2D1HwndRenderTarget * rt = this->gctx->renderTarget.Get();
+		ID2D1RenderTarget * rt = this->gctx->renderTarget;
 		RenderState & state = this->GetState();
 
 		if (ID2D1Brush * stroke = state.activeStroke)
