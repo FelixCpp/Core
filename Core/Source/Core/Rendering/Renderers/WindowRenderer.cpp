@@ -63,20 +63,14 @@ namespace Core
 
 	void WindowRenderer::BeginDraw()
 	{
-		if (!this->drawing)
-		{
-			this->renderTarget->BeginDraw();
-			this->drawing = true;
-		}
+		this->renderTarget->BeginDraw();
+		this->drawing = true;
 	}
 
 	void WindowRenderer::EndDraw()
 	{
-		if (this->drawing)
-		{
-			this->renderTarget->EndDraw();
-			this->drawing = false;
-		}
+		this->renderTarget->EndDraw();
+		this->drawing = false;
 	}
 
 	void WindowRenderer::ResizeViewport(u32_t width, u32_t height)

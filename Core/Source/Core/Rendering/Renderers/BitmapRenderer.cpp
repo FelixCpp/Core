@@ -90,11 +90,20 @@ namespace Core
 
 	void BitmapRenderer::ResizeViewport(u32_t width, u32_t height)
 	{
+		// Get a DC from the Windowhandle
 		HDC hdc = GetDC(this->windowHandle);
+
+		// Get the size of the window
 		RECT windowBoundary = {};
 		GetClientRect(this->windowHandle, &windowBoundary);
+
+		// bind the dc and the size
 		this->dcRenderTarget->BindDC(hdc, &windowBoundary);
+
+		// Recreate the BitmapRenderTarget
 		this->dcRenderTarget->CreateCompatibleRenderTarget(&this->bitmapRenderTarget);
+		
+		// Release the DC
 		ReleaseDC(this->windowHandle, hdc);
 	}
 
