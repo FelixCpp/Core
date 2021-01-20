@@ -6,13 +6,13 @@
 namespace Core
 {
 
-	class GraphicsContext;
+	class Renderer;
 
 	class RenderStateManager {
 	public:
 
 		/* constructor */
-		explicit RenderStateManager(GraphicsContext *& gctx);
+		explicit RenderStateManager(Renderer *& renderer);
 		
 		/* pushes a RenderState onto the stack and actives the next */
 		void PushState();
@@ -43,7 +43,7 @@ namespace Core
 		std::stack<RenderState> states;
 
 		/* an instance of a GraphicsContext. We need this to push another RenderState onto the stack */
-		GraphicsContext *& gctx;
+		Renderer *& renderer;
 
 	};
 

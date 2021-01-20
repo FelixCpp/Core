@@ -9,12 +9,10 @@ struct ID2D1Geometry;
 namespace Core
 {
 
-	class GraphicsContext;
-
 	class Shape {
 	public:
 
-		explicit Shape(GraphicsContext *& gctx);
+		Shape();
 
 		void SetShapeBegin(ShapeBegin begin);
 		ShapeBegin GetShapeBegin() const;
@@ -46,8 +44,6 @@ namespace Core
 		/// </summary>
 		struct Implementation;
 		std::shared_ptr<Implementation> impl;
-
-		GraphicsContext *& gctx;
 
 		ShapeBegin shapeBegin;
 		ShapeEnd shapeEnd;

@@ -12,17 +12,17 @@
 namespace Core
 {
 
-	class GraphicsContext;
+	class Renderer;
 
 	class LinearGradientBrush {
 	public:
 
 		/// <summary>
-		/// constructor which passes the GraphicsContext into
+		/// constructor which passes the Renderer into
 		/// its member variable
 		/// </summary>
-		/// <param name="gctx">the GraphicsContext</param>
-		explicit LinearGradientBrush(GraphicsContext *& gctx);
+		/// <param name="renderer">the Renderer</param>
+		explicit LinearGradientBrush(Renderer *& renderer);
 
 		/// <summary>
 		/// Changes the starting point
@@ -115,12 +115,12 @@ namespace Core
 		std::vector<Color> colors;
 
 		/// <summary>
-		/// The GraphicsContext holding the
+		/// The Renderer holding the
 		/// RenderTarget which is needed
 		/// to create the GradientStopCollection &
 		/// GradientBrush
 		/// </summary>
-		GraphicsContext *& gctx;
+		Renderer *& renderer;
 
 	};
 

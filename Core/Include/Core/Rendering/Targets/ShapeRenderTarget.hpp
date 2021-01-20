@@ -12,7 +12,7 @@ namespace Core
 	/// </summary>
 	class Shape;
 	class RenderStateManager;
-	class GraphicsContext;
+	class Renderer;
 
 	/// <summary>
 	/// A Target class to handle
@@ -29,9 +29,9 @@ namespace Core
 		/// Its needed to get access to the Shape attribute
 		/// in the active RenderState
 		/// </summary>
-		/// <param name="gctx">the GraphicsContext which is needed to draw the shape</param>
+		/// <param name="renderer">the GraphicsContext which is needed to draw the shape</param>
 		/// <param name="rsm">the RenderStateManager which is needed to get access to the current RenderState which holds the shape object</param>
-		explicit ShapeRenderTarget(GraphicsContext *& gctx, RenderStateManager *& rsm);
+		explicit ShapeRenderTarget(Renderer *& renderer, RenderStateManager *& rsm);
 
 		/// <summary>
 		/// A virtual destructor
@@ -152,10 +152,10 @@ namespace Core
 	private:
 
 		/// <summary>
-		/// An instance of the GraphicsContext
+		/// An instance of the Renderer
 		/// to draw the shape
 		/// </summary>
-		GraphicsContext *& gctx;
+		Renderer *& renderer;
 
 		/// <summary>
 		/// An instance of the RenderStateManager

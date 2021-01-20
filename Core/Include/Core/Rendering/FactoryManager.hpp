@@ -9,19 +9,19 @@
 /// Direct2D content
 /// </summary>
 #include <d2d1.h>
-#pragma lib "d2d1"
+#pragma comment(lib, "d2d1")
 
 /// <summary>
 /// DirectWrite content
 /// </summary>
 #include <dwrite.h>
-#pragma lib "dwrite"
+#pragma comment(lib, "dwrite")
 
 /// <summary>
 /// WIC (Windows Imaging Component)
 /// </summary>
 #include <wincodec.h>
-#pragma lib "windowscodecs"
+#pragma comment(lib, "windowscodecs")
 
 /// <summary>
 /// Contains smart pointer

@@ -1,6 +1,9 @@
 #include <Core/Rendering/Image.hpp>
-#include <Core/Rendering/GraphicsContext.hpp> // GraphicsContext
+#include <Core/Rendering/Renderers/Renderer.hpp> // Core::Renderer
+#include <Core/Rendering/FactoryManager.hpp> // Core::FactoryManager
+
 #include <Core/System/Logger.hpp> // CORE_ERROR
+#include <Core/Maths/Math.hpp> // Core::FMath
 
 #include <wrl/client.h> // Microsoft::WRL::ComPtr
 #include <d2d1.h> // Direct2D functionality
@@ -28,13 +31,13 @@ namespace Core
 	{
 	}
 
-	bool Image::Create(i32_t width, i32_t height, const Color colors[], GraphicsContext * gctx)
+	bool Image::Create(i32_t width, i32_t height, const Color colors[], Renderer * renderer)
 	{
 		// handy typedef for the implementations attribute
 		auto & bitmap = this->impl->bitmap;
 
 		// Get the RenderTarget
-		ID2D1RenderTarget * renderTarget = gctx->renderTarget;
+		ID2D1RenderTarget * renderTarget = renderer->GetRenderTarget();
 		if (!renderTarget)
 		{
 			CORE_ERROR("There is no RenderTarget");
@@ -75,10 +78,10 @@ namespace Core
 		return true;
 	}
 
-	bool Image::LoadFromFile(const std::string & filepath, GraphicsContext * gctx)
+	bool Image::LoadFromFile(const std::string & filepath, Renderer * renderer)
 	{
 		// Get the ImagingFactory
-		IWICImagingFactory * factory = gctx->imagingFactory.Get();
+		IWICImagingFactory * factory = FactoryManager::wicFactory.Get();
 
 		// error handling
 		if (!factory)
@@ -145,7 +148,7 @@ namespace Core
 		}
 		
 		// Get the RenderTarget
-		ID2D1RenderTarget * renderTarget = gctx->renderTarget;
+		ID2D1RenderTarget * renderTarget = renderer->GetRenderTarget();
 		if (!renderTarget)
 		{
 			CORE_ERROR("There is no RenderTarget");
@@ -248,7 +251,7 @@ namespace Core
 		return true;
 	}
 
-	bool Image::LoadFromMemory(i32_t width, i32_t height, const Color colors[], GraphicsContext * gctx)
+	bool Image::LoadFromMemory(i32_t width, i32_t height, const Color colors[], Renderer * renderer)
 	{
 		auto & bitmap = this->impl->bitmap;
 	
@@ -269,7 +272,7 @@ namespace Core
 		} else
 		{
 			// Create a brand new bitmap
-			if (!this->Create(width, height, colors, gctx))
+			if (!this->Create(width, height, colors, renderer))
 			{
 				return false;
 			}
@@ -281,7 +284,7 @@ namespace Core
 		return true;
 	}
 
-	bool Image::LoadFromImage(const Image & other, i32_t x, i32_t y, i32_t width, i32_t height, GraphicsContext * gctx)
+	bool Image::LoadFromImage(const Image & other, i32_t x, i32_t y, i32_t width, i32_t height, Renderer * renderer)
 	{
 		auto & bitmap = this->impl->bitmap;
 		ID2D1Bitmap * source = other.GetBitmap();
@@ -302,7 +305,7 @@ namespace Core
 		{
 			// we need to create a brand new bitmap to copy the data into later
 			// Get the RenderTarget
-			ID2D1RenderTarget * renderTarget = gctx->renderTarget;
+			ID2D1RenderTarget * renderTarget = renderer->GetRenderTarget();
 			if (!renderTarget)
 			{
 				CORE_ERROR("There is no RenderTarget");

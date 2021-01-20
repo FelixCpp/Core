@@ -41,7 +41,7 @@
     <ClInclude Include="Include\Core\Maths\Vector3.hpp" />
     <ClInclude Include="Include\Core\Rendering\ImageInterpolationMode.hpp" />
     <ClInclude Include="Include\Core\Rendering\Renderers\BitmapRenderer.hpp" />
-    <ClInclude Include="Include\Core\Rendering\Renderers\RendererBase.hpp" />
+    <ClInclude Include="Include\Core\Rendering\Renderers\Renderer.hpp" />
     <ClInclude Include="Include\Core\Rendering\Renderers\RendererFactory.hpp" />
     <ClInclude Include="Include\Core\Rendering\Renderers\RendererType.hpp" />
     <ClInclude Include="Include\Core\Rendering\Renderers\WindowRenderer.hpp" />
@@ -59,7 +59,6 @@
     <ClInclude Include="Include\Core\Window\DisplayMode.hpp" />
     <ClInclude Include="Include\Core\Window\SystemCursor.hpp" />
     <ClInclude Include="Include\Core\Rendering\Targets\RenderTarget.hpp" />
-    <ClInclude Include="Include\Core\Rendering\GraphicsContext.hpp" />
     <ClInclude Include="Include\Core\Rendering\Image.hpp" />
     <ClInclude Include="Include\Core\Rendering\LinearGradientBrush.hpp" />
     <ClInclude Include="Include\Core\Rendering\RadialGradientBrush.hpp" />
@@ -123,7 +122,6 @@
     <ClCompile Include="Source\Core\Rendering\RenderStateManager.cpp" />
     <ClCompile Include="Source\Core\Rendering\Targets\PrimitiveRenderTarget.cpp" />
     <ClCompile Include="Source\Core\Rendering\Targets\RenderTarget.cpp" />
-    <ClCompile Include="Source\Core\Rendering\GraphicsContext.cpp" />
     <ClCompile Include="Source\Core\Rendering\Image.cpp" />
     <ClCompile Include="Source\Core\Rendering\LinearGradientBrush.cpp" />
     <ClCompile Include="Source\Core\Rendering\RadialGradientBrush.cpp" />

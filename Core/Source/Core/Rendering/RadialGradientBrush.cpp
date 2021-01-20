@@ -1,5 +1,5 @@
 #include <Core/Rendering/RadialGradientBrush.hpp>
-#include <Core/Rendering/GraphicsContext.hpp>
+#include <Core/Rendering/Renderers/Renderer.hpp>
 #include <Core/Rendering/Helpers.hpp>
 
 #include <Core/System/Logger.hpp>
@@ -7,14 +7,14 @@
 namespace Core
 {
 
-	RadialGradientBrush::RadialGradientBrush(GraphicsContext *& gctx) :
+	RadialGradientBrush::RadialGradientBrush(Renderer *& renderer) :
 		brush(nullptr),
 		collection(nullptr),
 		center(0.f, 0.f),
 		radius(0.f, 0.f),
 		offset(0.f, 0.f),
 		colors(),
-		gctx(gctx)
+		renderer(renderer)
 	{
 	}
 
@@ -105,9 +105,7 @@ namespace Core
 
 	void RadialGradientBrush::UpdateColors()
 	{
-		if (!this->gctx) return;
-
-		ID2D1RenderTarget * rt = this->gctx->renderTarget;
+		ID2D1RenderTarget * rt = this->renderer->GetRenderTarget();
 
 		const size_t size = this->colors.size();
 		std::vector<D2D1_GRADIENT_STOP> gradientStops(size);

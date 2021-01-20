@@ -7,7 +7,7 @@
 namespace Core
 {
 	
-	class GraphicsContext;
+	class Renderer;
 	class RenderStateManager;
 
 	class RenderWindow : public Window, public RenderTarget {
@@ -19,7 +19,7 @@ namespace Core
 	public:
 
 		/* the default constructor */
-		explicit RenderWindow(GraphicsContext *& gctx, RenderStateManager *& rsm);
+		explicit RenderWindow(Renderer *& renderer, RenderStateManager *& rsm);
 
 		/* a virtual destructor */
 		virtual ~RenderWindow();
@@ -46,8 +46,8 @@ namespace Core
 		/* indicates wether the user is currently resizing the window or not */
 		bool resizing;
 
-		/* a graphicscontext */
-		GraphicsContext *& gctx;
+		/* a Renderer */
+		Renderer *& renderer;
 
 	};
 

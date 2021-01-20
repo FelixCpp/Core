@@ -1,14 +1,15 @@
 #include <Core/Application.hpp>
-#include <Core/Rendering/GraphicsContext.hpp>
+#include <Core/Rendering/Renderers/Renderer.hpp>
 #include <Core/Rendering/RenderStateManager.hpp>
+#include <Core/Rendering/Renderers/RendererFactory.hpp>
 
 namespace Core
 {
 	
 	Application::~Application()
 	{
-		delete this->gctx;
-		this->gctx = nullptr;
+		delete this->renderer;
+		this->renderer = nullptr;
 
 		delete this->rsm;
 		this->rsm = nullptr;
@@ -30,10 +31,10 @@ namespace Core
 	}
 	
 	Application::Application(i32_t width, i32_t height, const std::string & title) :
-		RenderWindow(this->gctx, this->rsm),
+		RenderWindow(this->renderer, this->rsm),
 		drawingPaused(true),
-		gctx(new GraphicsContext()),
-		rsm(new RenderStateManager(this->gctx))
+		renderer(RendererFactory::Create(RendererType::WindowRenderer)),
+		rsm(new RenderStateManager(this->renderer))
 	{
 		this->Create(width, height, title);
 		this->SetResizable(false);
@@ -43,16 +44,16 @@ namespace Core
 
 	void Application::SetupImpl()
 	{
-		this->gctx->BeginDraw();
+		this->renderer->BeginDraw();
 		this->Setup();
-		this->gctx->EndDraw();
+		this->renderer->EndDraw();
 	}
 
 	void Application::DrawImpl()
 	{
-		this->gctx->BeginDraw();
+		this->renderer->BeginDraw();
 		this->Draw();
-		this->gctx->EndDraw();
+		this->renderer->EndDraw();
 	}
 
 	void Application::StartSketch()

@@ -9,12 +9,12 @@
 namespace Core
 {
 
-	class RendererBase;
+	class Renderer;
 
 	struct RendererFactory : StaticObject {
 
-		static RendererBase * Create(RendererType type);
+		static Renderer * Create(RendererType type);
 
-	};
+	}; // struct RendererFactory
 
 } // namespace Core

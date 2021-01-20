@@ -1,6 +1,9 @@
-#include <Core/Rendering/BitmapBrush.hpp>
-#include <Core/Rendering/GraphicsContext.hpp>
+#include <Core/Rendering/BitmapBrush.hpp> // Core::BitmapBrush
+#include <Core/Rendering/Renderers/Renderer.hpp> // Core::Renderer
 
+/// <summary>
+/// Direct2D
+/// </summary>
 #include <wrl/client.h>
 #include <d2d1.h>
 
@@ -42,9 +45,9 @@ namespace Core
 
 	};
 
-	BitmapBrush::BitmapBrush(GraphicsContext *& gctx) :
+	BitmapBrush::BitmapBrush(Renderer *& renderer) :
 		impl(std::make_shared<Implementation>()),
-		gctx(gctx),
+		renderer(renderer),
 		image(),
 		interpolationMode(ImageInterpolationMode::NearestNeighbor),
 		modeX(ExtendMode::Clamp),
@@ -64,7 +67,7 @@ namespace Core
 			this->impl->SetOpacity(image.opacity);
 		} else
 		{
-			if (ID2D1RenderTarget * renderTarget = this->gctx->renderTarget)
+			if (ID2D1RenderTarget * renderTarget = this->renderer->GetRenderTarget())
 			{
 				this->impl->CreateBrush(renderTarget, bitmap);
 				this->impl->SetExtendModeX(this->modeX);

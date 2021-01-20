@@ -8,12 +8,12 @@
 namespace Core
 {
 
-	class GraphicsContext;
+	class Renderer;
 
 	class SolidColorBrush {
 	public:
 
-		explicit SolidColorBrush(GraphicsContext *& gctx);
+		explicit SolidColorBrush(Renderer *& renderer);
 
 		void SetColor(const Color & color);
 		const Color & GetColor() const;
@@ -29,7 +29,7 @@ namespace Core
 		Microsoft::WRL::ComPtr<ID2D1SolidColorBrush> brush;
 		Color color;
 
-		GraphicsContext *& gctx;
+		Renderer *& renderer;
 
 	};
 

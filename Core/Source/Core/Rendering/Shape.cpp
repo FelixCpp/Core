@@ -1,8 +1,11 @@
-#include <Core/Rendering/Shape.hpp>
-#include <Core/Rendering/GraphicsContext.hpp>
+#include <Core/Rendering/Shape.hpp> // Core::Shape
+#include <Core/Rendering/FactoryManager.hpp> // Core::FactoryManager
 
-#include <Core/System/Logger.hpp>
+#include <Core/System/Logger.hpp> // CORE_ERROR
 
+/// <summary>
+/// Direct2D content
+/// </summary>
 #include <d2d1.h>
 #include <wrl/client.h>
 
@@ -20,9 +23,8 @@ namespace Core
 		bool isOpen = false;
 	};
 
-	Shape::Shape(GraphicsContext *& gctx) :
+	Shape::Shape() :
 		impl(std::make_shared<Implementation>()),
-		gctx(gctx),
 		shapeBegin(ShapeBegin::Filled),
 		shapeEnd(ShapeEnd::Open),
 		fillMode(FillMode::Alternate),
@@ -72,14 +74,8 @@ namespace Core
 
 	bool Shape::Begin()
 	{
-		if (!this->gctx)
-		{
-			CORE_ERROR("There is no GraphicsContext");
-			return false;
-		}
-
 		// get the main factory
-		ID2D1Factory * factory = this->gctx->mainFactory.Get();
+		ID2D1Factory * factory = FactoryManager::d2dFactory.Get();
 		if (!factory)
 		{
 			CORE_ERROR("There is no factory created");

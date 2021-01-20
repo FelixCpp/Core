@@ -10,12 +10,12 @@ struct ID2D1Brush;
 namespace Core
 {
 
-	class GraphicsContext;
+	class Renderer;
 
 	class BitmapBrush {
 	public:
 
-		explicit BitmapBrush(GraphicsContext *& gctx);
+		explicit BitmapBrush(Renderer *& gctx);
 		
 		void SetImage(const Image & image);
 		const Image & GetImage() const;
@@ -36,7 +36,7 @@ namespace Core
 		struct Implementation;
 		std::shared_ptr<Implementation> impl;
 
-		GraphicsContext *& gctx;
+		Renderer *& renderer;
 
 		Image image;
 		ImageInterpolationMode interpolationMode;

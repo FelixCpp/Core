@@ -16,7 +16,7 @@ namespace Core
 	/// </summary>
 	class RenderState;
 	class RenderStateManager;
-	class GraphicsContext;
+	class Renderer;
 
 	/// <summary>
 	/// A Target class to handle
@@ -30,9 +30,9 @@ namespace Core
 		/// constructor which passes the GraphicsContext & RenderStateManager
 		/// to its member variables.
 		/// </summary>
-		/// <param name="gctx">the GraphicsContext which is needed to draw the text</param>
+		/// <param name="renderer">the Renderer which is needed to draw the text</param>
 		/// <param name="rsm">the RenderStateManager which is needed to get access to the current RenderState holding a text object</param>
-		explicit TextRenderTarget(GraphicsContext *& gctx, RenderStateManager *& rsm);
+		explicit TextRenderTarget(Renderer *& renderer, RenderStateManager *& rsm);
 
 		/// <summary>
 		/// A virtual destructor
@@ -160,7 +160,7 @@ namespace Core
 		/// An instance of the GraphicsContext
 		/// to draw the shape
 		/// </summary>
-		GraphicsContext *& gctx;
+		Renderer *& renderer;
 
 		/// <summary>
 		/// An instance of the RenderStateManager

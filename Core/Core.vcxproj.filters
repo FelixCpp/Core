@@ -111,9 +111,6 @@
     <ClInclude Include="Include\Core\Rendering\DrawMode.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="Include\Core\Rendering\GraphicsContext.hpp">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="Include\Core\Rendering\Helpers.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
@@ -237,9 +234,6 @@
     <ClInclude Include="Include\Core\Rendering\ExtendMode.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="Include\Core\Rendering\Renderers\RendererBase.hpp">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="Include\Core\Rendering\Renderers\WindowRenderer.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
@@ -253,6 +247,9 @@
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="Include\Core\Rendering\FactoryManager.hpp">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Core\Rendering\Renderers\Renderer.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>
@@ -285,9 +282,6 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="Source\Core\Application.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Core\Rendering\GraphicsContext.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="Source\Core\Rendering\Helpers.cpp">

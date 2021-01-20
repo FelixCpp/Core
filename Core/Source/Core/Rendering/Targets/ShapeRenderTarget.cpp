@@ -1,13 +1,13 @@
 #include <Core/Rendering/Targets/ShapeRenderTarget.hpp>
-#include <Core/Rendering/GraphicsContext.hpp>
+#include <Core/Rendering/Renderers/Renderer.hpp>
 #include <Core/Rendering/RenderStateManager.hpp>
 #include <Core/Rendering/Shape.hpp>
 
 namespace Core
 {
 
-	ShapeRenderTarget::ShapeRenderTarget(GraphicsContext *& gctx, RenderStateManager *& rsm) :
-		gctx(gctx),
+	ShapeRenderTarget::ShapeRenderTarget(Renderer *& renderer, RenderStateManager *& rsm) :
+		renderer(renderer),
 		rsm(rsm)
 	{ }
 
@@ -65,7 +65,7 @@ namespace Core
 	void ShapeRenderTarget::DrawShape()
 	{
 		// get the render target
-		ID2D1RenderTarget * renderTarget = this->gctx->renderTarget;
+		ID2D1RenderTarget * renderTarget = this->renderer->GetRenderTarget();
 		if (!renderTarget) { return; }
 
 		// get the geometry

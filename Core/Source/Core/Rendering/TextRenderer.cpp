@@ -1,12 +1,12 @@
-#include <Core/Rendering/TextRenderer.hpp>
-#include <Core/Rendering/GraphicsContext.hpp>
+#include <Core/Rendering/TextRenderer.hpp> // Core::TextRenderer
+#include <Core/Rendering/FactoryManager.hpp> // Core::FactoryManager
 
-#include <Core/System/Logger.hpp>
+#include <Core/System/Logger.hpp> // CORE_ERROR
 
 namespace Core
 {
 
-	TextRenderer::TextRenderer(GraphicsContext *& gctx) :
+	TextRenderer::TextRenderer() :
 		layout(nullptr),
 		range({0u, 0u}),
 		fontWeight(FontWeight::Normal),
@@ -21,8 +21,7 @@ namespace Core
 		maxWidth(INFINITY),
 		maxHeight(INFINITY),
 		underline(false),
-		strikeThrough(false),
-		gctx(gctx)
+		strikeThrough(false)
 	{
 	}
 
@@ -227,7 +226,7 @@ namespace Core
 
 	void TextRenderer::UpdateText()
 	{
-		IDWriteFactory * writeFactory = this->gctx->writeFactory.Get();
+		IDWriteFactory * writeFactory = FactoryManager::dwriteFactory.Get();
 		const std::wstring wFont(this->font.begin(), this->font.end());
 		Microsoft::WRL::ComPtr<IDWriteTextFormat> format = nullptr;
 		HRESULT hr = writeFactory->CreateTextFormat(

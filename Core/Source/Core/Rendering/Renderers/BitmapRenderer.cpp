@@ -1,5 +1,6 @@
-#include <Core/Rendering/Renderers/BitmapRenderer.hpp>
-#include <Core/System/Logger.hpp>
+#include <Core/Rendering/Renderers/BitmapRenderer.hpp> // Core::BitmapRenderer
+#include <Core/Rendering/FactoryManager.hpp>
+#include <Core/System/Logger.hpp> // CORE_ERROR
 
 namespace Core
 {
@@ -11,7 +12,7 @@ namespace Core
 	{
 	}
 
-	bool BitmapRenderer::Initialize(ID2D1Factory * factory, Windowhandle handle)
+	bool BitmapRenderer::Initialize(Windowhandle handle)
 	{
 		// Create a PixelFormat object
 		const D2D1_PIXEL_FORMAT pixelFormat = D2D1::PixelFormat(
@@ -25,7 +26,7 @@ namespace Core
 		);
 
 		// Create a DC RenderTarget
-		HRESULT hr = factory->CreateDCRenderTarget(&properties, &this->dcRenderTarget);
+		HRESULT hr = FactoryManager::d2dFactory->CreateDCRenderTarget(&properties, &this->dcRenderTarget);
 		
 		// error handling
 		if (FAILED(hr))

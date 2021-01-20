@@ -19,7 +19,7 @@ namespace Core
 	/// of classes the user
 	/// shouldn't interact with
 	/// </summary>
-	class GraphicsContext;
+	class Renderer;
 
 	/// <summary>
 	/// A Target class to handle
@@ -42,9 +42,9 @@ namespace Core
 		/// passes the parameters to the base classes and
 		/// copies them into the member variable "gctx".
 		/// </summary>
-		/// <param name="gctx">the GraphicsContext</param>
+		/// <param name="renderer">the Renderer</param>
 		/// <param name="rsm">the RenderStateManger</param>
-		explicit RenderTarget(GraphicsContext *& gctx, RenderStateManager *& rsm);
+		explicit RenderTarget(Renderer *& renderer, RenderStateManager *& rsm);
 		
 		/// <summary>
 		/// A virtual destructor
@@ -61,11 +61,11 @@ namespace Core
 	private:
 
 		/// <summary>
-		/// An instance of the GraphicsContext
+		/// An instance of the Renderer
 		/// to get access to the RenderTarget
 		/// used to clear the background
 		/// </summary>
-		GraphicsContext *& gctx;
+		Renderer *& renderer;
 
 	};
 

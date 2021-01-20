@@ -1,12 +1,12 @@
 #include <Core/Rendering/StrokeStyle.hpp>
-#include <Core/Rendering/GraphicsContext.hpp>
+#include <Core/Rendering/FactoryManager.hpp>
 
 #include <Core/System/Logger.hpp>
 
 namespace Core
 {
 
-	StrokeStyle::StrokeStyle(GraphicsContext *& gctx) :
+	StrokeStyle::StrokeStyle() :
 		startCap(CapStyle::Round),
 		endCap(CapStyle::Round),
 		dashCap(CapStyle::Round),
@@ -16,8 +16,7 @@ namespace Core
 		miterLimit(10.f),
 		dashes(),
 		style(nullptr),
-		updated(false),
-		gctx(gctx)
+		updated(false)
 	{
 	}
 
@@ -148,7 +147,13 @@ namespace Core
 				this->dashOffset
 			);
 
-			ID2D1Factory * factory = this->gctx->mainFactory.Get();
+			ID2D1Factory * factory = FactoryManager::d2dFactory.Get();
+			if (!factory)
+			{
+				CORE_ERROR("There is no Direct2D factory");
+				return nullptr;
+			}
+
 			HRESULT hr = factory->CreateStrokeStyle(
 				properties,
 				this->dashes.data(),

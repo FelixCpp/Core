@@ -6,30 +6,28 @@
 #include <Core/System/Datatypes.hpp>
 
 struct ID2D1RenderTarget;
-struct ID2D1Factory;
 
 namespace Core
 {
 
-	class RendererBase {
+	class Renderer {
 	public:
 
 		/// <summary>
 		/// Default constructor
 		/// </summary>
-		RendererBase() = default;
+		Renderer() = default;
 		
 		/// <summary>
 		/// Default destructor
 		/// </summary>
-		virtual ~RendererBase() = default;
+		virtual ~Renderer() = default;
 
 		/// <summary>
 		/// Initializes the RenderTarget
 		/// </summary>
-		/// <param name="factory">the graphics factory</param>
 		/// <param name="handle">the Window handle</param>
-		virtual bool Initialize(ID2D1Factory * factory, Windowhandle handle) = 0;
+		virtual bool Initialize(Windowhandle handle) = 0;
 
 		/// <summary>
 		/// Tells the RenderTarget to start

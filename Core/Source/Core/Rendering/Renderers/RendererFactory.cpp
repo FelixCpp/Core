@@ -6,7 +6,7 @@
 namespace Core
 {
 
-	RendererBase * RendererFactory::Create(RendererType type)
+	Renderer * RendererFactory::Create(RendererType type)
 	{
 		switch (type)
 		{

@@ -12,7 +12,7 @@ namespace Core
 	/// </summary>
 	class RenderState;
 	class RenderStateManager;
-	class GraphicsContext;
+	class Renderer;
 
 	/// <summary>
 	/// A Target class to handle
@@ -28,7 +28,7 @@ namespace Core
 		/// </summary>
 		/// <param name="gctx">the GraphicsContext which is needed to draw the primitives</param>
 		/// <param name="rsm">the RenderStateManager which is needed to get access to the current RenderState holding informations how the primitives should be drawn</param>
-		explicit PrimitiveRenderTarget(GraphicsContext *& gctx, RenderStateManager *& rsm);
+		explicit PrimitiveRenderTarget(Renderer *& renderer, RenderStateManager *& rsm);
 
 		/// <summary>
 		/// A virtual destructor
@@ -129,10 +129,10 @@ namespace Core
 	private:
 
 		/// <summary>
-		/// An instance of the GraphicsContext
+		/// An instance of the Renderer
 		/// to draw the shape
 		/// </summary>
-		GraphicsContext *& gctx;
+		Renderer *& renderer;
 
 		/// <summary>
 		/// An instance of the RenderStateManager

@@ -1,19 +1,24 @@
-#include <Core/Rendering/RenderWindow.hpp>
-#include <Core/Rendering/GraphicsContext.hpp>
-#include <Core/System/Logger.hpp>
+#include <Core/Rendering/RenderWindow.hpp> // Core::RenderWindow
+#include <Core/Rendering/Renderers/Renderer.hpp> // Core::Renderer
+#include <Core/Rendering/FactoryManager.hpp> // Core::FactoryManager
+#include <Core/System/Logger.hpp> // CORE_ERROR
 
+
+/// <summary>
+/// Windows API
+/// </summary>
 #include <Windows.h>
 #include <windowsx.h>
 
 namespace Core
 {
 
-	RenderWindow::RenderWindow(GraphicsContext *& gctx, RenderStateManager *& rsm) :
+	RenderWindow::RenderWindow(Renderer *& renderer, RenderStateManager *& rsm) :
 		Window(),
-		RenderTarget(gctx, rsm),
+		RenderTarget(renderer, rsm),
 		mouseInsideWindow(false),
 		resizing(false),
-		gctx(gctx)
+		renderer(renderer)
 	{
 	}
 
@@ -83,8 +88,17 @@ namespace Core
 					break;
 				}
 
-				/* initialize Direct2D */
-				window->gctx->Initialize(handle, RendererType::WindowRenderer);
+				// Initialize the factories
+				if (!FactoryManager::Initialize())
+				{
+					break;
+				}
+
+				// initialize the renderer
+				if (!window->renderer->Initialize(handle))
+				{
+					break;
+				}
 			} break;
 
 			case WM_SETCURSOR:
@@ -105,7 +119,9 @@ namespace Core
 				window->OnWindowClosed();
 
 				/* destroy Direct2D */
-				window->gctx->Destroy();
+				//window->renderer->Destroy();
+
+				FactoryManager::Destroy();
 
 				/* Destroy the window, this call sends a message so WM_DESTROY gets called */
 				DestroyWindow(handle);
@@ -142,9 +158,9 @@ namespace Core
 						window->OnWindowResized();
 
 						/* resize the viewport */
-						if (window->gctx)
+						if (window->renderer)
 						{
-							window->gctx->ResizeViewport(width, height);
+							window->renderer->ResizeViewport(width, height);
 						}
 
 						/* grab the cursor after resizing */
@@ -174,9 +190,9 @@ namespace Core
 					window->height = size.height;
 
 					/* resize the viewport */
-					if (window->gctx)
+					if (window->renderer)
 					{
-						window->gctx->ResizeViewport(size.width, size.height);
+						window->renderer->ResizeViewport(size.width, size.height);
 					}
 
 					// Push a resize event

@@ -1,13 +1,13 @@
 #include <Core/Rendering/Targets/ImageRenderTarget.hpp>
 
-#include <Core/Rendering/GraphicsContext.hpp>
+#include <Core/Rendering/Renderers/Renderer.hpp>
 #include <Core/Rendering/RenderStateManager.hpp>
 
 namespace Core
 {
 
-	ImageRenderTarget::ImageRenderTarget(GraphicsContext *& gctx, RenderStateManager *& rsm) :
-		gctx(gctx),
+	ImageRenderTarget::ImageRenderTarget(Renderer *& renderer, RenderStateManager *& rsm) :
+		renderer(renderer),
 		rsm(rsm)
 	{
 	}
@@ -15,21 +15,21 @@ namespace Core
 	Image ImageRenderTarget::CreateImage(u32_t width, u32_t height, const Color & color)
 	{
 		Core::Image image;
-		image.Create(width, height, std::vector(width * height, color).data(), this->gctx);
+		image.Create(width, height, std::vector(width * height, color).data(), this->renderer);
 		return image;
 	}
 
 	Image ImageRenderTarget::LoadImageFromMemory(u32_t width, u32_t height, const Color * colors)
 	{
 		Core::Image image;
-		image.LoadFromMemory(width, height, colors, this->gctx);
+		image.LoadFromMemory(width, height, colors, this->renderer);
 		return image;
 	}
 
 	Image ImageRenderTarget::LoadImageFromFile(const std::string & filepath)
 	{
 		Core::Image image;
-		image.LoadFromFile(filepath, this->gctx);
+		image.LoadFromFile(filepath, this->renderer);
 		return image;
 	}
 
@@ -43,7 +43,7 @@ namespace Core
 	Image ImageRenderTarget::LoadImageFromImage(const Core::Image & source, i32_t x, i32_t y, i32_t width, i32_t height)
 	{
 		Core::Image image;
-		image.LoadFromImage(source, x, y, width, height, this->gctx);
+		image.LoadFromImage(source, x, y, width, height, this->renderer);
 		return image;
 	}
 
@@ -59,7 +59,7 @@ namespace Core
 
 	void ImageRenderTarget::Image(const Core::Image & image, float x, float y, float width, float height)
 	{
-		ID2D1RenderTarget * rt = this->gctx->renderTarget;
+		ID2D1RenderTarget * rt = this->renderer->GetRenderTarget();
 		if (!rt) return;
 
 		ID2D1Bitmap * bitmap = image.GetBitmap();

@@ -10,7 +10,7 @@
 namespace Core
 {
 
-	class GraphicsContext;
+	class Renderer;
 	class RenderStateManager;
 
 	class Application : public RenderWindow {
@@ -61,8 +61,8 @@ namespace Core
 		/* indicates wether the drawImpl() function gets called or not */
 		bool drawingPaused;
 
-		/* instance of a GraphicsContext */
-		GraphicsContext * gctx;
+		/* instance of a Renderer */
+		Renderer * renderer;
 
 		/* instance of a RenderStateManager */
 		RenderStateManager * rsm;

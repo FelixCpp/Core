@@ -3,7 +3,7 @@
 /// <summary>
 /// Core
 /// </summary>
-#include <Core/Rendering/Renderers/RendererBase.hpp>
+#include <Core/Rendering/Renderers/Renderer.hpp>
 
 /// <summary>
 /// Direct2D dependencies
@@ -14,7 +14,7 @@
 namespace Core
 {
 	
-	class BitmapRenderer : public RendererBase {
+	class BitmapRenderer : public Renderer {
 	public:
 
 		/// <summary>
@@ -25,9 +25,8 @@ namespace Core
 		/// <summary>
 		/// Initializes the RenderTarget
 		/// </summary>
-		/// <param name="factory">the graphics factory</param>
 		/// <param name="handle">the Window handle</param>
-		virtual bool Initialize(ID2D1Factory * factory, Windowhandle handle) override;
+		virtual bool Initialize(Windowhandle handle) override;
 
 		/// <summary>
 		/// Tells the RenderTarget to start

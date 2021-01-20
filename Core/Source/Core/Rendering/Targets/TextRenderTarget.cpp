@@ -1,13 +1,13 @@
 #include <Core/Rendering/Targets/TextRenderTarget.hpp>
 #include <Core/Rendering/RenderStateManager.hpp>
-#include <Core/Rendering/GraphicsContext.hpp>
+#include <Core/Rendering/Renderers/Renderer.hpp>
 #include <Core/Rendering/RenderState.hpp>
 
 namespace Core
 {
 
-	TextRenderTarget::TextRenderTarget(GraphicsContext *& gctx, RenderStateManager *& rsm) :
-		gctx(gctx),
+	TextRenderTarget::TextRenderTarget(Renderer *& renderer, RenderStateManager *& rsm) :
+		renderer(renderer),
 		rsm(rsm)
 	{ }
 
@@ -26,7 +26,7 @@ namespace Core
 	void TextRenderTarget::Text(const std::string & string, float x, float y, float width, float height)
 	{
 		RenderState & state = this->GetState();
-		ID2D1RenderTarget * rt = this->gctx->renderTarget;
+		ID2D1RenderTarget * rt = this->renderer->GetRenderTarget();
 
 		TextRenderer & textRenderer = state.textRenderer;
 		textRenderer.SetText(string);

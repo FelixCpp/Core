@@ -1,12 +1,14 @@
-#include <Core/Window/Window.hpp>
-#include <Core/Rendering/GraphicsContext.hpp>
+#include <Core/Window/Window.hpp> // Core::Window
 
-#include <Core/System/Logger.hpp>
+#include <Core/System/Logger.hpp> // CORE_ERROR
 
+/// <summary>
+/// Windows API
+/// </summary>
 #include <Windows.h>
 #include <windowsx.h>
 
-#include <thread>
+#include <thread> // std::this_thread
 
 namespace Core
 {

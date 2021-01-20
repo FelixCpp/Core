@@ -1,5 +1,5 @@
 #include <Core/Rendering/LinearGradientBrush.hpp>
-#include <Core/Rendering/GraphicsContext.hpp>
+#include <Core/Rendering/Renderers/Renderer.hpp>
 #include <Core/Rendering/Helpers.hpp>
 
 #include <Core/System/Logger.hpp>
@@ -7,13 +7,13 @@
 namespace Core
 {
 
-	LinearGradientBrush::LinearGradientBrush(GraphicsContext *& gctx) :
+	LinearGradientBrush::LinearGradientBrush(Renderer *& renderer) :
 		brush(nullptr),
 		collection(nullptr),
 		start(0.f, 0.f),
 		end(0.f, 0.f),
 		colors(),
-		gctx(gctx)
+		renderer(renderer)
 	{
 	}
 	
@@ -82,9 +82,7 @@ namespace Core
 
 	void LinearGradientBrush::UpdateBrush()
 	{
-		if (!this->gctx) return;
-
-		ID2D1RenderTarget * rt = this->gctx->renderTarget;
+		ID2D1RenderTarget * rt = this->renderer->GetRenderTarget();
 		
 		const size_t size = this->colors.size();
 		std::vector<D2D1_GRADIENT_STOP> gradientStops(size);

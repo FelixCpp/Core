@@ -1,23 +1,23 @@
 #include <Core/Rendering/RenderState.hpp>
-#include <Core/Rendering/GraphicsContext.hpp>
+#include <Core/Rendering/Renderers/Renderer.hpp>
 
 namespace Core
 {
 
-	RenderState::RenderState(GraphicsContext *& gctx) :
-		shape(gctx),
-		textRenderer(gctx),
-		strokeStyle(gctx),
+	RenderState::RenderState(Renderer *& renderer) :
+		shape(),
+		textRenderer(),
+		strokeStyle(),
 		activeFill(nullptr),
 		activeStroke(nullptr),
-		solidFill(SolidColorBrush(gctx)),
-		solidStroke(SolidColorBrush(gctx)),
-		linearFill(LinearGradientBrush(gctx)),
-		linearStroke(LinearGradientBrush(gctx)),
-		radialFill(RadialGradientBrush(gctx)),
-		radialStroke(RadialGradientBrush(gctx)),
-		bitmapFill(BitmapBrush(gctx)),
-		bitmapStroke(BitmapBrush(gctx)),
+		solidFill(SolidColorBrush(renderer)),
+		solidStroke(SolidColorBrush(renderer)),
+		linearFill(LinearGradientBrush(renderer)),
+		linearStroke(LinearGradientBrush(renderer)),
+		radialFill(RadialGradientBrush(renderer)),
+		radialStroke(RadialGradientBrush(renderer)),
+		bitmapFill(BitmapBrush(renderer)),
+		bitmapStroke(BitmapBrush(renderer)),
 		rectMode(DrawMode::Corner),
 		ellipseMode(DrawMode::Center),
 		imageMode(DrawMode::Corner),
@@ -25,7 +25,7 @@ namespace Core
 		defaultMatrix(D2D1::Matrix3x2F::Identity()),
 		activeMatrix(&this->defaultMatrix),
 		metrics(),
-		gctx(gctx)
+		renderer(renderer)
 	{ }
 
 	void RenderState::SetActiveMatrix(const D2D1::Matrix3x2F & matrix)
@@ -76,7 +76,7 @@ namespace Core
 	{
 		this->activeMatrix = this->metrics.empty() ? &this->defaultMatrix : &this->metrics.top();
 
-		if (ID2D1RenderTarget * rt = this->gctx->renderTarget)
+		if (ID2D1RenderTarget * rt = this->renderer->GetRenderTarget())
 		{
 			// activate the matrix as the new transformation
 			rt->SetTransform(this->GetActiveMatrix());

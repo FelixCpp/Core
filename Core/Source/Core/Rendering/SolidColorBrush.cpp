@@ -1,5 +1,5 @@
 #include <Core/Rendering/SolidColorBrush.hpp>
-#include <Core/Rendering/GraphicsContext.hpp>
+#include <Core/Rendering/Renderers/Renderer.hpp>
 #include <Core/Rendering/Helpers.hpp>
 
 #include <Core/System/Logger.hpp>
@@ -7,10 +7,10 @@
 namespace Core
 {
 
-	SolidColorBrush::SolidColorBrush(GraphicsContext *& gctx) :
+	SolidColorBrush::SolidColorBrush(Renderer *& renderer) :
 		brush(nullptr),
 		color(Color::Clear),
-		gctx(gctx)
+		renderer(renderer)
 	{
 	}
 
@@ -47,9 +47,9 @@ namespace Core
 
 	void SolidColorBrush::Create(const Color & color)
 	{
-		if (this->gctx)
+		if (this->renderer)
 		{
-			HRESULT hr = this->gctx->renderTarget->CreateSolidColorBrush(D2D1::ColorF(
+			HRESULT hr = this->renderer->GetRenderTarget()->CreateSolidColorBrush(D2D1::ColorF(
 				(float)color.r / 255.f,
 				(float)color.g / 255.f,
 				(float)color.b / 255.f,

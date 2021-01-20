@@ -15,7 +15,7 @@ namespace Core
 	/// shouldn't interact with
 	/// </summary>
 	class RenderStateManager;
-	class GraphicsContext;
+	class Renderer;
 
 	/// <summary>
 	/// A Target class to handle
@@ -31,7 +31,7 @@ namespace Core
 		/// </summary>
 		/// <param name="gctx">the GraphicsContext which is needed to draw the image</param>
 		/// <param name="rsm">the RenderStateManager which is needed to get access to the current RenderState which holds the current image mode</param>
-		explicit ImageRenderTarget(GraphicsContext *& gctx, RenderStateManager *& rsm);
+		explicit ImageRenderTarget(Renderer *& gctx, RenderStateManager *& rsm);
 
 		/// <summary>
 		/// virtual destructor
@@ -110,11 +110,11 @@ namespace Core
 	private:
 
 		/// <summary>
-		/// An instance of the GraphicsContext.
+		/// An instance of the Renderer.
 		/// This attribute is used to load/create
 		/// and draw images
 		/// </summary>
-		GraphicsContext *& gctx;
+		Renderer *& renderer;
 
 		/// <summary>
 		/// An instance of the RenderStateManager.

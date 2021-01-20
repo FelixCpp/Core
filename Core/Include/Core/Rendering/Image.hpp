@@ -27,7 +27,7 @@ namespace Core
 	/// of classes the user
 	/// shouldn't interact with
 	/// </summary>
-	class GraphicsContext;
+	class Renderer;
 
 	/// <summary>
 	/// A class which represents
@@ -49,17 +49,18 @@ namespace Core
 		/// <param name="width">width of the image</param>
 		/// <param name="height">height of the image</param>
 		/// <param name="colors">the data (Color[width * height]</param>
-		/// <param name="gctx">a GraphicsContext to get access to the RenderTarget</param>
+		/// <param name="renderer">a Renderer to get access to the RenderTarget</param>
 		/// <returns>True if the bitmap was created successfully</returns>
-		bool Create(i32_t width, i32_t height, const Color colors[], GraphicsContext * gctx);
+		bool Create(i32_t width, i32_t height, const Color colors[], Renderer * renderer);
 
 		/// <summary>
 		/// Loads the color values from
 		/// the image at that filepath
 		/// </summary>
 		/// <param name="filepath">location of the image file</param>
+		/// <param name="renderer">a Renderer to get access to the RenderTarget</param>
 		/// <returns>True if the file was loaded successfully</returns>
-		bool LoadFromFile(const std::string & filepath, GraphicsContext * gctx);
+		bool LoadFromFile(const std::string & filepath, Renderer * renderer);
 
 		/// <summary>
 		/// Creates an image based on the
@@ -68,9 +69,9 @@ namespace Core
 		/// <param name="width">width of the image</param>
 		/// <param name="height">height of the image</param>
 		/// <param name="colors">Color[width * height]</param>
-		/// <param name="gctx">a GraphicsContext to get access to the RenderTarget</param>
+		/// <param name="renderer">a Renderer to get access to the RenderTarget</param>
 		/// <returns>True if everything the image was created successfully</returns>
-		bool LoadFromMemory(i32_t width, i32_t height, const Color colors[], GraphicsContext * gctx);
+		bool LoadFromMemory(i32_t width, i32_t height, const Color colors[], Renderer * renderer);
 
 		/// <summary>
 		/// Copies an area from the other image
@@ -90,9 +91,9 @@ namespace Core
 		/// <param name="y">start y in pixels</param>
 		/// <param name="width">width to copy in pixels</param>
 		/// <param name="height">height to copy in pixels</param>
-		/// <param name="gctx">a GraphicsContext to get access to the RenderTarget</param>
+		/// <param name="renderer">a Renderer to get access to the RenderTarget</param>
 		/// <returns>True if the image was copied successfully</returns>
-		bool LoadFromImage(const Image & other, i32_t x, i32_t y, i32_t width, i32_t height, GraphicsContext * gctx);
+		bool LoadFromImage(const Image & other, i32_t x, i32_t y, i32_t width, i32_t height, Renderer * renderer);
 
 		/// <summary>
 		/// Loads the pixels

@@ -15,7 +15,7 @@
 namespace Core
 {
 
-	class GraphicsContext;
+	class Renderer;
 
 	class RenderState {
 	public:
@@ -57,7 +57,7 @@ namespace Core
 		float strokeWeight;
 
 		/* constructor */
-		explicit RenderState(GraphicsContext *& gctx);
+		explicit RenderState(Renderer *& renderer);
 
 		/* changes the active matrix to match the parameter. This method also calls activateMatrix() */
 		void SetActiveMatrix(const D2D1::Matrix3x2F & matrix);
@@ -113,7 +113,7 @@ namespace Core
 			Through this instance we got access to the RenderTarget to change the
 			Transformation
 		*/
-		GraphicsContext *& gctx;
+		Renderer *& renderer;
 
 	};
 

@@ -3,17 +3,17 @@
 namespace Core
 {
 
-	RenderStateManager::RenderStateManager(GraphicsContext *& gctx) :
-		defaultState(gctx),
+	RenderStateManager::RenderStateManager(Renderer *& renderer) :
+		defaultState(renderer),
 		activeState(&this->defaultState),
 		states(),
-		gctx(gctx)
+		renderer(renderer)
 	{
 	}
 
 	void RenderStateManager::PushState()
 	{
-		this->states.push(RenderState(this->gctx));
+		this->states.push(RenderState(this->renderer));
 		this->activeState = &this->states.top(); // we know there is a RenderState available, so use it
 		this->GetActiveState().ActivateMatrix();
 	}

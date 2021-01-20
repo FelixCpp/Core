@@ -1,5 +1,6 @@
-#include <Core/Rendering/Renderers/WindowRenderer.hpp>
-#include <Core/System/Logger.hpp>
+#include <Core/Rendering/Renderers/WindowRenderer.hpp> // Core::WindowRenderer
+#include <Core/Rendering/FactoryManager.hpp> // Core::FactoryManager
+#include <Core/System/Logger.hpp> // CORE_ERROR
 
 namespace Core
 {
@@ -10,7 +11,7 @@ namespace Core
 	{
 	}
 
-	bool WindowRenderer::Initialize(ID2D1Factory * factory, Windowhandle handle)
+	bool WindowRenderer::Initialize(Windowhandle handle)
 	{
 		// get the size of the window
 		RECT wndRect = {};
@@ -38,7 +39,7 @@ namespace Core
 		);
 
 		// Create a HwndRenderTarget
-		const HRESULT hr = factory->CreateHwndRenderTarget(
+		const HRESULT hr = FactoryManager::d2dFactory->CreateHwndRenderTarget(
 			properties,
 			D2D1::HwndRenderTargetProperties(handle, pixelSize, D2D1_PRESENT_OPTIONS_IMMEDIATELY),
 			&this->renderTarget
