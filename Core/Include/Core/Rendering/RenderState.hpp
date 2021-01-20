@@ -109,7 +109,7 @@ namespace Core
 	private:
 
 		/*
-			A GraphicsContext to keep track of since passing it into the constructor.
+			A Renderer to keep track of since passing it into the constructor.
 			Through this instance we got access to the RenderTarget to change the
 			Transformation
 		*/

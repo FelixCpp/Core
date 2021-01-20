@@ -26,10 +26,10 @@ namespace Core
 	public:
 
 		/// <summary>
-		/// constructor which passes the GraphicsContext & RenderStateManager
+		/// constructor which passes the Renderer & RenderStateManager
 		/// to its member variables.
 		/// </summary>
-		/// <param name="gctx">the GraphicsContext which is needed to draw the image</param>
+		/// <param name="renderer">the Renderer which is needed to draw the image</param>
 		/// <param name="rsm">the RenderStateManager which is needed to get access to the current RenderState which holds the current image mode</param>
 		explicit ImageRenderTarget(Renderer *& gctx, RenderStateManager *& rsm);
 

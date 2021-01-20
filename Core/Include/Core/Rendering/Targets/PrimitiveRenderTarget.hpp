@@ -23,10 +23,10 @@ namespace Core
 	public:
 
 		/// <summary>
-		/// constructor which passes the GraphicsContext & RenderStateManager
+		/// constructor which passes the Renderer & RenderStateManager
 		/// to its member variables.
 		/// </summary>
-		/// <param name="gctx">the GraphicsContext which is needed to draw the primitives</param>
+		/// <param name="renderer">the Renderer which is needed to draw the primitives</param>
 		/// <param name="rsm">the RenderStateManager which is needed to get access to the current RenderState holding informations how the primitives should be drawn</param>
 		explicit PrimitiveRenderTarget(Renderer *& renderer, RenderStateManager *& rsm);
 

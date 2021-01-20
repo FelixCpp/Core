@@ -27,7 +27,7 @@ namespace Core
 	public:
 
 		/// <summary>
-		/// constructor which passes the GraphicsContext & RenderStateManager
+		/// constructor which passes the Renderer & RenderStateManager
 		/// to its member variables.
 		/// </summary>
 		/// <param name="renderer">the Renderer which is needed to draw the text</param>
@@ -157,7 +157,7 @@ namespace Core
 	private:
 
 		/// <summary>
-		/// An instance of the GraphicsContext
+		/// An instance of the Renderer
 		/// to draw the shape
 		/// </summary>
 		Renderer *& renderer;

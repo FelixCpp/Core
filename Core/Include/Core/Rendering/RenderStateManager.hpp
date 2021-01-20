@@ -42,7 +42,7 @@ namespace Core
 		/* a stack of RenderStates */
 		std::stack<RenderState> states;
 
-		/* an instance of a GraphicsContext. We need this to push another RenderState onto the stack */
+		/* an instance of a Renderer. We need this to push another RenderState onto the stack */
 		Renderer *& renderer;
 
 	};
