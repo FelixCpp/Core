@@ -1,4 +1,4 @@
-#include <Core/Rendering/BitmapBrush.hpp> // Core::BitmapBrush
+#include <Core/Rendering/Brushes/BitmapBrush.hpp> // Core::BitmapBrush
 #include <Core/Rendering/Renderers/Renderer.hpp> // Core::Renderer
 
 /// <summary>

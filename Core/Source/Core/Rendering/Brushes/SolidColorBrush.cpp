@@ -1,4 +1,4 @@
-#include <Core/Rendering/SolidColorBrush.hpp>
+#include <Core/Rendering/Brushes/SolidColorBrush.hpp>
 #include <Core/Rendering/Renderers/Renderer.hpp>
 #include <Core/Rendering/Helpers.hpp>
 

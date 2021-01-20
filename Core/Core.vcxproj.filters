@@ -117,19 +117,10 @@
     <ClInclude Include="Include\Core\Rendering\Image.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="Include\Core\Rendering\LinearGradientBrush.hpp">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\Core\Rendering\RadialGradientBrush.hpp">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="Include\Core\Rendering\RenderState.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="Include\Core\Rendering\ShapeAttributes.hpp">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\Core\Rendering\SolidColorBrush.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="Include\Core\Rendering\StrokeStyle.hpp">
@@ -228,9 +219,6 @@
     <ClInclude Include="Include\Core\Rendering\Targets\ShapeRenderTarget.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="Include\Core\Rendering\BitmapBrush.hpp">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="Include\Core\Rendering\ExtendMode.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
@@ -250,6 +238,18 @@
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="Include\Core\Rendering\Renderers\Renderer.hpp">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Core\Rendering\Brushes\BitmapBrush.hpp">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Core\Rendering\Brushes\LinearGradientBrush.hpp">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Core\Rendering\Brushes\RadialGradientBrush.hpp">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Core\Rendering\Brushes\SolidColorBrush.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>
@@ -290,16 +290,7 @@
     <ClCompile Include="Source\Core\Rendering\Image.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Core\Rendering\LinearGradientBrush.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Core\Rendering\RadialGradientBrush.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Core\Rendering\RenderState.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Core\Rendering\SolidColorBrush.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="Source\Core\Rendering\StrokeStyle.cpp">
@@ -380,9 +371,6 @@
     <ClCompile Include="Source\Core\Rendering\Targets\ShapeRenderTarget.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Core\Rendering\BitmapBrush.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Core\Rendering\Renderers\RendererFactory.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
@@ -393,6 +381,18 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="Source\Core\Rendering\FactoryManager.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Core\Rendering\Brushes\BitmapBrush.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Core\Rendering\Brushes\LinearGradientBrush.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Core\Rendering\Brushes\RadialGradientBrush.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Core\Rendering\Brushes\SolidColorBrush.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>

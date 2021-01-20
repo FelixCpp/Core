@@ -1,4 +1,4 @@
-#include <Core/Rendering/RadialGradientBrush.hpp>
+#include <Core/Rendering/Brushes/RadialGradientBrush.hpp>
 #include <Core/Rendering/Renderers/Renderer.hpp>
 #include <Core/Rendering/Helpers.hpp>
 

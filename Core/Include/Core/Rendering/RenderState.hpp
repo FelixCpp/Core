@@ -4,10 +4,10 @@
 #include <Core/Rendering/StrokeStyle.hpp>
 #include <Core/Rendering/TextRenderer.hpp>
 #include <Core/Rendering/Shape.hpp>
-#include <Core/Rendering/SolidColorBrush.hpp>
-#include <Core/Rendering/LinearGradientBrush.hpp>
-#include <Core/Rendering/RadialGradientBrush.hpp>
-#include <Core/Rendering/BitmapBrush.hpp>
+#include <Core/Rendering/Brushes/SolidColorBrush.hpp>
+#include <Core/Rendering/Brushes/LinearGradientBrush.hpp>
+#include <Core/Rendering/Brushes/RadialGradientBrush.hpp>
+#include <Core/Rendering/Brushes/BitmapBrush.hpp>
 
 #include <d2d1.h>
 #include <stack>
