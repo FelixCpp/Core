@@ -24,10 +24,15 @@ namespace Core
 		virtual ~Renderer() = default;
 
 		/// <summary>
-		/// Initializes the RenderTarget
+		/// Initializes the Renderer
 		/// </summary>
 		/// <param name="handle">the Window handle</param>
 		virtual bool Initialize(Windowhandle handle) = 0;
+
+		/// <summary>
+		/// Destroys the Renderer
+		/// </summary>
+		virtual void Destroy() = 0;
 
 		/// <summary>
 		/// Tells the RenderTarget to start

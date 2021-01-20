@@ -30,10 +30,10 @@ namespace Core
 		this->Close();
 	}
 	
-	Application::Application(i32_t width, i32_t height, const std::string & title) :
+	Application::Application(i32_t width, i32_t height, const std::string & title, RendererType type) :
 		RenderWindow(this->renderer, this->rsm),
 		drawingPaused(true),
-		renderer(RendererFactory::Create(RendererType::WindowRenderer)),
+		renderer(RendererFactory::Create(type)),
 		rsm(new RenderStateManager(this->renderer))
 	{
 		this->Create(width, height, title);

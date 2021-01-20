@@ -29,6 +29,11 @@ namespace Core
 		virtual bool Initialize(Windowhandle handle) override;
 
 		/// <summary>
+		/// Destroys the RendererTargets
+		/// </summary>
+		virtual void Destroy() override;
+
+		/// <summary>
 		/// Tells the RenderTarget to start
 		/// listening on render commands
 		/// </summary>
@@ -69,11 +74,11 @@ namespace Core
 		Microsoft::WRL::ComPtr<ID2D1BitmapRenderTarget> bitmapRenderTarget;
 
 		/// <summary>
-		/// A DC which is
-		/// bound to the
-		/// BitmapRenderTarget
+		/// the actual Windowhandle.
+		/// We need this to release
+		/// the DC properly
 		/// </summary>
-		HDC hdc;
+		Windowhandle windowHandle;
 
 	}; // class BitmapRenderer
 

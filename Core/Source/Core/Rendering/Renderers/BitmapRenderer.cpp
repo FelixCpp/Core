@@ -8,7 +8,7 @@ namespace Core
 	BitmapRenderer::BitmapRenderer() :
 		dcRenderTarget(nullptr),
 		bitmapRenderTarget(nullptr),
-		hdc(nullptr)
+		windowHandle(nullptr)
 	{
 	}
 
@@ -36,7 +36,7 @@ namespace Core
 		}
 
 		// get a DC from the window
-		this->hdc = GetDC(handle);
+		HDC hdc = GetDC(handle);
 
 		// Get the windows rectangle
 		RECT wndRect = {};
@@ -47,7 +47,7 @@ namespace Core
 		}
 
 		// bind the dc to the DCRenderTarget
-		this->dcRenderTarget->BindDC(this->hdc, &wndRect);
+		this->dcRenderTarget->BindDC(hdc, &wndRect);
 
 		// Create a BitmapRenderTarget
 		hr = this->dcRenderTarget->CreateCompatibleRenderTarget(&this->bitmapRenderTarget);
@@ -58,7 +58,16 @@ namespace Core
 			CORE_ERROR("Failed to create a BitmapRenderTarget");
 			return false;
 		}
+
+		this->windowHandle = handle;
+
 		return true;
+	}
+
+	void BitmapRenderer::Destroy()
+	{
+		this->dcRenderTarget.Reset();
+		this->bitmapRenderTarget.Reset();
 	}
 
 	void BitmapRenderer::BeginDraw()
@@ -73,7 +82,7 @@ namespace Core
 		// get the bitmap
 		Microsoft::WRL::ComPtr<ID2D1Bitmap> bitmap = nullptr;
 		this->bitmapRenderTarget->GetBitmap(&bitmap);
-		
+	
 		this->dcRenderTarget->BeginDraw();
 		this->dcRenderTarget->DrawBitmap(bitmap.Get());
 		this->dcRenderTarget->EndDraw();
@@ -81,7 +90,12 @@ namespace Core
 
 	void BitmapRenderer::ResizeViewport(u32_t width, u32_t height)
 	{
-
+		HDC hdc = GetDC(this->windowHandle);
+		RECT windowBoundary = {};
+		GetClientRect(this->windowHandle, &windowBoundary);
+		this->dcRenderTarget->BindDC(hdc, &windowBoundary);
+		this->dcRenderTarget->CreateCompatibleRenderTarget(&this->bitmapRenderTarget);
+		ReleaseDC(this->windowHandle, hdc);
 	}
 
 	ID2D1RenderTarget * BitmapRenderer::GetRenderTarget() const

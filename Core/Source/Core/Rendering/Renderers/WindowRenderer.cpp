@@ -55,6 +55,12 @@ namespace Core
 		return true;
 	}
 
+	void WindowRenderer::Destroy()
+	{
+		this->renderTarget.Reset();
+		this->drawing = false;
+	}
+
 	void WindowRenderer::BeginDraw()
 	{
 		if (!this->drawing)

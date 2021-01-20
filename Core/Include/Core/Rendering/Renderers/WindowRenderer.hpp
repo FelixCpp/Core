@@ -29,6 +29,11 @@ namespace Core
 		virtual bool Initialize(Windowhandle handle) override;
 
 		/// <summary>
+		/// Destroys the RenderTarget
+		/// </summary>
+		virtual void Destroy() override;
+
+		/// <summary>
 		/// Tells the RenderTarget to start
 		/// listening on render commands
 		/// </summary>
