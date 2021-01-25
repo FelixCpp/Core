@@ -41,7 +41,6 @@
     <ClInclude Include="Include\Core\Rendering\Helpers.hpp" />
     <ClInclude Include="Include\Core\Maths\Vector3.hpp" />
     <ClInclude Include="Include\Core\Rendering\ImageInterpolationMode.hpp" />
-    <ClInclude Include="Include\Core\Rendering\Renderers\BitmapRenderer.hpp" />
     <ClInclude Include="Include\Core\Rendering\Renderers\Renderer.hpp" />
     <ClInclude Include="Include\Core\Rendering\Renderers\RendererFactory.hpp" />
     <ClInclude Include="Include\Core\Rendering\Renderers\RendererType.hpp" />
@@ -116,7 +115,6 @@
     <ClCompile Include="Source\Core\Rendering\FactoryManager.cpp" />
     <ClCompile Include="Source\Core\Rendering\FrameSaver.cpp" />
     <ClCompile Include="Source\Core\Rendering\Helpers.cpp" />
-    <ClCompile Include="Source\Core\Rendering\Renderers\BitmapRenderer.cpp" />
     <ClCompile Include="Source\Core\Rendering\Renderers\RendererFactory.cpp" />
     <ClCompile Include="Source\Core\Rendering\Renderers\WindowRenderer.cpp" />
     <ClCompile Include="Source\Core\Rendering\Targets\BrushTarget.cpp" />

@@ -67,6 +67,12 @@ namespace Core
 		/// </summary>
 		virtual ID2D1RenderTarget * GetRenderTarget() const override;
 
+		/// <summary>
+		/// Checks wether the RenderTarget
+		/// is initialized or not
+		/// </summary>
+		virtual bool IsInitialized() const override;
+
 	public:
 
 		/// <summary>

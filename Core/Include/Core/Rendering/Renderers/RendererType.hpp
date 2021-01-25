@@ -13,13 +13,7 @@ namespace Core
 		/// Identifier for the
 		/// WindowRenderer
 		/// </summary>
-		WindowRenderer,
-
-		/// <summary>
-		/// Identifier for the
-		/// BitmapRenderer
-		/// </summary>
-		BitmapRenderer
+		WindowRenderer
 	};
 
 } // namespace Core

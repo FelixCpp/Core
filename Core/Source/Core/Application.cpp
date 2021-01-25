@@ -1,6 +1,7 @@
 #include <Core/Application.hpp>
 #include <Core/Rendering/Renderers/Renderer.hpp>
 #include <Core/Rendering/RenderStateManager.hpp>
+#include <Core/Rendering/FactoryManager.hpp>
 #include <Core/Rendering/Renderers/RendererFactory.hpp>
 
 namespace Core
@@ -58,33 +59,53 @@ namespace Core
 
 	void Application::StartSketch()
 	{
-		/* set the framerate limit */
+		// Initialize the graphics
+		if (!this->renderer->Initialize(this->windowHandle))
+		{
+			this->Close();
+			return;
+		}
+
+		// set the framerate limit
 		this->SetFramerateLimit(60);
 		
-		/* setup */
+		// Setup
 		this->SetupImpl();
 		
-		/* start calling the drawImpl function */
+		// start calling the drawImpl function
 		this->StartDrawing();
 
 		while (this->IsOpen())
 		{
-			/* pops every renderstate and activates the default*/
+			// pops every renderstate and activates the default
 			this->rsm->Reset();
 
-			/* call draw surrounded by begin/end-Draw() */
+			// call draw surrounded by begin/end-Draw()
 			if (!this->drawingPaused)
 			{
 				this->DrawImpl();
 				this->OnFrameProcessed();
 			}
 
-			/* calculate & limit fps */
+			// calculate & limit fps
 			this->HandleFps();
 
-			/* raise processEvents() function */
+			// raise processEvents() function
 			this->DispatchEvents();
 		}
+
+		// Destroys the graphics
+		this->renderer->Destroy();
+	}
+
+	void Application::GlobalInit()
+	{
+		FactoryManager::Initialize();
+	}
+
+	void Application::GlobalDestroy()
+	{
+		FactoryManager::Destroy();
 	}
 
 }

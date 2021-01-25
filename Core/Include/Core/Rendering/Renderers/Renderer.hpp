@@ -75,6 +75,13 @@ namespace Core
 		/// </summary>
 		virtual ID2D1RenderTarget * GetRenderTarget() const = 0;
 
+		/// <summary>
+		/// Checks wether the Renderer
+		/// is initialized or in its
+		/// initial state
+		/// </summary>
+		virtual bool IsInitialized() const = 0;
+
 	}; // class RendererBase
 
 } // namespace Core

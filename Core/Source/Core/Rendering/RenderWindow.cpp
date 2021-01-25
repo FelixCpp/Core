@@ -88,18 +88,6 @@ namespace Core
 					CORE_ERROR("failed to decode creation-parameters into a valid window");
 					break;
 				}
-
-				// Initialize the factories
-				if (!FactoryManager::Initialize())
-				{
-					break;
-				}
-
-				// initialize the renderer
-				if (!window->renderer->Initialize(handle))
-				{
-					break;
-				}
 			} break;
 
 			case WM_SETCURSOR:
@@ -118,11 +106,6 @@ namespace Core
 
 				/* raise the onClosed() event */
 				window->OnWindowClosed();
-
-				/* destroy Direct2D */
-				window->renderer->Destroy();
-
-				FactoryManager::Destroy();
 
 				/* Destroy the window, this call sends a message so WM_DESTROY gets called */
 				DestroyWindow(handle);
@@ -159,9 +142,12 @@ namespace Core
 						window->OnWindowResized();
 
 						/* resize the viewport */
-						if (window->renderer)
+						if (Renderer * renderer = window->renderer)
 						{
-							window->renderer->ResizeViewport(width, height);
+							if (renderer->IsInitialized())
+							{
+								window->renderer->ResizeViewport(width, height);
+							}
 						}
 
 						/* grab the cursor after resizing */
@@ -191,9 +177,12 @@ namespace Core
 					window->height = size.height;
 
 					/* resize the viewport */
-					if (window->renderer)
+					if (Renderer * renderer = window->renderer)
 					{
-						window->renderer->ResizeViewport(size.width, size.height);
+						if (renderer->IsInitialized())
+						{
+							window->renderer->ResizeViewport(size.width, size.height);
+						}
 					}
 
 					// Push a resize event

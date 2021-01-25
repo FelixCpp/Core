@@ -35,8 +35,19 @@ namespace Core
 		template<class TDerived, typename ... TArgs, typename = std::enable_if_t<std::is_base_of_v<Application, TDerived>>>
 		static void Launch(const TArgs & ... arguments)
 		{
-			TDerived instance(std::forward<decltype(arguments)>(arguments)...);
-			instance.StartSketch();
+			// We're initializing the variables which needs to be alive ouside
+			// the lifetime of the instance variable
+			GlobalInit();
+			
+			// instance needs to be destroyed before calling
+			// GlobalDestroy() !
+			{
+				TDerived instance(std::forward<decltype(arguments)>(arguments)...);
+				instance.StartSketch();
+			}
+
+			// We destroy the variables
+			GlobalDestroy();
 		}
 
 	protected:
@@ -86,6 +97,19 @@ namespace Core
 		/// Starts the sketch
 		/// </summary>
 		void StartSketch();
+
+		/// <summary>
+		/// Initializes the variables
+		/// who needs to be alive
+		/// outside of the the Application's
+		/// lifetime
+		/// </summary>
+		static void GlobalInit();
+
+		/// <summary>
+		/// Destroys the global variables
+		/// </summary>
+		static void GlobalDestroy();
 
 	private:
 

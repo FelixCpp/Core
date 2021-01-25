@@ -75,6 +75,9 @@ namespace Core
 
 	void WindowRenderer::ResizeViewport(u32_t width, u32_t height)
 	{
+		if (!this->renderTarget)
+			return;
+
 		if (this->drawing)
 		{
 			this->renderTarget->EndDraw();
@@ -94,6 +97,11 @@ namespace Core
 	ID2D1RenderTarget * WindowRenderer::GetRenderTarget() const
 	{
 		return this->renderTarget.Get();
+	}
+
+	bool WindowRenderer::IsInitialized() const
+	{
+		return this->renderTarget != nullptr;
 	}
 
 } // namespace Core
