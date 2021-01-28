@@ -1,10 +1,18 @@
 #pragma once
 
-#include <vector>
-
+/// <summary>
+/// Core
+/// </summary>
 #include <Core/Rendering/Color.hpp>
 #include <Core/Rendering/ExtendMode.hpp>
 #include <Core/Rendering/ImageInterpolationMode.hpp>
+
+#include <Core/System/LateRef.hpp>
+
+/// <summary>
+/// C++ / STL
+/// </summary>
+#include <vector>
 
 namespace Core
 {
@@ -35,7 +43,7 @@ namespace Core
 		/// in the active RenderState
 		/// </summary>
 		/// <param name="rsm">the RenderStateManager which is needed to get access to the current RenderState which holds the shape object</param>
-		explicit BrushTarget(RenderStateManager *& rsm);
+		explicit BrushTarget(LateRef<RenderStateManager> rsm);
 
 		/// <summary>
 		/// A virtual destructor
@@ -163,7 +171,7 @@ namespace Core
 		/// to get access to the brushes / drawing
 		/// properties
 		/// </summary>
-		RenderStateManager *& rsm;
+		LateRef<RenderStateManager> rsm;
 
 	};
 

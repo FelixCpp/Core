@@ -57,7 +57,7 @@ namespace Core
 
 		/// <summary>
 		/// The windowhandle.
-		/// It's important to keep a '*&'
+		/// It's important to keep a LateRef
 		/// on it, since it could be recreated
 		/// </summary>
 		LateRef<Windowhandle> handle;

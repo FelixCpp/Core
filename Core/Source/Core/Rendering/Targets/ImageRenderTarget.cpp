@@ -6,7 +6,7 @@
 namespace Core
 {
 
-	ImageRenderTarget::ImageRenderTarget(Renderer *& renderer, RenderStateManager *& rsm) :
+	ImageRenderTarget::ImageRenderTarget(LateRef<Renderer> renderer, LateRef<RenderStateManager> rsm) :
 		renderer(renderer),
 		rsm(rsm)
 	{

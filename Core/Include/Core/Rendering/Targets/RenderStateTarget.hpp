@@ -1,5 +1,10 @@
 #pragma once
 
+/// <summary>
+/// Core
+/// </summary>
+#include <Core/System/LateRef.hpp> // Core::LateRef
+
 namespace Core
 {
 
@@ -23,7 +28,7 @@ namespace Core
 		/// to its member variables.
 		/// </summary>
 		/// <param name="rsm">the RenderStateManager which holds the RenderStates to modify</param>
-		explicit RenderStateTarget(RenderStateManager *& rsm);
+		explicit RenderStateTarget(LateRef<RenderStateManager> rsm);
 
 		/// <summary>
 		/// virtual destructor
@@ -58,7 +63,7 @@ namespace Core
 		/// An instance of the RenderStateManager
 		/// to get access the RenderStates
 		/// </summary>
-		RenderStateManager *& rsm;
+		LateRef<RenderStateManager> rsm;
 
 	};
 

@@ -1,7 +1,15 @@
 #pragma once
 
-#include <stack>
+/// <summary>
+/// Core
+/// </summary>
 #include <Core/Rendering/RenderState.hpp>
+#include <Core/System/LateRef.hpp>
+
+/// <summary>
+/// C++ / STL
+/// </summary>
+#include <stack>
 
 namespace Core
 {
@@ -12,7 +20,7 @@ namespace Core
 	public:
 
 		/* constructor */
-		explicit RenderStateManager(Renderer *& renderer);
+		explicit RenderStateManager(LateRef<Renderer> renderer);
 		
 		/* pushes a RenderState onto the stack and actives the next */
 		void PushState();
@@ -43,7 +51,7 @@ namespace Core
 		std::stack<RenderState> states;
 
 		/* an instance of a Renderer. We need this to push another RenderState onto the stack */
-		Renderer *& renderer;
+		LateRef<Renderer> renderer;
 
 	};
 

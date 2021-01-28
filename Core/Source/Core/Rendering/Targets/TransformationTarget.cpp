@@ -5,7 +5,7 @@
 namespace Core
 {
 
-	TransformationTarget::TransformationTarget(RenderStateManager *& rsm) :
+	TransformationTarget::TransformationTarget(LateRef<RenderStateManager> rsm) :
 		rsm(rsm)
 	{
 	}

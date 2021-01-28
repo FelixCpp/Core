@@ -5,6 +5,7 @@
 /// </summary>
 #include <Core/Rendering/Image.hpp> // Core::Image
 #include <Core/Rendering/DrawMode.hpp> // Core::DrawMode
+#include <Core/System/LateRef.hpp> // Core::LateRef
 
 namespace Core
 {
@@ -31,7 +32,7 @@ namespace Core
 		/// </summary>
 		/// <param name="renderer">the Renderer which is needed to draw the image</param>
 		/// <param name="rsm">the RenderStateManager which is needed to get access to the current RenderState which holds the current image mode</param>
-		explicit ImageRenderTarget(Renderer *& gctx, RenderStateManager *& rsm);
+		explicit ImageRenderTarget(LateRef<Renderer> gctx, LateRef<RenderStateManager> rsm);
 
 		/// <summary>
 		/// virtual destructor
@@ -114,7 +115,7 @@ namespace Core
 		/// This attribute is used to load/create
 		/// and draw images
 		/// </summary>
-		Renderer *& renderer;
+		LateRef<Renderer> renderer;
 
 		/// <summary>
 		/// An instance of the RenderStateManager.
@@ -122,7 +123,7 @@ namespace Core
 		/// the image correctly based on the
 		/// ImageMode from the active RenderState
 		/// </summary>
-		RenderStateManager *& rsm;
+		LateRef<RenderStateManager> rsm;
 
 	}; // class ImageRenderTarget
 

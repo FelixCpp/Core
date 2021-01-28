@@ -3,7 +3,6 @@
 #include <Core/Rendering/FactoryManager.hpp> // Core::FactoryManager
 #include <Core/System/Logger.hpp> // CORE_ERROR
 
-
 /// <summary>
 /// Windows API
 /// </summary>
@@ -13,7 +12,7 @@
 namespace Core
 {
 
-	RenderWindow::RenderWindow(Renderer *& renderer, RenderStateManager *& rsm) :
+	RenderWindow::RenderWindow(LateRef<Renderer> renderer, LateRef<RenderStateManager> rsm) :
 		Window(),
 		RenderTarget(renderer, rsm),
 		FrameSaver(renderer, this->windowHandle),

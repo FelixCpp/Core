@@ -6,7 +6,7 @@
 namespace Core
 {
 
-	RenderTarget::RenderTarget(Renderer *& renderer, RenderStateManager *& rsm) :
+	RenderTarget::RenderTarget(LateRef<Renderer> renderer, LateRef<RenderStateManager> rsm) :
 		ImageRenderTarget(renderer, rsm),
 		ShapeRenderTarget(renderer, rsm),
 		StrokeStyleTarget(rsm),

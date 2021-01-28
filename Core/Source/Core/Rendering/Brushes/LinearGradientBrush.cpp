@@ -7,7 +7,7 @@
 namespace Core
 {
 
-	LinearGradientBrush::LinearGradientBrush(Renderer *& renderer) :
+	LinearGradientBrush::LinearGradientBrush(LateRef<Renderer> renderer) :
 		brush(nullptr),
 		collection(nullptr),
 		start(0.f, 0.f),

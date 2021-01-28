@@ -1,11 +1,22 @@
 #pragma once
 
+/// <summary>
+/// Core
+/// </summary>
 #include <Core/Maths/Vector2.hpp>
 #include <Core/Rendering/Color.hpp>
 
+#include <Core/System/LateRef.hpp>
+
+/// <summary>
+/// Direct2D Content
+/// </summary>
 #include <d2d1.h>
 #include <wrl/client.h>
 
+/// <summary>
+/// C++ / STL
+/// </summary>
 #include <memory>
 #include <vector>
 
@@ -17,7 +28,7 @@ namespace Core
 	class RadialGradientBrush {
 	public:
 
-		explicit RadialGradientBrush(Renderer *& renderer);
+		explicit RadialGradientBrush(LateRef<Renderer> renderer);
 
 		void SetCenter(float x, float y);
 		const FVector2 & GetCenter() const;
@@ -51,7 +62,7 @@ namespace Core
 
 		std::vector<Color> colors;
 
-		Renderer *& renderer;
+		LateRef<Renderer> renderer;
 
 	};
 

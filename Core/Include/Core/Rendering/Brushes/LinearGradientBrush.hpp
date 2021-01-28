@@ -1,11 +1,21 @@
 #pragma once
 
+/// <summary>
+/// Core
+/// </summary>
 #include <Core/Maths/Vector2.hpp>
 #include <Core/Rendering/Color.hpp>
+#include <Core/System/LateRef.hpp>
 
+/// <summary>
+/// Direct2D Content
+/// </summary>
 #include <d2d1.h>
 #include <wrl/client.h>
 
+/// <summary>
+/// C++ / STL
+/// </summary>
 #include <memory>
 #include <vector>
 
@@ -22,7 +32,7 @@ namespace Core
 		/// its member variable
 		/// </summary>
 		/// <param name="renderer">the Renderer</param>
-		explicit LinearGradientBrush(Renderer *& renderer);
+		explicit LinearGradientBrush(LateRef<Renderer> renderer);
 
 		/// <summary>
 		/// Changes the starting point
@@ -120,7 +130,7 @@ namespace Core
 		/// to create the GradientStopCollection &
 		/// GradientBrush
 		/// </summary>
-		Renderer *& renderer;
+		LateRef<Renderer> renderer;
 
 	};
 

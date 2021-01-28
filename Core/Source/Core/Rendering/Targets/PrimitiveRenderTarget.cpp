@@ -6,7 +6,7 @@
 namespace Core
 {
 
-	PrimitiveRenderTarget::PrimitiveRenderTarget(Renderer *& renderer, RenderStateManager *& rsm) :
+	PrimitiveRenderTarget::PrimitiveRenderTarget(LateRef<Renderer> renderer, LateRef<RenderStateManager> rsm) :
 		renderer(renderer),
 		rsm(rsm)
 	{ }

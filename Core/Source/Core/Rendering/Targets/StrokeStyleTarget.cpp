@@ -5,7 +5,7 @@
 namespace Core
 {
 
-	StrokeStyleTarget::StrokeStyleTarget(RenderStateManager *& rsm) :
+	StrokeStyleTarget::StrokeStyleTarget(LateRef<RenderStateManager> rsm) :
 		rsm(rsm)
 	{
 	}

@@ -4,7 +4,7 @@
 namespace Core
 {
 
-	RenderState::RenderState(Renderer *& renderer) :
+	RenderState::RenderState(LateRef<Renderer> renderer) :
 		shape(),
 		textRenderer(),
 		strokeStyle(),

@@ -45,7 +45,7 @@ namespace Core
 
 	};
 
-	BitmapBrush::BitmapBrush(Renderer *& renderer) :
+	BitmapBrush::BitmapBrush(LateRef<Renderer> renderer) :
 		impl(std::make_shared<Implementation>()),
 		renderer(renderer),
 		image(),

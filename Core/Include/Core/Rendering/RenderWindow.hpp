@@ -1,9 +1,24 @@
 #pragma once
 
+/// <summary>
+/// Core
+/// </summary>
+
+/// <summary>
+/// Window components
+/// </summary>
 #include <Core/Window/Window.hpp>
 
+/// <summary>
+/// Rendering components
+/// </summary>
 #include <Core/Rendering/Targets/RenderTarget.hpp>
 #include <Core/Rendering/FrameSaver.hpp>
+
+/// <summary>
+/// System components
+/// </summary>
+#include <Core/System/LateRef.hpp>
 
 namespace Core
 {
@@ -20,7 +35,7 @@ namespace Core
 	public:
 
 		/* the default constructor */
-		explicit RenderWindow(Renderer *& renderer, RenderStateManager *& rsm);
+		explicit RenderWindow(LateRef<Renderer> renderer, LateRef<RenderStateManager> rsm);
 
 		/* a virtual destructor */
 		virtual ~RenderWindow();
@@ -48,7 +63,7 @@ namespace Core
 		bool resizing;
 
 		/* a Renderer */
-		Renderer *& renderer;
+		LateRef<Renderer> renderer;
 
 	};
 

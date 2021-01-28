@@ -1,10 +1,22 @@
 #pragma once
 
-#include <memory>
+/// <summary>
+/// Core
+/// </summary>
 #include <Core/Rendering/Image.hpp>
 #include <Core/Rendering/ExtendMode.hpp>
 #include <Core/Rendering/ImageInterpolationMode.hpp>
 
+#include <Core/System/LateRef.hpp>
+
+/// <summary>
+/// C++ / STL
+/// </summary>
+#include <memory>
+
+/// <summary>
+/// Ignore this
+/// </summary>
 struct ID2D1Brush;
 
 namespace Core
@@ -15,7 +27,7 @@ namespace Core
 	class BitmapBrush {
 	public:
 
-		explicit BitmapBrush(Renderer *& gctx);
+		explicit BitmapBrush(LateRef<Renderer> gctx);
 		
 		void SetImage(const Image & image);
 		const Image & GetImage() const;
@@ -36,7 +48,7 @@ namespace Core
 		struct Implementation;
 		std::shared_ptr<Implementation> impl;
 
-		Renderer *& renderer;
+		LateRef<Renderer> renderer;
 
 		Image image;
 		ImageInterpolationMode interpolationMode;

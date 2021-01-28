@@ -7,7 +7,7 @@
 namespace Core
 {
 
-	SolidColorBrush::SolidColorBrush(Renderer *& renderer) :
+	SolidColorBrush::SolidColorBrush(LateRef<Renderer> renderer) :
 		brush(nullptr),
 		color(Color::Clear),
 		renderer(renderer)

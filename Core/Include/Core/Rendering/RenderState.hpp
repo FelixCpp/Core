@@ -1,5 +1,8 @@
 #pragma once
 
+/// <summary>
+/// Coore
+/// </summary>
 #include <Core/Rendering/DrawMode.hpp>
 #include <Core/Rendering/StrokeStyle.hpp>
 #include <Core/Rendering/TextRenderer.hpp>
@@ -9,7 +12,16 @@
 #include <Core/Rendering/Brushes/RadialGradientBrush.hpp>
 #include <Core/Rendering/Brushes/BitmapBrush.hpp>
 
+#include <Core/System/LateRef.hpp>
+
+/// <summary>
+/// Direct2D Content
+/// </summary>
 #include <d2d1.h>
+
+/// <summary>
+/// C++ / STL
+/// </summary>
 #include <stack>
 
 namespace Core
@@ -57,7 +69,7 @@ namespace Core
 		float strokeWeight;
 
 		/* constructor */
-		explicit RenderState(Renderer *& renderer);
+		explicit RenderState(LateRef<Renderer> renderer);
 
 		/* changes the active matrix to match the parameter. This method also calls activateMatrix() */
 		void SetActiveMatrix(const D2D1::Matrix3x2F & matrix);
@@ -113,7 +125,7 @@ namespace Core
 			Through this instance we got access to the RenderTarget to change the
 			Transformation
 		*/
-		Renderer *& renderer;
+		LateRef<Renderer> renderer;
 
 	};
 

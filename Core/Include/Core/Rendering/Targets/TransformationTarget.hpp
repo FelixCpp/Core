@@ -1,5 +1,10 @@
 #pragma once
 
+/// <summary>
+/// Core
+/// </summary>
+#include <Core/System/LateRef.hpp>
+
 namespace Core
 {
 
@@ -24,7 +29,7 @@ namespace Core
 		/// to its member variables.
 		/// </summary>
 		/// <param name="rsm">the RenderStateManager which is needed to get access to the current RenderState holding informations about the transformation metrics</param>
-		explicit TransformationTarget(RenderStateManager *& rsm);
+		explicit TransformationTarget(LateRef<RenderStateManager> rsm);
 
 		/// <summary>
 		/// A virtual destructor
@@ -99,7 +104,7 @@ namespace Core
 		/// to get access to the brushes / drawing
 		/// properties
 		/// </summary>
-		RenderStateManager *& rsm;
+		LateRef<RenderStateManager> rsm;
 
 	};
 

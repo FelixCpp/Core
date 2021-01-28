@@ -1,8 +1,15 @@
 #pragma once
 
-#include <vector>
-
+/// <summary>
+/// Core
+/// </summary>
 #include <Core/Rendering/StrokeStyleAttributes.hpp>
+#include <Core/System/LateRef.hpp>
+
+/// <summary>
+/// C++ / STL
+/// </summary>
+#include <vector>
 
 namespace Core
 {
@@ -28,7 +35,7 @@ namespace Core
 		/// to its member variable.
 		/// </summary>
 		/// <param name="rsm">the RenderStateManager which is needed to get access to the current RenderState holding the strokestyle attribute</param>
-		explicit StrokeStyleTarget(RenderStateManager *& rsm);
+		explicit StrokeStyleTarget(LateRef<RenderStateManager> rsm);
 
 		/// <summary>
 		/// A virtual destructor
@@ -103,7 +110,7 @@ namespace Core
 		/// to get access to the brushes / drawing
 		/// properties
 		/// </summary>
-		RenderStateManager *& rsm;
+		LateRef<RenderStateManager> rsm;
 
 	};
 

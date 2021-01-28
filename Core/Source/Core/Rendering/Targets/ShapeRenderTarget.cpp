@@ -6,7 +6,7 @@
 namespace Core
 {
 
-	ShapeRenderTarget::ShapeRenderTarget(Renderer *& renderer, RenderStateManager *& rsm) :
+	ShapeRenderTarget::ShapeRenderTarget(LateRef<Renderer> renderer, LateRef<RenderStateManager> rsm) :
 		renderer(renderer),
 		rsm(rsm)
 	{ }

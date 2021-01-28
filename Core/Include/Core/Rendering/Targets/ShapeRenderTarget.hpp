@@ -1,6 +1,10 @@
 #pragma once
 
+/// <summary>
+/// Core
+/// </summary>
 #include <Core/Rendering/ShapeAttributes.hpp>
+#include <Core/System/LateRef.hpp>
 
 namespace Core
 {
@@ -31,7 +35,7 @@ namespace Core
 		/// </summary>
 		/// <param name="renderer">the Renderer which is needed to draw the shape</param>
 		/// <param name="rsm">the RenderStateManager which is needed to get access to the current RenderState which holds the shape object</param>
-		explicit ShapeRenderTarget(Renderer *& renderer, RenderStateManager *& rsm);
+		explicit ShapeRenderTarget(LateRef<Renderer> renderer, LateRef<RenderStateManager> rsm);
 
 		/// <summary>
 		/// A virtual destructor
@@ -155,14 +159,14 @@ namespace Core
 		/// An instance of the Renderer
 		/// to draw the shape
 		/// </summary>
-		Renderer *& renderer;
+		LateRef<Renderer> renderer;
 
 		/// <summary>
 		/// An instance of the RenderStateManager
 		/// to get access to the brushes / drawing
 		/// properties
 		/// </summary>
-		RenderStateManager *& rsm;
+		LateRef<RenderStateManager> rsm;
 
 	};
 

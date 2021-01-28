@@ -1,7 +1,17 @@
 #pragma once
 
+/// <summary>
+/// Core
+/// </summary>
+
+/// <summary>
+/// Rendering components
+/// </summary>
 #include <Core/Rendering/Color.hpp>
 
+/// <summary>
+/// Rendering targets
+/// </summary>
 #include <Core/Rendering/Targets/ImageRenderTarget.hpp>
 #include <Core/Rendering/Targets/ShapeRenderTarget.hpp>
 #include <Core/Rendering/Targets/StrokeStyleTarget.hpp>
@@ -10,6 +20,11 @@
 #include <Core/Rendering/Targets/PrimitiveRenderTarget.hpp>
 #include <Core/Rendering/Targets/TransformationTarget.hpp>
 #include <Core/Rendering/Targets/BrushTarget.hpp>
+
+/// <summary>
+/// System components
+/// </summary>
+#include <Core/System/LateRef.hpp>
 
 namespace Core
 {
@@ -44,7 +59,7 @@ namespace Core
 		/// </summary>
 		/// <param name="renderer">the Renderer</param>
 		/// <param name="rsm">the RenderStateManger</param>
-		explicit RenderTarget(Renderer *& renderer, RenderStateManager *& rsm);
+		explicit RenderTarget(LateRef<Renderer> renderer, LateRef<RenderStateManager> rsm);
 		
 		/// <summary>
 		/// A virtual destructor
@@ -65,7 +80,7 @@ namespace Core
 		/// to get access to the RenderTarget
 		/// used to clear the background
 		/// </summary>
-		Renderer *& renderer;
+		LateRef<Renderer> renderer;
 
 	};
 

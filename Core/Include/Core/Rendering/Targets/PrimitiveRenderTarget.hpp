@@ -1,6 +1,10 @@
 #pragma once
 
+/// <summary>
+/// Core
+/// </summary>
 #include <Core/Rendering/DrawMode.hpp>
+#include <Core/System/LateRef.hpp>
 
 namespace Core
 {
@@ -28,7 +32,7 @@ namespace Core
 		/// </summary>
 		/// <param name="renderer">the Renderer which is needed to draw the primitives</param>
 		/// <param name="rsm">the RenderStateManager which is needed to get access to the current RenderState holding informations how the primitives should be drawn</param>
-		explicit PrimitiveRenderTarget(Renderer *& renderer, RenderStateManager *& rsm);
+		explicit PrimitiveRenderTarget(LateRef<Renderer> renderer, LateRef<RenderStateManager> rsm);
 
 		/// <summary>
 		/// A virtual destructor
@@ -132,14 +136,14 @@ namespace Core
 		/// An instance of the Renderer
 		/// to draw the shape
 		/// </summary>
-		Renderer *& renderer;
+		LateRef<Renderer> renderer;
 
 		/// <summary>
 		/// An instance of the RenderStateManager
 		/// to get access to the brushes / drawing
 		/// properties
 		/// </summary>
-		RenderStateManager *& rsm;
+		LateRef<RenderStateManager> rsm;
 
 	};
 

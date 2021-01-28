@@ -7,7 +7,7 @@
 namespace Core
 {
 
-	RadialGradientBrush::RadialGradientBrush(Renderer *& renderer) :
+	RadialGradientBrush::RadialGradientBrush(LateRef<Renderer> renderer) :
 		brush(nullptr),
 		collection(nullptr),
 		center(0.f, 0.f),

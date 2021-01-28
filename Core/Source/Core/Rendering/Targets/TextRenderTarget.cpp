@@ -6,7 +6,7 @@
 namespace Core
 {
 
-	TextRenderTarget::TextRenderTarget(Renderer *& renderer, RenderStateManager *& rsm) :
+	TextRenderTarget::TextRenderTarget(LateRef<Renderer> renderer, LateRef<RenderStateManager> rsm) :
 		renderer(renderer),
 		rsm(rsm)
 	{ }

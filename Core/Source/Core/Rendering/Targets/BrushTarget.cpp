@@ -5,7 +5,7 @@
 namespace Core
 {
 
-	BrushTarget::BrushTarget(RenderStateManager *& rsm) :
+	BrushTarget::BrushTarget(LateRef<RenderStateManager> rsm) :
 		rsm(rsm)
 	{
 	}

@@ -3,7 +3,7 @@
 
 namespace Core
 {
-	RenderStateTarget::RenderStateTarget(RenderStateManager *& rsm) :
+	RenderStateTarget::RenderStateTarget(LateRef<RenderStateManager> rsm) :
 		rsm(rsm)
 	{
 	}

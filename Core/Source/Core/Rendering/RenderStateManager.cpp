@@ -3,7 +3,7 @@
 namespace Core
 {
 
-	RenderStateManager::RenderStateManager(Renderer *& renderer) :
+	RenderStateManager::RenderStateManager(LateRef<Renderer> renderer) :
 		defaultState(renderer),
 		activeState(&this->defaultState),
 		states(),
