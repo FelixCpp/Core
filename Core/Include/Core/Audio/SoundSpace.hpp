@@ -70,9 +70,7 @@ namespace Core
 
 		/* returns the speed of sound */
 		static float GetSpeedOfSound();
-
-	private:
-				
+						
 	};
 
 }

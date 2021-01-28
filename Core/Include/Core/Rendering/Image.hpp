@@ -96,6 +96,19 @@ namespace Core
 		bool LoadFromImage(const Image & other, i32_t x, i32_t y, i32_t width, i32_t height, Renderer * renderer);
 
 		/// <summary>
+		/// Copies the pixels from the RenderTarget
+		/// contained by the Renderer into the
+		/// bitmap
+		/// </summary>
+		/// <param name="x">start x in pixel space</param>
+		/// <param name="y">start y in pixel space</param>
+		/// <param name="width">width to copy in pixels</param>
+		/// <param name="height">height to copy in pixels</param>
+		/// <param name="renderer">the Renderer containing the RenderTarget to copy the data from</param>
+		/// <returns>True if everything goes as expected</returns>
+		bool LoadFromScreen(i32_t x, i32_t y, i32_t width, i32_t height, Renderer * renderer);
+
+		/// <summary>
 		/// Loads the pixels
 		/// </summary>
 		void LoadColors();

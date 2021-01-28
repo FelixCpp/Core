@@ -33,12 +33,12 @@ namespace Core
 		return image;
 	}
 
-	//Image ImageRenderTarget::LoadImageFromScreen(i32_t x, i32_t y, i32_t width, i32_t height)
-	//{
-	//	Core::Image image;
-	//	//	image.LoadFromScreen(x, y, width, height, this->gctx);
-	//	return image;
-	//}
+	Image ImageRenderTarget::LoadImageFromScreen(i32_t x, i32_t y, i32_t width, i32_t height)
+	{
+		Core::Image image;
+		image.LoadFromScreen(x, y, width, height, this->renderer);
+		return image;
+	}
 
 	Image ImageRenderTarget::LoadImageFromImage(const Core::Image & source, i32_t x, i32_t y, i32_t width, i32_t height)
 	{

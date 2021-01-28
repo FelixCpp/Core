@@ -371,6 +371,65 @@ namespace Core
 		return true;
 	}
 
+	bool Image::LoadFromScreen(i32_t x, i32_t y, i32_t width, i32_t height, Renderer * renderer)
+	{
+		auto & bitmap = this->impl->bitmap;
+
+		// get the RenderTarget
+		ID2D1RenderTarget * renderTarget = renderer->GetRenderTarget();
+		if (!renderTarget)
+		{
+			CORE_ERROR("There is no RenderTarget");
+			return false;
+		}
+
+		const D2D1_SIZE_F rtSize = renderTarget->GetSize();
+		// clamp the values so the full width and full height can always be copied
+		x = (i32_t)FMath::Constrain((float)x, 0.f, (float)(rtSize.width - width));
+		y = (i32_t)FMath::Constrain((float)y, 0.f, (float)(rtSize.height - height));
+
+		// Get the pixel format
+		const D2D1_PIXEL_FORMAT pixelFormat = renderTarget->GetPixelFormat();
+
+		// Get the dpiX, dpiY values
+		FLOAT dpiX = 0.f, dpiY = 0.f;
+		renderTarget->GetDpi(&dpiX, &dpiY);
+
+		// create the bitmap properties
+		const D2D1_BITMAP_PROPERTIES bitmapProperties = D2D1::BitmapProperties(
+			pixelFormat,
+			dpiX, dpiY
+		);
+
+		const D2D1_SIZE_U size = D2D1::SizeU(width, height);
+
+		const HRESULT hr = renderTarget->CreateBitmap(size, bitmapProperties, &bitmap);
+		if (FAILED(hr))
+		{
+			CORE_ERROR("Failed to create a Bitmap");
+			return false;
+		}
+
+		const D2D1_POINT_2U destPoint = D2D1::Point2U(0, 0);
+		const D2D1_RECT_U srcRect = D2D1::RectU(x, y, x + width, y + height);
+
+		// Copy data from the RenderTarget
+		const HRESULT hr = bitmap->CopyFromRenderTarget(&destPoint, renderTarget, &srcRect);
+		if (FAILED(hr))
+		{
+			CORE_ERROR("Failed to copy data from the RenderTarget");
+			return false;
+		}
+
+		// Copy the pixels from screen
+
+		this->width = width;
+		this->height = height;
+		this->colors.clear();
+
+		return true;
+	}
+
 	void Image::LoadColors()
 	{
 		// nothing to do

@@ -70,7 +70,7 @@ namespace Core
 		/// <param name="y">start y position in pixel space</param>
 		/// <param name="width">width of the image in pixels</param>
 		/// <param name="height">height of the image in pixels</param>
-		//Image LoadImageFromScreen(i32_t x, i32_t y, i32_t width, i32_t height);
+		Image LoadImageFromScreen(i32_t x, i32_t y, i32_t width, i32_t height);
 
 		/// <summary>
 		/// Copies a section from the source
