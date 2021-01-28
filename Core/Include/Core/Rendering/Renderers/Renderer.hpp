@@ -63,13 +63,6 @@ namespace Core
 		virtual void ResizeViewport(u32_t width, u32_t height) = 0;
 
 		/// <summary>
-		/// Saves the current screen
-		/// of the Renderer to a file
-		/// </summary>
-		/// <param name="filepath">where the image gets stored to</param>
-		virtual void SaveFrame(const std::string & filepath) = 0;
-
-		/// <summary>
 		/// Returns the RenderTarget
 		/// as base class
 		/// </summary>

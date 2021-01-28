@@ -2,6 +2,9 @@
 #include <Core/Rendering/FactoryManager.hpp> // Core::FactoryManager
 #include <Core/System/Logger.hpp> // CORE_ERROR
 
+#include <vector>
+#include <algorithm>
+
 namespace Core
 {
 
@@ -75,9 +78,6 @@ namespace Core
 
 	void WindowRenderer::ResizeViewport(u32_t width, u32_t height)
 	{
-		if (!this->renderTarget)
-			return;
-
 		if (this->drawing)
 		{
 			this->renderTarget->EndDraw();
@@ -87,11 +87,6 @@ namespace Core
 		{
 			this->renderTarget->Resize(D2D1::SizeU(width, height));
 		}
-	}
-
-	void WindowRenderer::SaveFrame(const std::string & filepath)
-	{
-		CORE_ERROR("WindowRenderer does not support SaveFrame()");
 	}
 
 	ID2D1RenderTarget * WindowRenderer::GetRenderTarget() const

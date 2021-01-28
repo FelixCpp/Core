@@ -55,6 +55,7 @@
     <ClInclude Include="Include\Core\Rendering\Targets\RenderStateTarget.hpp" />
     <ClInclude Include="Include\Core\Rendering\Targets\TextRenderTarget.hpp" />
     <ClInclude Include="Include\Core\Rendering\Targets\TransformationTarget.hpp" />
+    <ClInclude Include="Include\Core\System\LateRef.hpp" />
     <ClInclude Include="Include\Core\System\Logger.hpp" />
     <ClInclude Include="Include\Core\Window\DisplayMode.hpp" />
     <ClInclude Include="Include\Core\Window\SystemCursor.hpp" />

@@ -8,6 +8,8 @@ namespace Core
 	Microsoft::WRL::ComPtr<IDWriteFactory> FactoryManager::dwriteFactory = nullptr;
 	Microsoft::WRL::ComPtr<IWICImagingFactory> FactoryManager::wicFactory = nullptr;
 	bool FactoryManager::isInitialized = false;
+	Gdiplus::GdiplusStartupInput FactoryManager::gdiplusInput = {};
+	ULONG_PTR FactoryManager::gdiplusToken = 0ull;
 
 	bool FactoryManager::Initialize()
 	{
@@ -55,12 +57,25 @@ namespace Core
 			return false;
 		}
 
+		// Initialize Gdiplus
+		Gdiplus::Status success = Gdiplus::GdiplusStartup(&gdiplusToken, &gdiplusInput, nullptr);
+		if (success != Gdiplus::Status::Ok)
+		{
+			CORE_ERROR("Failed to initialize Gdiplus");
+			return false;
+		}
+
 		isInitialized = true;
 		return true;
 	}
 
 	void FactoryManager::Destroy()
 	{
+		// Destroy Gdiplus interface
+		Gdiplus::GdiplusShutdown(gdiplusToken);
+		gdiplusToken = 0ull;
+		ZeroMemory(&gdiplusInput, sizeof Gdiplus::GdiplusStartupInput);
+
 		// The order of these operations is important!
 		wicFactory.Reset();
 		CoUninitialize();

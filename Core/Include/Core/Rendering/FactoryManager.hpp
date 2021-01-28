@@ -29,6 +29,15 @@
 /// </summary>
 #include <wrl/client.h>
 
+/// <summary>
+/// Contains everything
+/// we need to initialize
+/// Gdi+
+/// </summary>
+#include <gdiplus.h>
+#pragma comment(lib, "gdi32")
+#pragma comment(lib, "gdiplus")
+
 namespace Core
 {
 
@@ -83,6 +92,19 @@ namespace Core
 		/// initialized or not
 		/// </summary>
 		static bool isInitialized;
+
+		/// <summary>
+		/// Used to initialized
+		/// Gdiplus properly
+		/// </summary>
+		static Gdiplus::GdiplusStartupInput gdiplusInput;
+
+		/// <summary>
+		/// A token used to
+		/// initialize Gdiplus
+		/// properly
+		/// </summary>
+		static ULONG_PTR gdiplusToken;
 
 	}; // class FactoryManager
 

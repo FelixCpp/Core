@@ -16,7 +16,7 @@ namespace Core
 	RenderWindow::RenderWindow(Renderer *& renderer, RenderStateManager *& rsm) :
 		Window(),
 		RenderTarget(renderer, rsm),
-		FrameSaver(renderer),
+		FrameSaver(renderer, this->windowHandle),
 		mouseInsideWindow(false),
 		resizing(false),
 		renderer(renderer)

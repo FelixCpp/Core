@@ -4,11 +4,12 @@
 /// Core
 /// </summary>
 #include <Core/System/Datatypes.hpp>
+#include <Core/System/LateRef.hpp>
 
 /// <summary>
 /// C++ / STL
 /// </summary>
-#include <string>
+#include <string> // std::string
 
 namespace Core
 {
@@ -34,7 +35,7 @@ namespace Core
 		/// Takes in the renderer
 		/// </summary>
 		/// <param name="renderer">The renderer</param>
-		explicit FrameSaver(Renderer *& renderer);
+		explicit FrameSaver(LateRef<Renderer> renderer, LateRef<Windowhandle> windowHandle);
 
 		/// <summary>
 		/// Virtual destructor
@@ -45,14 +46,21 @@ namespace Core
 		/// Takes a screen shot and
 		/// saves it
 		/// </summary>
-		void SaveFrame(const std::string & filepath);
+		bool SaveFrame(const std::string & filepath);
 
 	private:
 
 		/// <summary>
 		/// The renderer
 		/// </summary>
-		Renderer *& renderer;
+		LateRef<Renderer> renderer;
+
+		/// <summary>
+		/// The windowhandle.
+		/// It's important to keep a '*&'
+		/// on it, since it could be recreated
+		/// </summary>
+		LateRef<Windowhandle> handle;
 
 	};
 
