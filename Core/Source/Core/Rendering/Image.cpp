@@ -403,7 +403,7 @@ namespace Core
 
 		const D2D1_SIZE_U size = D2D1::SizeU(width, height);
 
-		const HRESULT hr = renderTarget->CreateBitmap(size, bitmapProperties, &bitmap);
+		HRESULT hr = renderTarget->CreateBitmap(size, bitmapProperties, &bitmap);
 		if (FAILED(hr))
 		{
 			CORE_ERROR("Failed to create a Bitmap");
@@ -414,7 +414,7 @@ namespace Core
 		const D2D1_RECT_U srcRect = D2D1::RectU(x, y, x + width, y + height);
 
 		// Copy data from the RenderTarget
-		const HRESULT hr = bitmap->CopyFromRenderTarget(&destPoint, renderTarget, &srcRect);
+		hr = bitmap->CopyFromRenderTarget(&destPoint, renderTarget, &srcRect);
 		if (FAILED(hr))
 		{
 			CORE_ERROR("Failed to copy data from the RenderTarget");

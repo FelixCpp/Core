@@ -279,6 +279,8 @@ namespace Core
 				args.system = (HIWORD(GetKeyState(VK_LWIN)) || HIWORD(GetKeyState(VK_RWIN))) != 0;
 				args.code = DecodeKeyCode(wParam, lParam);
 				window->OnKeyPressed(args);
+
+				window->keyIsPressed = true;
 			} break;
 
 			case WM_SYSKEYUP:
@@ -291,6 +293,8 @@ namespace Core
 				args.system = (HIWORD(GetKeyState(VK_LWIN)) || HIWORD(GetKeyState(VK_RWIN))) != 0;
 				args.code = DecodeKeyCode(wParam, lParam);
 				window->OnKeyReleased(args);
+
+				window->keyIsPressed = false;
 			} break;
 
 			case WM_GETMINMAXINFO:
@@ -308,14 +312,14 @@ namespace Core
 				window->OnTextEntered(key);
 			} break;
 
-			case WM_LBUTTONDOWN: window->OnMousePressed(Mouse::Button::Left); break;
-			case WM_RBUTTONDOWN: window->OnMousePressed(Mouse::Button::Right); break;
-			case WM_MBUTTONDOWN: window->OnMousePressed(Mouse::Button::Middle); break;
-			case WM_XBUTTONDOWN: window->OnMousePressed(GET_XBUTTON_WPARAM(wParam) == XBUTTON1 ? Mouse::Button::XButton1 : Mouse::Button::XButton2); break;
-			case WM_LBUTTONUP: window->OnMouseReleased(Mouse::Button::Left); break;
-			case WM_RBUTTONUP: window->OnMouseReleased(Mouse::Button::Right); break;
-			case WM_MBUTTONUP: window->OnMouseReleased(Mouse::Button::Middle); break;
-			case WM_XBUTTONUP: window->OnMouseReleased(GET_XBUTTON_WPARAM(wParam) == XBUTTON1 ? Mouse::Button::XButton1 : Mouse::Button::XButton2); break;
+			case WM_LBUTTONDOWN: window->mouseIsPressed = true; window->OnMousePressed(Mouse::Button::Left); break;
+			case WM_RBUTTONDOWN: window->mouseIsPressed = true; window->OnMousePressed(Mouse::Button::Right); break;
+			case WM_MBUTTONDOWN: window->mouseIsPressed = true; window->OnMousePressed(Mouse::Button::Middle); break;
+			case WM_XBUTTONDOWN: window->mouseIsPressed = true; window->OnMousePressed(GET_XBUTTON_WPARAM(wParam) == XBUTTON1 ? Mouse::Button::XButton1 : Mouse::Button::XButton2); break;
+			case WM_LBUTTONUP: window->mouseIsPressed = false; window->OnMouseReleased(Mouse::Button::Left); break;
+			case WM_RBUTTONUP: window->mouseIsPressed = false; window->OnMouseReleased(Mouse::Button::Right); break;
+			case WM_MBUTTONUP: window->mouseIsPressed = false; window->OnMouseReleased(Mouse::Button::Middle); break;
+			case WM_XBUTTONUP: window->mouseIsPressed = false; window->OnMouseReleased(GET_XBUTTON_WPARAM(wParam) == XBUTTON1 ? Mouse::Button::XButton1 : Mouse::Button::XButton2); break;
 			case WM_SETFOCUS: window->GrabCursor(window->mouseCursorGrabbed); window->OnFocusGained(); break;
 			case WM_KILLFOCUS: window->GrabCursor(false); window->OnFocusLost(); break;
 

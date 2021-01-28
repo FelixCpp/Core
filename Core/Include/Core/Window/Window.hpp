@@ -245,6 +245,18 @@ namespace Core
 		/* indicates wether the mouse cursor is grabbed inside the windows boundary or not */
 		bool mouseCursorGrabbed;
 
+		/// <summary>
+		/// Indicates wether any mouse button
+		/// is currently held down
+		/// </summary>
+		bool mouseIsPressed;
+
+		/// <summary>
+		/// Indicates wether any key
+		/// is currently held down
+		/// </summary>
+		bool keyIsPressed;
+
 	private:
 
 		/* indicates the state of the cursors visibility */
