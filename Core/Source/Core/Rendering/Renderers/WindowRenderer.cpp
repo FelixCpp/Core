@@ -94,6 +94,11 @@ namespace Core
 		return this->renderTarget.Get();
 	}
 
+	Windowhandle WindowRenderer::GetWindowhandle() const
+	{
+		return this->renderTarget->GetHwnd();
+	}
+
 	bool WindowRenderer::IsInitialized() const
 	{
 		return this->renderTarget != nullptr;

@@ -38,7 +38,7 @@ namespace Core
 		explicit RenderWindow(LateRef<Renderer> renderer, LateRef<RenderStateManager> rsm);
 
 		/* a virtual destructor */
-		virtual ~RenderWindow();
+		virtual ~RenderWindow() = default;
 
 		/* creates a window with the given properties */
 		virtual bool Create(u32_t width, u32_t height, const std::string & title) override;

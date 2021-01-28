@@ -5,10 +5,7 @@
 namespace Core
 {
 
-	template<typename TFunction, typename = std::enable_if_t<
-		std::is_invocable_v<TFunction> &&
-		std::is_same_v<std::result_of_t<TFunction()>, void>
-	>>
+	template<typename TFunction>
 	class FinalAction {
 	public:
 

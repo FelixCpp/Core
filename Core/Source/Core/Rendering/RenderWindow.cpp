@@ -22,10 +22,6 @@ namespace Core
 	{
 	}
 
-	RenderWindow::~RenderWindow()
-	{
-	}
-
 	bool RenderWindow::Create(u32_t width, u32_t height, const std::string & title)
 	{
 		WNDCLASSA wc = {};

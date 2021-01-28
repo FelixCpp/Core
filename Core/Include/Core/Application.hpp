@@ -28,6 +28,12 @@ namespace Core
 		void PauseDrawing();
 		void StartDrawing();
 
+		/// <summary>
+		/// Calls Draw() surrounded with
+		/// BeginDraw() and EndDraw()
+		/// </summary>
+		void Redraw();
+
 		/* exits the application (calls close() on the Window base) */
 		void Exit();
 
@@ -86,12 +92,6 @@ namespace Core
 		/// BeginDraw() and EndDraw()
 		/// </summary>
 		void SetupImpl();
-
-		/// <summary>
-		/// Calls Draw() surrounded with
-		/// BeginDraw() and EndDraw()
-		/// </summary>
-		void DrawImpl();
 
 		/// <summary>
 		/// Starts the sketch

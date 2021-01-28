@@ -61,6 +61,13 @@ namespace Core
 		virtual ID2D1RenderTarget * GetRenderTarget() const override;
 
 		/// <summary>
+		/// Returns the Windowhandle used
+		/// to create the RenderTarget
+		/// </summary>
+		/// <returns></returns>
+		virtual Windowhandle GetWindowhandle() const override;
+
+		/// <summary>
 		/// Checks wether the RenderTarget
 		/// is initialized or not
 		/// </summary>

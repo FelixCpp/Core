@@ -4,6 +4,7 @@
 
 #include <Core/System/Logger.hpp> // CORE_ERROR
 #include <Core/Maths/Math.hpp> // Core::FMath
+#include <Core/System/FinalAction.hpp> // Core::FinalAction
 
 #include <wrl/client.h> // Microsoft::WRL::ComPtr
 #include <d2d1.h> // Direct2D functionality
@@ -373,59 +374,129 @@ namespace Core
 
 	bool Image::LoadFromScreen(i32_t x, i32_t y, i32_t width, i32_t height, Renderer * renderer)
 	{
-		auto & bitmap = this->impl->bitmap;
-
-		// get the RenderTarget
-		ID2D1RenderTarget * renderTarget = renderer->GetRenderTarget();
-		if (!renderTarget)
+		Windowhandle window = renderer->GetWindowhandle();
+		if (!window)
 		{
-			CORE_ERROR("There is no RenderTarget");
+			CORE_ERROR("There is no Windowhandle to capture the pixels from");
 			return false;
 		}
 
-		const D2D1_SIZE_F rtSize = renderTarget->GetSize();
-		// clamp the values so the full width and full height can always be copied
-		x = (i32_t)FMath::Constrain((float)x, 0.f, (float)(rtSize.width - width));
-		y = (i32_t)FMath::Constrain((float)y, 0.f, (float)(rtSize.height - height));
-
-		// Get the pixel format
-		const D2D1_PIXEL_FORMAT pixelFormat = renderTarget->GetPixelFormat();
-
-		// Get the dpiX, dpiY values
-		FLOAT dpiX = 0.f, dpiY = 0.f;
-		renderTarget->GetDpi(&dpiX, &dpiY);
-
-		// create the bitmap properties
-		const D2D1_BITMAP_PROPERTIES bitmapProperties = D2D1::BitmapProperties(
-			pixelFormat,
-			dpiX, dpiY
-		);
-
-		const D2D1_SIZE_U size = D2D1::SizeU(width, height);
-
-		HRESULT hr = renderTarget->CreateBitmap(size, bitmapProperties, &bitmap);
-		if (FAILED(hr))
+		// get the device context of the screen
+		HDC hScreenDC = GetDC(window);
+		if (!hScreenDC)
 		{
-			CORE_ERROR("Failed to create a Bitmap");
+			CORE_ERROR("Failed to get a DeviceContext from the Windowhandle");
 			return false;
 		}
 
-		const D2D1_POINT_2U destPoint = D2D1::Point2U(0, 0);
-		const D2D1_RECT_U srcRect = D2D1::RectU(x, y, x + width, y + height);
+		const FinalAction releaseScreenDC = [&]() { ReleaseDC(window, hScreenDC); };
 
-		// Copy data from the RenderTarget
-		hr = bitmap->CopyFromRenderTarget(&destPoint, renderTarget, &srcRect);
-		if (FAILED(hr))
+		// get the screen size
+		RECT rect = {};
+		if (!GetClientRect(window, &rect))
 		{
-			CORE_ERROR("Failed to copy data from the RenderTarget");
+			CORE_ERROR("Failed to get the windows dimensions");
 			return false;
 		}
 
-		// Copy the pixels from screen
+		const int windowWidth = rect.right - rect.left;
+		const int windowHeight = rect.bottom - rect.top;
+
+		x = (i32_t)FMath::Constrain((float)x, 0.f, (float)(windowWidth - width));
+		y = (i32_t)FMath::Constrain((float)y, 0.f, (float)(windowHeight - height));
+
+		// and a device context to put it in
+		HDC hMemoryDC = CreateCompatibleDC(hScreenDC);
+		const FinalAction deleteMemoryDC = [&]() { DeleteDC(hMemoryDC); };
+
+		// maybe worth checking these are positive values
+		HBITMAP hBitmap = CreateCompatibleBitmap(hScreenDC, width, height);
+		if (!hBitmap)
+		{
+			CORE_ERROR("Failed to create a compatible bitmap");
+			return false;
+		}
+
+		// get a new bitmap
+		HBITMAP hOldBitmap = (HBITMAP)SelectObject(hMemoryDC, hBitmap);
+		if (!hOldBitmap)
+		{
+			CORE_ERROR("Failed to select an object from memory as a Bitmap");
+			return false;
+		}
+
+		// copy data into the dc
+		if (!BitBlt(hMemoryDC, 0, 0, width, height, hScreenDC, x, y, SRCCOPY))
+		{
+			CORE_ERROR("Failed to copy the data into another DC");
+			return false;
+		}
+
+		// select another object as current
+		hBitmap = (HBITMAP)SelectObject(hMemoryDC, hOldBitmap);
+		if (!hBitmap)
+		{
+			CORE_ERROR("Failed to select an object from the memory as a Bitmap");
+			return false;
+		}
+
+		const FinalAction deleteBitmap = [&]() { DeleteObject(hBitmap); };
+
+		// now your image is held in hBitmap. You can save it or do whatever with it
+
+		BITMAPINFOHEADER bmi = {};
+		ZeroMemory(&bmi, sizeof BITMAPINFOHEADER);
+		bmi.biSize = sizeof BITMAPINFOHEADER;
+		bmi.biPlanes = 1;
+		bmi.biBitCount = 32;
+		bmi.biWidth = width;
+		bmi.biHeight = -height;
+		bmi.biCompression = BI_RGB;
+		bmi.biSizeImage = 0;// 3 * ScreenX * ScreenY;
+
+		BYTE * data = new BYTE[width * height * 4];
+		const FinalAction deleteData = [&]() { delete[] data; data = nullptr; };
+
+		if (!GetDIBits(hMemoryDC, hBitmap, 0, height, data, (BITMAPINFO *)&bmi, DIB_RGB_COLORS))
+		{
+			CORE_ERROR("Failed calling GetDIBits to get the pixel informations from Screen");
+			return false;
+		}
+
+		// now your image is held in hBitmap. You can save it or do whatever with it
+		static const auto red = [&](int x, int y)
+		{
+			return data[4 * ((y * width) + x) + 2];
+		};
+
+		static const auto blue = [&](int x, int y)
+		{
+			return data[4 * ((y * width) + x)];
+		};
+
+		static const auto green = [&](int x, int y)
+		{
+			return data[4 * ((y * width) + x) + 1];
+		};
+
+		this->colors.resize(width * height, Color::White);
+		for (int y = 0; y < height; y++)
+		{
+			for (int x = 0; x < width; x++)
+			{
+				const u32_t index = y * width + x;
+				this->colors[index].r = red(x, y);
+				this->colors[index].g = green(x, y);
+				this->colors[index].b = blue(x, y);
+			}
+		}
 
 		this->width = width;
 		this->height = height;
-		this->colors.clear();
+		if (!this->Create(this->width, this->height, this->colors.data(), renderer))
+		{
+			return false;
+		}
 
 		return true;
 	}

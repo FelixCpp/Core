@@ -26,6 +26,13 @@ namespace Core
 		this->drawingPaused = false;
 	}
 
+	void Application::Redraw()
+	{
+		this->renderer->BeginDraw();
+		this->Draw();
+		this->renderer->EndDraw();
+	}
+
 	void Application::Exit()
 	{
 		this->Close();
@@ -47,13 +54,6 @@ namespace Core
 	{
 		this->renderer->BeginDraw();
 		this->Setup();
-		this->renderer->EndDraw();
-	}
-
-	void Application::DrawImpl()
-	{
-		this->renderer->BeginDraw();
-		this->Draw();
 		this->renderer->EndDraw();
 	}
 
@@ -83,7 +83,7 @@ namespace Core
 			// call draw surrounded by begin/end-Draw()
 			if (!this->drawingPaused)
 			{
-				this->DrawImpl();
+				this->Redraw();
 				this->OnFrameProcessed();
 			}
 

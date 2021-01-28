@@ -69,6 +69,13 @@ namespace Core
 		virtual ID2D1RenderTarget * GetRenderTarget() const = 0;
 
 		/// <summary>
+		/// Returns the Windowhandle used
+		/// to create the RenderTarget
+		/// </summary>
+		/// <returns></returns>
+		virtual Windowhandle GetWindowhandle() const = 0;
+
+		/// <summary>
 		/// Checks wether the Renderer
 		/// is initialized or in its
 		/// initial state
