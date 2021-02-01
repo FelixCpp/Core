@@ -45,7 +45,7 @@ namespace Core
 			return result;
 		}
 
-		T reduce(const Function<T(T, T)> & combine, const std::optional<T> & start = std::nullopt) const
+		T reduce(const Function<T(T, T)> & combine) const
 		{
 			if (this->empty()) return T();
 
@@ -148,5 +148,5 @@ namespace Core
 	
 	using CString = Collection<char, WrapString>;
 	using WString = Collection<wchar_t, WrapString>;
-	
+
 }

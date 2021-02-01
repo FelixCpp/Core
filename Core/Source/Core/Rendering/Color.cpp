@@ -81,10 +81,10 @@ namespace Core
 	Color Color::GetRandomColor(bool randomAlpha)
 	{
 		return Color(
-			Core::Random::Get(255),
-			Core::Random::Get(255),
-			Core::Random::Get(255),
-			randomAlpha ? Core::Random::Get(255) : 255
+			Random::Get(255),
+			Random::Get(255),
+			Random::Get(255),
+			randomAlpha ? Random::Get(255) : 255
 		);
 	}
 

@@ -1,8 +1,16 @@
 #pragma once
 
-#include <vector>
-
+/// <summary>
+/// Core
+/// </summary>
 #include <Core/System/Datatypes.hpp>
+
+/// <summary>
+/// C++ / STL
+/// </summary>
+#include <vector>
+#include <string>
+
 
 namespace Core
 {
@@ -10,17 +18,35 @@ namespace Core
 	class DisplayMode {
 	public:
 
-		/* the default constructor */
+		/// <summary>
+		/// The default constructor
+		/// </summary>
 		DisplayMode();
 		
-		/* copies the parameter into the member-variables of this class */
+		/// <summary>
+		/// Copies the input into the member variables
+		/// </summary>
+		/// <param name="width">the width</param>
+		/// <param name="height">the height</param>
+		/// <param name="bitsPerPel">the bits per pixel</param>
+		/// <param name="displayFrequency">the frquency in Herz</param>
 		explicit DisplayMode(i32_t width, i32_t height, i32_t bitsPerPel, i32_t displayFrequency);
 
-		/* returns a list of valid DisplayModes which are valid for fullscreen-mode */
+		/// <summary>
+		/// Returns all valid display modes for fullscreen mode
+		/// </summary>
 		static std::vector<DisplayMode> GetFullscreenModes();
-
-		/* returns the DisplayMode of the primary monitor */
+		
+		/// <summary>
+		/// Returns the DisplayMode for the primary Monitor
+		/// </summary>
+		/// <returns></returns>
 		static DisplayMode GetDesktopMode();
+
+		/// <summary>
+		/// A string representation of the DisplayMode
+		/// </summary>
+		std::string ToString() const;
 
 	public:
 

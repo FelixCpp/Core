@@ -442,8 +442,6 @@ namespace Core
 
 		const FinalAction deleteBitmap = [&]() { DeleteObject(hBitmap); };
 
-		// now your image is held in hBitmap. You can save it or do whatever with it
-
 		BITMAPINFOHEADER bmi = {};
 		ZeroMemory(&bmi, sizeof BITMAPINFOHEADER);
 		bmi.biSize = sizeof BITMAPINFOHEADER;
@@ -464,20 +462,9 @@ namespace Core
 		}
 
 		// now your image is held in hBitmap. You can save it or do whatever with it
-		static const auto red = [&](int x, int y)
-		{
-			return data[4 * ((y * width) + x) + 2];
-		};
-
-		static const auto blue = [&](int x, int y)
-		{
-			return data[4 * ((y * width) + x)];
-		};
-
-		static const auto green = [&](int x, int y)
-		{
-			return data[4 * ((y * width) + x) + 1];
-		};
+		const auto red = [&](int x, int y) { return data[4 * ((y * width) + x) + 2]; };
+		const auto blue = [&](int x, int y) { return data[4 * ((y * width) + x)]; };
+		const auto green = [&](int x, int y) { return data[4 * ((y * width) + x) + 1]; };
 
 		this->colors.resize(width * height, Color::White);
 		for (int y = 0; y < height; y++)
@@ -499,11 +486,6 @@ namespace Core
 		}
 
 		return true;
-	}
-
-	void Image::LoadColors()
-	{
-		// nothing to do
 	}
 
 	bool Image::UpdateColors()

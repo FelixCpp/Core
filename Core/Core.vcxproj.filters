@@ -255,6 +255,9 @@
     <ClInclude Include="Include\Core\System\LateRef.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="Include\Core\System\Callable.hpp">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Core\Maths\Random.cpp">

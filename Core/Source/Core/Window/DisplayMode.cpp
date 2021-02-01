@@ -1,5 +1,10 @@
 #include <Core/Window/DisplayMode.hpp>
 
+#include <sstream>
+
+/// <summary>
+/// Windows API
+/// </summary>
 #include <Windows.h>
 
 namespace Core
@@ -63,6 +68,16 @@ namespace Core
 		{
 			return DisplayMode();
 		}
+	}
+
+	std::string DisplayMode::ToString() const
+	{
+		std::stringstream builder;
+		builder << "width: " << this->width << '\n';
+		builder << "height: " << this->height << '\n';
+		builder << "bitsPerPel: " << this->bitsPerPel << '\n';
+		builder << "frequency: " << this->displayFrequency << " Herz.";
+		return builder.str();
 	}
 
 	bool DisplayMode::operator==(const DisplayMode & other) const

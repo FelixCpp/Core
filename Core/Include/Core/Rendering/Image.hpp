@@ -109,11 +109,6 @@ namespace Core
 		bool LoadFromScreen(i32_t x, i32_t y, i32_t width, i32_t height, Renderer * renderer);
 
 		/// <summary>
-		/// Loads the pixels
-		/// </summary>
-		void LoadColors();
-
-		/// <summary>
 		/// Updates the image to
 		/// match the colors
 		/// </summary>
