@@ -82,6 +82,11 @@ namespace Core
 		/// </summary>
 		virtual bool IsInitialized() const = 0;
 
+		/// <summary>
+		/// Returns wether the Renderer is currently drawing or not
+		/// </summary>
+		virtual bool IsDrawing() const = 0;
+
 	}; // class RendererBase
 
 } // namespace Core

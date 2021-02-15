@@ -104,4 +104,9 @@ namespace Core
 		return this->renderTarget != nullptr;
 	}
 
+	bool WindowRenderer::IsDrawing() const
+	{
+		return this->drawing;
+	}
+
 } // namespace Core

@@ -73,6 +73,11 @@ namespace Core
 		/// </summary>
 		virtual bool IsInitialized() const override;
 
+		/// <summary>
+		/// Returns wether the Renderer is currently drawing or not
+		/// </summary>
+		virtual bool IsDrawing() const override;
+
 	private:
 
 		/// <summary>

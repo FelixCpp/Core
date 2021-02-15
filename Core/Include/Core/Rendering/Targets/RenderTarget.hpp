@@ -73,6 +73,37 @@ namespace Core
 		/// <param name="color"></param>
 		void Background(const Color & color);
 
+		/// <summary>
+		/// Begins an animation frame
+		/// 
+		/// <example>
+		/// <code>
+		/// for(int i = 0; i < 50; i++)
+		/// {
+		///		const float dx = endPos.x - startPos.x;
+		///		const float dy = endPos.y - startPos.y;
+		///		
+		///		player.x += dx / 50.f;
+		///		player.y += dy / 50.f;
+		/// 
+		///		BeginAnimationFrame();
+		///		DrawBackground();
+		///		DrawEnemies();
+		///		DrawPlayer();
+		///		EndAnimationFrame();
+		/// }
+		/// </code>
+		/// </example>
+		/// </summary>
+		void BeginAnimationFrame();
+
+		/// <summary>
+		/// Ends the animation frame
+		/// 
+		/// <remarks>Documentation BeginAnimationFrame()</remarks>
+		/// </summary>
+		void EndAnimationFrame();
+
 	private:
 
 		/// <summary>

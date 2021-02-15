@@ -73,7 +73,6 @@
     <ClInclude Include="Include\Core\Rendering\TextAttributes.hpp" />
     <ClInclude Include="Include\Core\Rendering\TextRenderer.hpp" />
     <ClInclude Include="Include\Core\Maths\Math.hpp" />
-    <ClInclude Include="Include\Core\Maths\Matrix3x3.hpp" />
     <ClInclude Include="Include\Core\Maths\Random.hpp" />
     <ClInclude Include="Include\Core\Maths\Vector2.hpp" />
     <ClInclude Include="Include\Core\System\Collection.hpp" />
@@ -137,7 +136,6 @@
     <ClCompile Include="Source\Core\Rendering\Targets\TextRenderTarget.cpp" />
     <ClCompile Include="Source\Core\Rendering\Targets\TransformationTarget.cpp" />
     <ClCompile Include="Source\Core\Rendering\TextRenderer.cpp" />
-    <ClCompile Include="Source\Core\Maths\Matrix3x3.cpp" />
     <ClCompile Include="Source\Core\Maths\Random.cpp" />
     <ClCompile Include="Source\Core\System\Logger.cpp" />
     <ClCompile Include="Source\Core\System\Stopwatch.cpp" />

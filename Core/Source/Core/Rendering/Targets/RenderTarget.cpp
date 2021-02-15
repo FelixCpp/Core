@@ -29,4 +29,22 @@ namespace Core
 		));
 	}
 
+	void RenderTarget::BeginAnimationFrame()
+	{
+		if (this->renderer->IsDrawing())
+		{
+			this->renderer->EndDraw();
+		}
+		
+		this->renderer->BeginDraw();
+	}
+
+	void RenderTarget::EndAnimationFrame()
+	{
+		if (this->renderer->IsDrawing())
+		{
+			this->renderer->EndDraw();
+		}
+	}
+
 }

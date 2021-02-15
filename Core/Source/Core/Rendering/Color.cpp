@@ -48,6 +48,11 @@ namespace Core
 	{
 	}
 
+	Color Color::Opacity(u8_t alpha) const
+	{
+		return Color(this->r, this->g, this->b, alpha);
+	}
+
 	bool Color::operator==(const Color & other) const
 	{
 		return this->r == other.r && this->g == other.g && this->b == other.b && this->a == other.a;

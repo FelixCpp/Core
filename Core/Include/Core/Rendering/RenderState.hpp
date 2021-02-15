@@ -1,7 +1,7 @@
 #pragma once
 
 /// <summary>
-/// Coore
+/// Core
 /// </summary>
 #include <Core/Rendering/DrawMode.hpp>
 #include <Core/Rendering/StrokeStyle.hpp>

@@ -53,6 +53,16 @@ namespace Core
 		Color(u32_t rgba);
 
 		/// <summary>
+		/// Returns the current color modified by the alpha
+		/// component.
+		/// </summary>
+		/// 
+		/// <example>
+		/// Color yellow = Color::Yellow.Opacity(150);
+		/// </example>
+		Color Opacity(u8_t alpha) const;
+
+		/// <summary>
 		/// Checks for equality and returns the result
 		/// </summary>
 		bool operator==(const Color & other) const;
