@@ -10,15 +10,15 @@ namespace Core
 		return GetAsyncKeyState((int)key) & 0x8000;
 	}
 
-	std::vector<Keyboard::Key> Keyboard::AreKeysPressed(const std::vector<Key> & keys)
+	std::vector<Keyboard::Key> Keyboard::GetKeysPressed(const Key * begin, const Key * end)
 	{
 		std::vector<Key> keysPressed;
 
-		for (const Key & key : keys)
+		for (const Key * key = begin; key != end; key++)
 		{
-			if (Keyboard::IsKeyPressed(key))
+			if (Keyboard::IsKeyPressed(*key))
 			{
-				keysPressed.push_back(key);
+				keysPressed.push_back(*key);
 			}
 		}
 

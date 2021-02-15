@@ -11,7 +11,7 @@ namespace Core
 
 	struct Mouse {
 
-		enum class Button {
+		enum Button {
 			Left		= 0x01,	//< Left mouse button
 			Right		= 0x02,	//< Right mouse button
 			Middle		= 0x04,	//< Middle mouse button(three - button mouse)
@@ -23,7 +23,7 @@ namespace Core
 		static bool IsButtonPressed(Button button);
 		
 		/* checks every button state. If the button is pressed, he will be stored and returned */
-		static std::vector<Button> AreButtonsPressed(const std::vector<Button> & buttons);
+		static std::vector<Button> GetButtonsPressed(const Button * begin, const Button * end);
 
 		/* changes the cursors position based on the monitors 0, 0 location */
 		static void SetPosition(i32_t x, i32_t y);

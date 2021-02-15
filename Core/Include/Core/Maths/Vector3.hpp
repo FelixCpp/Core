@@ -65,9 +65,9 @@ namespace Core
 
 		Vector3 Cross(const Vector3 & other) const
 		{
-			const float crossX = this->y * other.z - other.y * this->z;
-			const float crossY = this->z * other.x - other.z * this->x;
-			const float crossZ = this->x * other.y - other.x * this->y;
+			const T crossX = this->y * other.z - other.y * this->z;
+			const T crossY = this->z * other.x - other.z * this->x;
+			const T crossZ = this->x * other.y - other.x * this->y;
 
 			return Vector3(crossX, crossY, crossZ);
 		}

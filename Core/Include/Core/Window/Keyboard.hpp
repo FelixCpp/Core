@@ -9,7 +9,7 @@ namespace Core
 
 	struct Keyboard : StaticObject {
 		
-	    enum class Key {
+	    enum Key {
             Cancel	                    = 0x03,	//< Control - break processing
             Back	                    = 0x08,	//< BACKSPACE key
             Tab	                        = 0x09,	//< TAB key
@@ -184,7 +184,7 @@ namespace Core
 		static bool IsKeyPressed(Key key);
 
         /* checks every key state. If the key is pressed, he will be stored and returned */
-        static std::vector<Key> AreKeysPressed(const std::vector<Key> & keys);
+        static std::vector<Key> GetKeysPressed(const Key * begin, const Key * end);
 
 	};
 

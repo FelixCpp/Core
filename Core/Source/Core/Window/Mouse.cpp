@@ -10,15 +10,15 @@ namespace Core
 		return GetAsyncKeyState((int)button) & 0x8000;
 	}
 
-	std::vector<Mouse::Button> Mouse::AreButtonsPressed(const std::vector<Button> & buttons)
+	std::vector<Mouse::Button> Mouse::GetButtonsPressed(const Button * begin, const Button * end)
 	{
 		std::vector<Button> pressedButtons;
 		
-		for (const Button & button : buttons)
+		for (const Button * button = begin; button != end; button++)
 		{
-			if (Mouse::IsButtonPressed(button))
+			if (Mouse::IsButtonPressed(*button))
 			{
-				pressedButtons.push_back(button);
+				pressedButtons.push_back(*button);
 			}
 		}
 
