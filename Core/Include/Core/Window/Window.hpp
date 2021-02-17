@@ -144,7 +144,7 @@ namespace Core
 		virtual void OnKeyReleased(KeyboardEventArgs args) {}
 		
 		/* gets raised if a character was pressed */
-		virtual void OnTextEntered(Keyboard::Key key) {}
+		virtual void OnTextEntered(u32_t unicode) {}
 		
 		/* gets raised if any mouse button is pressed */
 		virtual void OnMousePressed(Mouse::Button button) {}
@@ -256,6 +256,14 @@ namespace Core
 		/// is currently held down
 		/// </summary>
 		bool keyIsPressed;
+
+		/// <summary>
+		/// Indicates wether the key can be held down
+		/// and the windows fires OnTextEntered events
+		/// or just a single time if the key was pressed
+		/// down
+		/// </summary>
+		bool keyRepeatEnabled;
 
 	private:
 

@@ -108,9 +108,6 @@
     <ClInclude Include="Include\Core\Rendering\DrawMode.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="Include\Core\Rendering\Helpers.hpp">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="Include\Core\Rendering\Image.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
@@ -279,9 +276,6 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="Source\Core\Application.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Core\Rendering\Helpers.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="Source\Core\Rendering\Image.cpp">

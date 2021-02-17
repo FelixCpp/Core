@@ -33,6 +33,7 @@ namespace Core
 		mouseCursorGrabbed(false),
 		mouseCursorVisible(true),
 		fullscreen(false),
+		keyRepeatEnabled(true),
 		fpsLimit(Duration::FromSeconds(0.f)),
 		delayWatch(Stopwatch::StartNew()),
 		fpsWatch(Stopwatch::StartNew()),

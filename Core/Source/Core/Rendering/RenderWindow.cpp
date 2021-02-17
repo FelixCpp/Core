@@ -9,6 +9,60 @@
 #include <Windows.h>
 #include <windowsx.h>
 
+namespace
+{
+	// directly taken from: https://github.com/SFML/SFML/blob/master/include/SFML/System/Utf.inl
+	static Core::u16_t surrogate = '\0';
+
+	template <typename In>
+	static In Utf16Decode(In begin, In end, Core::u32_t & output, Core::u32_t replacement)
+	{
+		Core::u16_t first = *begin++;
+
+		// If it's a surrogate pair, first convert to a single UTF-32 character
+		if ((first >= 0xD800) && (first <= 0xDBFF))
+		{
+			if (begin < end)
+			{
+				Core::u32_t second = *begin++;
+				if ((second >= 0xDC00) && (second <= 0xDFFF))
+				{
+					// The second element is valid: convert the two elements to a UTF-32 character
+					output = ((first - 0xD800) << 10) + (second - 0xDC00) + 0x0010000;
+				} else
+				{
+					// Invalid character
+					output = replacement;
+				}
+			} else
+			{
+				// Invalid character
+				begin = end;
+				output = replacement;
+			}
+		} else
+		{
+			// We can make a direct copy
+			output = first;
+		}
+
+		return begin;
+	}
+
+	template <typename In, typename Out>
+	static Out FromUtf16ToUtf32(In begin, In end, Out output)
+	{
+		while (begin < end)
+		{
+			Core::u32_t codepoint = 0u;
+			begin = Utf16Decode(begin, end, codepoint, '?');
+			*output++ = codepoint;
+		}
+
+		return output;
+	}
+}
+
 namespace Core
 {
 
@@ -304,8 +358,32 @@ namespace Core
 
 			case WM_CHAR:
 			{
-				const Keyboard::Key key = (Keyboard::Key)wParam;
-				window->OnTextEntered(key);
+				// directly taken from: https://github.com/SFML/SFML/blob/master/src/SFML/Window/Win32/WindowImplWin32.cpp
+				if (window->keyRepeatEnabled || ((lParam & (1 << 30)) == 0))
+				{
+					// Get the code of the typed character
+					u32_t character = static_cast<u32_t>(wParam);
+
+					// Check if it is the first part of a surrogate pair, or a regular character
+					if ((character >= 0xD800) && (character <= 0xDBFF))
+					{
+						// First part of a surrogate pair: store it and wait for the second one
+						surrogate = static_cast<u16_t>(character);
+					} else
+					{
+						// Check if it is the second part of a surrogate pair, or a regular character
+						if ((character >= 0xDC00) && (character <= 0xDFFF))
+						{
+							// Convert the UTF-16 surrogate pair to a single UTF-32 value
+							u16_t utf16[] = { surrogate, static_cast<u16_t>(character) };
+							FromUtf16ToUtf32(utf16, utf16 + 2, &character);
+							surrogate = 0;
+						}
+
+						// Send a TextEntered event
+						window->OnTextEntered(character);
+					}
+				}
 			} break;
 
 			case WM_LBUTTONDOWN: window->mouseIsPressed = true; window->OnMousePressed(Mouse::Button::Left); break;
