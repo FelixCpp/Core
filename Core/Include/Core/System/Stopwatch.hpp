@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Core/System/Duration.hpp>
+#include <Core/System/TimeSpan.hpp>
 
 #include <chrono>
 
@@ -34,7 +34,7 @@ namespace Core
 		bool IsRunning() const;
 
 		/* returns the elapsed time since last start */
-		Duration GetElapsedTime() const;
+		TimeSpan GetElapsedTime() const;
 
 		/* returns a started stopwatch */
 		static Stopwatch StartNew();

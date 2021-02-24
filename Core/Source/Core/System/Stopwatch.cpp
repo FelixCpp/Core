@@ -46,11 +46,11 @@ namespace Core
 		return this->running;
 	}
 
-	Duration Stopwatch::GetElapsedTime() const
+	TimeSpan Stopwatch::GetElapsedTime() const
 	{
 		const TimePoint tp = this->running ? Clock::now() : this->endTime;
 		const std::chrono::microseconds time = std::chrono::duration_cast<std::chrono::microseconds>(tp - this->startTime);
-		return Duration::FromMicroseconds(time.count());
+		return TimeSpan::FromMicroseconds(time.count());
 	}
 
 	Stopwatch Stopwatch::StartNew()

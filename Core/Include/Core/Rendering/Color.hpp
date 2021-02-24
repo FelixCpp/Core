@@ -103,7 +103,7 @@ namespace Core
 		/// random 0-255 value
 		/// </summary>
 		/// <param name="randomAlpha">a boolean to indicate wether the alpha component should have a random value or 255 assigned to itor </param>
-		static Color GetRandomColor(bool randomAlpha = false);
+		static Color GetRandomColor(u8_t minValue = 0, u8_t maxValue = 255, bool randomAlpha = false);
 
 		/// <summary>
 		///	don't change the order of this attributes !

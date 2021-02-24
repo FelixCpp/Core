@@ -5,7 +5,7 @@
 #include <Core/Maths/Vector2.hpp>
 
 #include <Core/System/Datatypes.hpp>
-#include <Core/System/Duration.hpp>
+#include <Core/System/TimeSpan.hpp>
 #include <Core/System/Stopwatch.hpp>
 
 #include <Core/Window/WindowEvents.hpp>
@@ -23,10 +23,10 @@ namespace Core
 	public:
 
 		/* the monitors width */
-		static const i32_t DisplayWidth;
+		static const i32_t displayWidth;
 		
 		/* the monitors height */
-		static const i32_t DisplayHeight;
+		static const i32_t displayHeight;
 
 	public:
 
@@ -276,7 +276,7 @@ namespace Core
 	private: /* framerate limit */
 
 		/* the fps-limit in duration format */
-		Duration fpsLimit;
+		TimeSpan fpsLimit;
 
 		/* clock to delay the recalculation of the fps */
 		Stopwatch delayWatch;

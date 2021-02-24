@@ -13,8 +13,8 @@
 namespace Core
 {
 
-	const i32_t Window::DisplayWidth = DisplayMode::GetDesktopMode().width;
-	const i32_t Window::DisplayHeight = DisplayMode::GetDesktopMode().height;
+	const i32_t Window::displayWidth = DisplayMode::GetDesktopMode().width;
+	const i32_t Window::displayHeight = DisplayMode::GetDesktopMode().height;
 
 	Window::Window() :
 		width(0),
@@ -34,7 +34,7 @@ namespace Core
 		mouseCursorVisible(true),
 		fullscreen(false),
 		keyRepeatEnabled(true),
-		fpsLimit(Duration::FromSeconds(0.f)),
+		fpsLimit(TimeSpan::FromSeconds(0.f)),
 		delayWatch(Stopwatch::StartNew()),
 		fpsWatch(Stopwatch::StartNew()),
 		calcWatch(Stopwatch::StartNew()),
@@ -130,7 +130,7 @@ namespace Core
 	{
 		if (limit > 0)
 		{
-			this->fpsLimit = Duration::FromSeconds(1.f / (float)limit);
+			this->fpsLimit = TimeSpan::FromSeconds(1.f / (float)limit);
 		} else
 		{
 			this->NoFramerateLimit();
@@ -139,7 +139,7 @@ namespace Core
 
 	void Window::NoFramerateLimit()
 	{
-		this->fpsLimit = Duration::Zero;
+		this->fpsLimit = TimeSpan::Zero;
 	}
 
 	bool Window::IsOpen() const
@@ -431,9 +431,9 @@ namespace Core
 
 	void Window::LimitFps()
 	{
-		if (this->fpsLimit != Duration::Zero)
+		if (this->fpsLimit != TimeSpan::Zero)
 		{
-			const Duration diff = this->fpsLimit - this->calcWatch.GetElapsedTime();
+			const TimeSpan diff = this->fpsLimit - this->calcWatch.GetElapsedTime();
 			const i32_t milliseconds = diff.ToMilliseconds();
 
 			if (milliseconds > 0)

@@ -1,6 +1,7 @@
 #include <Core/Rendering/FrameSaver.hpp>
 #include <Core/Rendering/Renderers/Renderer.hpp>
 #include <Core/System/Logger.hpp>
+#include <Core/System/FinalAction.hpp>
 
 /// <summary>
 /// Windows API
@@ -13,6 +14,7 @@
 /// </summary>
 #include <vector>
 #include <algorithm>
+#include <thread>
 
 namespace Core
 {
@@ -36,8 +38,8 @@ namespace Core
 		UINT num = 0;  // number of image encoders
 		UINT size = 0; // size of the image encoder array in bytes
 
-		Gdiplus::GetImageEncodersSize(&num, &size);
-		if (size == 0)
+		Gdiplus::Status status = Gdiplus::GetImageEncodersSize(&num, &size);
+		if (status != Gdiplus::Status::Ok || size == 0)
 		{
 			CORE_ERROR("Failed to get the image encoders size");
 			return false;
@@ -45,7 +47,12 @@ namespace Core
 
 		std::vector<Gdiplus::ImageCodecInfo> pImageCodecInfo(size);
 
-		Gdiplus::GetImageEncoders(num, size, &pImageCodecInfo[0]);
+		status = Gdiplus::GetImageEncoders(num, size, &pImageCodecInfo[0]);
+		if (status != Gdiplus::Status::Ok)
+		{
+			CORE_ERROR("Failed to get the image encoders");
+			return false;
+		}
 
 		for (UINT i = 0; i < num; i++)
 		{
@@ -77,9 +84,29 @@ namespace Core
 
 		// get the device context of the screen
 		HDC hScreenDC = GetDC(this->handle);
-		
+		if (!hScreenDC)
+		{
+			CORE_ERROR("Failed to get the windows DeviceContext");
+			return false;
+		}
+
+		const FinalAction hScreenDCRelease = [&]()
+		{
+			DeleteDC(hScreenDC);
+		};
+
 		// and a device context to put it in
 		HDC hMemoryDC = CreateCompatibleDC(hScreenDC);
+		if (!hMemoryDC)
+		{
+			CORE_ERROR("Failed to create a compatible DeviceContext");
+			return false;
+		}
+
+		const FinalAction hMemoryDCRelease = [&]()
+		{
+			DeleteDC(hMemoryDC);
+		};
 
 		// get the screen size
 		RECT rect = {};
@@ -123,10 +150,6 @@ namespace Core
 			return false;
 		}
 
-		// clean up
-		DeleteDC(hMemoryDC);
-		DeleteDC(hScreenDC);
-
 		// now your image is held in hBitmap. You can save it or do whatever with it
 		Gdiplus::Bitmap bitmap(hBitmap, nullptr);
 
@@ -159,7 +182,7 @@ namespace Core
 		const std::wstring wFilepath(filepath.begin(), filepath.end());
 
 		// save the bitmap
-		Gdiplus::Status status = bitmap.Save(wFilepath.c_str(), &encoder);
+		const Gdiplus::Status status = bitmap.Save(wFilepath.c_str(), &encoder);
 		if (status != Gdiplus::Status::Ok)
 		{
 			CORE_ERROR("Failed to save the data to \"%s\"", filepath.c_str());

@@ -87,9 +87,6 @@
     <ClInclude Include="Include\Core\System\DelegateBase.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="Include\Core\System\Duration.hpp">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="Include\Core\Window\SystemIcon.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
@@ -249,6 +246,24 @@
     <ClInclude Include="Include\Core\System\LateRef.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="Include\Core\Maths\Animations\Animation.hpp">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Core\Maths\Animations\LinearAnimation.hpp">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Core\Maths\Animations\EaseInExponentialAnimation.hpp">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Core\Maths\Animations\EaseOutExponentialAnimation.hpp">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Core\Maths\Animations\EaseInOutExponentialAnimation.hpp">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Core\System\TimeSpan.hpp">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Core\Maths\Random.cpp">
@@ -267,9 +282,6 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="Source\Core\System\Stopwatch.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Core\System\Duration.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="Source\Core\Window\Window.cpp">
@@ -384,6 +396,9 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="Source\Core\Rendering\FrameSaver.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Core\System\TimeSpan.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>

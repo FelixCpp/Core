@@ -41,7 +41,7 @@ namespace Core
 		template<class TDerived, typename ... TArgs, typename = std::enable_if_t<std::is_base_of_v<Application, TDerived>>>
 		static void Launch(const TArgs & ... arguments)
 		{
-			// We're initializing the variables which needs to be alive ouside
+			// We're initializing the variables which needs to be alive outside
 			// the lifetime of the instance variable
 			GlobalInit();
 			
@@ -83,7 +83,6 @@ namespace Core
 		/// in a loop
 		/// </summary>
 		virtual void Draw() {}
-
 
 	private:
 

@@ -32,6 +32,11 @@
     <ClInclude Include="Include\Core\Audio\SoundSpace.hpp" />
     <ClInclude Include="Include\Core\Audio\WaveFile.hpp" />
     <ClInclude Include="Include\Core\Audio\WaveFileReader.hpp" />
+    <ClInclude Include="Include\Core\Maths\Animations\Animation.hpp" />
+    <ClInclude Include="Include\Core\Maths\Animations\EaseInExponentialAnimation.hpp" />
+    <ClInclude Include="Include\Core\Maths\Animations\EaseInOutExponentialAnimation.hpp" />
+    <ClInclude Include="Include\Core\Maths\Animations\EaseOutExponentialAnimation.hpp" />
+    <ClInclude Include="Include\Core\Maths\Animations\LinearAnimation.hpp" />
     <ClInclude Include="Include\Core\Rendering\Brushes\BitmapBrush.hpp" />
     <ClInclude Include="Include\Core\Rendering\Color.hpp" />
     <ClInclude Include="Include\Core\Rendering\DrawMode.hpp" />
@@ -85,7 +90,7 @@
     <ClInclude Include="Include\Core\System\StaticObject.hpp" />
     <ClInclude Include="Include\Core\System\Stopwatch.hpp" />
     <ClInclude Include="Include\Core\System\Timer.hpp" />
-    <ClInclude Include="Include\Core\System\Duration.hpp" />
+    <ClInclude Include="Include\Core\System\TimeSpan.hpp" />
     <ClInclude Include="Include\Core\Window\Keyboard.hpp" />
     <ClInclude Include="Include\Core\Window\Mouse.hpp" />
     <ClInclude Include="Include\Core\Window\MsgBox.hpp" />
@@ -138,7 +143,7 @@
     <ClCompile Include="Source\Core\System\Logger.cpp" />
     <ClCompile Include="Source\Core\System\Stopwatch.cpp" />
     <ClCompile Include="Source\Core\System\Timer.cpp" />
-    <ClCompile Include="Source\Core\System\Duration.cpp" />
+    <ClCompile Include="Source\Core\System\TimeSpan.cpp" />
     <ClCompile Include="Source\Core\Window\DisplayMode.cpp" />
     <ClCompile Include="Source\Core\Window\Keyboard.cpp" />
     <ClCompile Include="Source\Core\Window\Mouse.cpp" />

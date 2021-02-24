@@ -37,7 +37,7 @@ namespace Core
 
 	void TransformationTarget::Rotate(float angle)
 	{
-		D2D1::Matrix3x2F matrix = this->GetState().GetActiveMatrix();
+		D2D1::Matrix3x2F & matrix = this->GetState().GetActiveMatrix();
 		this->GetState().SetActiveMatrix(matrix * D2D1::Matrix3x2F::Rotation(angle, D2D1::Point2F(matrix.dx, matrix.dy)));
 	}
 

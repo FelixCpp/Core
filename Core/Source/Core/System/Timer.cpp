@@ -10,7 +10,7 @@ namespace Core
 	{
 	}
 	
-	void Timer::SetTimeout(const CompletionCallback & completion, const Duration & delay)
+	void Timer::SetTimeout(const CompletionCallback & completion, const TimeSpan & delay)
 	{
 		this->active = true;
 
@@ -25,7 +25,7 @@ namespace Core
 		workerThread.detach();
 	}
 	
-	void Timer::SetInterval(const CompletionCallback & completion, const Duration & interval)
+	void Timer::SetInterval(const CompletionCallback & completion, const TimeSpan & interval)
 	{
 		this->active = true;
 

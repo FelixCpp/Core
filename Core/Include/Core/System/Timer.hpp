@@ -3,7 +3,7 @@
 #include <Core/System/Function.hpp>
 #include <Core/System/Datatypes.hpp>
 
-#include <Core/System/Duration.hpp>
+#include <Core/System/TimeSpan.hpp>
 
 namespace Core
 {
@@ -17,8 +17,8 @@ namespace Core
 
 		Timer();
 
-		void SetTimeout(const CompletionCallback & completion, const Duration & delay);
-		void SetInterval(const CompletionCallback & completion, const Duration & interval);
+		void SetTimeout(const CompletionCallback & completion, const TimeSpan & delay);
+		void SetInterval(const CompletionCallback & completion, const TimeSpan & interval);
 		void Stop();
 
 	private:

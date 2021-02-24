@@ -28,9 +28,9 @@ namespace Core
 
 	void Application::Redraw()
 	{
-		this->renderer->BeginDraw();
+		this->BeginAnimationFrame();
 		this->Draw();
-		this->renderer->EndDraw();
+		this->EndAnimationFrame();
 	}
 
 	void Application::Exit()
@@ -52,9 +52,9 @@ namespace Core
 
 	void Application::SetupImpl()
 	{
-		this->renderer->BeginDraw();
+		this->BeginAnimationFrame();
 		this->Setup();
-		this->renderer->EndDraw();
+		this->EndAnimationFrame();
 	}
 
 	void Application::StartSketch()
@@ -68,17 +68,17 @@ namespace Core
 
 		// set the framerate limit
 		this->SetFramerateLimit(60);
-		
+
+		// start calling the DrawImpl function
+		this->StartDrawing();
+
 		// Setup
 		this->SetupImpl();
-		
-		// start calling the drawImpl function
-		this->StartDrawing();
 
 		while (this->IsOpen())
 		{
-			// pops every renderstate and activates the default
-			this->rsm->Reset();
+			// calculate & limit fps
+			this->HandleFps();
 
 			// call draw surrounded by begin/end-Draw()
 			if (!this->drawingPaused)
@@ -87,10 +87,8 @@ namespace Core
 				this->OnFrameProcessed();
 			}
 
-			// calculate & limit fps
-			this->HandleFps();
-
-			// raise processEvents() function
+			// pops every renderstate and activates the default
+			this->rsm->Reset();
 			this->DispatchEvents();
 		}
 

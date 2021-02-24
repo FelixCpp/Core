@@ -43,10 +43,20 @@ namespace Core
 		virtual ~FrameSaver() = default;
 
 		/// <summary>
-		/// Takes a screen shot and
-		/// saves it
+		/// Calls SaveFrameAsync.
+		/// This method is async.
 		/// </summary>
 		bool SaveFrame(const std::string & filepath);
+
+	private:
+
+		/// <summary>
+		/// Actually takes a screenshot and saves it to
+		/// a file.
+		/// </summary>
+		/// <param name="filepath"></param>
+		/// <returns></returns>
+		bool SaveFrameImpl(const std::string & filepath);
 
 	private:
 

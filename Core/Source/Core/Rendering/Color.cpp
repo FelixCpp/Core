@@ -83,13 +83,13 @@ namespace Core
 		return (u8_t)(0.2126f * this->r) + (u8_t)(0.7152f * this->g) + (u8_t)(0.0722f * this->b);
 	}
 
-	Color Color::GetRandomColor(bool randomAlpha)
+	Color Color::GetRandomColor(u8_t minValue, u8_t maxValue, bool randomAlpha)
 	{
 		return Color(
-			Random::Get(255),
-			Random::Get(255),
-			Random::Get(255),
-			randomAlpha ? Random::Get(255) : 255
+			Random::Get<int>(minValue, maxValue),
+			Random::Get<int>(minValue, maxValue),
+			Random::Get<int>(minValue, maxValue),
+			randomAlpha ? Random::Get<int>(minValue, maxValue) : 255
 		);
 	}
 

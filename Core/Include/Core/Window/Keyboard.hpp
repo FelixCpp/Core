@@ -177,7 +177,26 @@ namespace Core
             Zoom	                    = 0xFB,	//< Zoom key
             NoName	                    = 0xFC,	//< Reserved for future use
             Pa1	                        = 0xFD,	//< PA1 key
-            OemClear	                = 0xFE	//< Clear key
+            OemClear	                = 0xFE,	//< Clear key
+
+            Backspace                   = Back,
+            Alt                         = Menu,
+            LAlt                        = LMenu,
+            RAlt                        = RMenu,
+            LSTRG                       = LControl,
+            RSTRG                       = RControl,
+            LWindows                    = LWin,
+            RWindows                    = RWin,
+            ArrowLeft                   = Left,
+            ArrowRight                  = Right,
+            ArrowUp                     = Up,
+            ArrowDown                   = Down,
+            Enter                       = Return,
+            Capslock                    = Capital,
+            Plus                        = OemPlus,
+            Minus                       = OemMinus,
+            Period                      = OemPeriod,
+            Comma                       = OemComma,
 	    };
 
         /* checks the state of the key. It returns true if the key is currently being held down */

@@ -195,7 +195,7 @@ namespace Core
 						{
 							if (renderer->IsInitialized())
 							{
-								window->renderer->ResizeViewport(width, height);
+								renderer->ResizeViewport(width, height);
 							}
 						}
 
@@ -230,7 +230,7 @@ namespace Core
 					{
 						if (renderer->IsInitialized())
 						{
-							window->renderer->ResizeViewport(size.width, size.height);
+							renderer->ResizeViewport(size.width, size.height);
 						}
 					}
 
