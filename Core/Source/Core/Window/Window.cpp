@@ -13,8 +13,8 @@
 namespace Core
 {
 
-	const i32_t Window::displayWidth = DisplayMode::GetDesktopMode().width;
-	const i32_t Window::displayHeight = DisplayMode::GetDesktopMode().height;
+	const Int32 Window::displayWidth = DisplayMode::GetDesktopMode().width;
+	const Int32 Window::displayHeight = DisplayMode::GetDesktopMode().height;
 
 	Window::Window() :
 		width(0),
@@ -34,7 +34,7 @@ namespace Core
 		mouseCursorVisible(true),
 		fullscreen(false),
 		keyRepeatEnabled(true),
-		fpsLimit(TimeSpan::FromSeconds(0.f)),
+		fpsLimit(TimeSpan::FromSeconds(0)),
 		delayWatch(Stopwatch::StartNew()),
 		fpsWatch(Stopwatch::StartNew()),
 		calcWatch(Stopwatch::StartNew()),
@@ -89,7 +89,7 @@ namespace Core
 		return true;
 	}
 
-	bool Window::ExitFullscreen(u32_t width, u32_t height)
+	bool Window::ExitFullscreen(UInt32 width, UInt32 height)
 	{
 		const BOOL success = ChangeDisplaySettingsA(nullptr, CDS_RESET) == DISP_CHANGE_SUCCESSFUL;
 		if (success == FALSE)
@@ -126,11 +126,14 @@ namespace Core
 		return true;
 	}
 
-	void Window::SetFramerateLimit(i32_t limit)
+	void Window::SetFramerateLimit(Int32 limit)
 	{
 		if (limit > 0)
 		{
-			this->fpsLimit = TimeSpan::FromSeconds(1.f / (float)limit);
+			const float value = 1000.f / limit;
+			const int millis = (int)value;
+			const int micros = (value - (int)value) * 10;
+			this->fpsLimit = TimeSpan::FromMilliseconds(millis) + TimeSpan::FromMicroseconds(micros);
 		} else
 		{
 			this->NoFramerateLimit();
@@ -171,7 +174,7 @@ namespace Core
 		return this->title;
 	}
 
-	void Window::SetSize(u32_t width, u32_t height)
+	void Window::SetSize(UInt32 width, UInt32 height)
 	{
 		RECT wndRect = { 0l, 0l, (LONG)width, (LONG)height };
 		AdjustWindowRect(&wndRect, GetWindowLongA(this->windowHandle, GWL_STYLE), FALSE);
@@ -189,7 +192,7 @@ namespace Core
 		return UVector2(cx, cy);
 	}
 
-	void Window::SetPosition(i32_t x, i32_t y)
+	void Window::SetPosition(Int32 x, Int32 y)
 	{
 		SetWindowPos(this->windowHandle, nullptr, x, y, 0, 0, SWP_NOZORDER | SWP_NOSIZE);
 		
@@ -420,9 +423,9 @@ namespace Core
 
 	void Window::CalculateFps()
 	{
-		if (this->delayWatch.GetElapsedTime().ToSeconds() > 0.25f)
+		if (this->delayWatch.GetElapsedTime().ToMilliseconds() > 250)
 		{
-			this->fps = (i32_t)(float)(this->internalFrameCount / this->fpsWatch.GetElapsedTime().ToSeconds());
+			this->fps = (Int32)(float)(this->internalFrameCount / this->fpsWatch.GetElapsedTime().ToSeconds<float>());
 			this->internalFrameCount = 0u;
 			this->fpsWatch.Restart();
 			this->delayWatch.Restart();
@@ -434,7 +437,7 @@ namespace Core
 		if (this->fpsLimit != TimeSpan::Zero)
 		{
 			const TimeSpan diff = this->fpsLimit - this->calcWatch.GetElapsedTime();
-			const i32_t milliseconds = diff.ToMilliseconds();
+			const Int64 milliseconds = diff.ToMilliseconds();
 
 			if (milliseconds > 0)
 			{

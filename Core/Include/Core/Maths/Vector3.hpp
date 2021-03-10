@@ -146,7 +146,7 @@ namespace Core
 
 	typedef Vector3<float> FVector3;
 	typedef Vector3<double> DVector3;
-	typedef Vector3<i32_t> IVector3;
-	typedef Vector3<u32_t> UVector3;
+	typedef Vector3<Int32> IVector3;
+	typedef Vector3<UInt32> UVector3;
 
 }

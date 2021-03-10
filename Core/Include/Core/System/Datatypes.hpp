@@ -6,17 +6,17 @@ struct HICON__;
 namespace Core
 {
 
-	typedef signed char i8_t;
-	typedef unsigned char u8_t;
+	typedef signed char Int8;
+	typedef unsigned char UInt8;
 
-	typedef short i16_t;
-	typedef unsigned short u16_t;
+	typedef short Int16;
+	typedef unsigned short UInt16;
 
-	typedef int i32_t;
-	typedef unsigned int u32_t;
+	typedef int Int32;
+	typedef unsigned int UInt32;
 
-	typedef long long i64_t;
-	typedef unsigned long long u64_t;
+	typedef long long Int64;
+	typedef unsigned long long UInt64;
 
 	/* used for Window creation */
 	typedef HWND__ * Windowhandle;

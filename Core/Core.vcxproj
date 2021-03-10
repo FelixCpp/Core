@@ -59,6 +59,7 @@
     <ClInclude Include="Include\Core\Rendering\Targets\RenderStateTarget.hpp" />
     <ClInclude Include="Include\Core\Rendering\Targets\TextRenderTarget.hpp" />
     <ClInclude Include="Include\Core\Rendering\Targets\TransformationTarget.hpp" />
+    <ClInclude Include="Include\Core\System\Comparable.hpp" />
     <ClInclude Include="Include\Core\System\LateRef.hpp" />
     <ClInclude Include="Include\Core\System\Logger.hpp" />
     <ClInclude Include="Include\Core\Window\DisplayMode.hpp" />
@@ -81,12 +82,9 @@
     <ClInclude Include="Include\Core\Maths\Vector2.hpp" />
     <ClInclude Include="Include\Core\System\Collection.hpp" />
     <ClInclude Include="Include\Core\System\Datatypes.hpp" />
-    <ClInclude Include="Include\Core\System\Delegate.hpp" />
     <ClInclude Include="Include\Core\System\Event.hpp" />
-    <ClInclude Include="Include\Core\System\EventBinder.hpp" />
     <ClInclude Include="Include\Core\System\FinalAction.hpp" />
     <ClInclude Include="Include\Core\System\Function.hpp" />
-    <ClInclude Include="Include\Core\System\DelegateBase.hpp" />
     <ClInclude Include="Include\Core\System\StaticObject.hpp" />
     <ClInclude Include="Include\Core\System\Stopwatch.hpp" />
     <ClInclude Include="Include\Core\System\Timer.hpp" />

@@ -24,12 +24,6 @@
     <ClInclude Include="Include\Core\System\Collection.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="Include\Core\System\Delegate.hpp">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\Core\System\EventBinder.hpp">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="Include\Core\System\StaticObject.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
@@ -82,9 +76,6 @@
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="Include\Core\System\Stopwatch.hpp">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\Core\System\DelegateBase.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="Include\Core\Window\SystemIcon.hpp">
@@ -262,6 +253,9 @@
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="Include\Core\System\TimeSpan.hpp">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Core\System\Comparable.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>

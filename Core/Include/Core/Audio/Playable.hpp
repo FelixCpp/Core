@@ -25,7 +25,7 @@ namespace Core
 		virtual ~Playable() = default;
 
 		/* creates an OpenAL source attached to a buffer */
-		void Create(u32_t bufferID);
+		void Create(UInt32 bufferID);
 
 		/* plays the source and attaches a buffer to it */
 		virtual void Play();
@@ -103,12 +103,12 @@ namespace Core
 		State GetState() const;
 
 		/* a getter for the sourceID */
-		u32_t GetSourceID() const;
+		UInt32 GetSourceID() const;
 
 	protected:
 
 		/* internal OpenAL soure id */
-		u32_t sourceID;
+		UInt32 sourceID;
 
 	};
 

@@ -32,7 +32,7 @@ namespace Core
 	{
 	}
 
-	bool Image::Create(i32_t width, i32_t height, const Color colors[], Renderer * renderer)
+	bool Image::Create(Int32 width, Int32 height, const Color colors[], Renderer * renderer)
 	{
 		// handy typedef for the implementations attribute
 		auto & bitmap = this->impl->bitmap;
@@ -182,8 +182,8 @@ namespace Core
 		}
 
 		// Copy the values
-		this->width = (i32_t)uiWidth;
-		this->height = (i32_t)uiHeight;
+		this->width = (Int32)uiWidth;
+		this->height = (Int32)uiHeight;
 
 		// Get the color values
 		
@@ -231,7 +231,7 @@ namespace Core
 		// Pixel manipulation using the image data pointer pv.
 		// ...
 		const bool hasAlpha = cbBufferSize == uiWidth * uiHeight * 4;
-		const i32_t colorChannels = hasAlpha ? 4 : 3;
+		const Int32 colorChannels = hasAlpha ? 4 : 3;
 
 		// make space for the colors
 		this->colors.resize(uiWidth * uiHeight);
@@ -252,7 +252,7 @@ namespace Core
 		return true;
 	}
 
-	bool Image::LoadFromMemory(i32_t width, i32_t height, const Color colors[], Renderer * renderer)
+	bool Image::LoadFromMemory(Int32 width, Int32 height, const Color colors[], Renderer * renderer)
 	{
 		auto & bitmap = this->impl->bitmap;
 	
@@ -285,7 +285,7 @@ namespace Core
 		return true;
 	}
 
-	bool Image::LoadFromImage(const Image & other, i32_t x, i32_t y, i32_t width, i32_t height, Renderer * renderer)
+	bool Image::LoadFromImage(const Image & other, Int32 x, Int32 y, Int32 width, Int32 height, Renderer * renderer)
 	{
 		auto & bitmap = this->impl->bitmap;
 		ID2D1Bitmap * source = other.GetBitmap();
@@ -299,8 +299,8 @@ namespace Core
 		}
 
 		// clamp the values so the full width and full height can always be copied
-		x = (i32_t)FMath::Constrain((float)x, 0.f, (float)(other.width - width));
-		y = (i32_t)FMath::Constrain((float)y, 0.f, (float)(other.height - height));
+		x = (Int32)FMath::Constrain((float)x, 0.f, (float)(other.width - width));
+		y = (Int32)FMath::Constrain((float)y, 0.f, (float)(other.height - height));
 
 		if (!bitmap)
 		{
@@ -361,9 +361,9 @@ namespace Core
 
 		const auto xd = x;
 		const auto yd = y;
-		for (u32_t y = 0; y < this->height; y++)
+		for (UInt32 y = 0; y < this->height; y++)
 		{
-			for (u32_t x = 0; x < this->width; x++)
+			for (UInt32 x = 0; x < this->width; x++)
 			{
 				this->colors[y * this->width + x] = other.colors[yd * width + xd];
 			}
@@ -372,7 +372,7 @@ namespace Core
 		return true;
 	}
 
-	bool Image::LoadFromScreen(i32_t x, i32_t y, i32_t width, i32_t height, Renderer * renderer)
+	bool Image::LoadFromScreen(Int32 x, Int32 y, Int32 width, Int32 height, Renderer * renderer)
 	{
 		Windowhandle window = renderer->GetWindowhandle();
 		if (!window)
@@ -402,8 +402,8 @@ namespace Core
 		const int windowWidth = rect.right - rect.left;
 		const int windowHeight = rect.bottom - rect.top;
 
-		x = (i32_t)FMath::Constrain((float)x, 0.f, (float)(windowWidth - width));
-		y = (i32_t)FMath::Constrain((float)y, 0.f, (float)(windowHeight - height));
+		x = (Int32)FMath::Constrain((float)x, 0.f, (float)(windowWidth - width));
+		y = (Int32)FMath::Constrain((float)y, 0.f, (float)(windowHeight - height));
 
 		// and a device context to put it in
 		HDC hMemoryDC = CreateCompatibleDC(hScreenDC);
@@ -471,7 +471,7 @@ namespace Core
 		{
 			for (int x = 0; x < width; x++)
 			{
-				const u32_t index = y * width + x;
+				const UInt32 index = y * width + x;
 				this->colors[index].r = red(x, y);
 				this->colors[index].g = green(x, y);
 				this->colors[index].b = blue(x, y);
@@ -499,7 +499,7 @@ namespace Core
 		return this->impl->bitmap.Get();
 	}
 
-	bool Image::CopyFromRawData(i32_t width, i32_t height, const Color colors[])
+	bool Image::CopyFromRawData(Int32 width, Int32 height, const Color colors[])
 	{
 		auto & bitmap = this->impl->bitmap;
 

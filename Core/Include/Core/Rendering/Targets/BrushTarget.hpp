@@ -142,7 +142,7 @@ namespace Core
 		/// <param name="modeX">extend mode (horizontal)</param>
 		/// <param name="modeY">extend mode (vertical)</param>
 		/// <param name="opacity">opacity of the image</param>
-		void ImageFill(const Image & image, ImageInterpolationMode mode = ImageInterpolationMode::NearestNeighbor, ExtendMode modeX = ExtendMode::Clamp, ExtendMode modeY = ExtendMode::Clamp, i32_t opacity = 255);
+		void ImageFill(const Image & image, ImageInterpolationMode mode = ImageInterpolationMode::NearestNeighbor, ExtendMode modeX = ExtendMode::Clamp, ExtendMode modeY = ExtendMode::Clamp, Int32 opacity = 255);
 		
 		/// <summary>
 		/// Changes and activates
@@ -154,7 +154,7 @@ namespace Core
 		/// <param name="modeX">extend mode (horizontal)</param>
 		/// <param name="modeY">extend mode (vertical)</param>
 		/// <param name="opacity">opacity of the image</param>
-		void ImageStroke(const Image & image, ImageInterpolationMode mode = ImageInterpolationMode::NearestNeighbor, ExtendMode modeX = ExtendMode::Clamp, ExtendMode modeY = ExtendMode::Clamp, i32_t opacity = 255);
+		void ImageStroke(const Image & image, ImageInterpolationMode mode = ImageInterpolationMode::NearestNeighbor, ExtendMode modeX = ExtendMode::Clamp, ExtendMode modeY = ExtendMode::Clamp, Int32 opacity = 255);
 
 	private:
 

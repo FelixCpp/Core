@@ -27,12 +27,12 @@ namespace Core
 	{
 	}
 
-	Color::Color(u8_t red, u8_t green, u8_t blue, u8_t alpha) :
+	Color::Color(UInt8 red, UInt8 green, UInt8 blue, UInt8 alpha) :
 		b(blue), g(green), r(red), a(alpha)
 	{
 	}
 
-	Color::Color(i32_t rgb, u8_t alpha) :
+	Color::Color(Int32 rgb, UInt8 alpha) :
 		b((rgb & 0x0000FF) >>  0),
 		g((rgb & 0x00FF00) >>  8),
 		r((rgb & 0xFF0000) >> 16),
@@ -40,7 +40,7 @@ namespace Core
 	{
 	}
 
-	Color::Color(u32_t rgba) :
+	Color::Color(UInt32 rgba) :
 		b((rgba & 0x0000FF00) >> 8),
 		g((rgba & 0x00FF0000) >> 16),
 		r((rgba & 0xFF000000) >> 24),
@@ -48,7 +48,7 @@ namespace Core
 	{
 	}
 
-	Color Color::Opacity(u8_t alpha) const
+	Color Color::Opacity(UInt8 alpha) const
 	{
 		return Color(this->r, this->g, this->b, alpha);
 	}
@@ -63,27 +63,27 @@ namespace Core
 		return !(*this == other);
 	}
 
-	u32_t Color::Rgba() const
+	UInt32 Color::Rgba() const
 	{
 		return (this->r << 24) | (this->g << 16) | (this->b << 8) | (this->a << 0);
 	}
 
-	u32_t Color::Argb() const
+	UInt32 Color::Argb() const
 	{
 		return (this->a << 24) | (this->r << 16) | (this->g << 8) | (this->b << 0);
 	}
 
-	i32_t Color::Rgb() const
+	Int32 Color::Rgb() const
 	{
 		return (this->r << 16) | (this->g << 8) | (this->b << 0);
 	}
 
-	u8_t Color::Brightness() const
+	UInt8 Color::Brightness() const
 	{
-		return (u8_t)(0.2126f * this->r) + (u8_t)(0.7152f * this->g) + (u8_t)(0.0722f * this->b);
+		return (UInt8)(0.2126f * this->r) + (UInt8)(0.7152f * this->g) + (UInt8)(0.0722f * this->b);
 	}
 
-	Color Color::GetRandomColor(u8_t minValue, u8_t maxValue, bool randomAlpha)
+	Color Color::GetRandomColor(UInt8 minValue, UInt8 maxValue, bool randomAlpha)
 	{
 		return Color(
 			Random::Get<int>(minValue, maxValue),

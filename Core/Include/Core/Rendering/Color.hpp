@@ -37,20 +37,20 @@ namespace Core
 		/// <param name="green">g component</param>
 		/// <param name="blue">b component</param>
 		/// <param name="alpha">a component</param>
-		Color(u8_t red, u8_t green, u8_t blue, u8_t alpha = 255);
+		Color(UInt8 red, UInt8 green, UInt8 blue, UInt8 alpha = 255);
 
 		/// <summary>
 		/// creates a colors based on the parameters
 		/// </summary>
 		/// <param name="rgb">32-bit integer in R-G-B format</param>
 		/// <param name="alpha">alpha component</param>
-		Color(i32_t rgb, u8_t alpha);
+		Color(Int32 rgb, UInt8 alpha);
 
 		/// <summary>
 		/// creates a colors based on the parameters
 		/// </summary>
 		/// <param name="rgba">32-bit unsigned integer in R-G-B-A format</param>
-		Color(u32_t rgba);
+		Color(UInt32 rgba);
 
 		/// <summary>
 		/// Returns the current color modified by the alpha
@@ -60,7 +60,7 @@ namespace Core
 		/// <example>
 		/// Color yellow = Color::Yellow.Opacity(150);
 		/// </example>
-		Color Opacity(u8_t alpha) const;
+		Color Opacity(UInt8 alpha) const;
 
 		/// <summary>
 		/// Checks for equality and returns the result
@@ -76,26 +76,26 @@ namespace Core
 		/// calculates a 32-bit unsigned integer value in R-G-B-A format
 		/// and returns it.
 		/// </summary>
-		u32_t Rgba() const;
+		UInt32 Rgba() const;
 
 		/// <summary>
 		/// calculates a 32-bit unsigned integer value in A-R-G-B format
 		/// and returns it.
 		/// </summary>
-		u32_t Argb() const;
+		UInt32 Argb() const;
 
 		/// <summary>
 		/// calculates a 32-bit integer value in R-G-B format
 		/// and returns it.
 		/// </summary>
-		i32_t Rgb() const;
+		Int32 Rgb() const;
 
 		/// <summary>
 		/// Calculates the brightness value
 		/// using the red, green and blue
 		/// components
 		/// </summary>
-		u8_t Brightness() const;
+		UInt8 Brightness() const;
 
 		/// <summary>
 		/// returns a random color.
@@ -103,7 +103,7 @@ namespace Core
 		/// random 0-255 value
 		/// </summary>
 		/// <param name="randomAlpha">a boolean to indicate wether the alpha component should have a random value or 255 assigned to itor </param>
-		static Color GetRandomColor(u8_t minValue = 0, u8_t maxValue = 255, bool randomAlpha = false);
+		static Color GetRandomColor(UInt8 minValue = 0, UInt8 maxValue = 255, bool randomAlpha = false);
 
 		/// <summary>
 		///	don't change the order of this attributes !
@@ -114,22 +114,22 @@ namespace Core
 		/// <summary>
 		/// blue component
 		/// </summary>
-		u8_t b;
+		UInt8 b;
 
 		/// <summary>
 		/// green component
 		/// </summary>
-		u8_t g;
+		UInt8 g;
 
 		/// <summary>
 		/// red component
 		/// </summary>
-		u8_t r;
+		UInt8 r;
 
 		/// <summary>
 		/// alpha component
 		/// </summary>
-		u8_t a;
+		UInt8 a;
 
 	};
 

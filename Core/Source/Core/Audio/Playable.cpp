@@ -11,9 +11,9 @@ namespace Core
 	{
 	}
 
-	void Playable::Create(u32_t bufferID)
+	void Playable::Create(UInt32 bufferID)
 	{
-		u32_t & sourceID = this->sourceID;
+		UInt32 & sourceID = this->sourceID;
 		OpenALSourceIDProvider::Generate(1, &sourceID);
 
 		alSourcef(sourceID, AL_PITCH, 1.f);
@@ -177,7 +177,7 @@ namespace Core
 		}
 	}
 
-	u32_t Playable::GetSourceID() const
+	UInt32 Playable::GetSourceID() const
 	{
 		return this->sourceID;
 	}

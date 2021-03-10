@@ -29,7 +29,7 @@ namespace Core
 			step 5: return source
 		*/
 
-		u32_t bufferID = AL_NONE;
+		UInt32 bufferID = AL_NONE;
 
 		/* step 1: check cache */
 		if (this->soundCache.Contains(filepath))
@@ -108,7 +108,7 @@ namespace Core
 		SoundDevice::Initialize(deviceName); // initialize the default SoundDevice
 	}
 
-	i32_t AudioTarget::GetAudioFormat(u16_t channels)
+	Int32 AudioTarget::GetAudioFormat(UInt16 channels)
 	{
 		switch (channels)
 		{
@@ -121,7 +121,7 @@ namespace Core
 
 			default:
 			{
-				CORE_ERROR("Unsupported channel count (%d)", (i32_t)channels);
+				CORE_ERROR("Unsupported channel count (%d)", (Int32)channels);
 				return AL_NONE;
 			} break;
 		}

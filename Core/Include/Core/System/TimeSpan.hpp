@@ -4,275 +4,151 @@
 /// Core
 /// </summary>
 #include <Core/System/Datatypes.hpp>
-
-/// <summary>
-/// C++ / STL
-/// </summary>
-#include <chrono>
+#include <Core/System/Comparable.hpp>
 
 namespace Core
 {
-	
-	class TimeSpan {
+
+
+#define CPP_DECLARE_TIME_METHOD(fnName, pmName, factor)			\
+static TimeSpan fnName(Int64 pmName)							\
+{																\
+	const Int64 nanoseconds = (Int64)(pmName * factor);			\
+	return TimeSpan(nanoseconds);								\
+}																\
+																\
+static TimeSpan fnName(Int32 pmName)							\
+{																\
+	return fnName((Int64)pmName);								\
+}																\
+																\
+static TimeSpan fnName(double pmName)							\
+{																\
+	const Int64 nanoseconds = (Int64)(pmName * (double)factor);	\
+	return TimeSpan(nanoseconds);								\
+}																\
+
+	class TimeSpan : public Comparable<TimeSpan> {
+	public:
+
+		inline static constexpr Int64 FactorNanoseconds		= 1ll;
+		inline static constexpr Int64 FactorMicroseconds	= FactorNanoseconds		* 1'000ll;
+		inline static constexpr Int64 FactorMilliseconds	= FactorMicroseconds	* 1'000ll;
+		inline static constexpr Int64 FactorSeconds			= FactorMilliseconds	* 1'000ll;
+		inline static constexpr Int64 FactorMinutes			= FactorSeconds			* 60ll;
+		inline static constexpr Int64 FactorHours			= FactorMinutes			* 60ll;
+		inline static constexpr Int64 FactorDays			= FactorHours			* 24ll;
+
 	public:
 
 		/// <summary>
-		/// The default constructor.
-		/// It will create a TimeSpan equal to
-		/// 'Zero'
+		/// Default constructor
+		/// 
+		/// Equals:
+		///		<code>
+		///			TimeSpan ts = TimeSpan::Zero;
+		///		</code>
 		/// </summary>
 		TimeSpan();
 
 		/// <summary>
-		/// Creates a timespan by using the
-		/// parameter as value
-		/// </summary>
-		/// <param name="nanoseconds">the amount of the span</param>
-		explicit TimeSpan(i64_t nanoseconds);
-
-		/// <summary>
-		/// Creates a TimeSpan using the
-		/// chrono API
-		/// </summary>
-		template<class _Rep, class _Period>
-		explicit TimeSpan(const std::chrono::duration<_Rep, _Period> & duration) :
-			nanoseconds(std::chrono::duration_cast<std::chrono::nanoseconds>(duration).count())
-		{
-		}
-
-		/// <summary>
-		/// Timespan offset operations
-		/// </summary>
-		
-		/// <summary>
-		/// Returns the TimeSpan plus one nanosecond
-		/// </summary>
-		TimeSpan operator+() const;
-		
-		/// <summary>
-		/// Returns the TimeSpan minus one nanosecond
-		/// </summary>
-		TimeSpan operator-() const;
-
-		/// <summary>
-		/// Adds two TimeSpans together
-		/// </summary>
-		/// <param name="other">the TimeSpan to add</param>
-		TimeSpan operator+(const TimeSpan & other) const;
-
-		/// <summary>
-		/// Subtracts two TimeSpans from each other
-		/// </summary>
-		/// <param name="other">the TimeSpan to subtract</param>
-		TimeSpan operator-(const TimeSpan & other) const;
-
-		/// <summary>
-		/// Divides two TimeSpans
-		/// </summary>
-		/// <param name="other">the TimeSpan to divide from</param>
-		TimeSpan operator/(const TimeSpan & other) const;
-
-		/// <summary>
-		/// Multiplies two TimeSpans together
-		/// </summary>
-		/// <param name="other">the TimeSpan to multiply</param>
-		TimeSpan operator*(const TimeSpan & other) const;
-
-		/// <summary>
-		/// Adds two TimeSpans together
-		/// </summary>
-		/// <param name="other">the TimeSpan to add</param>
-		TimeSpan & operator+=(const TimeSpan & other);
-
-		/// <summary>
-		/// Subtracts two TimeSpans from each other
-		/// </summary>
-		/// <param name="other">the TimeSpan to subtract</param>
-		TimeSpan & operator-=(const TimeSpan & other);
-
-		/// <summary>
-		/// Divides two TimeSpans
-		/// </summary>
-		/// <param name="other">the TimeSpan to divide from</param>
-		TimeSpan & operator/=(const TimeSpan & other);
-
-		/// <summary>
-		/// Multiplies two TimeSpans together
-		/// </summary>
-		/// <param name="other">the TimeSpan to multiply</param>
-		TimeSpan & operator*=(const TimeSpan & other);
-
-		/// <summary>
-		/// Comparism operators
-		/// </summary>
-		
-		/// <summary>
-		/// Equal operator
-		/// </summary>
-		bool operator==(const TimeSpan & other) const;
-		
-		/// <summary>
-		/// Different operator
-		/// </summary>
-		bool operator!=(const TimeSpan & other) const;
-
-		/// <summary>
-		/// Less or equal operator
-		/// </summary>
-		bool operator<=(const TimeSpan & other) const;
-
-		/// <summary>
-		/// Greater or equal operator
-		/// </summary>
-		bool operator>=(const TimeSpan & other) const;
-
-		/// <summary>
-		/// Less operator
-		/// </summary>
-		bool operator<(const TimeSpan & other) const;
-
-		/// <summary>
-		/// Greater operator
-		/// </summary>
-		bool operator>(const TimeSpan & other) const;
-
-		/// <summary>
-		/// Returns the TimeSpan as an duration object from
-		/// the chrono API
-		/// </summary>
-		std::chrono::system_clock::duration Chrono() const;
-
-		/// <summary>
-		/// Returns the TimeSpan as days
-		/// </summary>
-		i64_t ToDays() const;
-
-		/// <summary>
-		/// Returns the TimeSpan as hours
-		/// </summary>
-		i64_t ToHours() const;
-
-		/// <summary>
-		/// Returns the TimeSpan as minutes
-		/// </summary>
-		i64_t ToMinutes() const;
-		
-		/// <summary>
-		/// Returns the TimeSpan as seconds
-		/// </summary>
-		i64_t ToSeconds() const;
-
-		/// <summary>
-		/// Returns the TimeSpan as milliseconds
-		/// </summary>
-		i64_t ToMilliseconds() const;
-
-		/// <summary>
-		/// Returns the TimeSpan as microseconds
-		/// </summary>
-		i64_t ToMicroseconds() const;
-
-		/// <summary>
-		/// Returns the TimeSpan as nanoseconds
-		/// </summary>
-		i64_t ToNanoseconds() const;
-
-		/// <summary>
-		/// Same as GetNanoseconds()
-		/// </summary>
-		i64_t Total() const;
-
-		/// <summary>
-		/// Some handy ways to create a TimeSpan
-		/// </summary>
-		
-		/// <summary>
-		/// Creates a timespan using days as
-		/// orientation
+		/// Creates a TimeSpan using the given values
 		/// </summary>
 		/// <param name="days">amount of days</param>
-		static TimeSpan FromDays(i64_t days);
-
-		/// <summary>
-		/// Creates a timespan using hours as
-		/// orientation
-		/// </summary>
 		/// <param name="hours">amount of hours</param>
-		static TimeSpan FromHours(i64_t hours);
-		
-		/// <summary>
-		/// Creates a timespan using minutes as
-		/// orientation
-		/// </summary>
 		/// <param name="minutes">amount of minutes</param>
-		static TimeSpan FromMinutes(i64_t minutes);
-
-		/// <summary>
-		/// Creates a timespan using seconds as
-		/// orientation
-		/// </summary>
 		/// <param name="seconds">amount of seconds</param>
-		static TimeSpan FromSeconds(i64_t seconds);
-
-		/// <summary>
-		/// Creates a timespan using milliseconds as
-		/// orientation
-		/// </summary>
 		/// <param name="milliseconds">amount of milliseconds</param>
-		static TimeSpan FromMilliseconds(i64_t milliseconds);
-
-		/// <summary>
-		/// Creates a timespan using microseconds as
-		/// orientation
-		/// </summary>
 		/// <param name="microseconds">amount of microseconds</param>
-		static TimeSpan FromMicroseconds(i64_t microseconds);
-
-		/// <summary>
-		/// Creates a timespan using nanoseconds as
-		/// orientation
-		/// </summary>
 		/// <param name="nanoseconds">amount of nanoseconds</param>
-		static TimeSpan FromNanoseconds(i64_t nanoseconds);
+		explicit TimeSpan(
+			Int32 days,
+			Int32 hours,
+			Int32 minutes,
+			Int32 seconds,
+			Int32 milliseconds,
+			Int32 microseconds,
+			Int32 nanoseconds
+		);
+
+	public:
 
 		/// <summary>
-		/// Creates a TimeSpan using the duration class
-		/// from the chrono API
+		/// Convertions using
+		/// templated Datatypes
 		/// </summary>
-		template<class _Rep, typename _Period>
-		static TimeSpan FromChrono(const std::chrono::duration<_Rep, _Period> & duration)
-		{
-			return TimeSpan(duration);
-		}
+
+		template<typename T = Int64> T ToDays()			const { return (T)this->nanoseconds / (T)FactorDays; }
+		template<typename T = Int64> T ToHours()		const { return (T)this->nanoseconds / (T)FactorHours; }
+		template<typename T = Int64> T ToMinutes()		const { return (T)this->nanoseconds / (T)FactorMinutes; }
+		template<typename T = Int64> T ToSeconds()		const { return (T)this->nanoseconds / (T)FactorSeconds; }
+		template<typename T = Int64> T ToMilliseconds() const { return (T)this->nanoseconds / (T)FactorMilliseconds; }
+		template<typename T = Int64> T ToMicroseconds() const { return (T)this->nanoseconds / (T)FactorMicroseconds; }
+		template<typename T = Int64> T ToNanoseconds()	const { return (T)this->nanoseconds / (T)FactorNanoseconds; }
 
 		/// <summary>
-		/// The default TimeSpan
+		/// Mathimatical operators
+		/// </summary>
+
+		TimeSpan operator + (const TimeSpan & other) const;
+		TimeSpan operator - (const TimeSpan & other) const;
+		TimeSpan operator / (const TimeSpan & other) const;
+		TimeSpan operator * (const TimeSpan & other) const;
+		TimeSpan operator % (const TimeSpan & other) const;
+
+		TimeSpan & operator += (const TimeSpan & other);
+		TimeSpan & operator -= (const TimeSpan & other);
+		TimeSpan & operator /= (const TimeSpan & other);
+		TimeSpan & operator *= (const TimeSpan & other);
+		TimeSpan & operator %= (const TimeSpan & other);
+
+		/// <summary>
+		/// This method must be implemented by the Subclass!
+		/// 
+		/// If the instance this Method is called on is less/smaller
+		/// than the 'other' parameter, the method should return -1,
+		/// if the instance is greater this method should return 1,
+		/// 0 otherwise (equality)
+		/// </summary>
+		/// <param name="other">the instance to compare against</param>
+		virtual Int32 Compare(const TimeSpan & other) const override;
+
+		/// <summary>
+		/// Creation methods
+		/// </summary>
+
+		CPP_DECLARE_TIME_METHOD(FromDays, days, FactorDays)
+		CPP_DECLARE_TIME_METHOD(FromHours, hours, FactorHours)
+		CPP_DECLARE_TIME_METHOD(FromMinutes, minutes, FactorMinutes)
+		CPP_DECLARE_TIME_METHOD(FromSeconds, seconds, FactorSeconds)
+		CPP_DECLARE_TIME_METHOD(FromMilliseconds, milliseconds, FactorMilliseconds)
+		CPP_DECLARE_TIME_METHOD(FromMicroseconds, microseconds, FactorMicroseconds)
+		CPP_DECLARE_TIME_METHOD(FromNanoseconds, nanos, FactorNanoseconds)
+
+		/// <summary>
+		/// Just a TimeSpan with no time set
 		/// </summary>
 		static const TimeSpan Zero;
 
 	private:
 
 		/// <summary>
-		/// Internal 64-bit integer to store
-		/// the nanoseconds
+		/// Creates a TimeSpan with the given nanoseconds
 		/// </summary>
-		i64_t nanoseconds;
+		/// <param name="nanoseconds">amount of nanoseconds to convert from by calling To...()</param>
+		explicit TimeSpan(Int64 nanoseconds);
+
+	private:
+
+		/// <summary>
+		/// Internally stored nanoseconds
+		/// </summary>
+		Int64 nanoseconds;
 
 	};
 
-}
-
-namespace std
-{
-
-	/// <summary>
-	/// Overloaded hash for TimeSpan
-	/// </summary>
-	struct hash<Core::TimeSpan> {
-		typedef Core::TimeSpan argument_type;
-		typedef size_t result_type;
-		
-		result_type operator()(const argument_type & value) const;
-	};
+#if defined(CPP_DECLARE_TIME_METHOD)
+#undef CPP_DECLARE_TIME_METHOD
+#endif // defined(CPP_DECLARE_TIME_METHOD)
 
 }

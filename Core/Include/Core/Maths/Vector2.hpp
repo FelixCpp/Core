@@ -132,7 +132,7 @@ namespace Core
 
 	typedef Vector2<float> FVector2;
 	typedef Vector2<double> DVector2;
-	typedef Vector2<i32_t> IVector2;
-	typedef Vector2<u32_t> UVector2;
+	typedef Vector2<Int32> IVector2;
+	typedef Vector2<UInt32> UVector2;
 
 }

@@ -16,7 +16,7 @@ namespace Core
 
 	public:
 
-		static const u32_t DefaultSeed;
+		static const UInt32 DefaultSeed;
 
 		/* returns a randomly generated number between min and max */
 		template<typename T, typename = std::enable_if_t<IsValid<T>>>
@@ -43,7 +43,7 @@ namespace Core
 		}
 
 		/* changes the seed of the RNG */
-		static void SetSeed(u32_t seed);
+		static void SetSeed(UInt32 seed);
 		
 	private:
 

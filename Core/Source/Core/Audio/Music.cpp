@@ -21,7 +21,7 @@ namespace Core
 	{
 	}
 
-	bool Music::Init(i32_t audioFormat, i32_t sampleRate, const std::vector<char> & soundData)
+	bool Music::Init(Int32 audioFormat, Int32 sampleRate, const std::vector<char> & soundData)
 	{
 		/* create the source */
 		this->Create(0);
@@ -72,7 +72,7 @@ namespace Core
 		alGenBuffers(NUM_BUFFERS, buffers);
 
 		/* fill the buffers with data */
-		for (i32_t i = 0; i < NUM_BUFFERS; i++)
+		for (Int32 i = 0; i < NUM_BUFFERS; i++)
 		{
 			const size_t index = i * BUFFER_SIZE; // calculate the index where we want to take the soundData from inside the file
 			alBufferData(buffers[i], this->audioFormat, &this->soundData[index], BUFFER_SIZE, this->sampleRate);
@@ -117,7 +117,7 @@ namespace Core
 		}
 	}
 
-	void Music::UpdateBufferingLoop(u32_t buffer)
+	void Music::UpdateBufferingLoop(UInt32 buffer)
 	{
 		/*
 		* create the data.
@@ -173,7 +173,7 @@ namespace Core
 		delete[] data;
 	}
 
-	void Music::UpdateBuffering(u32_t buffer)
+	void Music::UpdateBuffering(UInt32 buffer)
 	{
 		/*
 		* a variable which defines how much data should be copied from the soundData

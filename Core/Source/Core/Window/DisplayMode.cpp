@@ -15,7 +15,7 @@ namespace Core
 	{
 	}
 
-	DisplayMode::DisplayMode(i32_t width, i32_t height, i32_t bitsPerPel, i32_t displayFrequency) :
+	DisplayMode::DisplayMode(Int32 width, Int32 height, Int32 bitsPerPel, Int32 displayFrequency) :
 		width(width),
 		height(height),
 		bitsPerPel(bitsPerPel),
@@ -35,7 +35,7 @@ namespace Core
 		std::vector<DisplayMode> modes;
 
 		/* iterate through every display-setting */
-		for (i32_t count = 0; EnumDisplaySettingsA(nullptr, count, &devMode); count++)
+		for (Int32 count = 0; EnumDisplaySettingsA(nullptr, count, &devMode); count++)
 		{
 			/* create a DisplayMode */
 			const auto mode = DisplayMode(devMode.dmPelsWidth, devMode.dmPelsHeight, devMode.dmBitsPerPel, devMode.dmDisplayFrequency);

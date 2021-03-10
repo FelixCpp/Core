@@ -19,20 +19,98 @@ namespace Core
 	class Renderer;
 	class RenderStateManager;
 
-	class Application : public RenderWindow {
+	/// <summary>
+	/// This class is used to handle everything around Setup and Draw
+	/// </summary>
+	class LoopManager {
 	public:
 
-		virtual ~Application();
+		/// <summary>
+		/// Default virtual destructor
+		/// </summary>
+		virtual ~LoopManager() = default;
 
-		// pause & continue draw() call
-		void PauseDrawing();
+		/// <summary>
+		/// A virtual method. The declaration
+		/// does not force the user to implement
+		/// this method since it's not that important.
+		/// 
+		/// This method gets called once at the beginning of
+		/// the sketch.
+		/// </summary>
+		virtual void Setup() {}
+
+		/// <summary>
+		/// A virtual method. The declaration
+		/// does not force the user to implement
+		/// this method since it's not that important
+		/// 
+		/// This method gets called over an over again (every frame)
+		/// based on the drawing-state.
+		/// 
+		/// It can be toggled on and off using
+		/// StartDrawing and PauseDrawing
+		/// </summary>
+		virtual void Draw() {}
+
+		/// <summary>
+		/// Starts calling the Draw method.
+		/// </summary>
 		void StartDrawing();
 
 		/// <summary>
-		/// Calls Draw() surrounded with
-		/// BeginDraw() and EndDraw()
+		/// Stops calling the Draw method.
+		/// </summary>
+		void PauseDrawing();
+
+		/// <summary>
+		/// Calls the Draw method even
+		/// if the drawing is paused.
 		/// </summary>
 		void Redraw();
+
+		/// <summary>
+		/// Returns true if the drawing
+		/// is active
+		/// </summary>
+		bool CanDraw() const;
+
+		/// <summary>
+		/// This method gets called
+		/// after every Draw() call
+		/// </summary>
+		virtual void OnFrameProcessed() {}
+
+	protected:
+
+		/// <summary>
+		/// Default constructor
+		/// </summary>
+		/// <param name="renderer">passes the given instance into its member varaible</param>
+		explicit LoopManager(LateRef<Renderer> renderer);
+
+	private:
+
+		/// <summary>
+		/// Controls calling the Draw method.
+		/// </summary>
+		bool drawingActive;
+
+		/// <summary>
+		/// A references-pointer to a Renderer given
+		/// by the Application class
+		/// </summary>
+		LateRef<Renderer> renderer;
+
+	};
+
+	class Application : public RenderWindow, public LoopManager {
+	public:
+
+		/// <summary>
+		/// Default virtual destructor
+		/// </summary>
+		virtual ~Application();
 
 		/* exits the application (calls close() on the Window base) */
 		void Exit();
@@ -65,32 +143,9 @@ namespace Core
 		/// <param name="height">height of the window</param>
 		/// <param name="title">title of the window</param>
 		/// <param name="type">type of the Renderer</param>
-		explicit Application(i32_t width = 200, i32_t height = 200, const std::string & title = "Core - Application", RendererType type = RendererType::WindowRenderer);
-
-		/// <summary>
-		/// This method gets called
-		/// after every Draw() call
-		/// </summary>
-		virtual void OnFrameProcessed() {}
-
-		/// <summary>
-		/// Gets called once
-		/// </summary>
-		virtual void Setup() {}
-
-		/// <summary>
-		/// Gets called every frame
-		/// in a loop
-		/// </summary>
-		virtual void Draw() {}
+		explicit Application(Int32 width = 200, Int32 height = 200, const std::string & title = "Core - Application", RendererType type = RendererType::WindowRenderer);
 
 	private:
-
-		/// <summary>
-		/// Calls Setup() surrounded with
-		/// BeginDraw() and EndDraw()
-		/// </summary>
-		void SetupImpl();
 
 		/// <summary>
 		/// Starts the sketch
@@ -124,9 +179,6 @@ namespace Core
 		Application & operator=(Application &&) = delete;
 
 	private:
-
-		/* indicates wether the drawImpl() function gets called or not */
-		bool drawingPaused;
 
 		/* instance of a Renderer */
 		Renderer * renderer;

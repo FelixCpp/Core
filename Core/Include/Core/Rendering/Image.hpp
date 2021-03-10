@@ -51,7 +51,7 @@ namespace Core
 		/// <param name="colors">the data (Color[width * height]</param>
 		/// <param name="renderer">a Renderer to get access to the RenderTarget</param>
 		/// <returns>True if the bitmap was created successfully</returns>
-		bool Create(i32_t width, i32_t height, const Color colors[], Renderer * renderer);
+		bool Create(Int32 width, Int32 height, const Color colors[], Renderer * renderer);
 
 		/// <summary>
 		/// Loads the color values from
@@ -71,7 +71,7 @@ namespace Core
 		/// <param name="colors">Color[width * height]</param>
 		/// <param name="renderer">a Renderer to get access to the RenderTarget</param>
 		/// <returns>True if everything the image was created successfully</returns>
-		bool LoadFromMemory(i32_t width, i32_t height, const Color colors[], Renderer * renderer);
+		bool LoadFromMemory(Int32 width, Int32 height, const Color colors[], Renderer * renderer);
 
 		/// <summary>
 		/// Copies an area from the other image
@@ -93,7 +93,7 @@ namespace Core
 		/// <param name="height">height to copy in pixels</param>
 		/// <param name="renderer">a Renderer to get access to the RenderTarget</param>
 		/// <returns>True if the image was copied successfully</returns>
-		bool LoadFromImage(const Image & other, i32_t x, i32_t y, i32_t width, i32_t height, Renderer * renderer);
+		bool LoadFromImage(const Image & other, Int32 x, Int32 y, Int32 width, Int32 height, Renderer * renderer);
 
 		/// <summary>
 		/// Copies the pixels from the RenderTarget
@@ -106,7 +106,7 @@ namespace Core
 		/// <param name="height">height to copy in pixels</param>
 		/// <param name="renderer">the Renderer containing the RenderTarget to copy the data from</param>
 		/// <returns>True if everything goes as expected</returns>
-		bool LoadFromScreen(i32_t x, i32_t y, i32_t width, i32_t height, Renderer * renderer);
+		bool LoadFromScreen(Int32 x, Int32 y, Int32 width, Int32 height, Renderer * renderer);
 
 		/// <summary>
 		/// Updates the image to
@@ -133,19 +133,19 @@ namespace Core
 		/// member variables!
 		/// </remarks>
 		/// </summary>
-		bool CopyFromRawData(i32_t width, i32_t height, const Color colors[]);
+		bool CopyFromRawData(Int32 width, Int32 height, const Color colors[]);
 
 	public:
 
 		/// <summary>
 		/// width of the image
 		/// </summary>
-		i32_t width;
+		Int32 width;
 
 		/// <summary>
 		/// height of the image
 		/// </summary>
-		i32_t height;
+		Int32 height;
 
 		/// <summary>
 		/// interpolation mode
@@ -155,7 +155,7 @@ namespace Core
 		/// <summary>
 		/// the opacity (a value between 0 and 255)
 		/// </summary>
-		i32_t opacity;
+		Int32 opacity;
 
 		/// <summary>
 		/// each pixel represented

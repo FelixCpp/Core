@@ -30,7 +30,7 @@ namespace Core
 		/// <param name="height">the height</param>
 		/// <param name="bitsPerPel">the bits per pixel</param>
 		/// <param name="displayFrequency">the frquency in Herz</param>
-		explicit DisplayMode(i32_t width, i32_t height, i32_t bitsPerPel, i32_t displayFrequency);
+		explicit DisplayMode(Int32 width, Int32 height, Int32 bitsPerPel, Int32 displayFrequency);
 
 		/// <summary>
 		/// Returns all valid display modes for fullscreen mode
@@ -51,16 +51,16 @@ namespace Core
 	public:
 
 		/* the width of the DisplayMode in pixels */
-		i32_t width;
+		Int32 width;
 
 		/* the height of the DisplayMode in pixels */
-		i32_t height;
+		Int32 height;
 
 		/* the bit-depth of the DisplayMode in pixel */
-		i32_t bitsPerPel;
+		Int32 bitsPerPel;
 
 		/* the refresh-reate of the DisplayMode in hertz */
-		i32_t displayFrequency;
+		Int32 displayFrequency;
 
 	public:
 

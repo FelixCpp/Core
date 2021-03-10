@@ -12,14 +12,14 @@ namespace Core
 	{
 	}
 
-	Image ImageRenderTarget::CreateImage(u32_t width, u32_t height, const Color & color)
+	Image ImageRenderTarget::CreateImage(UInt32 width, UInt32 height, const Color & color)
 	{
 		Core::Image image;
 		image.Create(width, height, std::vector(width * height, color).data(), this->renderer);
 		return image;
 	}
 
-	Image ImageRenderTarget::LoadImageFromMemory(u32_t width, u32_t height, const Color * colors)
+	Image ImageRenderTarget::LoadImageFromMemory(UInt32 width, UInt32 height, const Color * colors)
 	{
 		Core::Image image;
 		image.LoadFromMemory(width, height, colors, this->renderer);
@@ -33,14 +33,14 @@ namespace Core
 		return image;
 	}
 
-	Image ImageRenderTarget::LoadImageFromScreen(i32_t x, i32_t y, i32_t width, i32_t height)
+	Image ImageRenderTarget::LoadImageFromScreen(Int32 x, Int32 y, Int32 width, Int32 height)
 	{
 		Core::Image image;
 		image.LoadFromScreen(x, y, width, height, this->renderer);
 		return image;
 	}
 
-	Image ImageRenderTarget::LoadImageFromImage(const Core::Image & source, i32_t x, i32_t y, i32_t width, i32_t height)
+	Image ImageRenderTarget::LoadImageFromImage(const Core::Image & source, Int32 x, Int32 y, Int32 width, Int32 height)
 	{
 		Core::Image image;
 		image.LoadFromImage(source, x, y, width, height, this->renderer);

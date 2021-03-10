@@ -46,7 +46,7 @@ namespace Core
 		/// <param name="width">width of the image in pixels</param>
 		/// <param name="height">height of the image in pixels</param>
 		/// <param name="color">a flat color copied by each pixel</param>
-		Image CreateImage(u32_t width, u32_t height, const Color & color = Color::White);
+		Image CreateImage(UInt32 width, UInt32 height, const Color & color = Color::White);
 
 		/// <summary>
 		/// Creates an image based on
@@ -55,7 +55,7 @@ namespace Core
 		/// <param name="width">the width of the image in pixels</param>
 		/// <param name="height">the height of the image in pixels</param>
 		/// <param name="colors">an array[width * height] holding a color value for each pixel</param>
-		Image LoadImageFromMemory(u32_t width, u32_t height, const Color * colors);
+		Image LoadImageFromMemory(UInt32 width, UInt32 height, const Color * colors);
 
 		/// <summary>
 		/// Loads an image from the filepath
@@ -70,7 +70,7 @@ namespace Core
 		/// <param name="y">start y position in pixel space</param>
 		/// <param name="width">width of the image in pixels</param>
 		/// <param name="height">height of the image in pixels</param>
-		Image LoadImageFromScreen(i32_t x, i32_t y, i32_t width, i32_t height);
+		Image LoadImageFromScreen(Int32 x, Int32 y, Int32 width, Int32 height);
 
 		/// <summary>
 		/// Copies a section from the source
@@ -81,7 +81,7 @@ namespace Core
 		/// <param name="width">width of the area to copy</param>
 		/// <param name="height">height of the area to copy</param>
 		/// <returns>A new image containing the copied content</returns>
-		Image LoadImageFromImage(const Core::Image & source, i32_t x, i32_t y, i32_t width, i32_t height);
+		Image LoadImageFromImage(const Core::Image & source, Int32 x, Int32 y, Int32 width, Int32 height);
 
 		/// <summary>
 		/// Changes the drawmode of

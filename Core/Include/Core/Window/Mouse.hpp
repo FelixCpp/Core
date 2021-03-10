@@ -26,10 +26,10 @@ namespace Core
 		static std::vector<Button> GetButtonsPressed(const Button * begin, const Button * end);
 
 		/* changes the cursors position based on the monitors 0, 0 location */
-		static void SetPosition(i32_t x, i32_t y);
+		static void SetPosition(Int32 x, Int32 y);
 		
 		/* changes the cursors position based on the windows 0, 0 location */
-		static void SetPosition(i32_t x, i32_t y, Windowhandle window);
+		static void SetPosition(Int32 x, Int32 y, Windowhandle window);
 
 		/* changes the cursors position based on the monitors 0, 0 location */
 		static void SetPosition(const IVector2 & position);

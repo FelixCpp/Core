@@ -12,19 +12,19 @@
 namespace
 {
 	// directly taken from: https://github.com/SFML/SFML/blob/master/include/SFML/System/Utf.inl
-	static Core::u16_t surrogate = '\0';
+	static Core::UInt16 surrogate = '\0';
 
 	template <typename In>
-	static In Utf16Decode(In begin, In end, Core::u32_t & output, Core::u32_t replacement)
+	static In Utf16Decode(In begin, In end, Core::UInt32 & output, Core::UInt32 replacement)
 	{
-		Core::u16_t first = *begin++;
+		Core::UInt16 first = *begin++;
 
 		// If it's a surrogate pair, first convert to a single UTF-32 character
 		if ((first >= 0xD800) && (first <= 0xDBFF))
 		{
 			if (begin < end)
 			{
-				Core::u32_t second = *begin++;
+				Core::UInt32 second = *begin++;
 				if ((second >= 0xDC00) && (second <= 0xDFFF))
 				{
 					// The second element is valid: convert the two elements to a UTF-32 character
@@ -54,7 +54,7 @@ namespace
 	{
 		while (begin < end)
 		{
-			Core::u32_t codepoint = 0u;
+			Core::UInt32 codepoint = 0u;
 			begin = Utf16Decode(begin, end, codepoint, '?');
 			*output++ = codepoint;
 		}
@@ -76,7 +76,7 @@ namespace Core
 	{
 	}
 
-	bool RenderWindow::Create(u32_t width, u32_t height, const std::string & title)
+	bool RenderWindow::Create(UInt32 width, UInt32 height, const std::string & title)
 	{
 		WNDCLASSA wc = {};
 		ZeroMemory(&wc, sizeof WNDCLASSA);
@@ -121,7 +121,7 @@ namespace Core
 		return true;
 	}
 
-	i64_t __stdcall RenderWindow::ProcessEvents(Windowhandle handle, u32_t msg, u64_t wParam, i64_t lParam)
+	Int64 __stdcall RenderWindow::ProcessEvents(Windowhandle handle, UInt32 msg, UInt64 wParam, Int64 lParam)
 	{
 		static RenderWindow * window = nullptr;
 
@@ -180,14 +180,14 @@ namespace Core
 			{
 				if (wParam != SIZE_MINIMIZED && !window->resizing)
 				{
-					const u16_t width = GET_X_LPARAM(lParam);
-					const u16_t height = GET_Y_LPARAM(lParam);
+					const UInt16 width = GET_X_LPARAM(lParam);
+					const UInt16 height = GET_Y_LPARAM(lParam);
 
 					const bool resized = window->width != width || window->height != height;
 					if (resized)
 					{
-						window->width = (i32_t)width;
-						window->height = (i32_t)height;
+						window->width = (Int32)width;
+						window->height = (Int32)height;
 						window->OnWindowResized();
 
 						/* resize the viewport */
@@ -244,28 +244,28 @@ namespace Core
 
 			case WM_MOVE:
 			{
-				const u16_t x = GET_X_LPARAM(lParam);
-				const u16_t y = GET_Y_LPARAM(lParam);
+				const UInt16 x = GET_X_LPARAM(lParam);
+				const UInt16 y = GET_Y_LPARAM(lParam);
 
 				const bool windowMoved = window->windowX != x || window->windowY != y;
 				if (windowMoved)
 				{
-					window->windowX = (i32_t)x;
-					window->windowY = (i32_t)y;
+					window->windowX = (Int32)x;
+					window->windowY = (Int32)y;
 					window->OnWindowMoved();
 				}
 			} break;
 
 			case WM_MOUSEWHEEL:
 			{
-				const u16_t delta = GET_WHEEL_DELTA_WPARAM(wParam);
+				const UInt16 delta = GET_WHEEL_DELTA_WPARAM(wParam);
 				window->OnMouseWheelScrolled(delta);
 			} break;
 
 			case WM_MOUSEMOVE:
 			{
-				const u16_t x = GET_X_LPARAM(lParam);
-				const u16_t y = GET_Y_LPARAM(lParam);
+				const UInt16 x = GET_X_LPARAM(lParam);
+				const UInt16 y = GET_Y_LPARAM(lParam);
 
 				const bool mouseMoved = window->mouseX != x || window->mouseY != y;
 				if (mouseMoved)
@@ -303,8 +303,8 @@ namespace Core
 					window->pmouseX = window->mouseX;
 					window->pmouseY = window->mouseY;
 
-					window->mouseX = (i32_t)x;
-					window->mouseY = (i32_t)y;
+					window->mouseX = (Int32)x;
+					window->mouseY = (Int32)y;
 					window->OnMouseMoved();
 				}
 			} break;
@@ -362,20 +362,20 @@ namespace Core
 				if (window->keyRepeatEnabled || ((lParam & (1 << 30)) == 0))
 				{
 					// Get the code of the typed character
-					u32_t character = static_cast<u32_t>(wParam);
+					UInt32 character = static_cast<UInt32>(wParam);
 
 					// Check if it is the first part of a surrogate pair, or a regular character
 					if ((character >= 0xD800) && (character <= 0xDBFF))
 					{
 						// First part of a surrogate pair: store it and wait for the second one
-						surrogate = static_cast<u16_t>(character);
+						surrogate = static_cast<UInt16>(character);
 					} else
 					{
 						// Check if it is the second part of a surrogate pair, or a regular character
 						if ((character >= 0xDC00) && (character <= 0xDFFF))
 						{
 							// Convert the UTF-16 surrogate pair to a single UTF-32 value
-							u16_t utf16[] = { surrogate, static_cast<u16_t>(character) };
+							UInt16 utf16[] = { surrogate, static_cast<UInt16>(character) };
 							FromUtf16ToUtf32(utf16, utf16 + 2, &character);
 							surrogate = 0;
 						}
@@ -403,7 +403,7 @@ namespace Core
 		return 0;
 	}
 
-	Keyboard::Key RenderWindow::DecodeKeyCode(u64_t wParam, i64_t lParam)
+	Keyboard::Key RenderWindow::DecodeKeyCode(UInt64 wParam, Int64 lParam)
 	{
 		WPARAM vk = (WPARAM)0;
 		const UINT scancode = (lParam & 0x00FF0000) >> 16;

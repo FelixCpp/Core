@@ -25,12 +25,12 @@ namespace Core
 		return pressedButtons;
 	}
 
-	void Mouse::SetPosition(i32_t x, i32_t y)
+	void Mouse::SetPosition(Int32 x, Int32 y)
 	{
 		SetCursorPos(x, y);
 	}
 
-	void Mouse::SetPosition(i32_t x, i32_t y, Windowhandle window)
+	void Mouse::SetPosition(Int32 x, Int32 y, Windowhandle window)
 	{
 		POINT pos = { (LONG)x, (LONG)y };
 		ClientToScreen(window, &pos);

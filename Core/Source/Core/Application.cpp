@@ -6,7 +6,36 @@
 
 namespace Core
 {
-	
+
+	void LoopManager::StartDrawing()
+	{
+		this->drawingActive = true;
+	}
+
+	void LoopManager::PauseDrawing()
+	{
+		this->drawingActive = false;
+	}
+
+	void LoopManager::Redraw()
+	{
+		this->renderer->BeginDraw();
+		this->Draw();
+		this->renderer->BeginDraw();
+		
+		this->OnFrameProcessed();
+	}
+
+	bool LoopManager::CanDraw() const
+	{
+		return this->drawingActive;
+	}
+
+	LoopManager::LoopManager(LateRef<Renderer> renderer) :
+		drawingActive(false),
+		renderer(renderer)
+	{ }
+
 	Application::~Application()
 	{
 		delete this->renderer;
@@ -16,31 +45,14 @@ namespace Core
 		this->rsm = nullptr;
 	}
 
-	void Application::PauseDrawing()
-	{
-		this->drawingPaused = true;
-	}
-
-	void Application::StartDrawing()
-	{
-		this->drawingPaused = false;
-	}
-
-	void Application::Redraw()
-	{
-		this->BeginAnimationFrame();
-		this->Draw();
-		this->EndAnimationFrame();
-	}
-
 	void Application::Exit()
 	{
 		this->Close();
 	}
 	
-	Application::Application(i32_t width, i32_t height, const std::string & title, RendererType type) :
+	Application::Application(Int32 width, Int32 height, const std::string & title, RendererType type) :
 		RenderWindow(this->renderer, this->rsm),
-		drawingPaused(true),
+		LoopManager(this->renderer),
 		renderer(RendererFactory::Create(type)),
 		rsm(new RenderStateManager(this->renderer))
 	{
@@ -48,13 +60,6 @@ namespace Core
 		this->SetResizable(false);
 		this->SetMaximizable(false);
 		this->SetMinimizable(false);
-	}
-
-	void Application::SetupImpl()
-	{
-		this->BeginAnimationFrame();
-		this->Setup();
-		this->EndAnimationFrame();
 	}
 
 	void Application::StartSketch()
@@ -72,20 +77,18 @@ namespace Core
 		// start calling the DrawImpl function
 		this->StartDrawing();
 
-		// Setup
-		this->SetupImpl();
+		// Call Setup
+		this->renderer->BeginDraw();
+		this->Setup();
+		this->renderer->EndDraw();
 
 		while (this->IsOpen())
 		{
 			// calculate & limit fps
 			this->HandleFps();
 
-			// call draw surrounded by begin/end-Draw()
-			if (!this->drawingPaused)
-			{
+			if (this->CanDraw())
 				this->Redraw();
-				this->OnFrameProcessed();
-			}
 
 			// pops every renderstate and activates the default
 			this->rsm->Reset();

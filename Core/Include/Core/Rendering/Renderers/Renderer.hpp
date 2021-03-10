@@ -60,7 +60,7 @@ namespace Core
 		/// </summary>
 		/// <param name="width">width of the area</param>
 		/// <param name="height">height of the area</param>
-		virtual void ResizeViewport(u32_t width, u32_t height) = 0;
+		virtual void ResizeViewport(UInt32 width, UInt32 height) = 0;
 
 		/// <summary>
 		/// Returns the RenderTarget

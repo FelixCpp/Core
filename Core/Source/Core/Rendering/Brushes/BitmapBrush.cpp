@@ -38,7 +38,7 @@ namespace Core
 			this->brush->SetExtendModeY(static_cast<D2D1_EXTEND_MODE>(mode));
 		}
 
-		void SetOpacity(i32_t opacity)
+		void SetOpacity(Int32 opacity)
 		{
 			this->brush->SetOpacity((FLOAT)opacity / 255.f);
 		}

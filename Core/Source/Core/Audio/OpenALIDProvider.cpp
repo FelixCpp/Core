@@ -5,14 +5,14 @@
 namespace Core
 {
 
-	std::vector<u32_t> OpenALSourceIDProvider::sources;
-	std::vector<u32_t> OpenALBufferIDProvider::buffers;
+	std::vector<UInt32> OpenALSourceIDProvider::sources;
+	std::vector<UInt32> OpenALBufferIDProvider::buffers;
 
-	void OpenALSourceIDProvider::Generate(i32_t count, u32_t * elements)
+	void OpenALSourceIDProvider::Generate(Int32 count, UInt32 * elements)
 	{
 		alGenSources(count, elements);
 
-		for (i32_t i = 0; i < count; i++)
+		for (Int32 i = 0; i < count; i++)
 			sources.push_back(elements[i]);
 	}
 
@@ -21,11 +21,11 @@ namespace Core
 		alDeleteSources(sources.size(), sources.data());
 	}
 
-	void OpenALBufferIDProvider::Generate(i32_t count, u32_t * elements)
+	void OpenALBufferIDProvider::Generate(Int32 count, UInt32 * elements)
 	{
 		alGenBuffers(count, elements);
 		
-		for (i32_t i = 0; i < count; i++)
+		for (Int32 i = 0; i < count; i++)
 			buffers.push_back(elements[i]);
 	}
 

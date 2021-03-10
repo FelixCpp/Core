@@ -32,11 +32,11 @@ namespace Core
 		explicit AudioTarget(const std::string & deviceName);
 
 		/* returns an OpenAL Audio format based on the passed channel count */
-		static i32_t GetAudioFormat(u16_t channels);
+		static Int32 GetAudioFormat(UInt16 channels);
 
 	private:
 
-		Cache<std::string, u32_t> soundCache;
+		Cache<std::string, UInt32> soundCache;
 		Cache<std::string, WaveFile> musicCache;
 
 	};

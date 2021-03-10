@@ -41,15 +41,15 @@ namespace Core
 		virtual ~RenderWindow() = default;
 
 		/* creates a window with the given properties */
-		virtual bool Create(u32_t width, u32_t height, const std::string & title) override;
+		virtual bool Create(UInt32 width, UInt32 height, const std::string & title) override;
 
 	private:
 
 		/* handles the events from windows */
-		static i64_t __stdcall ProcessEvents(Windowhandle handle, u32_t msg, u64_t wParam, i64_t lParam);
+		static Int64 __stdcall ProcessEvents(Windowhandle handle, UInt32 msg, UInt64 wParam, Int64 lParam);
 
 		/* decodes the key based on the flags. (Gets information which button is pressed) */
-		static Keyboard::Key DecodeKeyCode(u64_t key, i64_t flags);
+		static Keyboard::Key DecodeKeyCode(UInt64 key, Int64 flags);
 
 		/* tracks the mouse events */
 		void TrackMouseEvent(bool track);

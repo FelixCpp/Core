@@ -11,24 +11,24 @@ namespace Core
 	class OpenALSourceIDProvider : public StaticObject {
 	public:
 
-		static void Generate(i32_t count, u32_t * elements);
+		static void Generate(Int32 count, UInt32 * elements);
 		static void Clear();
 
 	private:
 
-		static std::vector<u32_t> sources;
+		static std::vector<UInt32> sources;
 
 	};
 
 	class OpenALBufferIDProvider : public StaticObject {
 	public:
 
-		static void Generate(i32_t count, u32_t * elements);
+		static void Generate(Int32 count, UInt32 * elements);
 		static void Clear();
 
 	private:
 
-		static std::vector<u32_t> buffers;
+		static std::vector<UInt32> buffers;
 		
 	};
 

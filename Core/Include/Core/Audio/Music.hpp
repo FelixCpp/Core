@@ -26,7 +26,7 @@ namespace Core
 		~Music() = default;
 		
 		/* loads the data from a file */
-		bool Init(i32_t audioFormat, i32_t sampleRate, const std::vector<char> & soundData);
+		bool Init(Int32 audioFormat, Int32 sampleRate, const std::vector<char> & soundData);
 
 		/* overrides the setLooping function */
 		void SetLooping(bool value);
@@ -43,10 +43,10 @@ namespace Core
 	private:
 
 		/* buffers so the music can loop */
-		void UpdateBufferingLoop(u32_t buffer);
+		void UpdateBufferingLoop(UInt32 buffer);
 
 		/* buffers so the music plays once */
-		void UpdateBuffering(u32_t buffer);
+		void UpdateBuffering(UInt32 buffer);
 
 	private:
 
@@ -59,8 +59,8 @@ namespace Core
 		//struct Impl;
 		//std::shared_ptr<Impl> impl;
 
-		i32_t audioFormat;
-		i32_t sampleRate;
+		Int32 audioFormat;
+		Int32 sampleRate;
 		std::vector<char> soundData;
 		std::size_t cursor;
 

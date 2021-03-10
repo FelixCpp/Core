@@ -76,7 +76,7 @@ namespace Core
 		this->drawing = false;
 	}
 
-	void WindowRenderer::ResizeViewport(u32_t width, u32_t height)
+	void WindowRenderer::ResizeViewport(UInt32 width, UInt32 height)
 	{
 		if (this->drawing)
 		{

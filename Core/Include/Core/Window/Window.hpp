@@ -23,10 +23,10 @@ namespace Core
 	public:
 
 		/* the monitors width */
-		static const i32_t displayWidth;
+		static const Int32 displayWidth;
 		
 		/* the monitors height */
-		static const i32_t displayHeight;
+		static const Int32 displayHeight;
 
 	public:
 
@@ -40,16 +40,16 @@ namespace Core
 		bool EnterFullscreen(const DisplayMode & displayMode = DisplayMode::GetDesktopMode());
 
 		/* exits the fullscreen-mode */
-		bool ExitFullscreen(u32_t width, u32_t height);
+		bool ExitFullscreen(UInt32 width, UInt32 height);
 
 		/* changes the framerate limit */
-		void SetFramerateLimit(i32_t limit);
+		void SetFramerateLimit(Int32 limit);
 
 		/* releases the framerate limit */
 		void NoFramerateLimit();
 
 		/* creates a window with the given properties */
-		virtual bool Create(u32_t width, u32_t height, const std::string & title) = 0;
+		virtual bool Create(UInt32 width, UInt32 height, const std::string & title) = 0;
 
 		/* returns true if the window is currently open */
 		bool IsOpen() const;
@@ -67,13 +67,13 @@ namespace Core
 		const std::string & GetTitle() const;
 
 		/* changes the size of the window */
-		void SetSize(u32_t width, u32_t height);
+		void SetSize(UInt32 width, UInt32 height);
 		
 		/* returns the size of the window */
 		UVector2 GetSize() const;
 
 		/* changes the position of the window */
-		void SetPosition(i32_t x, i32_t y);
+		void SetPosition(Int32 x, Int32 y);
 
 		/* returns the position of the window */
 		IVector2 GetPosition() const;
@@ -144,7 +144,7 @@ namespace Core
 		virtual void OnKeyReleased(KeyboardEventArgs args) {}
 		
 		/* gets raised if a character was pressed */
-		virtual void OnTextEntered(u32_t unicode) {}
+		virtual void OnTextEntered(UInt32 unicode) {}
 		
 		/* gets raised if any mouse button is pressed */
 		virtual void OnMousePressed(Mouse::Button button) {}
@@ -153,7 +153,7 @@ namespace Core
 		virtual void OnMouseReleased(Mouse::Button button) {}
 		
 		/* gets raised if the mousewheel is scrolled */
-		virtual void OnMouseWheelScrolled(i32_t delta) {}
+		virtual void OnMouseWheelScrolled(Int32 delta) {}
 
 		/* gets raised if the X-button is pressed */
 		virtual void OnWindowClosed() {}
@@ -201,37 +201,37 @@ namespace Core
 	public:
 
 		/* the width of the window */
-		i32_t width;
+		Int32 width;
 
 		/* the height of the window */
-		i32_t height;
+		Int32 height;
 
 		/* the previous mouse-x position */
-		i32_t pmouseX;
+		Int32 pmouseX;
 
 		/* the previous mouse-y position */
-		i32_t pmouseY;
+		Int32 pmouseY;
 
 		/* the mouse-x position relative to the windows x position */
-		i32_t mouseX;
+		Int32 mouseX;
 
 		/* the mouse-y position relative to the windows y position */
-		i32_t mouseY;
+		Int32 mouseY;
 
 		/* the window-x position relative to the monitors x position (0) */
-		i32_t windowX;
+		Int32 windowX;
 
 		/* the window-y position relative to the monitors y position (0) */
-		i32_t windowY;
+		Int32 windowY;
 
 		/* the current title of the window */
 		std::string title;
 
 		/* the current framerate. It gets recalculated every 0.25 seconds */
-		i32_t fps;
+		Int32 fps;
 
 		/* the framecount. This value increases every frame and never gets resetted */
-		u64_t frameCount;
+		UInt64 frameCount;
 
 		/* holds the handle of the window */
 		Windowhandle windowHandle;
@@ -288,7 +288,7 @@ namespace Core
 		Stopwatch calcWatch;
 
 		/* frameCount which gets increased everytime when handleFps() is called */
-		u32_t internalFrameCount;
+		UInt32 internalFrameCount;
 
 	};
 
