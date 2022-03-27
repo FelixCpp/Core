@@ -1,0 +1,343 @@
+﻿// 
+// Library.cpp
+// Core
+// 
+// Created by Felix Busch on 19.02.2022.
+// Copyright © 2022 Felix Busch. All rights reserved.
+// 
+
+#include <Core/Library.hpp>
+#include <Core/Application/Application.hpp>
+
+namespace Core
+{
+	////////////////////////////////////////////////////////////
+	void SetAutoCloseEnabled(bool enabled)
+	{
+		GetApp().AutoCloseEnabled = enabled;
+	}
+
+	////////////////////////////////////////////////////////////
+	bool IsAutoCloseEnabled()
+	{
+		return GetApp().AutoCloseEnabled;
+	}
+
+	////////////////////////////////////////////////////////////
+	void Exit()
+	{
+		GetApp().Exit();
+	}
+
+	////////////////////////////////////////////////////////////
+	void SetFrameRateLimit(u32 limit)
+	{
+		GetApp().TargetFps = limit;
+	}
+
+	////////////////////////////////////////////////////////////
+	u32 GetFramesPerSecond()
+	{
+		return GetApp().FramesPerSecond;
+	}
+
+	////////////////////////////////////////////////////////////
+	Application& GetApp()
+	{
+		return *Application::Instance;
+	}
+
+	////////////////////////////////////////////////////////////
+	void SetWindowSize(int32_t width, int32_t height)
+	{
+		GetWindow().SetSize(width, height);
+	}
+
+	////////////////////////////////////////////////////////////
+	Int2 GetWindowSize()
+	{
+		return GetWindow().GetSize();
+	}
+
+	////////////////////////////////////////////////////////////
+	void SetWindowPosition(int32_t x, int32_t y)
+	{
+		GetWindow().SetPosition(x, y);
+	}
+
+	////////////////////////////////////////////////////////////
+	Int2 GetWindowPosition()
+	{
+		return GetWindow().GetPosition();
+	}
+
+	////////////////////////////////////////////////////////////
+	void SetWindowTitle(const String& title)
+	{
+		GetWindow().SetTitle(title);
+	}
+
+	////////////////////////////////////////////////////////////
+	String GetWindowTitle()
+	{
+		return GetWindow().GetTitle();
+	}
+
+	////////////////////////////////////////////////////////////
+	void SetWindowMaximizable(bool enabled)
+	{
+		GetWindow().SetMaximizeButtonEnabled(enabled);
+	}
+
+	////////////////////////////////////////////////////////////
+	bool IsWindowMaximizable()
+	{
+		return GetWindow().IsMaximizeButtonEnabled();
+	}
+
+	////////////////////////////////////////////////////////////
+	void SetWindowMinimizable(bool enabled)
+	{
+		GetWindow().SetMinimizeButtonEnabled(enabled);
+	}
+
+	////////////////////////////////////////////////////////////
+	bool IsWindowMinimizable()
+	{
+		return GetWindow().IsMinimizeButtonEnabled();
+	}
+
+	////////////////////////////////////////////////////////////
+	void SetWindowResizable(bool enabled)
+	{
+		GetWindow().SetResizable(enabled);
+	}
+
+	////////////////////////////////////////////////////////////
+	bool IsWindowResizable()
+	{
+		return GetWindow().IsResizable();
+	}
+
+	////////////////////////////////////////////////////////////
+	void SetWindowClosable(bool enabled)
+	{
+		GetWindow().SetCloseButtonEnabled(enabled);
+	}
+
+	////////////////////////////////////////////////////////////
+	bool IsWindowClosable()
+	{
+		return GetWindow().IsCloseButtonEnabled();
+	}
+
+	////////////////////////////////////////////////////////////
+	void RequestWindowFocus()
+	{
+		GetWindow().RequestFocus();
+	}
+
+	////////////////////////////////////////////////////////////
+	bool WindowHasFocus()
+	{
+		return GetWindow().HasFocus();
+	}
+
+	////////////////////////////////////////////////////////////
+	void SetMouseCursorGrabbed(bool grabbed)
+	{
+		GetWindow().SetMouseCursorGrabbed(grabbed);
+	}
+
+	////////////////////////////////////////////////////////////
+	bool IsMouseCursorGrabbed()
+	{
+		return GetWindow().IsMouseCursorGrabbed();
+	}
+
+	////////////////////////////////////////////////////////////
+	void SetWindowVisible(bool visible)
+	{
+		GetWindow().SetVisible(visible);
+	}
+
+	////////////////////////////////////////////////////////////
+	bool IsWindowVisible()
+	{
+		return GetWindow().IsVisible();
+	}
+
+	////////////////////////////////////////////////////////////
+	void SetMouseCursorVisible(bool visible)
+	{
+		GetWindow().SetMouseCursorVisible(visible);
+	}
+
+	////////////////////////////////////////////////////////////
+	bool IsMouseCursorVisible()
+	{
+		return GetWindow().IsMouseCursorVisible();
+	}
+
+	////////////////////////////////////////////////////////////
+	void SetWindowKeyRepeatEnabled(bool enabled)
+	{
+		GetWindow().SetKeyRepeatEnabled(enabled);
+	}
+
+	////////////////////////////////////////////////////////////
+	bool IsWindowKeyRepeatEnabled()
+	{
+		return GetWindow().IsKeyRepeatEnabled();
+	}
+
+	////////////////////////////////////////////////////////////
+	void SetMouseCursor(const MouseCursor& cursor)
+	{
+		GetWindow().SetMouseCursor(cursor);
+	}
+
+	////////////////////////////////////////////////////////////
+	const MouseCursor& GetMouseCursor()
+	{
+		return GetWindow().GetMouseCursor();
+	}
+
+	////////////////////////////////////////////////////////////
+	Window& GetWindow()
+	{
+		return Application::Instance->Window;
+	}
+
+	////////////////////////////////////////////////////////////
+	void Background(const Color& color)
+	{
+		GetGraphics().Background(color);
+	}
+
+	////////////////////////////////////////////////////////////
+	void Fill(const Color& color)
+	{
+		GetGraphics().Fill(color);
+	}
+
+	////////////////////////////////////////////////////////////
+	void NoFill()
+	{
+		GetGraphics().NoFill();
+	}
+
+	////////////////////////////////////////////////////////////
+	void Stroke(const Color& color)
+	{
+		GetGraphics().Stroke(color);
+	}
+
+	////////////////////////////////////////////////////////////
+	void NoStroke()
+	{
+		GetGraphics().NoStroke();
+	}
+
+	////////////////////////////////////////////////////////////
+	void StrokeWeight(float weight)
+	{
+		GetGraphics().StrokeWeight(weight);
+	}
+
+	////////////////////////////////////////////////////////////
+	void RectMode(DrawMode mode)
+	{
+		GetGraphics().RectMode(mode);
+	}
+
+	////////////////////////////////////////////////////////////
+	void Rect(float x1, float y1, float x2, float y2, float cornerX, float cornerY)
+	{
+		GetGraphics().Rect(x1, y1, x2, y2, cornerX, cornerY);
+	}
+
+	////////////////////////////////////////////////////////////
+	void EllipseMode(DrawMode mode)
+	{
+		GetGraphics().EllipseMode(mode);
+	}
+
+	////////////////////////////////////////////////////////////
+	void Ellipse(float a, float b, float c, float d)
+	{
+		GetGraphics().Ellipse(a, b, c, d);
+	}
+
+	////////////////////////////////////////////////////////////
+	void Line(float x1, float y1, float x2, float y2)
+	{
+		GetGraphics().Line(x1, y1, x2, y2);
+	}
+
+	////////////////////////////////////////////////////////////
+	void StrokeStartCap(CapStyle style)
+	{
+		GetRenderStyle().StrokeStyle.SetStartCap(style);
+	}
+
+	////////////////////////////////////////////////////////////
+	void StrokeEndCap(CapStyle style)
+	{
+		GetRenderStyle().StrokeStyle.SetEndCap(style);
+	}
+
+	////////////////////////////////////////////////////////////
+	void StrokeDashCap(CapStyle style)
+	{
+		GetRenderStyle().StrokeStyle.SetDashCap(style);
+	}
+
+	////////////////////////////////////////////////////////////
+	void StrokeLineJoin(LineJoin join)
+	{
+		GetRenderStyle().StrokeStyle.SetLineJoin(join);
+	}
+
+	////////////////////////////////////////////////////////////
+	void StrokeMiterLimit(float limit)
+	{
+		GetRenderStyle().StrokeStyle.SetMiterLimit(limit);
+	}
+
+	////////////////////////////////////////////////////////////
+	void StrokeDashStyle(DashStyle style)
+	{
+		GetRenderStyle().StrokeStyle.SetDashStyle(style);
+	}
+
+	////////////////////////////////////////////////////////////
+	void StrokeDashOffset(float offset)
+	{
+		GetRenderStyle().StrokeStyle.SetDashOffset(offset);
+	}
+
+	////////////////////////////////////////////////////////////
+	void StrokeDashes(const float* dashes, usize count)
+	{
+		GetRenderStyle().StrokeStyle.SetDashes(dashes, count);
+	}
+
+	////////////////////////////////////////////////////////////
+	void Geometry(const Shape& shape)
+	{
+		GetGraphics().Geometry(shape);
+	}
+
+	////////////////////////////////////////////////////////////
+	RenderStyle& GetRenderStyle()
+	{
+		return GetGraphics().GetRenderStyle();
+	}
+	
+	////////////////////////////////////////////////////////////
+	GraphicsContext& GetGraphics()
+	{
+		return Application::Instance->Graphics;
+	}
+}

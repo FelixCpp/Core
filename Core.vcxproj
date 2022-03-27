@@ -19,10 +19,96 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Include\CoreApplication\EntryPoint.hpp" />
+    <None Include=".gitignore" />
+    <None Include="Externals\Libs\stb\LICENSE" />
+    <None Include="Include\Core\System\Angle.inl" />
+    <None Include="Include\Core\System\Rectangle.inl" />
+    <None Include="LICENSE" />
+    <None Include="README.md" />
+    <None Include="Include\Core\Graphics\Color.inl" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Source\CoreApplication\EntryPoint.cpp" />
+    <ClInclude Include="Externals\Libs\stb\stb_connected_components.h" />
+    <ClInclude Include="Externals\Libs\stb\stb_c_lexer.h" />
+    <ClInclude Include="Externals\Libs\stb\stb_divide.h" />
+    <ClInclude Include="Externals\Libs\stb\stb_ds.h" />
+    <ClInclude Include="Externals\Libs\stb\stb_dxt.h" />
+    <ClInclude Include="Externals\Libs\stb\stb_easy_font.h" />
+    <ClInclude Include="Externals\Libs\stb\stb_herringbone_wang_tile.h" />
+    <ClInclude Include="Externals\Libs\stb\stb_hexwave.h" />
+    <ClInclude Include="Externals\Libs\stb\stb_image.h" />
+    <ClInclude Include="Externals\Libs\stb\stb_image_resize.h" />
+    <ClInclude Include="Externals\Libs\stb\stb_image_write.h" />
+    <ClInclude Include="Externals\Libs\stb\stb_include.h" />
+    <ClInclude Include="Externals\Libs\stb\stb_leakcheck.h" />
+    <ClInclude Include="Externals\Libs\stb\stb_rect_pack.h" />
+    <ClInclude Include="Externals\Libs\stb\stb_sprintf.h" />
+    <ClInclude Include="Externals\Libs\stb\stb_textedit.h" />
+    <ClInclude Include="Externals\Libs\stb\stb_tilemap_editor.h" />
+    <ClInclude Include="Externals\Libs\stb\stb_truetype.h" />
+    <ClInclude Include="Externals\Libs\stb\stb_voxel_render.h" />
+    <ClInclude Include="Include\Core\Application\Application.hpp" />
+    <ClInclude Include="Include\Core\Application\Sketch.hpp" />
+    <ClInclude Include="Include\Core\Graphics\Color.hpp" />
+    <ClInclude Include="Include\Core\Graphics\DrawMode.hpp" />
+    <ClInclude Include="Include\Core\Graphics\Factories.hpp" />
+    <ClInclude Include="Include\Core\Application\Globals.hpp" />
+    <ClInclude Include="Include\Core\Graphics\GraphicsContext.hpp" />
+    <ClInclude Include="Include\Core\Graphics\RenderStyle.hpp" />
+    <ClInclude Include="Include\Core\Graphics\RenderTarget.hpp" />
+    <ClInclude Include="Include\Core\Graphics\Shape.hpp" />
+    <ClInclude Include="Include\Core\Graphics\SolidColorBrush.hpp" />
+    <ClInclude Include="Include\Core\Graphics\StrokeStyle.hpp" />
+    <ClInclude Include="Include\Core\Graphics\StrokeStyleProperties.hpp" />
+    <ClInclude Include="Include\Core\Library.hpp" />
+    <ClInclude Include="Include\Core\System\Angle.hpp" />
+    <ClInclude Include="Include\Core\System\Error.hpp" />
+    <ClInclude Include="Include\Core\System\EventPublisher.hpp" />
+    <ClInclude Include="Include\Core\System\FinalAction.hpp" />
+    <ClInclude Include="Include\Core\System\IEventListener.hpp" />
+    <ClInclude Include="Include\Core\System\PollEventSystem.hpp" />
+    <ClInclude Include="Include\Core\System\Random.hpp" />
+    <ClInclude Include="Include\Core\System\Rectangle.hpp" />
+    <ClInclude Include="Include\Core\System\Sleep.hpp" />
+    <ClInclude Include="Include\Core\System\Stopwatch.hpp" />
+    <ClInclude Include="Include\Core\System\String.hpp" />
+    <ClInclude Include="Include\Core\System\Time.hpp" />
+    <ClInclude Include="Include\Core\System\Transform.hpp" />
+    <ClInclude Include="Include\Core\System\Types.hpp" />
+    <ClInclude Include="Include\Core\System\Value2.hpp" />
+    <ClInclude Include="Include\Core\System\Value3.hpp" />
+    <ClInclude Include="Include\Core\System\Value4.hpp" />
+    <ClInclude Include="Include\Core\Window\Dpi.hpp" />
+    <ClInclude Include="Include\Core\Window\KeyCode.hpp" />
+    <ClInclude Include="Include\Core\Window\MouseButton.hpp" />
+    <ClInclude Include="Include\Core\Window\MouseCursor.hpp" />
+    <ClInclude Include="Include\Core\Window\MouseWheel.hpp" />
+    <ClInclude Include="Include\Core\Window\Types.hpp" />
+    <ClInclude Include="Include\Core\Window\Window.hpp" />
+    <ClInclude Include="Include\Core\Window\WindowEvent.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Externals\Libs\stb\stb_vorbis.c" />
+    <ClCompile Include="Source\Core\Application\Application.cpp" />
+    <ClCompile Include="Source\Core\Application\EntryPoint.cpp" />
+    <ClCompile Include="Source\Core\Application\Globals.cpp" />
+    <ClCompile Include="Source\Core\Application\Sketch.cpp" />
+    <ClCompile Include="Source\Core\Graphics\Factories.cpp" />
+    <ClCompile Include="Source\Core\Graphics\GraphicsContext.cpp" />
+    <ClCompile Include="Source\Core\Graphics\RenderTarget.cpp" />
+    <ClCompile Include="Source\Core\Graphics\Shape.cpp" />
+    <ClCompile Include="Source\Core\Graphics\SolidColorBrush.cpp" />
+    <ClCompile Include="Source\Core\Graphics\StrokeStyle.cpp" />
+    <ClCompile Include="Source\Core\Library.cpp" />
+    <ClCompile Include="Source\Core\System\Error.cpp" />
+    <ClCompile Include="Source\Core\System\Random.cpp" />
+    <ClCompile Include="Source\Core\System\Sleep.cpp" />
+    <ClCompile Include="Source\Core\System\Stopwatch.cpp" />
+    <ClCompile Include="Source\Core\System\Transform.cpp" />
+    <ClCompile Include="Source\Core\Window\Dpi.cpp" />
+    <ClCompile Include="Source\Core\Window\MouseCursor.cpp" />
+    <ClCompile Include="Source\Core\Window\Window.cpp" />
+    <ClCompile Include="Source\Core\Window\WindowEvent.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
@@ -80,25 +166,25 @@
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(SolutionDir)bin\$(Configuration)\$(Platform)\</OutDir>
     <IntDir>$(SolutionDir)bin\intermediates\$(Configuration)\$(Platform)\</IntDir>
-    <IncludePath>$(ProjectDir)\Include;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)\Include;$(ProjectDir)\Externals\Libs;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(SolutionDir)bin\$(Configuration)\$(Platform)\</OutDir>
     <IntDir>$(SolutionDir)bin\intermediates\$(Configuration)\$(Platform)\</IntDir>
-    <IncludePath>$(ProjectDir)\Include;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)\Include;$(ProjectDir)\Externals\Libs;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(SolutionDir)bin\$(Configuration)\$(Platform)\</OutDir>
     <IntDir>$(SolutionDir)bin\intermediates\$(Configuration)\$(Platform)\</IntDir>
-    <IncludePath>$(ProjectDir)\Include;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)\Include;$(ProjectDir)\Externals\Libs;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(SolutionDir)bin\$(Configuration)\$(Platform)\</OutDir>
     <IntDir>$(SolutionDir)bin\intermediates\$(Configuration)\$(Platform)\</IntDir>
-    <IncludePath>$(ProjectDir)\Include;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)\Include;$(ProjectDir)\Externals\Libs;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
