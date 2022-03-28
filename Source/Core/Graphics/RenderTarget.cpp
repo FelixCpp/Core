@@ -308,6 +308,18 @@ namespace Core
 	}
 
 	////////////////////////////////////////////////////////////
+	void RenderTarget::ImageOpacity(u8 opacity)
+	{
+		GetRenderStyle().TextureOpacity = opacity;
+	}
+
+	////////////////////////////////////////////////////////////
+	void RenderTarget::ImageSampleMode(Texture::SampleMode sampleMode)
+	{
+		GetRenderStyle().TextureSampleMode = sampleMode;
+	}
+
+	////////////////////////////////////////////////////////////
 	void RenderTarget::ImageMode(DrawMode mode)
 	{
 		GetRenderStyle().ImageMode = mode;
@@ -317,11 +329,23 @@ namespace Core
 	void RenderTarget::Image(const Texture& texture, float a, float b)
 	{
 		const Float2& size = texture.GetSize();
-		Image(texture, a, b, size.X, size.Y);
+		Image(texture, a, b, size.X, size.Y, FloatRect(0.0f, 0.0f, size.X, size.Y));
+	}
+
+	
+	////////////////////////////////////////////////////////////
+	void RenderTarget::Image(const Texture& texture, float a, float b, float c, float d)
+	{
+		const Float2& size = texture.GetSize();
+		Image(texture, a, b, c, d, FloatRect(0.0f, 0.0f, size.X, size.Y));
 	}
 
 	////////////////////////////////////////////////////////////
-	void RenderTarget::Image(const Texture& texture, float a, float b, float c, float d)
+	void RenderTarget::Image(
+		const Texture& texture,
+		float a, float b, float c, float d,
+		const FloatRect& sourceRectangle
+	)
 	{
 		// make sure there is a bitmap to render
 		if(ID2D1Bitmap* bitmap = texture.GetBitmap())
@@ -343,15 +367,13 @@ namespace Core
 					destinationRectangle = D2D1::RectF(x1 - width / 2.0f, y1 - height / 2.0f, x1 + width / 2.0f, y1 + height / 2.0f);
 				} break;
 			}
-
-			const Float2& bitmapSize = texture.GetSize();
-
+			
 			target.DrawBitmap(
 				bitmap,
 				destinationRectangle,
-				1.0f,
-				D2D1_BITMAP_INTERPOLATION_MODE_LINEAR,
-				D2D1::RectF(0.0f, 0.0f, bitmapSize.X, bitmapSize.Y)
+				(float)style.TextureOpacity / 255.0f,
+				(D2D1_BITMAP_INTERPOLATION_MODE)style.TextureSampleMode,
+				D2D1::RectF(sourceRectangle.Left, sourceRectangle.Top, sourceRectangle.Left + sourceRectangle.Width, sourceRectangle.Top + sourceRectangle.Height)
 			);
 		}
 	}

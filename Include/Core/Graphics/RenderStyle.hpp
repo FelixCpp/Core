@@ -12,6 +12,7 @@
 #include <Core/Graphics/DrawMode.hpp>
 #include <Core/Graphics/StrokeStyle.hpp>
 #include <Core/Graphics/Transformation.hpp>
+#include <Core/Graphics/Texture.hpp>
 
 #include <stack>
 
@@ -42,7 +43,9 @@ namespace Core
 		DrawMode EllipseMode	= Center;	///< The draw mode to use for ellipsis
 		DrawMode ImageMode		= Corner;	///< The draw mode to use for image modes
 
-		float StrokeWeight = 1.0f;	///< The outline thickness
+		Texture::SampleMode TextureSampleMode	= Texture::SampleMode::NearestNeighbor;	///< The sample mode to use when rendering textures
+		u8					TextureOpacity		= 255;	///< The transparency used for texture rendering
+		float				StrokeWeight		= 1.0f;	///< The outline thickness
 
 		StrokeStyle					StrokeStyle = {};	///< The stroke style to use when rendering
 		std::stack<Transformation>	Transform	= {};	///< The transformation to apply to the render target

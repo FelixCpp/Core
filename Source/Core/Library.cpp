@@ -378,6 +378,18 @@ namespace Core
 	}
 
 	////////////////////////////////////////////////////////////
+	void ImageOpacity(u8 opacity)
+	{
+		GetGraphics().ImageOpacity(opacity);
+	}
+
+	////////////////////////////////////////////////////////////
+	void ImageSampleMode(Texture::SampleMode sampleMode)
+	{
+		GetGraphics().ImageSampleMode(sampleMode);
+	}
+
+	////////////////////////////////////////////////////////////
 	void ImageMode(DrawMode mode)
 	{
 		GetGraphics().ImageMode(mode);
@@ -393,6 +405,12 @@ namespace Core
 	void Image(const Texture& texture, float a, float b, float c, float d)
 	{
 		GetGraphics().Image(texture, a, b, c, d);
+	}
+
+	////////////////////////////////////////////////////////////
+	void Image(const Texture& texture, float a, float b, float c, float d, const FloatRect& destinationRectangle)
+	{
+		GetGraphics().Image(texture, a, b, c, d, destinationRectangle);
 	}
 
 	////////////////////////////////////////////////////////////

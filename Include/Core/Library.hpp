@@ -13,6 +13,7 @@
 #include <Core/System/Types.hpp>
 #include <Core/System/Value2.hpp>
 #include <Core/System/String.hpp>
+#include <Core/System/Rectangle.hpp>
 
 #include <Core/Window/MouseCursor.hpp>
 
@@ -107,9 +108,12 @@ namespace Core
 	void AddQuadraticBezier(const Float2& start, const Float2& end);
 	void EndShape(ShapeEnd style);
 	void Geometry(const Shape& shape);
+	void ImageOpacity(u8 opacity);
+	void ImageSampleMode(Texture::SampleMode sampleMode);
 	void ImageMode(DrawMode mode);
 	void Image(const Texture& texture, float a, float b);
 	void Image(const Texture& texture, float a, float b, float c, float d);
+	void Image(const Texture& texture, float a, float b, float c, float d, const FloatRect& destinationRectangle);
 	void ResetTransform();
 	void Translate(float x, float y);
 	void Rotate(const Angle& rotation);

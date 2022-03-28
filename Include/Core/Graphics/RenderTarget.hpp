@@ -10,6 +10,9 @@
 
 #include <Core/Graphics/RenderStyle.hpp>
 #include <Core/Graphics/Shape.hpp>
+#include <Core/Graphics/Texture.hpp>
+
+#include <Core/System/Rectangle.hpp>
 
 #include <stack>
 
@@ -21,12 +24,6 @@ struct ID2D1RenderTarget;
 
 namespace Core
 {
-	////////////////////////////////////////////////////////////
-	/// \brief Forward declaration
-	/// 
-	////////////////////////////////////////////////////////////
-	class Texture;
-
 	////////////////////////////////////////////////////////////
 	/// \brief Define base class for rendering commands.
 	///
@@ -162,9 +159,12 @@ namespace Core
 		void PushStyle();
 		void PopStyle();
 
+		void ImageOpacity(u8 opacity);
+		void ImageSampleMode(Texture::SampleMode sampleMode);
 		void ImageMode(DrawMode mode);
 		void Image(const Texture& texture, float a, float b);
 		void Image(const Texture& texture, float a, float b, float c, float d);
+		void Image(const Texture& texture, float a, float b, float c, float d, const FloatRect& sourceRectangle);
 
 		////////////////////////////////////////////////////////////
 		/// \brief Render a shape object on screen.
