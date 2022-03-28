@@ -213,6 +213,9 @@
     <ClInclude Include="Include\Core\Graphics\Texture.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="Include\Core\Window\WindowIcon.hpp">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Core\Application\Sketch.cpp">
@@ -282,6 +285,9 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="Source\Core\Graphics\Texture.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Core\Window\WindowIcon.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>

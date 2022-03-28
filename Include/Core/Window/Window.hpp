@@ -14,6 +14,7 @@
 
 #include <Core/Window/WindowEvent.hpp>
 #include <Core/Window/MouseCursor.hpp>
+#include <Core/Window/WindowIcon.hpp>
 #include <Core/Window/Types.hpp>
 
 #include <cstdint>
@@ -269,6 +270,13 @@ namespace Core
 		const MouseCursor& GetMouseCursor() const;
 
 		////////////////////////////////////////////////////////////
+		/// \brief Set the window icon for the window handle
+		/// 
+		////////////////////////////////////////////////////////////
+		void SetWindowIcon(const WindowIcon& icon);
+		const WindowIcon& GetWindowIcon() const;
+
+		////////////////////////////////////////////////////////////
 		/// \brief Get the window handle
 		/// 
 		////////////////////////////////////////////////////////////
@@ -317,7 +325,7 @@ namespace Core
 		////////////////////////////////////////////////////////////
 		std::unique_ptr<Impl>	impl;	///< The implementation of this class
 		MouseCursor				cursor;	///< The mouse cursor held by the window
-
+		WindowIcon				icon;	///< The icon held by the window
 	};
 
 }

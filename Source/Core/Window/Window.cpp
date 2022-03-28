@@ -1062,6 +1062,27 @@ namespace Core
 	}
 
 	////////////////////////////////////////////////////////////
+	void Window::SetWindowIcon(const WindowIcon& icon)
+	{
+		this->icon = icon;
+
+		if(IconHandle handle = icon.GetIconHandle())
+		{
+			SendMessage(impl->Handle, WM_SETICON, ICON_BIG, reinterpret_cast<LPARAM>(handle));
+			SendMessage(impl->Handle, WM_SETICON, ICON_SMALL, reinterpret_cast<LPARAM>(handle));
+		} else
+		{
+			Err() << "Failed to set the window's icon" << std::endl;
+		}
+	}
+
+	////////////////////////////////////////////////////////////
+	const WindowIcon& Window::GetWindowIcon() const
+	{
+		return icon;
+	}
+
+	////////////////////////////////////////////////////////////
 	WindowHandle Window::GetWindowHandle() const
 	{
 		return impl->Handle;

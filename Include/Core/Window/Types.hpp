@@ -27,6 +27,7 @@ namespace Core
 	////////////////////////////////////////////////////////////
 	using WindowHandle = HWND__*;
 	using CursorHandle = HICON__*;
+	using IconHandle   = HICON__*;
 
 #ifdef _WIN64
 	using MessageID = uint32_t;

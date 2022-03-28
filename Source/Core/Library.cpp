@@ -204,6 +204,18 @@ namespace Core
 	}
 
 	////////////////////////////////////////////////////////////
+	void SetWindowIcon(const WindowIcon& icon)
+	{
+		GetWindow().SetWindowIcon(icon);
+	}
+
+	////////////////////////////////////////////////////////////
+	const WindowIcon& GetWindowIcon()
+	{
+		return GetWindow().GetWindowIcon();
+	}
+
+	////////////////////////////////////////////////////////////
 	Window& GetWindow()
 	{
 		return Application::Instance->Window;

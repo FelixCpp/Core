@@ -16,6 +16,7 @@
 #include <Core/System/Rectangle.hpp>
 
 #include <Core/Window/MouseCursor.hpp>
+#include <Core/Window/WindowIcon.hpp>
 
 #include <Core/Graphics/RenderStyle.hpp>
 #include <Core/Graphics/Color.hpp>
@@ -74,6 +75,8 @@ namespace Core
 	bool IsWindowKeyRepeatEnabled();
 	void SetMouseCursor(const MouseCursor& cursor);
 	const MouseCursor& GetMouseCursor();
+	void SetWindowIcon(const WindowIcon& icon);
+	const WindowIcon& GetWindowIcon();
 	Window& GetWindow();
 
 	////////////////////////////////////////////////////////////

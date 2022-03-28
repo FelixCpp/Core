@@ -10,12 +10,14 @@
 #include <Core/System/Error.hpp>
 #include <Core/System/Types.hpp>
 
-#define STB_IMAGE_IMPLEMENTATION
-#include <stb/stb_image.h>
-
 #define WIN32_LEAN_AND_MEAN
 #define NOMINMAX
 #include <Windows.h>
+
+//#ifndef STB_IMAGE_IMPLEMENTATION
+//#define STB_IMAGE_IMPLEMENTATION
+//#endif
+#include <stb/stb_image.h>
 
 namespace Core
 {
@@ -167,6 +169,8 @@ namespace Core
 		////////////////////////////////////////////////////////////
 		bool LoadFromSystem(System system)
 		{
+			Release();
+
 			switch (system)
 			{
 				default:

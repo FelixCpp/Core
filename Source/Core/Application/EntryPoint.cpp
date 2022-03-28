@@ -6,6 +6,15 @@
 // Copyright © 2022 Felix Busch. All rights reserved.
 // 
 
+#ifndef STB_IMAGE_IMPLEMENTATION
+#define STB_IMAGE_IMPLEMENTATION
+#endif
+
+#ifndef STBI_WINDOWS_UTF8
+#define STBI_WINDOWS_UTF8
+#endif
+#include <stb/stb_image.h>
+
 #include <Core/Application/Application.hpp>
 #include <Core/Window/Dpi.hpp>
 #include <Core/Application/Factories.hpp>
