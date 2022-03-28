@@ -28,6 +28,18 @@ namespace Core
 		static const Color White;
 		static const Color Black;
 		static const Color Clear;
+		static const Color LightRed, DarkRed;
+		static const Color LightOrange, DarkOrange;
+		static const Color LightYellow, DarkYellow;
+		static const Color LightGreen, DarkGreen;
+		static const Color LightMint, DarkMint;
+		static const Color LightTeal, DarkTeal;
+		static const Color LightCyan, DarkCyan;
+		static const Color LightBlue, DarkBlue;
+		static const Color LightIndigo, DarkIndigo;
+		static const Color LightPurple, DarkPurple;
+		static const Color LightPink, DarkPink;
+		static const Color LightBrown, DarkBrown;
 
 		////////////////////////////////////////////////////////////
 		/// \brief Constructs a white color.
@@ -45,7 +57,17 @@ namespace Core
 		/// 
 		////////////////////////////////////////////////////////////
 		constexpr Color(u8 red, u8 green, u8 blue, u8 alpha = 255);
-		
+
+		////////////////////////////////////////////////////////////
+		/// \brief Get the same exact color except with different
+		///		   opacity.
+		///
+		///	\param opacity The new transparency where 0 is fully
+		///				   transparent and 255 is not transparent at all.
+		/// 
+		////////////////////////////////////////////////////////////
+		constexpr Color Opacity(u8 opacity) const;
+
 		////////////////////////////////////////////////////////////
 		/// Member data
 		/// 
