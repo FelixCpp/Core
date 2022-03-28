@@ -40,7 +40,7 @@ namespace Core
 
 		DrawMode RectMode		= Corner;	///< The draw mode to use for rectangles
 		DrawMode EllipseMode	= Center;	///< The draw mode to use for ellipsis
-		//DrawMode ImageMode;		///< The draw mode to use for image modes
+		DrawMode ImageMode		= Corner;	///< The draw mode to use for image modes
 
 		float StrokeWeight = 1.0f;	///< The outline thickness
 

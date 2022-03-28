@@ -61,6 +61,7 @@
     <ClInclude Include="Include\Core\Graphics\SolidColorBrush.hpp" />
     <ClInclude Include="Include\Core\Graphics\StrokeStyle.hpp" />
     <ClInclude Include="Include\Core\Graphics\StrokeStyleProperties.hpp" />
+    <ClInclude Include="Include\Core\Graphics\Texture.hpp" />
     <ClInclude Include="Include\Core\Graphics\Transformation.hpp" />
     <ClInclude Include="Include\Core\Library.hpp" />
     <ClInclude Include="Include\Core\System\Angle.hpp" />
@@ -101,6 +102,7 @@
     <ClCompile Include="Source\Core\Graphics\Shape.cpp" />
     <ClCompile Include="Source\Core\Graphics\SolidColorBrush.cpp" />
     <ClCompile Include="Source\Core\Graphics\StrokeStyle.cpp" />
+    <ClCompile Include="Source\Core\Graphics\Texture.cpp" />
     <ClCompile Include="Source\Core\Graphics\Transformation.cpp" />
     <ClCompile Include="Source\Core\Library.cpp" />
     <ClCompile Include="Source\Core\System\Error.cpp" />

@@ -110,6 +110,9 @@ namespace Core
 
 			sizeCache.NeedsResize = false;
 		}
+		
+		if (renderTarget->CheckWindowState() & D2D1_WINDOW_STATE_OCCLUDED)
+			return false;
 
 		renderTarget->BeginDraw();
 		return true;

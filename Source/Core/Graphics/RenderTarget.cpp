@@ -8,6 +8,7 @@
 
 #include <Core/Graphics/RenderTarget.hpp>
 #include <Core/Graphics/Shape.hpp>
+#include <Core/Graphics/Texture.hpp>
 
 #define WIN32_LEAN_AND_MEAN
 #define NOMINMAX
@@ -303,6 +304,55 @@ namespace Core
 		if(styles.size() > 1)
 		{
 			styles.pop();
+		}
+	}
+
+	////////////////////////////////////////////////////////////
+	void RenderTarget::ImageMode(DrawMode mode)
+	{
+		GetRenderStyle().ImageMode = mode;
+	}
+
+	////////////////////////////////////////////////////////////
+	void RenderTarget::Image(const Texture& texture, float a, float b)
+	{
+		const Float2& size = texture.GetSize();
+		Image(texture, a, b, size.X, size.Y);
+	}
+
+	////////////////////////////////////////////////////////////
+	void RenderTarget::Image(const Texture& texture, float a, float b, float c, float d)
+	{
+		// make sure there is a bitmap to render
+		if(ID2D1Bitmap* bitmap = texture.GetBitmap())
+		{
+			ID2D1RenderTarget& target = GetRenderTarget();
+			const RenderStyle& style = GetRenderStyle();
+
+			const float x1 = a, y1 = b, x2 = c, y2 = d;
+			D2D1_RECT_F destinationRectangle;
+			switch(style.ImageMode)
+			{
+				default:
+				case Corner:	destinationRectangle = D2D1::RectF(x1, y1, x1 + x2, y1 + y2); break;
+				case Corners:	destinationRectangle = D2D1::RectF(x1, y1, x2, y2); break;
+				case Center:	destinationRectangle = D2D1::RectF(x1 - x2 / 2.0f, y1 - y2 / 2.0f, x1 + x2 / 2.0f, y1 + y2 / 2.0f); break;
+				case Radius:
+				{
+					const float width = x2 * 2.0f, height = y2 * 2.0f;
+					destinationRectangle = D2D1::RectF(x1 - width / 2.0f, y1 - height / 2.0f, x1 + width / 2.0f, y1 + height / 2.0f);
+				} break;
+			}
+
+			const Float2& bitmapSize = texture.GetSize();
+
+			target.DrawBitmap(
+				bitmap,
+				destinationRectangle,
+				1.0f,
+				D2D1_BITMAP_INTERPOLATION_MODE_LINEAR,
+				D2D1::RectF(0.0f, 0.0f, bitmapSize.X, bitmapSize.Y)
+			);
 		}
 	}
 

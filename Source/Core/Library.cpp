@@ -378,6 +378,24 @@ namespace Core
 	}
 
 	////////////////////////////////////////////////////////////
+	void ImageMode(DrawMode mode)
+	{
+		GetGraphics().ImageMode(mode);
+	}
+
+	////////////////////////////////////////////////////////////
+	void Image(const Texture& texture, float a, float b)
+	{
+		GetGraphics().Image(texture, a, b);
+	}
+
+	////////////////////////////////////////////////////////////
+	void Image(const Texture& texture, float a, float b, float c, float d)
+	{
+		GetGraphics().Image(texture, a, b, c, d);
+	}
+
+	////////////////////////////////////////////////////////////
 	void ResetTransform()
 	{
 		GetGraphics().ResetTransform();

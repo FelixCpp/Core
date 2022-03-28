@@ -53,7 +53,7 @@ namespace Core
 		bool PollEvents(TEvent& event, bool queueEvents = true)
 		{
 			// queue up events if there are no events left
-			if (!HasEvents())
+			if (queueEvents && !HasEvents())
 			{
 				QueueEvents();
 			}

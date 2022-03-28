@@ -153,6 +153,9 @@ namespace Core
 	////////////////////////////////////////////////////////////
 	Shape& Shape::End(ShapeEnd style)
 	{
+		if (impl->First)
+			return *this;
+
 		if(!isBuilding)
 		{
 			Err() << "Unacceptable method call to End(). Make sure to call Begin() before calling End()" << std::endl;
@@ -167,6 +170,8 @@ namespace Core
 			Err() << "Failed to close the geometry sink" << std::endl;
 			return *this;
 		}
+
+		isBuilding = false;
 
 		return *this;
 	}

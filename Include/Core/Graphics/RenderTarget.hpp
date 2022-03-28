@@ -22,6 +22,12 @@ struct ID2D1RenderTarget;
 namespace Core
 {
 	////////////////////////////////////////////////////////////
+	/// \brief Forward declaration
+	/// 
+	////////////////////////////////////////////////////////////
+	class Texture;
+
+	////////////////////////////////////////////////////////////
 	/// \brief Define base class for rendering commands.
 	///
 	/// This abstract class contains all functionality for
@@ -155,6 +161,10 @@ namespace Core
 		
 		void PushStyle();
 		void PopStyle();
+
+		void ImageMode(DrawMode mode);
+		void Image(const Texture& texture, float a, float b);
+		void Image(const Texture& texture, float a, float b, float c, float d);
 
 		////////////////////////////////////////////////////////////
 		/// \brief Render a shape object on screen.

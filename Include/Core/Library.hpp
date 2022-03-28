@@ -19,6 +19,7 @@
 #include <Core/Graphics/RenderStyle.hpp>
 #include <Core/Graphics/Color.hpp>
 #include <Core/Graphics/ShapeProperties.hpp>
+#include <Core/Graphics/Texture.hpp>
 
 namespace Core
 {
@@ -106,6 +107,9 @@ namespace Core
 	void AddQuadraticBezier(const Float2& start, const Float2& end);
 	void EndShape(ShapeEnd style);
 	void Geometry(const Shape& shape);
+	void ImageMode(DrawMode mode);
+	void Image(const Texture& texture, float a, float b);
+	void Image(const Texture& texture, float a, float b, float c, float d);
 	void ResetTransform();
 	void Translate(float x, float y);
 	void Rotate(const Angle& rotation);
