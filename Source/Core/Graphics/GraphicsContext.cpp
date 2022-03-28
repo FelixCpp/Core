@@ -7,7 +7,7 @@
 // 
 
 #include <Core/Graphics/GraphicsContext.hpp>
-#include <Core/Graphics/Factories.hpp>
+#include <Core/Application/Factories.hpp>
 #include <Core/Window/Window.hpp>
 #include <Core/System/Error.hpp>
 

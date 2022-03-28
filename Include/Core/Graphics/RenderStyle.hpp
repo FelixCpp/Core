@@ -11,6 +11,9 @@
 #include <Core/Graphics/SolidColorBrush.hpp>
 #include <Core/Graphics/DrawMode.hpp>
 #include <Core/Graphics/StrokeStyle.hpp>
+#include <Core/Graphics/Transformation.hpp>
+
+#include <stack>
 
 ////////////////////////////////////////////////////////////
 /// Forward declaration
@@ -32,15 +35,16 @@ namespace Core
 		ID2D1Brush* ActiveFill		= nullptr;	///< The currently used filling brush
 		ID2D1Brush* ActiveStroke	= nullptr;	///< The currently used outlining brush
 
-		SolidColorBrush SolidFill	= {};		///< The solid fill brush
+		SolidColorBrush SolidFill	= {};	///< The solid fill brush
 		SolidColorBrush SolidStroke = {};	///< The solid outlining brush
 
-		DrawMode RectMode = Corner;	///< The draw mode to use for rectangles
-		DrawMode EllipseMode;		///< The draw mode to use for ellipsis
+		DrawMode RectMode		= Corner;	///< The draw mode to use for rectangles
+		DrawMode EllipseMode	= Center;	///< The draw mode to use for ellipsis
 		//DrawMode ImageMode;		///< The draw mode to use for image modes
 
 		float StrokeWeight = 1.0f;	///< The outline thickness
 
-		StrokeStyle StrokeStyle = {};	///< The stroke style to use when rendering
+		StrokeStyle					StrokeStyle = {};	///< The stroke style to use when rendering
+		std::stack<Transformation>	Transform	= {};	///< The transformation to apply to the render target
 	};
 }

@@ -20,11 +20,7 @@ namespace Core
 	RenderTarget::RenderTarget()
 	{
 		// push the initial rendering style
-		styles.push(RenderStyle());
-
-		// paint white by default.
-		//Fill(Color::White);
-		//Stroke(Color::White);
+		PushStyle();
 	}
 
 	////////////////////////////////////////////////////////////
@@ -82,8 +78,9 @@ namespace Core
 	////////////////////////////////////////////////////////////
 	void RenderTarget::Rect(float x1, float y1, float x2, float y2, float cornerX, float cornerY)
 	{
-		const RenderStyle& style = GetRenderStyle();
 		ID2D1RenderTarget& target = GetRenderTarget();
+		const RenderStyle& style = GetRenderStyle();
+		target.SetTransform(reinterpret_cast<const D2D1_MATRIX_3X2_F&>(GetTransform().GetTransform()));
 
 		D2D1_RECT_F rect = {};
 		switch(style.RectMode)
@@ -123,6 +120,7 @@ namespace Core
 	{
 		const RenderStyle& style = GetRenderStyle();
 		ID2D1RenderTarget& target = GetRenderTarget();
+		target.SetTransform(reinterpret_cast<const D2D1_MATRIX_3X2_F&>(GetTransform().GetTransform()));
 
 		D2D1_ELLIPSE ellipse = {};
 
@@ -178,11 +176,133 @@ namespace Core
 	////////////////////////////////////////////////////////////
 	void RenderTarget::Line(float x1, float y1, float x2, float y2)
 	{
+		ID2D1RenderTarget& target = GetRenderTarget();
 		const RenderStyle& style = GetRenderStyle();
+		target.SetTransform(reinterpret_cast<const D2D1_MATRIX_3X2_F&>(GetTransform().GetTransform()));
 
 		if (ID2D1Brush* brush = style.ActiveStroke)
 		{
-			GetRenderTarget().DrawLine(D2D1::Point2F(x1, y1), D2D1::Point2F(x2, y2), brush, style.StrokeWeight, style.StrokeStyle.GetStyleStroke());
+			target.DrawLine(D2D1::Point2F(x1, y1), D2D1::Point2F(x2, y2), brush, style.StrokeWeight, style.StrokeStyle.GetStyleStroke());
+		}
+	}
+
+	////////////////////////////////////////////////////////////
+	void RenderTarget::BeginShape()
+	{
+		geometry.Begin();
+	}
+
+	////////////////////////////////////////////////////////////
+	void RenderTarget::AddVertex(float x, float y)
+	{
+		geometry.AddVertex(x, y);
+	}
+
+	////////////////////////////////////////////////////////////
+	void RenderTarget::AddVertex(const Float2& point)
+	{
+		geometry.AddVertex(point);
+	}
+
+	////////////////////////////////////////////////////////////
+	void RenderTarget::AddBezier(float x1, float y1, float x2, float y2, float x3, float y3)
+	{
+		geometry.AddBezier(x1, y1, x2, y2, x3, y3);
+	}
+
+	////////////////////////////////////////////////////////////
+	void RenderTarget::AddBezier(const Float2& start, const Float2& center, const Float2& end)
+	{
+		geometry.AddBezier(start, center, end);
+	}
+
+	////////////////////////////////////////////////////////////
+	void RenderTarget::AddQuadraticBezier(float x1, float y1, float x2, float y2)
+	{
+		geometry.AddQuadraticBezier(x1, y1, x2, y2);
+	}
+
+	////////////////////////////////////////////////////////////
+	void RenderTarget::AddQuadraticBezier(const Float2& start, const Float2& end)
+	{
+		geometry.AddQuadraticBezier(start, end);
+	}
+
+	////////////////////////////////////////////////////////////
+	void RenderTarget::EndShape(ShapeEnd style)
+	{
+		geometry.End(style);
+		Geometry(geometry);
+	}
+
+	////////////////////////////////////////////////////////////
+	void RenderTarget::PushTransform(bool advance)
+	{
+		RenderStyle& style = GetRenderStyle();
+		style.Transform.push(advance && !style.Transform.empty() ? style.Transform.top() : Transformation());
+	}
+
+	////////////////////////////////////////////////////////////
+	void RenderTarget::PopTransform()
+	{
+		RenderStyle& style = GetRenderStyle();
+		if(style.Transform.size() > 1)
+		{
+			style.Transform.pop();
+		}
+	}
+
+	////////////////////////////////////////////////////////////
+	void RenderTarget::ResetTransform()
+	{
+		Transformation& transform = GetTransform();
+		transform.SetPosition(0.0f, 0.0f);
+		transform.SetRotation(Angle::Zero);
+		transform.SetScale(1.0f, 1.0f);
+	}
+
+	////////////////////////////////////////////////////////////
+	void RenderTarget::Translate(float x, float y)
+	{
+		GetTransform().Move(x, y);
+	}
+
+	////////////////////////////////////////////////////////////
+	void RenderTarget::Rotate(const Angle& rotation)
+	{
+		GetTransform().Rotate(rotation);
+	}
+
+	////////////////////////////////////////////////////////////
+	void RenderTarget::Scale(float factorX, float factorY)
+	{
+		GetTransform().Scale(factorX, factorY);
+	}
+
+	////////////////////////////////////////////////////////////
+	const Transformation& RenderTarget::GetTransform() const
+	{
+		return GetRenderStyle().Transform.top();
+	}
+
+	Transformation& RenderTarget::GetTransform()
+	{
+		return GetRenderStyle().Transform.top();
+	}
+
+	////////////////////////////////////////////////////////////
+	void RenderTarget::PushStyle()
+	{
+		styles.push(RenderStyle());
+		PushTransform(false);
+	}
+
+	////////////////////////////////////////////////////////////
+	void RenderTarget::PopStyle()
+	{
+		if(styles.size() > 1)
+		{
+			styles.pop();
 		}
 	}
 
@@ -193,6 +313,7 @@ namespace Core
 		{
 			ID2D1RenderTarget& target = GetRenderTarget();
 			const RenderStyle& style = GetRenderStyle();
+			target.SetTransform(reinterpret_cast<const D2D1_MATRIX_3X2_F&>(GetTransform().GetTransform()));
 
 			if (ID2D1Brush* brush = style.ActiveFill)
 			{

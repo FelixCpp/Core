@@ -18,6 +18,7 @@
 
 #include <Core/Graphics/RenderStyle.hpp>
 #include <Core/Graphics/Color.hpp>
+#include <Core/Graphics/ShapeProperties.hpp>
 
 namespace Core
 {
@@ -84,7 +85,7 @@ namespace Core
 	void NoStroke();
 	void StrokeWeight(float weight);
 	void RectMode(DrawMode mode);
-	void Rect(float x1, float y1, float x2, float y2, float cornerX, float cornerY);
+	void Rect(float x1, float y1, float x2, float y2, float cornerX = 0.0f, float cornerY = 0.0f);
 	void EllipseMode(DrawMode mode);
 	void Ellipse(float a, float b, float c, float d);
 	void Line(float x1, float y1, float x2, float y2);
@@ -96,7 +97,24 @@ namespace Core
 	void StrokeDashStyle(DashStyle style);
 	void StrokeDashOffset(float offset);
 	void StrokeDashes(const float* dashes, usize count);
+	void BeginShape();
+	void AddVertex(float x, float y);
+	void AddVertex(const Float2& point);
+	void AddBezier(float x1, float y1, float x2, float y2, float x3, float y3);
+	void AddBezier(const Float2& start, const Float2& center, const Float2& end);
+	void AddQuadraticBezier(float x1, float y1, float x2, float y2);
+	void AddQuadraticBezier(const Float2& start, const Float2& end);
+	void EndShape(ShapeEnd style);
 	void Geometry(const Shape& shape);
+	void ResetTransform();
+	void Translate(float x, float y);
+	void Rotate(const Angle& rotation);
+	void Scale(float factorX, float factorY);
+	const Transformation& GetTransform();
+	void PushStyle();
+	void PopStyle();
+	void PushTransform(bool advance = true);
+	void PopTransform();
 	RenderStyle& GetRenderStyle();
 	GraphicsContext& GetGraphics();
 

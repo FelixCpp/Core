@@ -9,6 +9,7 @@
 #pragma once
 
 #include <Core/System/Value2.hpp>
+#include <Core/Graphics/ShapeProperties.hpp>
 
 #include <memory>
 
@@ -94,11 +95,13 @@ namespace Core
 
 		////////////////////////////////////////////////////////////
 		/// \brief Stops listening on building commands.
-		/// 
+		///
+		/// \param style The style how to end the shape geometry.
+		///
 		///	\return The updated version of itself.
 		///
 		////////////////////////////////////////////////////////////
-		Shape& End();
+		Shape& End(ShapeEnd style);
 
 		////////////////////////////////////////////////////////////
 		/// \brief Tell whether the shape is currently being built

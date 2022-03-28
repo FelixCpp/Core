@@ -8,9 +8,24 @@
 
 #include <Core/Application/Application.hpp>
 #include <Core/Window/Dpi.hpp>
-#include <Core/Graphics/Factories.hpp>
+#include <Core/Application/Factories.hpp>
 
 #include <new>
+
+#define WIN32_LEAN_AND_MEAN
+#define NOMINMAX
+#include <Windows.h>
+
+////////////////////////////////////////////////////////////
+/// \brief Disables the exit-button of the console window.
+/// 
+////////////////////////////////////////////////////////////
+void DisableConsoleCloseButton()
+{
+	const HWND consoleWindow = GetConsoleWindow();
+	const HMENU consoleMenu = GetSystemMenu(consoleWindow, FALSE);
+	EnableMenuItem(consoleMenu, SC_CLOSE, MF_BYCOMMAND | MF_DISABLED | MF_GRAYED);
+}
 
 ////////////////////////////////////////////////////////////
 /// \brief Entry point
@@ -23,6 +38,10 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
 	{
 		return EXIT_FAILURE;
 	}
+
+	// avoid exiting the application through the application.
+	// since that leads to problems during the exit process.
+	DisableConsoleCloseButton();
 
 	// we don't really care about the configuration of the dpi scale
 	[[maybe_unused]] const bool success = Core::Dpi::ConfigureDpi();

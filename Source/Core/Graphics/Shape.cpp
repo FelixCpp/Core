@@ -8,7 +8,7 @@
 
 #include <Core/Graphics/Shape.hpp>
 #include <Core/System/Error.hpp>
-#include <Core/Graphics/Factories.hpp>
+#include <Core/Application/Factories.hpp>
 
 #define WIN32_LEAN_AND_MEAN
 #define NOMINMAX
@@ -151,7 +151,7 @@ namespace Core
 	}
 
 	////////////////////////////////////////////////////////////
-	Shape& Shape::End()
+	Shape& Shape::End(ShapeEnd style)
 	{
 		if(!isBuilding)
 		{
@@ -159,7 +159,7 @@ namespace Core
 			return *this;
 		}
 
-		impl->Sink->EndFigure(D2D1_FIGURE_END_CLOSED);
+		impl->Sink->EndFigure((D2D1_FIGURE_END)style);
 
 		const HRESULT success = impl->Sink->Close();
 		if(FAILED(success))

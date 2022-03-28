@@ -9,6 +9,7 @@
 #pragma once
 
 #include <Core/Graphics/RenderStyle.hpp>
+#include <Core/Graphics/Shape.hpp>
 
 #include <stack>
 
@@ -20,12 +21,6 @@ struct ID2D1RenderTarget;
 
 namespace Core
 {
-	////////////////////////////////////////////////////////////
-	/// Forward declaration
-	/// 
-	////////////////////////////////////////////////////////////
-	class Shape;
-
 	////////////////////////////////////////////////////////////
 	/// \brief Define base class for rendering commands.
 	///
@@ -140,6 +135,27 @@ namespace Core
 		////////////////////////////////////////////////////////////
 		void Line(float x1, float y1, float x2, float y2);
 
+		void BeginShape();
+		void AddVertex(float x, float y);
+		void AddVertex(const Float2& point);
+		void AddBezier(float x1, float y1, float x2, float y2, float x3, float y3);
+		void AddBezier(const Float2& start, const Float2& center, const Float2& end);
+		void AddQuadraticBezier(float x1, float y1, float x2, float y2);
+		void AddQuadraticBezier(const Float2& start, const Float2& end);
+		void EndShape(ShapeEnd style);
+
+		void PushTransform(bool advance);
+		void PopTransform();
+		void ResetTransform();
+		void Translate(float x, float y);
+		void Rotate(const Angle& rotation);
+		void Scale(float factorX, float factorY);
+		const Transformation& GetTransform() const;
+		Transformation& GetTransform();
+		
+		void PushStyle();
+		void PopStyle();
+
 		////////////////////////////////////////////////////////////
 		/// \brief Render a shape object on screen.
 		/// 
@@ -174,7 +190,8 @@ namespace Core
 		/// Member data
 		/// 
 		////////////////////////////////////////////////////////////
-		std::stack<RenderStyle> styles;	///< The rendering styles
+		std::stack<RenderStyle> styles;		///< The rendering styles
+		Shape					geometry;	///< Geometry to build and render
 
 	};
 

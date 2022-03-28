@@ -171,7 +171,7 @@
     <ClInclude Include="Include\Core\Window\MouseCursor.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="Include\Core\Graphics\Factories.hpp">
+    <ClInclude Include="Include\Core\Application\Factories.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="Include\Core\Graphics\GraphicsContext.hpp">
@@ -202,6 +202,12 @@
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="Include\Core\Graphics\Shape.hpp">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Core\Graphics\ShapeProperties.hpp">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Core\Graphics\Transformation.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>
@@ -248,7 +254,7 @@
     <ClCompile Include="Source\Core\Window\MouseCursor.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Core\Graphics\Factories.cpp">
+    <ClCompile Include="Source\Core\Application\Factories.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="Source\Core\Graphics\GraphicsContext.cpp">
@@ -267,6 +273,9 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="Source\Core\Graphics\Shape.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Core\Graphics\Transformation.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>

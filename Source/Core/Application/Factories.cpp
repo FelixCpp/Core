@@ -6,7 +6,7 @@
 // Copyright © 2022 Felix Busch. All rights reserved.
 //
 
-#include <Core/Graphics/Factories.hpp>
+#include <Core/Application/Factories.hpp>
 #include <Core/System/Error.hpp>
 
 #pragma comment(lib, "d2d1")

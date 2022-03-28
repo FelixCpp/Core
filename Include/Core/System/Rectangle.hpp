@@ -84,8 +84,8 @@ namespace Core
 	/// Types
 	/// 
 	////////////////////////////////////////////////////////////
-	using IntRect = Rectangle<int32_t>;
-	using FloatRect = Rectangle<float>;
+	using IntRect	= Rectangle<int32_t>;
+	using FloatRect	= Rectangle<float>;
 }
 
 #include <Core/System/Rectangle.inl>

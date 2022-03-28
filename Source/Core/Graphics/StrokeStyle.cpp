@@ -7,7 +7,7 @@
 // 
 
 #include <Core/Graphics/StrokeStyle.hpp>
-#include <Core/Graphics/Factories.hpp>
+#include <Core/Application/Factories.hpp>
 #include <Core/System/Error.hpp>
 
 #define WIN32_LEAN_AND_MEAN
