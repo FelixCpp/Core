@@ -14,9 +14,10 @@
 #define NOMINMAX
 #include <Windows.h>
 
-//#ifndef STB_IMAGE_IMPLEMENTATION
-//#define STB_IMAGE_IMPLEMENTATION
-//#endif
+#ifndef STBI_WINDOWS_UTF8
+#define STBI_WINDOWS_UTF8
+#endif
+
 #include <stb/stb_image.h>
 
 namespace Core
@@ -75,14 +76,19 @@ namespace Core
 		/// \brief Loads the cursor asset from disk
 		/// 
 		////////////////////////////////////////////////////////////
-		bool LoadFromFile(const std::string& filepath, const UInt2& hotspot)
+		bool LoadFromFile(const String& filepath, const UInt2& hotspot)
 		{
+			// convert wstring to cstring
+			std::string cFilepath;
+			cFilepath.resize(filepath.length());
+			stbi_convert_wchar_to_utf8(&cFilepath[0], cFilepath.length(), filepath.data());
+
 			// Load the pixel data
 			int width = 0, height = 0, colorChannels = 0;
-			stbi_uc* pixels = stbi_load(filepath.c_str(), &width, &height, &colorChannels, STBI_rgb_alpha);
+			stbi_uc* pixels = stbi_load(cFilepath.c_str(), &width, &height, &colorChannels, STBI_rgb_alpha);
 			if(pixels == nullptr)
 			{
-				Err() << "Failed to load cursor from \"" << filepath << "\"" << std::endl;
+				Err() << "Failed to load cursor from \"" << cFilepath << "\"" << std::endl;
 				return false;
 			}
 
@@ -242,7 +248,7 @@ namespace Core
 	}
 	
 	////////////////////////////////////////////////////////////
-	bool MouseCursor::LoadFromFile(const std::string& filepath, const UInt2& hotspot)
+	bool MouseCursor::LoadFromFile(const String& filepath, const UInt2& hotspot)
 	{
 		return impl->LoadFromFile(filepath, hotspot);
 	}

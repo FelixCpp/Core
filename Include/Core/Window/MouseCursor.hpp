@@ -10,6 +10,7 @@
 
 #include <Core/Window/Types.hpp>
 #include <Core/System/Value2.hpp>
+#include <Core/System/String.hpp>
 
 #include <memory>
 #include <string>
@@ -147,7 +148,7 @@ namespace Core
 		///			false otherwise.
 		/// 
 		////////////////////////////////////////////////////////////
-		bool LoadFromFile(const std::string& filepath, const UInt2& hotspot);
+		bool LoadFromFile(const String& filepath, const UInt2& hotspot);
 
 		////////////////////////////////////////////////////////////
 		/// \brief Loads the cursor from a pre-loaded system asset.

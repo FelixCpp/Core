@@ -59,6 +59,7 @@
     <ClInclude Include="Include\Core\Graphics\Shape.hpp" />
     <ClInclude Include="Include\Core\Graphics\ShapeProperties.hpp" />
     <ClInclude Include="Include\Core\Graphics\SolidColorBrush.hpp" />
+    <ClInclude Include="Include\Core\Graphics\State.hpp" />
     <ClInclude Include="Include\Core\Graphics\StrokeStyle.hpp" />
     <ClInclude Include="Include\Core\Graphics\StrokeStyleProperties.hpp" />
     <ClInclude Include="Include\Core\Graphics\Texture.hpp" />

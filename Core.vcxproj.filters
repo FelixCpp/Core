@@ -216,6 +216,9 @@
     <ClInclude Include="Include\Core\Window\WindowIcon.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="Include\Core\Graphics\State.hpp">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Core\Application\Sketch.cpp">
