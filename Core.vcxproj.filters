@@ -293,5 +293,8 @@
     <ClCompile Include="Source\Core\Window\WindowIcon.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Core\Graphics\Ease.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

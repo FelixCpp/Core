@@ -99,6 +99,7 @@
     <ClCompile Include="Source\Core\Application\Globals.cpp" />
     <ClCompile Include="Source\Core\Application\Sketch.cpp" />
     <ClCompile Include="Source\Core\Application\Factories.cpp" />
+    <ClCompile Include="Source\Core\Graphics\Ease.cpp" />
     <ClCompile Include="Source\Core\Graphics\GraphicsContext.cpp" />
     <ClCompile Include="Source\Core\Graphics\RenderTarget.cpp" />
     <ClCompile Include="Source\Core\Graphics\Shape.cpp" />
