@@ -66,7 +66,21 @@ namespace Core
 		Value2 Min(const Value2& other) const { return { std::min(X, other.X), std::min(Y, other.Y) }; }
 		Value2 Abs() const { return { std::abs(X), std::abs(Y) }; }
 		Value2 Neg() const { return { -std::abs(X), -std::abs(Y) }; }
-		Value2 Normalized() const { const T mag = 1 / Length(); return { X * mag, Y * mag }; }
+		Value2 Normalized() const { return Value2(*this).Normalize(); }
+		Value2& Normalize() { const T mag = (T)1 / Length(); X *= mag; Y *= mag; return *this; }
+		Value2 Limited(const T& limit) const { return Value2(*this).Limit(limit); }
+		Value2& SetLength(const T& length) { return Normalize() *= length; }
+
+		Value2& Limit(const T& limit)
+		{
+			if(LengthSq() > (limit * limit))
+			{
+				return SetLength(limit);
+			}
+
+			return *this;
+		}
+
 
 		////////////////////////////////////////////////////////////
 		/// Member data

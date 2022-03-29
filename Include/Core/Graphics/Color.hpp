@@ -78,7 +78,23 @@ namespace Core
 		u8 A; ///< The transparent component (alpha)
 
 	};
-	
+
+	constexpr Color operator + (const Color& lhs, const Color& rhs);
+	constexpr Color operator - (const Color& lhs, const Color& rhs);
+	constexpr Color operator / (const Color& lhs, const Color& rhs);
+	constexpr Color operator * (const Color& lhs, const Color& rhs);
+
+	constexpr Color& operator += (Color& lhs, const Color& rhs);
+	constexpr Color& operator -= (Color& lhs, const Color& rhs);
+	constexpr Color& operator /= (Color& lhs, const Color& rhs);
+	constexpr Color& operator *= (Color& lhs, const Color& rhs);
+
+	constexpr Color operator / (const Color& lhs, float value);
+	constexpr Color operator * (const Color& lhs, float value);
+
+	constexpr Color& operator /= (Color& lhs, float value);
+	constexpr Color& operator *= (Color& lhs, float value);
+
 }
 
 #include <Core/Graphics/Color.inl>

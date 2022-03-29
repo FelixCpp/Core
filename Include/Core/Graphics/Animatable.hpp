@@ -748,11 +748,24 @@ namespace Core
 		}
 
 		////////////////////////////////////////////////////////////
+		/// \brief Start at a given value by default.
+		/// 
+		////////////////////////////////////////////////////////////
+		explicit Animatable(const TValue& initialValue):
+			initialValue(initialValue),
+			destinationValue(initialValue),
+			currentValue(initialValue),
+			animating(false),
+			animation(nullptr)
+		{
+		}
+
+		////////////////////////////////////////////////////////////
 		/// \brief Start an animation to the retrieved value from
 		///		   \a function.
 		/// 
 		////////////////////////////////////////////////////////////
-		template<typename TAnimation, typename TFunction, typename TResult = std::invoke_result_t<TFunction>>
+		template<typename TAnimation, typename TFunction> requires std::is_same_v<std::invoke_result_t<TFunction>, TValue>
 		void WithAnimation(Animator<TAnimation> animator, const TFunction& function)
 		{
 			animation.reset(new AnimationContainer<TAnimation>(animator.Animation));

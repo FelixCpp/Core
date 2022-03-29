@@ -8,6 +8,8 @@
 
 #pragma once
 
+#include <algorithm>
+
 namespace Core
 {
 	////////////////////////////////////////////////////////////
@@ -26,6 +28,90 @@ namespace Core
 	{
 		return { R, G, B, opacity };
 	}
+
+	////////////////////////////////////////////////////////////
+	constexpr Color operator + (const Color& lhs, const Color& rhs)
+	{
+		return
+		{
+			(u8)std::clamp((int)lhs.R + (int)rhs.R, 0, 255),
+			(u8)std::clamp((int)lhs.G + (int)rhs.G, 0, 255),
+			(u8)std::clamp((int)lhs.B + (int)rhs.B, 0, 255),
+			(u8)std::clamp((int)lhs.A + (int)rhs.A, 0, 255),
+		};
+	}
+
+	////////////////////////////////////////////////////////////
+	constexpr Color operator - (const Color& lhs, const Color& rhs)
+	{
+		return
+		{
+			(u8)std::clamp((int)lhs.R - (int)rhs.R, 0, 255),
+			(u8)std::clamp((int)lhs.G - (int)rhs.G, 0, 255),
+			(u8)std::clamp((int)lhs.B - (int)rhs.B, 0, 255),
+			(u8)std::clamp((int)lhs.A - (int)rhs.A, 0, 255),
+		};
+	}
+
+	////////////////////////////////////////////////////////////
+	constexpr Color operator / (const Color& lhs, const Color& rhs)
+	{
+		return
+		{
+			(u8)std::clamp((int)lhs.R / (int)rhs.R, 0, 255),
+			(u8)std::clamp((int)lhs.G / (int)rhs.G, 0, 255),
+			(u8)std::clamp((int)lhs.B / (int)rhs.B, 0, 255),
+			(u8)std::clamp((int)lhs.A / (int)rhs.A, 0, 255),
+		};
+	}
+
+	////////////////////////////////////////////////////////////
+	constexpr Color operator * (const Color& lhs, const Color& rhs)
+	{
+		return
+		{
+			(u8)std::clamp((int)lhs.R * (int)rhs.R, 0, 255),
+			(u8)std::clamp((int)lhs.G * (int)rhs.G, 0, 255),
+			(u8)std::clamp((int)lhs.B * (int)rhs.B, 0, 255),
+			(u8)std::clamp((int)lhs.A * (int)rhs.A, 0, 255),
+		};
+	}
+
+	////////////////////////////////////////////////////////////
+	constexpr Color& operator += (Color& lhs, const Color& rhs) { return lhs = lhs + rhs; }
+	constexpr Color& operator -= (Color& lhs, const Color& rhs) { return lhs = lhs - rhs; }
+	constexpr Color& operator /= (Color& lhs, const Color& rhs) { return lhs = lhs / rhs; }
+	constexpr Color& operator *= (Color& lhs, const Color& rhs) { return lhs = lhs * rhs; }
+
+
+	////////////////////////////////////////////////////////////
+	constexpr Color operator / (const Color& lhs, float value)
+	{
+		return
+		{
+			(u8)std::clamp((i32)((float)lhs.R / value), 0, 255),
+			(u8)std::clamp((i32)((float)lhs.G / value), 0, 255),
+			(u8)std::clamp((i32)((float)lhs.B / value), 0, 255),
+			(u8)std::clamp((i32)((float)lhs.A / value), 0, 255),
+		};
+	}
+
+	////////////////////////////////////////////////////////////
+	constexpr Color operator * (const Color& lhs, float value)
+	{
+		return
+		{
+			(u8)std::clamp((i32)((float)lhs.R * value), 0, 255),
+			(u8)std::clamp((i32)((float)lhs.G * value), 0, 255),
+			(u8)std::clamp((i32)((float)lhs.B * value), 0, 255),
+			(u8)std::clamp((i32)((float)lhs.A * value), 0, 255),
+		};
+	}
+
+	////////////////////////////////////////////////////////////
+	constexpr Color& operator /= (Color& lhs, float value) { return lhs = lhs / value; }
+	constexpr Color& operator *= (Color& lhs, float value) { return lhs = lhs * value; }
+
 
 	////////////////////////////////////////////////////////////
 	/// Pre-defined color constants
