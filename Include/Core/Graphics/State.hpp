@@ -16,39 +16,46 @@
 
 namespace Core
 {
-	////////////////////////////////////////////////////////////
-	/// \brief Define container object for timed animations
-	///		   such as any easing-animation.
-	/// 
-	////////////////////////////////////////////////////////////
-	class TimedAnimation
+
+	class AnimationBase
 	{
 	public:
 
-		////////////////////////////////////////////////////////////
-		/// Pre-defined constants
-		/// 
-		////////////////////////////////////////////////////////////
-		inline static constexpr Time DefaultDuration = Seconds(1.0f);
+		constexpr AnimationBase():
+			forwards(true)
+		{}
 
-	public:
+		void OnReverse()
+		{
+			forwards = !forwards;
+		}
 
-		////////////////////////////////////////////////////////////
-		/// \brief Default constructor.
-		///
-		///	\param duration The duration it takes to finish the
-		///					animation
-		/// 
-		////////////////////////////////////////////////////////////
-		constexpr TimedAnimation(const Time& duration = DefaultDuration) :
-			duration(duration.ToSeconds<f32>()),
-			elapsedTime(0.0f)
+		void OnCycleDone()
 		{
 		}
 
-		void Reset()
+	protected:
+
+		bool forwards;
+
+	};
+
+	class LinearAnimation : public AnimationBase
+	{
+	public:
+
+		constexpr LinearAnimation(const Time& duration):
+			duration(duration.ToSeconds<f32>()),
+			elapsedTime(0.0f)
+		{}
+
+		template<typename TValue>
+		TValue Update(const TValue& initial, const TValue& destination, f32 deltaTime)
 		{
-			elapsedTime = 0.0f;
+			elapsedTime += deltaTime;
+			const f32 progress = std::clamp(elapsedTime / duration, 0.0f, 1.0f);
+			const f32 percentage = forwards ? progress : (1.0f - progress);
+			return initial * (1.0f - percentage) + destination * percentage;
 		}
 
 		bool IsDone() const
@@ -56,104 +63,205 @@ namespace Core
 			return elapsedTime >= duration;
 		}
 
-	protected:
-
-		////////////////////////////////////////////////////////////
-		/// Member data
-		/// 
-		////////////////////////////////////////////////////////////
-		f32 duration;		///< The duration in seconds
-		f32 elapsedTime;	///< The elapsed time since starting the animation in seconds
-
-	};
-
-	////////////////////////////////////////////////////////////
-	/// \brief Define linear animation class
-	/// 
-	////////////////////////////////////////////////////////////
-	class LinearAnimation : public TimedAnimation
-	{
-	public:
-
-		using TimedAnimation::TimedAnimation;
-
-		template<typename T>
-		constexpr T Update(const T& initial, const T& destination, f32 deltaTime)
+		void OnRepeat()
 		{
-			elapsedTime += deltaTime;
-			const f32 x = std::clamp(elapsedTime / duration, 0.0f, 1.0f);
-			return initial * (1.0f - x) + destination * x;
+			elapsedTime = 0.0f;
 		}
 		
+	private:
+		
+		f32 duration;
+		f32 elapsedTime;
+
 	};
 
-	////////////////////////////////////////////////////////////
-	/// \brief Define null animation class. This is not really
-	///		   an animation but a way to move to the destination
-	///		   value immediately.
-	/// 
-	////////////////////////////////////////////////////////////
-	class NullAnimation
+	template<typename TAnimation, typename TPredicate>
+	class RepeatAnimation
+	{
+	public:
+	
+		constexpr RepeatAnimation(TAnimation animation, TPredicate predicate):
+			animation(std::move(animation)), predicate(std::move(predicate)), repetitions(1)
+		{
+		}
+	
+		template<typename TValue>
+		TValue Update(const TValue& initial, const TValue& destination, f32 deltaTime)
+		{
+			return animation.Update(initial, destination, deltaTime);
+		}
+
+		void OnCycleDone()
+		{
+			OnRepeat();
+			animation.OnCycleDone();
+		}
+
+		void OnRepeat()
+		{
+			if (predicate(repetitions))
+			{
+				animation.OnRepeat();
+				++repetitions;
+			}
+		}
+
+		void OnReverse()
+		{
+			animation.OnReverse();
+		}
+
+		bool IsDone() const
+		{
+			return animation.IsDone();
+		}
+
+	private:
+	
+		TAnimation	animation;
+		TPredicate	predicate;
+		u32			repetitions;
+	
+	};
+
+	template<typename TAnimation, typename TPredicate>
+	class ReverseAnimation
 	{
 	public:
 
-		////////////////////////////////////////////////////////////
-		/// \brief Return the destination value immediately.
-		/// 
-		////////////////////////////////////////////////////////////
-		template<typename T>
-		constexpr T Update(const T& initial, const T& destination, f32 deltaTime)
-		{
-			return destination;
-		}
-
-		////////////////////////////////////////////////////////////
-		/// \brief Nothing to do here.
-		/// 
-		////////////////////////////////////////////////////////////
-		void Reset()
+		constexpr ReverseAnimation(TAnimation animation, TPredicate predicate) :
+			animation(std::move(animation)), predicate(std::move(predicate)), reversions(1)
 		{
 		}
 
-		////////////////////////////////////////////////////////////
-		/// \brief We're always done since we don't animate.
-		/// 
-		////////////////////////////////////////////////////////////
+		template<typename TValue>
+		TValue Update(const TValue& initial, const TValue& destination, f32 deltaTime)
+		{
+			return animation.Update(initial, destination, deltaTime);
+		}
+
+		void OnCycleDone()
+		{
+			OnReverse();
+			animation.OnCycleDone();
+		}
+
+		void OnRepeat()
+		{
+			animation.OnRepeat();
+		}
+
+		void OnReverse()
+		{
+			if (predicate(reversions))
+			{
+				animation.OnReverse();
+				++reversions;
+			}
+		}
+
 		bool IsDone() const
 		{
-			return true;
+			return animation.IsDone();
 		}
+
+	private:
+
+		TAnimation	animation;
+		TPredicate	predicate;
+		u32			reversions;
 
 	};
 
 	template<typename TAnimation>
-	class RepeatForeverAnimation
+	class DelayAnimation
 	{
 	public:
 
-		constexpr RepeatForeverAnimation(TAnimation animation):
-			animation(std::move(animation))
-		{}
-
-		template<typename T>
-		constexpr T Update(const T& initial, const T& destination, f32 deltaTime)
+		constexpr DelayAnimation(TAnimation animation, const Time& delay):
+			animation(std::move(animation)), delay(delay.ToSeconds<float>()), elapsedTime(0.0f)
 		{
-			if(animation.IsDone())
-			{
-				animation.Reset();
-			}
+		}
+
+		template<typename TValue>
+		TValue Update(const TValue& initial, const TValue& destination, f32 deltaTime)
+		{
+			elapsedTime += deltaTime;
+
+			if (elapsedTime < delay)
+				return initial;
 
 			return animation.Update(initial, destination, deltaTime);
 		}
 
-		constexpr bool IsDone() const
+		void OnCycleDone()
 		{
-			return false;
+			animation.OnCycleDone();
+		}
+
+		void OnRepeat()
+		{
+			animation.OnRepeat();
+		}
+
+		void OnReverse()
+		{
+			animation.OnReverse();
+		}
+
+		bool IsDone() const
+		{
+			return animation.IsDone();
 		}
 
 	private:
+
+		TAnimation	animation;
+		f32			delay;
+		f32			elapsedTime;
 		
-		TAnimation animation;
+	};
+
+	template<typename TAnimation>
+	class SpeedAnimation
+	{
+	public:
+
+		constexpr SpeedAnimation(TAnimation animation, f32 speed) :
+			animation(std::move(animation)), speed(speed)
+		{
+		}
+
+		template<typename TValue>
+		TValue Update(const TValue& initial, const TValue& destination, f32 deltaTime)
+		{
+			return animation.Update(initial, destination, deltaTime * speed);
+		}
+
+		void OnCycleDone()
+		{
+			animation.OnCycleDone();
+		}
+
+		void OnRepeat()
+		{
+			animation.OnRepeat();
+		}
+
+		void OnReverse()
+		{
+			animation.OnReverse();
+		}
+
+		bool IsDone() const
+		{
+			return animation.IsDone();
+		}
+
+	private:
+
+		TAnimation	animation;
+		f32			speed;
 
 	};
 
@@ -182,9 +290,38 @@ namespace Core
 		{
 		}
 
-		constexpr Animator<RepeatForeverAnimation<TAnimation>> RepeatForever() const
+		template<typename TPredicate>
+		constexpr auto Repeat(TPredicate predicate) const
 		{
-			return Animator<RepeatForeverAnimation<TAnimation>>(Animation);
+			return Animator<RepeatAnimation<TAnimation, TPredicate>>({ Animation, std::move(predicate) });
+		}
+
+		constexpr auto RepeatForever() const
+		{
+			static constexpr auto TruePredicate = [](u32 _) { return true; };
+			return Animator<RepeatAnimation<TAnimation, decltype(TruePredicate)>>({Animation, TruePredicate });
+		}
+
+		template<typename TPredicate>
+		constexpr auto Reverse(TPredicate predicate) const
+		{
+			return Animator<ReverseAnimation<TAnimation, TPredicate>>({ Animation, std::move(predicate) });
+		}
+
+		constexpr auto ReverseForever() const
+		{
+			static constexpr auto TruePredicate = [](u32 _) { return true; };
+			return Animator<ReverseAnimation<TAnimation, decltype(TruePredicate)>>({ Animation, TruePredicate });
+		}
+
+		constexpr auto Delay(const Time& delay) const
+		{
+			return Animator<DelayAnimation<TAnimation>>({ Animation, delay });
+		}
+
+		constexpr auto Speed(f32 speed) const
+		{
+			return Animator<SpeedAnimation<TAnimation>>({ Animation, speed });
 		}
 
 	public:
@@ -197,22 +334,9 @@ namespace Core
 
 	};
 
-	////////////////////////////////////////////////////////////
-	/// \brief Create linear-animation animator
-	/// 
-	////////////////////////////////////////////////////////////
-	constexpr Animator<LinearAnimation> Linear(const Time& duration = TimedAnimation::DefaultDuration)
+	constexpr auto Linear(const Time& duration)
 	{
 		return Animator<LinearAnimation>(duration);
-	}
-
-	////////////////////////////////////////////////////////////
-	/// \brief Create linear-animation animator
-	/// 
-	////////////////////////////////////////////////////////////
-	constexpr Animator<NullAnimation> Null()
-	{
-		return Animator<NullAnimation>({});
 	}
 
 	////////////////////////////////////////////////////////////
@@ -235,7 +359,9 @@ namespace Core
 
 			virtual ~AnimationWrapper() = default;
 			virtual TValue Update(const TValue& initial, const TValue& destination, f32 deltaTime) = 0;
+			virtual void OnCycleDone() = 0;
 			virtual bool IsDone() const = 0;
+
 
 		};
 		
@@ -251,6 +377,11 @@ namespace Core
 			virtual TValue Update(const TValue& initial, const TValue& destination, f32 deltaTime) override
 			{
 				return animation.Update(initial, destination, deltaTime);
+			}
+
+			virtual void OnCycleDone() override
+			{
+				animation.OnCycleDone();
 			}
 			
 			virtual bool IsDone() const override
@@ -282,6 +413,7 @@ namespace Core
 			initialValue(Value{}),
 			destinationValue(Value{}),
 			currentValue(Value{}),
+			animating(false),
 			animation(nullptr)
 		{
 		}
@@ -297,6 +429,7 @@ namespace Core
 			animation.reset(new AnimationContainer<TAnimation>(animator.Animation));
 			destinationValue = function();
 			initialValue = currentValue;
+			animating = true;
 		}
 
 		////////////////////////////////////////////////////////////
@@ -314,10 +447,22 @@ namespace Core
 		////////////////////////////////////////////////////////////
 		void Update(f32 deltaTime)
 		{
-			// update the current value
-			if (animation && !animation->IsDone())
+			if(animation && animating)
 			{
-				currentValue = animation->Update(initialValue, destinationValue, deltaTime);
+				if(animation->IsDone())
+				{
+					animation->OnCycleDone();
+				}
+
+				if(animation->IsDone())
+				{
+					animating = false;
+					currentValue = destinationValue;
+				}
+				else
+				{
+					currentValue = animation->Update(initialValue, destinationValue, deltaTime);
+				}
 			}
 		}
 
@@ -330,6 +475,7 @@ namespace Core
 		Value initialValue;
 		Value destinationValue;
 		Value currentValue;
+		bool  animating;
 
 		std::unique_ptr<AnimationWrapper> animation;
 
