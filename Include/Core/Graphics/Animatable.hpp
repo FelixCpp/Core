@@ -1,5 +1,5 @@
 ﻿// 
-// State.hpp
+// Animatable.hpp
 // Core
 // 
 // Created by Felix Busch on 28.03.2022.
@@ -23,7 +23,7 @@
 			return (easeFunctionName)(x);\
 		}\
 	};\
-	constexpr auto functionName(const Core::Time& duration = TimedAnimation::DefaultDuration) {\
+	inline auto functionName(const Core::Time& duration = TimedAnimation::DefaultDuration) {\
 		return Core::Animator<className>(duration);\
 	}
 	
@@ -92,21 +92,42 @@ namespace Core
 		virtual ~AnimationBase() = default;
 
 		////////////////////////////////////////////////////////////
-		/// \brief Reverses the direction.
-		/// 
-		////////////////////////////////////////////////////////////
-		void OnReverse()
-		{
-			forwards = !forwards;
-		}
-
-		////////////////////////////////////////////////////////////
 		/// \brief Declare method for any animations
 		///		   that don't do anything in here.
 		/// 
 		////////////////////////////////////////////////////////////
 		virtual void OnCycleDone()
 		{
+		}
+
+		////////////////////////////////////////////////////////////
+		/// \brief This method must reset the state of the animation
+		/// 
+		////////////////////////////////////////////////////////////
+		virtual void OnRepeat()
+		{
+		}
+
+		////////////////////////////////////////////////////////////
+		/// \brief Reverses the direction.
+		/// 
+		////////////////////////////////////////////////////////////
+		virtual void OnReverse()
+		{
+			forwards = !forwards;
+		}
+
+		////////////////////////////////////////////////////////////
+		/// \brief Get whether the animation is done or still
+		///		   animating.
+		///
+		///	\return True if the animation is animating, false
+		///			otherwise.
+		/// 
+		////////////////////////////////////////////////////////////
+		virtual bool IsDone() const
+		{
+			return true;
 		}
 
 	protected:
@@ -167,12 +188,23 @@ namespace Core
 		/// 
 		////////////////////////////////////////////////////////////
 		template<typename TValue>
-		TValue Update(const TValue& initial, const TValue& destination, f32 deltaTime)
+		TValue Update(const TValue& initial, const TValue& destination, const TValue& currentValue, f32 deltaTime)
 		{
 			elapsedTime += deltaTime;
 			const f32 progress = std::clamp(elapsedTime / duration, 0.0f, 1.0f);
 			const f32 percentage = GetPercentage(forwards ? progress : (1.0f - progress));
 			return initial * (1.0f - percentage) + destination * percentage;
+		}
+
+		////////////////////////////////////////////////////////////
+		/// \brief Resets the animation's state.
+		///
+		///	Reset the elapsed time back to zero.
+		/// 
+		////////////////////////////////////////////////////////////
+		virtual void OnRepeat() override
+		{
+			elapsedTime = 0.0f;
 		}
 
 		////////////////////////////////////////////////////////////
@@ -186,20 +218,9 @@ namespace Core
 		///			false otherwise.
 		/// 
 		////////////////////////////////////////////////////////////
-		bool IsDone() const
+		virtual bool IsDone() const override
 		{
 			return elapsedTime >= duration;
-		}
-
-		////////////////////////////////////////////////////////////
-		/// \brief Resets the animation's state.
-		///
-		///	Reset the elapsed time back to zero.
-		/// 
-		////////////////////////////////////////////////////////////
-		void OnRepeat()
-		{
-			elapsedTime = 0.0f;
 		}
 
 	protected:
@@ -225,192 +246,275 @@ namespace Core
 
 	};
 
-	template<typename TAnimation, typename TPredicate>
-	class RepeatAnimation
+	template<typename TAnimation>
+	class ForwardingAnimation : public AnimationBase
 	{
 	public:
-	
-		constexpr RepeatAnimation(TAnimation animation, TPredicate predicate):
-			animation(std::move(animation)), predicate(std::move(predicate)), repetitions(1)
-		{
-		}
-	
+
+		constexpr ForwardingAnimation(TAnimation animation):
+			animation(std::move(animation))
+		{}
+
 		template<typename TValue>
-		TValue Update(const TValue& initial, const TValue& destination, f32 deltaTime)
+		TValue Update(const TValue& initial, const TValue& destination, const TValue& currentValue, f32 deltaTime)
 		{
-			return animation.Update(initial, destination, deltaTime);
+			return animation.Update(initial, destination, currentValue, deltaTime);
 		}
 
-		void OnCycleDone()
+		virtual void OnCycleDone() override
 		{
-			OnRepeat();
 			animation.OnCycleDone();
 		}
 
-		void OnRepeat()
+		virtual void OnRepeat() override
 		{
-			if (predicate(repetitions))
-			{
-				animation.OnRepeat();
-				++repetitions;
-			}
+			animation.OnRepeat();
 		}
 
-		void OnReverse()
+		virtual void OnReverse() override
 		{
 			animation.OnReverse();
 		}
 
-		bool IsDone() const
+		virtual bool IsDone() const override
 		{
 			return animation.IsDone();
 		}
 
+	protected:
+
+		TAnimation animation;
+
+	};
+
+	////////////////////////////////////////////////////////////
+	/// \brief Define repeating animation.
+	///
+	///	The repeating animation repeats itself after finishing
+	///	and starts again.
+	/// 
+	////////////////////////////////////////////////////////////
+	template<typename TAnimation, typename TPredicate>
+	class RepeatAnimation final : public ForwardingAnimation<TAnimation>
+	{
+	public:
+
+		////////////////////////////////////////////////////////////
+		/// \brief Construct a repeating animation
+		/// 
+		////////////////////////////////////////////////////////////
+		constexpr RepeatAnimation(TAnimation animation, TPredicate predicate):
+			ForwardingAnimation<TAnimation>(std::move(animation)),
+			predicate(std::move(predicate)),
+			repetitions(1)
+		{
+		}
+
+		////////////////////////////////////////////////////////////
+		/// \brief Simply forward the output
+		/// 
+		////////////////////////////////////////////////////////////
+		template<typename TValue>
+		TValue Update(const TValue& initial, const TValue& destination, const TValue& currentValue, f32 deltaTime)
+		{
+			return this->animation.Update(initial, destination, currentValue, deltaTime);
+		}
+
+		////////////////////////////////////////////////////////////
+		/// \brief Repeat and notify the underlying animation
+		/// 
+		////////////////////////////////////////////////////////////
+		virtual void OnCycleDone() override
+		{
+			OnRepeat();
+			this->animation.OnCycleDone();
+		}
+
+		////////////////////////////////////////////////////////////
+		/// \brief Perform a repetition if needed
+		/// 
+		////////////////////////////////////////////////////////////
+		virtual void OnRepeat() override
+		{
+			if (predicate(repetitions))
+			{
+				this->animation.OnRepeat();
+				++repetitions;
+			}
+		}
+
 	private:
-	
-		TAnimation	animation;
+
+		////////////////////////////////////////////////////////////
+		/// Member data
+		/// 
+		////////////////////////////////////////////////////////////
 		TPredicate	predicate;
 		u32			repetitions;
 	
 	};
 
+	////////////////////////////////////////////////////////////
+	/// \brief Define reversing animation.
+	///
+	///	The reversing animation reverses itself but does not
+	///	start again automatically.
+	/// 
+	////////////////////////////////////////////////////////////
 	template<typename TAnimation, typename TPredicate>
-	class ReverseAnimation
+	class ReverseAnimation final : public ForwardingAnimation<TAnimation>
 	{
 	public:
 
+		////////////////////////////////////////////////////////////
+		/// \brief Construct a reversing animation
+		/// 
+		////////////////////////////////////////////////////////////
 		constexpr ReverseAnimation(TAnimation animation, TPredicate predicate) :
-			animation(std::move(animation)), predicate(std::move(predicate)), reversions(1)
+			ForwardingAnimation<TAnimation>(std::move(animation)),
+			predicate(std::move(predicate)),
+			reversions(0)
 		{
 		}
 
+		////////////////////////////////////////////////////////////
+		/// \brief Simply forward the output
+		/// 
+		////////////////////////////////////////////////////////////
 		template<typename TValue>
-		TValue Update(const TValue& initial, const TValue& destination, f32 deltaTime)
+		TValue Update(const TValue& initial, const TValue& destination, const TValue& currentValue, f32 deltaTime)
 		{
-			return animation.Update(initial, destination, deltaTime);
+			return this->animation.Update(initial, destination, currentValue, deltaTime);
 		}
 
-		void OnCycleDone()
+		////////////////////////////////////////////////////////////
+		/// \brief Repeat and notify the underlying animation
+		/// 
+		////////////////////////////////////////////////////////////
+		virtual void OnCycleDone() override
 		{
 			OnReverse();
-			animation.OnCycleDone();
+			this->animation.OnCycleDone();
 		}
 
-		void OnRepeat()
-		{
-			animation.OnRepeat();
-		}
-
-		void OnReverse()
+		////////////////////////////////////////////////////////////
+		/// \brief Perform a repetition if needed
+		/// 
+		////////////////////////////////////////////////////////////
+		virtual void OnReverse() override
 		{
 			if (predicate(reversions))
 			{
-				animation.OnReverse();
+				this->animation.OnReverse();
 				++reversions;
 			}
 		}
 
-		bool IsDone() const
-		{
-			return animation.IsDone();
-		}
-
 	private:
 
-		TAnimation	animation;
+		////////////////////////////////////////////////////////////
+		/// Member data
+		/// 
+		////////////////////////////////////////////////////////////
 		TPredicate	predicate;
 		u32			reversions;
 
 	};
 
+	////////////////////////////////////////////////////////////
+	/// \brief Define delayed animation that waits a specified
+	///		   number of seconds before starting the actual
+	///		   animation.
+	/// 
+	////////////////////////////////////////////////////////////
 	template<typename TAnimation>
-	class DelayAnimation
+	class DelayAnimation final : public ForwardingAnimation<TAnimation>
 	{
 	public:
 
+		////////////////////////////////////////////////////////////
+		/// \brief Construct an delayed animation object.
+		/// 
+		////////////////////////////////////////////////////////////
 		constexpr DelayAnimation(TAnimation animation, const Time& delay):
-			animation(std::move(animation)), delay(delay.ToSeconds<float>()), elapsedTime(0.0f)
+			ForwardingAnimation<TAnimation>(std::move(animation)),
+			delay(delay.ToSeconds<float>()),
+			elapsedTime(0.0f)
 		{
 		}
 
+		////////////////////////////////////////////////////////////
+		/// \brief Wait as long as the elapsed time is less
+		///		   than the waiting duration.
+		/// 
+		////////////////////////////////////////////////////////////
 		template<typename TValue>
-		TValue Update(const TValue& initial, const TValue& destination, f32 deltaTime)
+		TValue Update(const TValue& initial, const TValue& destination, const TValue& currentValue, f32 deltaTime)
 		{
 			elapsedTime += deltaTime;
 
 			if (elapsedTime < delay)
 				return initial;
 
-			return animation.Update(initial, destination, deltaTime);
+			return this->animation.Update(initial, destination, currentValue, deltaTime);
 		}
 
-		void OnCycleDone()
+		////////////////////////////////////////////////////////////
+		/// \brief Make sure to tell the world we're not done if
+		///		   the clock has not ticked long enough yet.
+		/// 
+		////////////////////////////////////////////////////////////
+		virtual bool IsDone() const override
 		{
-			animation.OnCycleDone();
-		}
-
-		void OnRepeat()
-		{
-			animation.OnRepeat();
-		}
-
-		void OnReverse()
-		{
-			animation.OnReverse();
-		}
-
-		bool IsDone() const
-		{
-			return animation.IsDone();
+			return elapsedTime >= delay && this->animation.IsDone();
 		}
 
 	private:
 
-		TAnimation	animation;
+		////////////////////////////////////////////////////////////
+		/// Member data
+		/// 
+		////////////////////////////////////////////////////////////
 		f32			delay;
 		f32			elapsedTime;
 		
 	};
 
+	////////////////////////////////////////////////////////////
+	/// \brief Define speed animation that controls the speed
+	///		   of the animation.
+	/// 
+	////////////////////////////////////////////////////////////
 	template<typename TAnimation>
-	class SpeedAnimation
+	class SpeedAnimation final : public ForwardingAnimation<TAnimation>
 	{
 	public:
-
+		////////////////////////////////////////////////////////////
+		/// \brief Construct a speeding animation
+		/// 
+		////////////////////////////////////////////////////////////
 		constexpr SpeedAnimation(TAnimation animation, f32 speed) :
-			animation(std::move(animation)), speed(speed)
+			ForwardingAnimation<TAnimation>(std::move(animation)), speed(speed)
 		{
 		}
 
+		////////////////////////////////////////////////////////////
+		/// \brief Forward the value but multiply the \a deltaTime
+		///		   by the given speed factor.
+		/// 
+		////////////////////////////////////////////////////////////
 		template<typename TValue>
-		TValue Update(const TValue& initial, const TValue& destination, f32 deltaTime)
+		TValue Update(const TValue& initial, const TValue& destination, const TValue& currentValue, f32 deltaTime)
 		{
-			return animation.Update(initial, destination, deltaTime * speed);
+			return this->animation.Update(initial, destination, currentValue, deltaTime * speed);
 		}
-
-		void OnCycleDone()
-		{
-			animation.OnCycleDone();
-		}
-
-		void OnRepeat()
-		{
-			animation.OnRepeat();
-		}
-
-		void OnReverse()
-		{
-			animation.OnReverse();
-		}
-
-		bool IsDone() const
-		{
-			return animation.IsDone();
-		}
-
+		
 	private:
 
-		TAnimation	animation;
+		////////////////////////////////////////////////////////////
+		/// Member data
+		/// 
+		////////////////////////////////////////////////////////////
 		f32			speed;
 
 	};
@@ -452,10 +556,22 @@ namespace Core
 			return Animator<RepeatAnimation<TAnimation, decltype(TruePredicate)>>({Animation, TruePredicate });
 		}
 
+		constexpr auto RepeatFor(u32 repetitionCount) const
+		{
+			auto comparerPredicate = [=](u32 repetitions) { return repetitions < repetitionCount; };
+			return Animator<RepeatAnimation<TAnimation, decltype(comparerPredicate)>>({ Animation, comparerPredicate });
+		}
+
 		template<typename TPredicate>
 		constexpr auto Reverse(TPredicate predicate) const
 		{
 			return Animator<ReverseAnimation<TAnimation, TPredicate>>({ Animation, std::move(predicate) });
+		}
+
+		constexpr auto ReverseFor(u32 reversionCount) const
+		{
+			auto comparerPredicate = [=](u32 reversions) { return reversions < reversionCount; };
+			return Animator<ReverseAnimation<TAnimation, decltype(comparerPredicate)>>({ Animation, comparerPredicate });
 		}
 
 		constexpr auto ReverseForever() const
@@ -521,6 +637,39 @@ namespace Core
 	CORE_DECLARE_ANIMATION(EaseInOutBounceAnimation, EaseInOutBounce, Ease::InOutBounce);
 
 	////////////////////////////////////////////////////////////
+	/// \brief The NullAnimation does not animate to
+	///		   the destination value. Is simply returns it
+	///		   immediately.
+	/// 
+	////////////////////////////////////////////////////////////
+	class NullAnimation final : public AnimationBase
+	{
+	public:
+
+		////////////////////////////////////////////////////////////
+		/// \brief Use base constructor.
+		/// 
+		////////////////////////////////////////////////////////////
+		using AnimationBase::AnimationBase;
+
+		////////////////////////////////////////////////////////////
+		/// \brief Skip any kind of animation and just be there.
+		/// 
+		////////////////////////////////////////////////////////////
+		template<typename TValue>
+		TValue Update(const TValue& initial, const TValue& destination, const TValue& currentValue, f32 deltaTime)
+		{
+			return destination;
+		}
+
+	};
+	
+	inline Animator<NullAnimation> Null()
+	{
+		return Animator<NullAnimation>({});
+	}
+
+	////////////////////////////////////////////////////////////
 	/// \brief Define animatable value wrapper.
 	/// 
 	////////////////////////////////////////////////////////////
@@ -539,10 +688,9 @@ namespace Core
 		public:
 
 			virtual ~AnimationWrapper() = default;
-			virtual TValue Update(const TValue& initial, const TValue& destination, f32 deltaTime) = 0;
+			virtual TValue Update(const TValue& initial, const TValue& destination, const TValue& currentValue, f32 deltaTime) = 0;
 			virtual void OnCycleDone() = 0;
 			virtual bool IsDone() const = 0;
-
 
 		};
 		
@@ -555,9 +703,9 @@ namespace Core
 				animation(std::move(animation))
 			{}
 
-			virtual TValue Update(const TValue& initial, const TValue& destination, f32 deltaTime) override
+			virtual TValue Update(const TValue& initial, const TValue& destination, const TValue& currentValue, f32 deltaTime) override
 			{
-				return animation.Update(initial, destination, deltaTime);
+				return animation.Update(initial, destination, currentValue, deltaTime);
 			}
 
 			virtual void OnCycleDone() override
@@ -584,7 +732,7 @@ namespace Core
 		/// Type definitions.
 		/// 
 		////////////////////////////////////////////////////////////
-		using Value			= TValue;
+		using Value	= TValue;
 
 		////////////////////////////////////////////////////////////
 		/// \brief Default constructor.
@@ -630,6 +778,8 @@ namespace Core
 		{
 			if(animation && animating)
 			{
+				currentValue = animation->Update(initialValue, destinationValue, currentValue, deltaTime);
+
 				if(animation->IsDone())
 				{
 					animation->OnCycleDone();
@@ -638,11 +788,6 @@ namespace Core
 				if(animation->IsDone())
 				{
 					animating = false;
-					currentValue = destinationValue;
-				}
-				else
-				{
-					currentValue = animation->Update(initialValue, destinationValue, deltaTime);
 				}
 			}
 		}

@@ -6,7 +6,7 @@
 // Copyright © 2022 Felix Busch. All rights reserved.
 // 
 
-#include <Core/Graphics/State.hpp>
+#include <Core/Graphics/Animatable.hpp>
 
 #include <cmath>
 #include <numbers>

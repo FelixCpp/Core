@@ -216,7 +216,7 @@
     <ClInclude Include="Include\Core\Window\WindowIcon.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="Include\Core\Graphics\State.hpp">
+    <ClInclude Include="Include\Core\Graphics\Animatable.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>

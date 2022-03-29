@@ -99,7 +99,7 @@ namespace Core
 	{
 		if(needsUpdate)
 		{
-			const float rotation = this->rotation.ToRadians();
+			const float rotation = -this->rotation.ToRadians();
 			const float cosine = std::cos(rotation);
 			const float sine = std::sin(rotation);
 			const float sxc = scale.X * cosine;
