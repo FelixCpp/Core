@@ -604,37 +604,37 @@ namespace Core
 	/// \brief Define easing animations
 	/// 
 	////////////////////////////////////////////////////////////
-	CORE_DECLARE_ANIMATION(LinearAnimation, Linear, Ease::Linear);
-	CORE_DECLARE_ANIMATION(EaseInSineAnimation, EaseInSine, Ease::InSine);
-	CORE_DECLARE_ANIMATION(EaseOutSineAnimation, EaseOutSine, Ease::OutSine);
-	CORE_DECLARE_ANIMATION(EaseInOutSineAnimation, EaseInOutSine, Ease::InOutSine);
-	CORE_DECLARE_ANIMATION(EaseInCubicAnimation, EaseInCubic, Ease::InCubic);
-	CORE_DECLARE_ANIMATION(EaseOutCubicAnimation, EaseOutCubic, Ease::OutCubic);
-	CORE_DECLARE_ANIMATION(EaseInOutCubicAnimation, EaseInOutCubic, Ease::InOutCubic);
-	CORE_DECLARE_ANIMATION(EaseInQuintAnimation, EaseInQuint, Ease::InQuint);
-	CORE_DECLARE_ANIMATION(EaseOutQuintAnimation, EaseOutQuint, Ease::OutQuint);
-	CORE_DECLARE_ANIMATION(EaseInOutQuintAnimation, EaseInOutQuint, Ease::InOutQuint);
-	CORE_DECLARE_ANIMATION(EaseInCircAnimation, EaseInCirc, Ease::InCirc);
-	CORE_DECLARE_ANIMATION(EaseOutCircAnimation, EaseOutCirc, Ease::OutCirc);
-	CORE_DECLARE_ANIMATION(EaseInOutCircAnimation, EaseInOutCirc, Ease::InOutCirc);
-	CORE_DECLARE_ANIMATION(EaseInElasticAnimation, EaseInElastic, Ease::InElastic);
-	CORE_DECLARE_ANIMATION(EaseOutElasticAnimation, EaseOutElastic, Ease::OutElastic);
-	CORE_DECLARE_ANIMATION(EaseInOutElasticAnimation, EaseInOutElastic, Ease::InOutElastic);
-	CORE_DECLARE_ANIMATION(EaseInQuadAnimation, EaseInQuad, Ease::InQuad);
-	CORE_DECLARE_ANIMATION(EaseOutQuadAnimation, EaseOutQuad, Ease::OutQuad);
-	CORE_DECLARE_ANIMATION(EaseInOutQuadAnimation, EaseInOutQuad, Ease::InOutQuad);
-	CORE_DECLARE_ANIMATION(EaseInQuartAnimation, EaseInQuart, Ease::InQuart);
-	CORE_DECLARE_ANIMATION(EaseOutQuartAnimation, EaseOutQuart, Ease::OutQuart);
-	CORE_DECLARE_ANIMATION(EaseInOutQuartAnimation, EaseInOutQuart, Ease::InOutQuart);
-	CORE_DECLARE_ANIMATION(EaseInExpoAnimation, EaseInExpo, Ease::InExpo);
-	CORE_DECLARE_ANIMATION(EaseOutExpoAnimation, EaseOutExpo, Ease::OutExpo);
-	CORE_DECLARE_ANIMATION(EaseInOutExpoAnimation, EaseInOutExpo, Ease::InOutExpo);
-	CORE_DECLARE_ANIMATION(EaseInBackAnimation, EaseInBack, Ease::InBack);
-	CORE_DECLARE_ANIMATION(EaseOutBackAnimation, EaseOutBack, Ease::OutBack);
-	CORE_DECLARE_ANIMATION(EaseInOutBackAnimation, EaseInOutBack, Ease::InOutBack);
-	CORE_DECLARE_ANIMATION(EaseInBounceAnimation, EaseInBounce, Ease::InBounce);
-	CORE_DECLARE_ANIMATION(EaseOutBounceAnimation, EaseOutBounce, Ease::OutBounce);
-	CORE_DECLARE_ANIMATION(EaseInOutBounceAnimation, EaseInOutBounce, Ease::InOutBounce);
+	CORE_DECLARE_ANIMATION(LinearAnimation, Linear, Ease::Linear)
+	CORE_DECLARE_ANIMATION(EaseInSineAnimation, EaseInSine, Ease::InSine)
+	CORE_DECLARE_ANIMATION(EaseOutSineAnimation, EaseOutSine, Ease::OutSine)
+	CORE_DECLARE_ANIMATION(EaseInOutSineAnimation, EaseInOutSine, Ease::InOutSine)
+	CORE_DECLARE_ANIMATION(EaseInCubicAnimation, EaseInCubic, Ease::InCubic)
+	CORE_DECLARE_ANIMATION(EaseOutCubicAnimation, EaseOutCubic, Ease::OutCubic)
+	CORE_DECLARE_ANIMATION(EaseInOutCubicAnimation, EaseInOutCubic, Ease::InOutCubic)
+	CORE_DECLARE_ANIMATION(EaseInQuintAnimation, EaseInQuint, Ease::InQuint)
+	CORE_DECLARE_ANIMATION(EaseOutQuintAnimation, EaseOutQuint, Ease::OutQuint)
+	CORE_DECLARE_ANIMATION(EaseInOutQuintAnimation, EaseInOutQuint, Ease::InOutQuint)
+	CORE_DECLARE_ANIMATION(EaseInCircAnimation, EaseInCirc, Ease::InCirc)
+	CORE_DECLARE_ANIMATION(EaseOutCircAnimation, EaseOutCirc, Ease::OutCirc)
+	CORE_DECLARE_ANIMATION(EaseInOutCircAnimation, EaseInOutCirc, Ease::InOutCirc)
+	CORE_DECLARE_ANIMATION(EaseInElasticAnimation, EaseInElastic, Ease::InElastic)
+	CORE_DECLARE_ANIMATION(EaseOutElasticAnimation, EaseOutElastic, Ease::OutElastic)
+	CORE_DECLARE_ANIMATION(EaseInOutElasticAnimation, EaseInOutElastic, Ease::InOutElastic)
+	CORE_DECLARE_ANIMATION(EaseInQuadAnimation, EaseInQuad, Ease::InQuad)
+	CORE_DECLARE_ANIMATION(EaseOutQuadAnimation, EaseOutQuad, Ease::OutQuad)
+	CORE_DECLARE_ANIMATION(EaseInOutQuadAnimation, EaseInOutQuad, Ease::InOutQuad)
+	CORE_DECLARE_ANIMATION(EaseInQuartAnimation, EaseInQuart, Ease::InQuart)
+	CORE_DECLARE_ANIMATION(EaseOutQuartAnimation, EaseOutQuart, Ease::OutQuart)
+	CORE_DECLARE_ANIMATION(EaseInOutQuartAnimation, EaseInOutQuart, Ease::InOutQuart)
+	CORE_DECLARE_ANIMATION(EaseInExpoAnimation, EaseInExpo, Ease::InExpo)
+	CORE_DECLARE_ANIMATION(EaseOutExpoAnimation, EaseOutExpo, Ease::OutExpo)
+	CORE_DECLARE_ANIMATION(EaseInOutExpoAnimation, EaseInOutExpo, Ease::InOutExpo)
+	CORE_DECLARE_ANIMATION(EaseInBackAnimation, EaseInBack, Ease::InBack)
+	CORE_DECLARE_ANIMATION(EaseOutBackAnimation, EaseOutBack, Ease::OutBack)
+	CORE_DECLARE_ANIMATION(EaseInOutBackAnimation, EaseInOutBack, Ease::InOutBack)
+	CORE_DECLARE_ANIMATION(EaseInBounceAnimation, EaseInBounce, Ease::InBounce)
+	CORE_DECLARE_ANIMATION(EaseOutBounceAnimation, EaseOutBounce, Ease::OutBounce)
+	CORE_DECLARE_ANIMATION(EaseInOutBounceAnimation, EaseInOutBounce, Ease::InOutBounce)
 
 	////////////////////////////////////////////////////////////
 	/// \brief The NullAnimation does not animate to

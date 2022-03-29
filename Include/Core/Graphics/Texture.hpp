@@ -8,11 +8,11 @@
 
 #pragma once
 
-#include <Core/System/String.hpp>
 #include <Core/System/Types.hpp>
 #include <Core/System/Value2.hpp>
 
 #include <memory>
+#include <filesystem>
 
 ////////////////////////////////////////////////////////////
 /// Forward declaration
@@ -54,7 +54,7 @@ namespace Core
 		/// \brief Load the texture from a file.
 		/// 
 		////////////////////////////////////////////////////////////
-		bool LoadFromFile(const String& filepath);
+		bool LoadFromFile(const std::filesystem::path& filepath);
 
 		////////////////////////////////////////////////////////////
 		/// \brief Copy a part of the texture into a new resource.

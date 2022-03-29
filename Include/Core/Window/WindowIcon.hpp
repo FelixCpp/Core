@@ -9,9 +9,9 @@
 #pragma once
 
 #include <Core/Window/Types.hpp>
-#include <Core/System/String.hpp>
 
 #include <memory>
+#include <filesystem>
 
 namespace Core
 {
@@ -105,7 +105,7 @@ namespace Core
 		///			false otherwise.
 		/// 
 		////////////////////////////////////////////////////////////
-		bool LoadFromFile(const String& filepath);
+		bool LoadFromFile(const std::filesystem::path& filepath);
 
 		////////////////////////////////////////////////////////////
 		/// \brief Loads the icon from pre-defined system assets.

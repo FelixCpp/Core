@@ -43,7 +43,7 @@ namespace Core
 	}
 
 	////////////////////////////////////////////////////////////
-	bool Texture::LoadFromFile(const String& filepath)
+	bool Texture::LoadFromFile(const std::filesystem::path& filepath)
 	{
 		using Microsoft::WRL::ComPtr;
 
@@ -59,11 +59,10 @@ namespace Core
 		}
 
 		// 1. Create an IWICBitmapDecoder by using the IWICImagingFactory::CreateDecoderFromFilename method.
-		HRESULT success = imagingFactory->CreateDecoderFromFilename(filepath.c_str(), nullptr, GENERIC_READ, WICDecodeMetadataCacheOnLoad, &pDecoder);
+		HRESULT success = imagingFactory->CreateDecoderFromFilename(filepath.wstring().c_str(), nullptr, GENERIC_READ, WICDecodeMetadataCacheOnLoad, &pDecoder);
 		if(FAILED(success))
 		{
-			const std::string cFilepath(filepath.begin(), filepath.end());
-			Err() << "Failed to create an image decoder from filename: \"" << cFilepath << "\"" << std::endl;
+			Err() << "Failed to create an image decoder from filename: \"" << filepath.string() << "\"" << std::endl;
 			return false;
 		}
 

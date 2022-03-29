@@ -14,14 +14,6 @@
 #define NOMINMAX
 #include <Windows.h>
 
-//#ifndef STB_IMAGE_IMPLEMENTATION
-//#define STB_IMAGE_IMPLEMENTATION
-//#endif
-////
-#ifndef STBI_WINDOWS_UTF8
-#define STBI_WINDOWS_UTF8
-#endif
-
 #include <stb/stb_image.h>
 #include <vector>
 
@@ -85,23 +77,18 @@ namespace Core
 		///			false otherwise.
 		/// 
 		////////////////////////////////////////////////////////////
-		bool LoadFromFile(const String& filepath)
+		bool LoadFromFile(const std::filesystem::path& filepath)
 		{
-			// convert wstring to cstring
-			std::string cFilepath;
-			cFilepath.resize(filepath.length());
-			stbi_convert_wchar_to_utf8(&cFilepath[0], cFilepath.length(), filepath.data());
-
 			Release();
 
 			// load the pixel data
 			int width = 0, height = 0, colorChannels = 0;
-			stbi_uc* pixels = stbi_load(cFilepath.c_str(), &width, &height, &colorChannels, STBI_rgb_alpha);
+			stbi_uc* pixels = stbi_load(filepath.string().c_str(), &width, &height, &colorChannels, STBI_rgb_alpha);
 
 			// validate success
 			if(pixels == nullptr)
 			{
-				Err() << "Failed to load the pixel data from \"" << cFilepath << "\"" << std::endl;
+				Err() << "Failed to load the pixel data from \"" << filepath.string()  << "\"" << std::endl;
 				return false;
 			}
 
@@ -207,7 +194,7 @@ namespace Core
 	}
 
 	////////////////////////////////////////////////////////////
-	bool WindowIcon::LoadFromFile(const String& filepath)
+	bool WindowIcon::LoadFromFile(const std::filesystem::path& filepath)
 	{
 		return impl->LoadFromFile(filepath);
 	}
