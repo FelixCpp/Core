@@ -138,6 +138,8 @@ namespace Core
 		////////////////////////////////////////////////////////////
 		void Line(float x1, float y1, float x2, float y2);
 
+		void ShapeFillMode(Shape::FillMode mode);
+		void ShapeSegmentFlags(Shape::PathSegment flags);
 		void BeginShape();
 		void AddVertex(float x, float y);
 		void AddVertex(const Float2& point);
@@ -184,6 +186,18 @@ namespace Core
 		////////////////////////////////////////////////////////////
 		RenderStyle& GetRenderStyle();
 
+		////////////////////////////////////////////////////////////
+		/// \brief Get the underlying shape object as pure reference.
+		/// 
+		////////////////////////////////////////////////////////////
+		Shape& GetGeometry();
+
+		////////////////////////////////////////////////////////////
+		/// \brief Get the underlying shape object as const reference.
+		/// 
+		////////////////////////////////////////////////////////////
+		const Shape& GetGeometry() const;
+		
 		////////////////////////////////////////////////////////////
 		/// \brief Abstract method to receive a Direct2D render
 		///		   target.

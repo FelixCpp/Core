@@ -188,6 +188,18 @@ namespace Core
 	}
 
 	////////////////////////////////////////////////////////////
+	void RenderTarget::ShapeFillMode(Shape::FillMode mode)
+	{
+		geometry.SetFillMode(mode);
+	}
+
+	////////////////////////////////////////////////////////////
+	void RenderTarget::ShapeSegmentFlags(Shape::PathSegment flags)
+	{
+		geometry.SetSegmentFlags(flags);
+	}
+
+	////////////////////////////////////////////////////////////
 	void RenderTarget::BeginShape()
 	{
 		geometry.Begin();
@@ -233,7 +245,11 @@ namespace Core
 	void RenderTarget::EndShape(ShapeEnd style)
 	{
 		geometry.End(style);
-		Geometry(geometry);
+
+		if (geometry.IsRenderable())
+		{
+			Geometry(geometry);
+		}
 	}
 
 	////////////////////////////////////////////////////////////
@@ -409,5 +425,17 @@ namespace Core
 	RenderStyle& RenderTarget::GetRenderStyle()
 	{
 		return styles.top();
+	}
+
+	////////////////////////////////////////////////////////////
+	Shape& RenderTarget::GetGeometry()
+	{
+		return geometry;
+	}
+
+	////////////////////////////////////////////////////////////
+	const Shape& RenderTarget::GetGeometry() const
+	{
+		return geometry;
 	}
 }

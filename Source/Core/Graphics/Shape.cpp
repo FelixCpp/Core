@@ -31,15 +31,54 @@ namespace Core
 		////////////////////////////////////////////////////////////
 		Microsoft::WRL::ComPtr<ID2D1GeometrySink>	Sink		= nullptr;
 		Microsoft::WRL::ComPtr<ID2D1PathGeometry>	Geometry	= nullptr;
-		bool										First		= false;
-
+		
 	};
 
 	////////////////////////////////////////////////////////////
 	Shape::Shape():
 		impl(std::make_shared<Impl>()),
+		fillMode(FillMode::Alternate),
+		segmentFlags(PathSegment::None),
 		isBuilding(false)
 	{
+	}
+
+	////////////////////////////////////////////////////////////
+	Shape& Shape::SetSegmentFlags(PathSegment flags)
+	{
+		segmentFlags = flags;
+
+		if(impl->Sink != nullptr)
+		{
+			impl->Sink->SetSegmentFlags((D2D1_PATH_SEGMENT)flags);
+		}
+
+		return *this;
+	}
+
+	////////////////////////////////////////////////////////////
+	Shape::PathSegment Shape::GetSegmentFlags() const
+	{
+		return segmentFlags;
+	}
+
+	////////////////////////////////////////////////////////////
+	Shape& Shape::SetFillMode(FillMode mode)
+	{
+		fillMode = mode;
+
+		if(impl->Sink != nullptr)
+		{
+			impl->Sink->SetFillMode((D2D1_FILL_MODE)mode);
+		}
+
+		return *this;
+	}
+
+	////////////////////////////////////////////////////////////
+	Shape::FillMode Shape::GetFillMode() const
+	{
+		return fillMode;
 	}
 
 	////////////////////////////////////////////////////////////
@@ -52,7 +91,7 @@ namespace Core
 			return *this;
 		}
 
-		HRESULT success = Factories::D2DFactory->CreatePathGeometry(&impl->Geometry);
+		const HRESULT success = Factories::D2DFactory->CreatePathGeometry(&impl->Geometry);
 		if(FAILED(success))
 		{
 			Err() << "Failed to create an ID2D1PathGeometry instance." << std::endl;
@@ -60,15 +99,8 @@ namespace Core
 			return *this;
 		}
 
-		success = impl->Geometry->Open(&impl->Sink);
-		if(FAILED(success))
-		{
-			Err() << "Failed to open the geometry sink instance." << std::endl;
-			isBuilding = false;
-			return *this;
-		}
-
-		impl->First = true;
+		impl->Sink.Reset();
+		
 		isBuilding = true;
 		return *this;
 	}
@@ -82,13 +114,18 @@ namespace Core
 			return *this;
 		}
 
-		if(impl->First)
+		if(const auto& sink = impl->Sink; !sink)
 		{
-			impl->Sink->BeginFigure(D2D1::Point2F(x, y), D2D1_FIGURE_BEGIN_FILLED);
-			impl->First = false;
+			if(!OpenGeometrySink())
+			{
+				isBuilding = false;
+				return *this;
+			}
+			
+			sink->BeginFigure(D2D1::Point2F(x, y), D2D1_FIGURE_BEGIN_FILLED);
 		} else
 		{
-			impl->Sink->AddLine(D2D1::Point2F(x, y));
+			sink->AddLine(D2D1::Point2F(x, y));
 		}
 
 		return *this;
@@ -109,10 +146,15 @@ namespace Core
 			return *this;
 		}
 
-		if (impl->First)
+		if (const auto& sink = impl->Sink; !sink)
 		{
-			impl->Sink->BeginFigure(D2D1::Point2F(x1, y1), D2D1_FIGURE_BEGIN_FILLED);
-			impl->First = false;
+			if (!OpenGeometrySink())
+			{
+				isBuilding = false;
+				return *this;
+			}
+			
+			sink->BeginFigure(D2D1::Point2F(x1, y1), D2D1_FIGURE_BEGIN_FILLED);
 		}
 
 		impl->Sink->AddBezier(D2D1::BezierSegment(D2D1::Point2F(x1, y1), D2D1::Point2F(x2, y2), D2D1::Point2F(x3, y3)));
@@ -134,10 +176,15 @@ namespace Core
 			return *this;
 		}
 
-		if (impl->First)
+		if (const auto& sink = impl->Sink; !sink)
 		{
-			impl->Sink->BeginFigure(D2D1::Point2F(x1, y1), D2D1_FIGURE_BEGIN_FILLED);
-			impl->First = false;
+			if (!OpenGeometrySink())
+			{
+				isBuilding = false;
+				return *this;
+			}
+			
+			sink->BeginFigure(D2D1::Point2F(x1, y1), D2D1_FIGURE_BEGIN_FILLED);
 		}
 
 		impl->Sink->AddQuadraticBezier(D2D1::QuadraticBezierSegment(D2D1::Point2F(x1, y1), D2D1::Point2F(x2, y2)));
@@ -153,26 +200,26 @@ namespace Core
 	////////////////////////////////////////////////////////////
 	Shape& Shape::End(ShapeEnd style)
 	{
-		if (impl->First)
-			return *this;
-
 		if(!isBuilding)
 		{
 			Err() << "Unacceptable method call to End(). Make sure to call Begin() before calling End()" << std::endl;
 			return *this;
 		}
 
-		impl->Sink->EndFigure((D2D1_FIGURE_END)style);
-
-		const HRESULT success = impl->Sink->Close();
-		if(FAILED(success))
+		// make sure to call this only if the sink has been opened
+		if (ID2D1GeometrySink* sink = impl->Sink.Get())
 		{
-			Err() << "Failed to close the geometry sink" << std::endl;
-			return *this;
+			sink->EndFigure((D2D1_FIGURE_END)style);
+
+			const HRESULT success = sink->Close();
+			if (FAILED(success))
+			{
+				Err() << "Failed to close the geometry sink" << std::endl;
+				return *this;
+			}
 		}
-
+		
 		isBuilding = false;
-
 		return *this;
 	}
 
@@ -188,4 +235,40 @@ namespace Core
 		return impl->Geometry.Get();
 	}
 
+	bool Shape::IsRenderable() const
+	{
+		return impl->Geometry != nullptr && impl->Sink != nullptr;
+	}
+
+	////////////////////////////////////////////////////////////
+	/// \brief Tries to open the geometry sink object.
+	///
+	///	\return True if the object has been opened successfully,
+	///			false otherwise.
+	/// 
+	////////////////////////////////////////////////////////////
+	bool Shape::OpenGeometrySink()
+	{
+		if (ID2D1PathGeometry* geometry = impl->Geometry.Get())
+		{
+			if (auto& sink = impl->Sink)
+			{
+				Err() << "The geometry sink is already open." << std::endl;
+				return true;
+			} else
+			{
+				if (FAILED(geometry->Open(&sink)))
+				{
+					Err() << "Failed to open the geometry sink instance." << std::endl;
+					return false;
+				}
+
+				sink->SetSegmentFlags((D2D1_PATH_SEGMENT)segmentFlags);
+				sink->SetFillMode((D2D1_FILL_MODE)fillMode);
+				return true;
+			}
+		}
+
+		return false;
+	}
 }

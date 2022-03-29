@@ -28,12 +28,50 @@ namespace Core
 	class Shape
 	{
 	public:
+		////////////////////////////////////////////////////////////
+		/// \brief Specifies how the intersecting areas of geometries or
+		///		   figures are combined to form the area of the composite
+		///		   geometry.
+		/// 
+		////////////////////////////////////////////////////////////
+		enum FillMode
+		{
+			Alternate,
+			Winding
+		};
+
+		////////////////////////////////////////////////////////////
+		/// \brief Indicates whether the given segment should be stroked,
+		///		   or, if the join between this segment and the previous
+		///		   one should be smooth.
+		///
+		////////////////////////////////////////////////////////////
+		enum PathSegment
+		{
+			None,
+			Unstroked,
+			RoundLineJoin
+		};
 
 		////////////////////////////////////////////////////////////
 		/// \brief Default constructor
 		/// 
 		////////////////////////////////////////////////////////////
 		Shape();
+
+		////////////////////////////////////////////////////////////
+		/// \brief Get & Set the segment flags
+		/// 
+		////////////////////////////////////////////////////////////
+		Shape& SetSegmentFlags(PathSegment flags);
+		PathSegment GetSegmentFlags() const;
+
+		////////////////////////////////////////////////////////////
+		/// \brief Get & Set the fill mode
+		/// 
+		////////////////////////////////////////////////////////////
+		Shape& SetFillMode(FillMode mode);
+		FillMode GetFillMode() const;
 
 		////////////////////////////////////////////////////////////
 		/// \brief Starts listening on building commands
@@ -119,7 +157,18 @@ namespace Core
 		////////////////////////////////////////////////////////////
 		ID2D1Geometry* GetGeometry() const;
 
+		bool IsRenderable() const;
+
 	private:
+
+		////////////////////////////////////////////////////////////
+		/// \brief Tries to open the geometry sink object.
+		///
+		///	\return True if the object has been opened successfully,
+		///			false otherwise.
+		/// 
+		////////////////////////////////////////////////////////////
+		bool OpenGeometrySink();
 
 		////////////////////////////////////////////////////////////
 		/// \brief PImpl pattern - you know the drill
@@ -131,7 +180,9 @@ namespace Core
 		/// Member data
 		/// 
 		////////////////////////////////////////////////////////////
-		std::shared_ptr<Impl>	impl;		///< Pointer to implementation
-		bool					isBuilding;	///< Whether the shape is currently being built up or not.
+		std::shared_ptr<Impl>	impl;			///< Pointer to implementation
+		FillMode				fillMode;		///< The fill mode when overlapping
+		PathSegment				segmentFlags;	///< The segment flags
+		bool					isBuilding;		///< Whether the shape is currently being built up or not.
 	};
 }

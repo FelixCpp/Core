@@ -336,43 +336,55 @@ namespace Core
 	}
 
 	////////////////////////////////////////////////////////////
+	void ShapeFillMode(Shape::FillMode mode)
+	{
+		GetGraphics().ShapeFillMode(mode);
+	}
+
+	////////////////////////////////////////////////////////////
+	void ShapeSegmentFlags(Shape::PathSegment flags)
+	{
+		GetGraphics().ShapeSegmentFlags(flags);
+	}
+
+	////////////////////////////////////////////////////////////
 	void BeginShape()
 	{
 		GetGraphics().BeginShape();
 	}
 
 	////////////////////////////////////////////////////////////
-	void AddVertex(float x, float y)
+	void Vertex(float x, float y)
 	{
 		GetGraphics().AddVertex(x, y);
 	}
 
 	////////////////////////////////////////////////////////////
-	void AddVertex(const Float2& point)
+	void Vertex(const Float2& point)
 	{
 		GetGraphics().AddVertex(point);
 	}
 
 	////////////////////////////////////////////////////////////
-	void AddBezier(float x1, float y1, float x2, float y2, float x3, float y3)
+	void Bezier(float x1, float y1, float x2, float y2, float x3, float y3)
 	{
 		GetGraphics().AddBezier(x1, y1, x2, y2, x3, y3);
 	}
 
 	////////////////////////////////////////////////////////////
-	void AddBezier(const Float2& start, const Float2& center, const Float2& end)
+	void Bezier(const Float2& start, const Float2& center, const Float2& end)
 	{
 		GetGraphics().AddBezier(start, center, end);
 	}
 
 	////////////////////////////////////////////////////////////
-	void AddQuadraticBezier(float x1, float y1, float x2, float y2)
+	void QuadraticBezier(float x1, float y1, float x2, float y2)
 	{
 		GetGraphics().AddQuadraticBezier(x1, y1, x2, y2);
 	}
 
 	////////////////////////////////////////////////////////////
-	void AddQuadraticBezier(const Float2& start, const Float2& end)
+	void QuadraticBezier(const Float2& start, const Float2& end)
 	{
 		GetGraphics().AddQuadraticBezier(start, end);
 	}
@@ -477,6 +489,12 @@ namespace Core
 	void PopTransform()
 	{
 		GetGraphics().PopTransform();
+	}
+
+	////////////////////////////////////////////////////////////
+	Shape& GetGeometry()
+	{
+		return GetGraphics().GetGeometry();
 	}
 
 	////////////////////////////////////////////////////////////

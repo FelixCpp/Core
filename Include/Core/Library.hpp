@@ -22,6 +22,9 @@
 #include <Core/Graphics/Color.hpp>
 #include <Core/Graphics/ShapeProperties.hpp>
 #include <Core/Graphics/Texture.hpp>
+#include <Core/Graphics/Shape.hpp>
+
+#include "Graphics/Shape.hpp"
 
 namespace Core
 {
@@ -32,7 +35,6 @@ namespace Core
 	class Application;
 	class Window;
 	class GraphicsContext;
-	class Shape;
 
 	////////////////////////////////////////////////////////////
 	/// Application functions
@@ -102,13 +104,15 @@ namespace Core
 	void StrokeDashStyle(DashStyle style);
 	void StrokeDashOffset(float offset);
 	void StrokeDashes(const float* dashes, usize count);
+	void ShapeFillMode(Shape::FillMode mode);
+	void ShapeSegmentFlags(Shape::PathSegment flags);
 	void BeginShape();
-	void AddVertex(float x, float y);
-	void AddVertex(const Float2& point);
-	void AddBezier(float x1, float y1, float x2, float y2, float x3, float y3);
-	void AddBezier(const Float2& start, const Float2& center, const Float2& end);
-	void AddQuadraticBezier(float x1, float y1, float x2, float y2);
-	void AddQuadraticBezier(const Float2& start, const Float2& end);
+	void Vertex(float x, float y);
+	void Vertex(const Float2& point);
+	void Bezier(float x1, float y1, float x2, float y2, float x3, float y3);
+	void Bezier(const Float2& start, const Float2& center, const Float2& end);
+	void QuadraticBezier(float x1, float y1, float x2, float y2);
+	void QuadraticBezier(const Float2& start, const Float2& end);
 	void EndShape(ShapeEnd style);
 	void Geometry(const Shape& shape);
 	void ImageOpacity(u8 opacity);
@@ -126,6 +130,8 @@ namespace Core
 	void PopStyle();
 	void PushTransform(bool advance = true);
 	void PopTransform();
+
+	Shape& GetGeometry();
 	RenderStyle& GetRenderStyle();
 	GraphicsContext& GetGraphics();
 
